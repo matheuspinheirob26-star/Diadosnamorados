@@ -1,0 +1,723 @@
+import React, { useEffect, useState } from 'react';
+import { api } from '../lib/supabase';
+import { Order, Lead, Review, Coupon } from '../types';
+import { formatCurrency } from '../lib/utils';
+import { ShieldCheck, TrendingUp, DollarSign, ShoppingCart, Users, MessageSquare, Tag, Plus, Check, Trash2, Edit3, X, Eye, Package, ArrowUpRight } from 'lucide-react';
+
+export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigate }) => {
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'leads' | 'reviews' | 'coupons'>('dashboard');
+
+  // Database States
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [coupons, setCoupons] = useState<Coupon[]>([]);
+
+  // Create Coupon Modal Form State
+  const [showCouponModal, setShowCouponModal] = useState(false);
+  const [newCode, setNewCode] = useState('');
+  const [newType, setNewType] = useState<'percentage' | 'fixed'>('percentage');
+  const [newValue, setNewValue] = useState(10);
+  const [newMinSpend, setNewMinSpend] = useState(150);
+  const [newExpiry, setNewExpiry] = useState('2026-12-31');
+
+  // Dashboard Stats
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [avgTicket, setAvgTicket] = useState(0);
+  const [conversionRate, setConversionRate] = useState(4.8); // simulated default %
+  const [activeLeadsCount, setActiveLeadsCount] = useState(0);
+
+  // Selected Order Detail Modal
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [trackingCodeInput, setTrackingCodeInput] = useState('');
+
+  const loadAllData = async () => {
+    const fetchedOrders = await api.getOrders();
+    setOrders(fetchedOrders);
+
+    const fetchedLeads = await api.getLeads();
+    setLeads(fetchedLeads);
+
+    const fetchedReviews = await api.getReviews(undefined, false); // Pegar aprovados e pendentes
+    setReviews(fetchedReviews);
+
+    const fetchedCoupons = await api.getCoupons();
+    setCoupons(fetchedCoupons);
+  };
+
+  useEffect(() => {
+    loadAllData();
+  }, [activeTab]);
+
+  // Calcular estatísticas quando ordens e leads forem atualizados
+  useEffect(() => {
+    if (orders.length > 0) {
+      // Receita total = somatória de ordens pagas / processando / enviadas
+      const paidOrders = orders.filter(o => o.status !== 'pending');
+      const revenue = paidOrders.reduce((acc, curr) => acc + curr.total, 0);
+      setTotalRevenue(revenue);
+      
+      const ticket = paidOrders.length > 0 ? revenue / paidOrders.length : 0;
+      setAvgTicket(ticket);
+    }
+    
+    const abandonedLeads = leads.filter(l => l.status === 'captured');
+    setActiveLeadsCount(abandonedLeads.length);
+  }, [orders, leads]);
+
+  // Manipulação de Pedido
+  const handleUpdateOrderStatus = async (orderId: string, status: Order['status'], trackCode?: string) => {
+    await api.updateOrderStatus(orderId, status, trackCode);
+    loadAllData();
+    if (selectedOrder && selectedOrder.id === orderId) {
+      setSelectedOrder(prev => prev ? { ...prev, status, trackingCode: trackCode || prev.trackingCode } : null);
+    }
+  };
+
+  // Aprovar Review
+  const handleApproveReview = async (reviewId: string) => {
+    await api.approveReview(reviewId);
+    loadAllData();
+  };
+
+  // Excluir Review
+  const handleDeleteReview = async (reviewId: string) => {
+    await api.deleteReview(reviewId);
+    loadAllData();
+  };
+
+  // Deletar Cupom
+  const handleDeleteCoupon = async (code: string) => {
+    await api.deleteCoupon(code);
+    loadAllData();
+  };
+
+  // Criar Cupom
+  const handleCreateCoupon = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newCode.trim()) return;
+
+    await api.createCoupon({
+      code: newCode.trim().toUpperCase(),
+      type: newType,
+      value: Number(newValue),
+      minPurchaseValue: Number(newMinSpend),
+      expiresAt: newExpiry,
+      active: true
+    });
+
+    setNewCode('');
+    setShowCouponModal(false);
+    loadAllData();
+  };
+
+  // Simulador de recuperação de carrinho (envia e-mail/whats mock)
+  const handleRecoverCart = (lead: Lead) => {
+    const text = `Olá ${lead.name}, notamos que você deixou alguns itens incríveis na sacola da Amour & Co. Use o cupom NAMORADOS10 e conclua seu presente com 10% OFF: https://amour.com/checkout?recover=${lead.id}`;
+    window.open(`https://wa.me/${lead.phone.replace(/\D/g, '')}?text=${encodeURIComponent(text)}`, '_blank');
+    
+    // Mudar status do lead
+    api.updateLeadStatus(lead.id, 'recovered');
+    loadAllData();
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 min-h-screen">
+      
+      {/* Admin Title Bar */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/5 pb-6">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-rose-400">
+            <ShieldCheck size={20} />
+            <span className="text-xs uppercase font-extrabold tracking-widest bg-rose-500/10 border border-rose-500/20 px-2 py-0.5 rounded">
+              Acesso Administrativo Restrito
+            </span>
+          </div>
+          <h1 className="font-serif text-3xl text-white tracking-wide uppercase">Painel de Vendas</h1>
+        </div>
+        
+        <button
+          onClick={() => onNavigate('home')}
+          className="border border-white/10 hover:border-gold-500 text-gray-400 hover:text-white px-5 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition cursor-pointer"
+        >
+          Voltar para Loja
+        </button>
+      </div>
+
+      {/* Admin Tabs */}
+      <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-wider border-b border-white/5 pb-2">
+        {[
+          { id: 'dashboard', label: 'Dashboard', icon: TrendingUp },
+          { id: 'orders', label: 'Pedidos', icon: ShoppingCart },
+          { id: 'leads', label: 'Leads (Carrinhos)', icon: Users },
+          { id: 'reviews', label: 'Avaliações', icon: MessageSquare },
+          { id: 'coupons', label: 'Cupons', icon: Tag }
+        ].map((tab) => {
+          const Icon = tab.icon;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`flex items-center gap-2 px-4 py-3 rounded-lg border transition ${
+                activeTab === tab.id
+                  ? 'border-gold-500 bg-gold-500/10 text-gold-400'
+                  : 'border-transparent text-gray-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Icon size={14} />
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Contents based on tab */}
+      
+      {/* 1. DASHBOARD TAB */}
+      {activeTab === 'dashboard' && (
+        <div className="space-y-8">
+          
+          {/* Metrics grids */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <div className="bg-luxury-gray border border-white/5 p-6 rounded-2xl space-y-2 relative overflow-hidden">
+              <DollarSign size={24} className="text-gold-500 absolute top-6 right-6 opacity-30" />
+              <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Faturamento Aprovado</span>
+              <h3 className="text-2xl font-bold text-white block">{formatCurrency(totalRevenue)}</h3>
+              <p className="text-[10px] text-gray-400 mt-1 flex items-center gap-1">
+                <span className="text-emerald-400 font-bold flex items-center gap-0.5"><ArrowUpRight size={10} /> +12.4%</span> vs semana passada
+              </p>
+            </div>
+
+            <div className="bg-luxury-gray border border-white/5 p-6 rounded-2xl space-y-2 relative overflow-hidden">
+              <ShoppingCart size={24} className="text-gold-500 absolute top-6 right-6 opacity-30" />
+              <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Vendas Concluídas</span>
+              <h3 className="text-2xl font-bold text-white block">{orders.filter(o => o.status !== 'pending').length}</h3>
+              <p className="text-[10px] text-gray-400 mt-1 flex items-center gap-1">
+                Taxa de cancelamento: <span className="text-white font-medium">0%</span>
+              </p>
+            </div>
+
+            <div className="bg-luxury-gray border border-white/5 p-6 rounded-2xl space-y-2 relative overflow-hidden">
+              <TrendingUp size={24} className="text-gold-500 absolute top-6 right-6 opacity-30" />
+              <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Ticket Médio</span>
+              <h3 className="text-2xl font-bold text-white block">{formatCurrency(avgTicket)}</h3>
+              <p className="text-[10px] text-gray-400 mt-1">
+                Foco em kits de maior valor agregado
+              </p>
+            </div>
+
+            <div className="bg-luxury-gray border border-white/5 p-6 rounded-2xl space-y-2 relative overflow-hidden">
+              <Users size={24} className="text-gold-500 absolute top-6 right-6 opacity-30" />
+              <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Carrinhos Abandonados</span>
+              <h3 className="text-2xl font-bold text-rose-400 block">{activeLeadsCount}</h3>
+              <p className="text-[10px] text-gray-400 mt-1">
+                Qualificados para recuperação ativa
+              </p>
+            </div>
+
+          </div>
+
+          {/* Graph Simulation */}
+          <div className="bg-luxury-gray border border-white/5 p-6 sm:p-8 rounded-3xl space-y-6">
+            <div className="flex justify-between items-center border-b border-white/5 pb-4">
+              <div className="space-y-1">
+                <h3 className="text-xs font-semibold text-white tracking-widest uppercase">Gráfico de Faturamento Diário</h3>
+                <p className="text-[10px] text-gray-500">Junho 2026 - Período da campanha de Namorados</p>
+              </div>
+              <span className="text-[10px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded">
+                Lucro operacional saudável
+              </span>
+            </div>
+
+            {/* Simulates visual bar chart */}
+            <div className="h-56 flex items-end gap-3 sm:gap-6 pt-4 border-b border-white/10 pb-1">
+              {[
+                { day: '01/Jun', rev: 1200, pct: 30 },
+                { day: '02/Jun', rev: 1800, pct: 45 },
+                { day: '03/Jun', rev: 2500, pct: 60 },
+                { day: '04/Jun', rev: 1900, pct: 48 },
+                { day: '05/Jun', rev: 3200, pct: 80 },
+                { day: '06/Jun', rev: 4100, pct: 100 },
+                { day: '07/Jun', rev: 2800, pct: 70 }
+              ].map((bar, idx) => (
+                <div key={idx} className="flex-1 flex flex-col items-center gap-2 h-full justify-end group cursor-help">
+                  <div className="text-[9px] font-bold text-gold-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    {formatCurrency(bar.rev)}
+                  </div>
+                  <div
+                    className="w-full bg-gradient-gold rounded-t-md hover:brightness-115 transition duration-300 shadow-lg"
+                    style={{ height: `${bar.pct}%` }}
+                  />
+                  <span className="text-[9px] text-gray-500 mt-1 font-bold">{bar.day}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      )}
+
+      {/* 2. ORDERS TAB */}
+      {activeTab === 'orders' && (
+        <div className="bg-luxury-gray border border-white/5 rounded-3xl overflow-hidden">
+          <div className="p-6 border-b border-white/5">
+            <h3 className="text-xs font-semibold text-white tracking-widest uppercase">Fila de Pedidos</h3>
+          </div>
+          
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="text-gray-500 font-bold border-b border-white/5">
+                  <th className="p-4">Pedido</th>
+                  <th className="p-4">Cliente</th>
+                  <th className="p-4">Itens</th>
+                  <th className="p-4">Total</th>
+                  <th className="p-4">Status</th>
+                  <th className="p-4">Ações</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5 text-gray-300 font-medium">
+                {orders.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="p-8 text-center text-gray-500">Nenhum pedido efetuado.</td>
+                  </tr>
+                ) : (
+                  orders.map((order) => (
+                    <tr key={order.id} className="hover:bg-white/2 transition">
+                      <td className="p-4 font-mono font-bold text-white">{order.id}</td>
+                      <td className="p-4">
+                        <span className="block text-white font-semibold">{order.customerName}</span>
+                        <span className="block text-[10px] text-gray-500 mt-0.5">{order.city} - {order.state}</span>
+                      </td>
+                      <td className="p-4">
+                        <span className="block text-[10px] truncate max-w-[150px]">{order.items.map(i => i.name).join(', ')}</span>
+                        <span className="block text-[9px] text-gray-500 mt-0.5">{order.items.length} item{order.items.length !== 1 && 's'}</span>
+                      </td>
+                      <td className="p-4 font-bold text-gold-400">{formatCurrency(order.total)}</td>
+                      <td className="p-4">
+                        <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase ${
+                          order.status === 'paid' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                          order.status === 'shipped' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' :
+                          order.status === 'delivered' ? 'bg-teal-500/10 text-teal-400 border border-teal-500/20' :
+                          order.status === 'processing' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
+                          'bg-gray-500/10 text-gray-400 border border-gray-500/20'
+                        }`}>
+                          {order.status === 'paid' ? 'Pago' :
+                           order.status === 'shipped' ? 'Enviado' :
+                           order.status === 'delivered' ? 'Entregue' :
+                           order.status === 'processing' ? 'Processando' : 'Aguardando'}
+                        </span>
+                      </td>
+                      <td className="p-4">
+                        <button
+                          onClick={() => {
+                            setSelectedOrder(order);
+                            setTrackingCodeInput(order.trackingCode || '');
+                          }}
+                          className="flex items-center gap-1 text-[10px] font-bold text-gold-400 uppercase tracking-wider hover:text-white"
+                        >
+                          <Eye size={12} /> Detalhes
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* 3. LEADS TAB (Carrinhos Abandonados) */}
+      {activeTab === 'leads' && (
+        <div className="bg-luxury-gray border border-white/5 rounded-3xl overflow-hidden">
+          <div className="p-6 border-b border-white/5">
+            <h3 className="text-xs font-semibold text-white tracking-widest uppercase">Captura de Leads e Carrinhos Abandonados</h3>
+          </div>
+          
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="text-gray-500 font-bold border-b border-white/5">
+                  <th className="p-4">Nome</th>
+                  <th className="p-4">Contato</th>
+                  <th className="p-4">Carrinho Abandonado</th>
+                  <th className="p-4">Captura</th>
+                  <th className="p-4">Status</th>
+                  <th className="p-4">Recuperação</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5 text-gray-300 font-medium">
+                {leads.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="p-8 text-center text-gray-500">Nenhum lead capturado.</td>
+                  </tr>
+                ) : (
+                  leads.map((lead) => (
+                    <tr key={lead.id} className="hover:bg-white/2 transition">
+                      <td className="p-4 text-white font-semibold">{lead.name}</td>
+                      <td className="p-4">
+                        <span className="block text-white">{lead.email}</span>
+                        <span className="block text-[10px] text-gray-500 mt-0.5">{lead.phone}</span>
+                      </td>
+                      <td className="p-4">
+                        <span className="block text-[10px] truncate max-w-[150px]">{lead.cartItems.map(i => i.name).join(', ')}</span>
+                        <span className="block text-[9px] text-gold-400 mt-0.5">Total: {formatCurrency(lead.cartItems.reduce((acc, curr) => acc + curr.price * curr.quantity, 0))}</span>
+                      </td>
+                      <td className="p-4 text-gray-500">{new Date(lead.createdAt).toLocaleString('pt-BR')}</td>
+                      <td className="p-4">
+                        <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase ${
+                          lead.status === 'purchased' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                          lead.status === 'recovered' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' :
+                          'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                        }`}>
+                          {lead.status === 'purchased' ? 'Comprou' :
+                           lead.status === 'recovered' ? 'Contatado' : 'Abandonou'}
+                        </span>
+                      </td>
+                      <td className="p-4">
+                        {lead.status === 'captured' ? (
+                          <button
+                            onClick={() => handleRecoverCart(lead)}
+                            className="bg-emerald-500/10 hover:bg-emerald-500/25 border border-emerald-500/35 text-emerald-400 font-bold text-[9px] uppercase tracking-widest px-3 py-1.5 rounded-lg transition"
+                          >
+                            WhatsApp
+                          </button>
+                        ) : (
+                          <span className="text-[10px] text-gray-600 font-semibold uppercase">Finalizado</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* 4. REVIEWS MODERATION TAB */}
+      {activeTab === 'reviews' && (
+        <div className="space-y-6">
+          <div className="bg-luxury-gray border border-white/5 rounded-3xl p-6">
+            <h3 className="text-xs font-semibold text-white tracking-widest uppercase border-b border-white/5 pb-4">
+              Moderação de Avaliações
+            </h3>
+            
+            {reviews.length === 0 ? (
+              <p className="text-xs text-gray-500 py-6 text-center">Nenhum comentário submetido.</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                {reviews.map((rev) => (
+                  <div key={rev.id} className="bg-white/2 border border-white/5 p-5 rounded-2xl space-y-4">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <span className="block font-bold text-white text-xs">{rev.customerName}</span>
+                        <span className="block text-[9px] text-gray-500 mt-0.5">Nota: {rev.rating} estrelas • Produto ID: {rev.productId}</span>
+                      </div>
+                      <span className={`px-2 py-0.5 rounded text-[8px] font-extrabold uppercase ${
+                        rev.approved ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'
+                      }`}>
+                        {rev.approved ? 'Aprovado' : 'Pendente'}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-gray-400 italic">
+                      "{rev.comment}"
+                    </p>
+
+                    {rev.photos && rev.photos.length > 0 && (
+                      <img src={rev.photos[0]} alt="" className="w-16 h-16 object-cover rounded-lg" />
+                    )}
+
+                    <div className="flex justify-end gap-2 pt-2 border-t border-white/5">
+                      <button
+                        onClick={() => handleDeleteReview(rev.id)}
+                        className="text-rose-400 hover:text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded bg-rose-500/5 hover:bg-rose-500/10 transition"
+                      >
+                        Excluir
+                      </button>
+                      {!rev.approved && (
+                        <button
+                          onClick={() => handleApproveReview(rev.id)}
+                          className="bg-emerald-500/10 hover:bg-emerald-500/25 text-emerald-400 text-[10px] font-bold uppercase tracking-wider px-4 py-1.5 rounded transition"
+                        >
+                          Aprovar
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 5. COUPONS TAB */}
+      {activeTab === 'coupons' && (
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h3 className="text-xs font-semibold text-white tracking-widest uppercase">Gestão de Cupons</h3>
+            <button
+              onClick={() => setShowCouponModal(true)}
+              className="bg-gradient-gold text-luxury-black font-semibold text-xs tracking-widest uppercase px-4 py-2 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center gap-1.5"
+            >
+              <Plus size={14} /> Criar Cupom
+            </button>
+          </div>
+
+          <div className="bg-luxury-gray border border-white/5 rounded-3xl overflow-hidden">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="text-gray-500 font-bold border-b border-white/5">
+                  <th className="p-4">Cupom</th>
+                  <th className="p-4">Tipo</th>
+                  <th className="p-4">Desconto</th>
+                  <th className="p-4">Mínimo Compra</th>
+                  <th className="p-4">Expiração</th>
+                  <th className="p-4">Status</th>
+                  <th className="p-4">Ações</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5 text-gray-300 font-medium">
+                {coupons.map((coupon) => (
+                  <tr key={coupon.code} className="hover:bg-white/2 transition">
+                    <td className="p-4 font-mono font-bold text-white">{coupon.code}</td>
+                    <td className="p-4 capitalize">{coupon.type === 'percentage' ? 'Porcentagem' : 'Valor Fixo'}</td>
+                    <td className="p-4 text-gold-400 font-bold">
+                      {coupon.type === 'percentage' ? `${coupon.value}%` : formatCurrency(coupon.value)}
+                    </td>
+                    <td className="p-4">{formatCurrency(coupon.minPurchaseValue)}</td>
+                    <td className="p-4 text-gray-500">{coupon.expiresAt}</td>
+                    <td className="p-4">
+                      <span className="text-[9px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-bold uppercase">
+                        Ativo
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <button
+                        onClick={() => handleDeleteCoupon(coupon.code)}
+                        className="text-rose-400 hover:text-white p-1"
+                        title="Deletar cupom"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL ORDER DETAIL (POPUP) */}
+      {selectedOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+          <div className="absolute inset-0" onClick={() => setSelectedOrder(null)} />
+          
+          <div className="relative w-full max-w-2xl bg-luxury-gray border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 glow-gold overflow-y-auto max-h-[90vh] space-y-6">
+            
+            <button
+              onClick={() => setSelectedOrder(null)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-white p-1"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="border-b border-white/5 pb-4">
+              <span className="text-[9px] uppercase tracking-wider text-gray-500 font-bold">Detalhamento Completo</span>
+              <h3 className="font-serif text-xl text-white tracking-wide">Pedido {selectedOrder.id}</h3>
+              <p className="text-[10px] text-gray-500">Criado em {new Date(selectedOrder.createdAt).toLocaleString('pt-BR')}</p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs leading-relaxed">
+              
+              {/* Customer contact Info */}
+              <div className="space-y-2 bg-white/2 p-4 rounded-2xl border border-white/5">
+                <span className="text-[10px] uppercase font-bold text-gold-400 block tracking-wider">Informações do Cliente</span>
+                <span className="block text-white font-semibold">Nome: {selectedOrder.customerName}</span>
+                <span className="block">Email: {selectedOrder.customerEmail}</span>
+                <span className="block">Celular: {selectedOrder.customerPhone}</span>
+                <span className="block">CPF: {selectedOrder.customerCpf}</span>
+              </div>
+
+              {/* Shipping address Info */}
+              <div className="space-y-2 bg-white/2 p-4 rounded-2xl border border-white/5">
+                <span className="text-[10px] uppercase font-bold text-gold-400 block tracking-wider">Endereço de Entrega</span>
+                <span className="block text-white font-semibold">CEP: {selectedOrder.cep}</span>
+                <span className="block">{selectedOrder.address}, {selectedOrder.number} {selectedOrder.complement && `- ${selectedOrder.complement}`}</span>
+                <span className="block">{selectedOrder.neighborhood}</span>
+                <span className="block">{selectedOrder.city} - {selectedOrder.state}</span>
+              </div>
+
+            </div>
+
+            {/* Product items table */}
+            <div className="bg-white/2 border border-white/5 rounded-2xl p-4 space-y-2.5">
+              <span className="text-[10px] uppercase font-bold text-white tracking-wider block">Itens Comprados</span>
+              <div className="divide-y divide-white/5 text-xs">
+                {selectedOrder.items.map((item, idx) => (
+                  <div key={idx} className="flex justify-between items-center py-2.5 first:pt-0">
+                    <div className="flex items-center gap-2">
+                      <img src={item.image} alt="" className="w-8 h-8 object-cover rounded bg-white/5" />
+                      <div>
+                        <span className="font-semibold text-white block">{item.name}</span>
+                        {item.selectedSize && <span className="text-[9px] text-gray-500">Tamanho: {item.selectedSize}</span>}
+                      </div>
+                    </div>
+                    <span>{item.quantity}x de {formatCurrency(item.price)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Action edit order */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs items-end pt-4 border-t border-white/5">
+              
+              {/* Order Status */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Status do Pedido</label>
+                <select
+                  value={selectedOrder.status}
+                  onChange={(e) => handleUpdateOrderStatus(selectedOrder.id, e.target.value as any, selectedOrder.trackingCode)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+                >
+                  <option value="pending">Aguardando Pagamento</option>
+                  <option value="paid">Pago (Preparar Presente)</option>
+                  <option value="processing">Processando Embalagem</option>
+                  <option value="shipped">Enviado (Adicionar Rastreio)</option>
+                  <option value="delivered">Entregue ao Destinatário</option>
+                </select>
+              </div>
+
+              {/* Tracking Code input */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Código de Rastreamento</label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Ex: QI123456789BR"
+                    value={trackingCodeInput}
+                    onChange={(e) => setTrackingCodeInput(e.target.value.toUpperCase())}
+                    className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                  />
+                  <button
+                    onClick={() => handleUpdateOrderStatus(selectedOrder.id, selectedOrder.status, trackingCodeInput)}
+                    className="bg-white/10 hover:bg-gold-500 hover:text-luxury-black border border-white/10 px-4 py-2 font-bold uppercase rounded-lg transition"
+                  >
+                    Salvar
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* CREATE COUPON MODAL DIALOG */}
+      {showCouponModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+          <div className="absolute inset-0" onClick={() => setShowCouponModal(false)} />
+          
+          <form onSubmit={handleCreateCoupon} className="relative w-full max-w-md bg-luxury-gray border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 glow-gold space-y-4">
+            
+            <button
+              type="button"
+              onClick={() => setShowCouponModal(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-white p-1"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="border-b border-white/5 pb-2">
+              <h3 className="font-serif text-lg text-white tracking-wide uppercase">Novo Cupom de Desconto</h3>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Código</label>
+              <input
+                type="text"
+                placeholder="Ex: AMOUR15"
+                value={newCode}
+                onChange={(e) => setNewCode(e.target.value.toUpperCase())}
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Tipo</label>
+                <select
+                  value={newType}
+                  onChange={(e) => setNewType(e.target.value as any)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+                >
+                  <option value="percentage">Porcentagem (%)</option>
+                  <option value="fixed">Valor Fixo (R$)</option>
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Valor do Desconto</label>
+                <input
+                  type="number"
+                  value={newValue}
+                  onChange={(e) => setNewValue(Number(e.target.value))}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Compra Mínima (R$)</label>
+                <input
+                  type="number"
+                  value={newMinSpend}
+                  onChange={(e) => setNewMinSpend(Number(e.target.value))}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                  required
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Data de Expiração</label>
+                <input
+                  type="date"
+                  value={newExpiry}
+                  onChange={(e) => setNewExpiry(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-4 border-t border-white/5">
+              <button
+                type="button"
+                onClick={() => setShowCouponModal(false)}
+                className="px-4 py-2 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                className="bg-gradient-gold text-luxury-black font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+              >
+                Criar Cupom
+              </button>
+            </div>
+
+          </form>
+        </div>
+      )}
+
+    </div>
+  );
+};
+export default Admin;
