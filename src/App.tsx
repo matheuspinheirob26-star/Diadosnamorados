@@ -10,6 +10,7 @@ import { ProductDetail } from './pages/ProductDetail';
 import { Checkout } from './pages/Checkout';
 import { Institutional } from './pages/Institutional';
 import { Admin } from './pages/Admin';
+import { Login } from './pages/Login';
 import { CartDrawer } from './components/cart/CartDrawer';
 import { NotificationPopup } from './components/ui/NotificationPopup';
 import { NewsletterPopup } from './components/ui/NewsletterPopup';
@@ -90,6 +91,9 @@ function AppContent() {
         )}
         {currentPage === 'checkout' && (
           <Checkout onNavigate={handleNavigate} />
+        )}
+        {currentPage === 'login' && (
+          <Login onNavigate={handleNavigate} />
         )}
         {currentPage === 'institutional' && (
           <Institutional defaultTab={institutionalTab} />

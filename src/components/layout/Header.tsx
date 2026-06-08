@@ -153,8 +153,8 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
                 </button>
               ) : (
                 <button
-                  onClick={loginAsAdmin}
-                  className="text-gray-300 hover:text-gold-400 transition-colors p-1"
+                  onClick={() => onNavigate('login')}
+                  className="text-gray-300 hover:text-gold-400 transition-colors p-1 cursor-pointer"
                   title="Acessar Área Administrativa"
                 >
                   <User size={20} />
