@@ -115,9 +115,12 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               className="font-serif text-4xl sm:text-6xl md:text-7xl font-extralight tracking-tight leading-tight text-white"
             >
               {(config.heroTitle || currentCampaign.headline).trim().split(/\s+/).map((word, i, arr) => (
-                <span key={i} className={word.toLowerCase().includes('memórias') || word.toLowerCase().includes('presente') || word.toLowerCase().includes('amor') || word.toLowerCase().includes('inesquecíveis') ? 'text-gradient-gold block md:inline font-normal' : ''}>
-                  {word}{i !== arr.length - 1 ? ' ' : ''}
-                </span>
+                <React.Fragment key={i}>
+                  <span className={word.toLowerCase().includes('memórias') || word.toLowerCase().includes('presente') || word.toLowerCase().includes('amor') || word.toLowerCase().includes('inesquecíveis') ? 'text-gradient-gold block md:inline font-normal' : ''}>
+                    {word}
+                  </span>
+                  {i !== arr.length - 1 && ' '}
+                </React.Fragment>
               ))}
             </motion.h1>
             
