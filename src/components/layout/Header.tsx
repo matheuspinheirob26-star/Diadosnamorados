@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useCampaign } from '../../context/CampaignContext';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
+import { useStorefront } from '../../context/StorefrontContext';
 import { CampaignType } from '../../types';
 import { Search, ShoppingBag, Heart, User, Menu, X, ChevronDown, Check, Sparkles, ShieldCheck } from 'lucide-react';
 
@@ -16,6 +17,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
   const { currentCampaign, setCampaign, allCampaigns } = useCampaign();
   const { cart } = useCart();
   const { user, isAdmin, loginAsAdmin, logout } = useAuth();
+  const { config } = useStorefront();
   
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -38,11 +40,13 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
   return (
     <header className="sticky top-0 z-50 glass border-b border-white/5 transition-all duration-300">
       {/* Top Bar - Free Shipping Alert */}
-      <div className="bg-gradient-gold text-luxury-black text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase flex items-center justify-center gap-2">
-        <Sparkles size={12} className="animate-spin-slow" />
-        <span>Frete Grátis para todo o Brasil em compras acima de R$ 290</span>
-        <Sparkles size={12} className="animate-spin-slow" />
-      </div>
+      {config.shippingBarText && (
+        <div className="bg-gradient-gold text-luxury-black text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase flex items-center justify-center gap-2">
+          <Sparkles size={12} className="animate-spin-slow" />
+          <span>{config.shippingBarText} {config.minFreeShippingValue > 0 && `(ACIMA DE R$ ${config.minFreeShippingValue})`}</span>
+          <Sparkles size={12} className="animate-spin-slow" />
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -60,12 +64,18 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
           {/* Logo Section */}
           <div className="flex-1 md:flex-initial flex justify-center md:justify-start cursor-pointer" onClick={() => onNavigate('home')}>
             <div className="text-center md:text-left">
-              <span className="font-serif text-2xl tracking-widest font-light text-gradient-gold uppercase block">
-                Amour & Co.
-              </span>
-              <span className="text-[9px] tracking-[0.3em] font-medium text-gray-400 uppercase -mt-1 block">
-                Presentes de Luxo
-              </span>
+              {config.logoLight ? (
+                <img src={config.logoLight} alt={config.storeName} className="h-8 md:h-10 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.1)]" />
+              ) : (
+                <>
+                  <span className="font-serif text-2xl tracking-widest font-light text-gradient-gold uppercase block">
+                    {config.storeName}
+                  </span>
+                  <span className="text-[9px] tracking-[0.3em] font-medium text-gray-400 uppercase -mt-1 block">
+                    {config.slogan}
+                  </span>
+                </>
+              )}
             </div>
           </div>
 

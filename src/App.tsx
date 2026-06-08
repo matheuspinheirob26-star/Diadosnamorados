@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CampaignProvider } from './context/CampaignContext';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { StorefrontProvider } from './context/StorefrontContext';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { Home } from './pages/Home';
@@ -15,6 +16,8 @@ import { AdminLogin } from './pages/AdminLogin';
 import { CartDrawer } from './components/cart/CartDrawer';
 import { NotificationPopup } from './components/ui/NotificationPopup';
 import { NewsletterPopup } from './components/ui/NewsletterPopup';
+import { TrackingScripts } from './components/TrackingScripts';
+import { useStorefront } from './context/StorefrontContext';
 import { captureUTMParameters, tracking } from './lib/tracking';
 import { MessageCircle } from 'lucide-react';
 const getPageFromPath = (path: string): string => {
@@ -58,8 +61,9 @@ const getPathFromPage = (page: string): string => {
   return useHash ? '#/' : '/';
 };
 
-function AppContent() {
+const AppContent = () => {
   const { isAdminAuthenticated } = useAuth();
+  const { config } = useStorefront();
   const [currentPage, setCurrentPage] = useState(() => {
     if (typeof window !== 'undefined') {
       return getPageFromPath(window.location.pathname);
@@ -199,11 +203,12 @@ function AppContent() {
       )}
 
       {/* WhatsApp Floating Chat Bubble - oculto no admin */}
-      {currentPage !== 'admin' && currentPage !== 'admin-login' && (
+      {currentPage !== 'admin' && currentPage !== 'admin-login' && config.whatsapp && (
         <button
           onClick={() => {
-            const text = "Olá! Gostaria de falar com o Concierge Amour & Co. sobre presentes de luxo.";
-            window.open(`https://wa.me/5511999999999?text=${encodeURIComponent(text)}`, '_blank');
+            const text = "Olá! Gostaria de falar com o Concierge sobre presentes de luxo.";
+            const num = config.whatsapp.replace(/\D/g, '');
+            window.open(`https://wa.me/${num}?text=${encodeURIComponent(text)}`, '_blank');
           }}
           className="fixed bottom-6 right-6 z-40 bg-emerald-500 hover:bg-emerald-600 text-white p-3.5 rounded-full shadow-2xl hover:scale-110 transition duration-300 flex items-center justify-center border border-emerald-400/25 cursor-pointer"
           title="Concierge WhatsApp"
@@ -219,13 +224,16 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <CampaignProvider>
-        <CartProvider>
-          <AppContent />
-        </CartProvider>
-      </CampaignProvider>
-    </AuthProvider>
+    <StorefrontProvider>
+      <AuthProvider>
+        <CampaignProvider>
+          <CartProvider>
+            <TrackingScripts />
+            <AppContent />
+          </CartProvider>
+        </CampaignProvider>
+      </AuthProvider>
+    </StorefrontProvider>
   );
 }
 

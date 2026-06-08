@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useCampaign } from '../context/CampaignContext';
 import { useCart } from '../context/CartContext';
+import { useStorefront } from '../context/StorefrontContext';
 import { api } from '../lib/supabase';
 import { Product } from '../types';
 import { ProductCard } from '../components/product/ProductCard';
@@ -14,6 +15,7 @@ interface HomeProps {
 
 export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) => {
   const { currentCampaign } = useCampaign();
+  const { config } = useStorefront();
   const { addToCart } = useCart();
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [flagshipProduct, setFlagshipProduct] = useState<Product | null>(null);
@@ -66,9 +68,18 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
 
   return (
     <div className="space-y-20 pb-20 overflow-hidden bg-gradient-luxury">
-      
+            
       {/* 1. HERO SECTION */}
       <section className="relative min-h-[90vh] flex items-center justify-center pt-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        {/* Imagem de Fundo do Hero (Personalizada ou Campanha) */}
+        {(config.heroBannerDesktop || (currentCampaign as any).heroImage) && (
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-40 transition-all duration-700" 
+            style={{ backgroundImage: `url(${config.heroBannerDesktop || (currentCampaign as any).heroImage})` }} 
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-luxury opacity-80" />
+
         {/* Background glow overlay */}
         <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-gold-600/5 blur-[120px] pointer-events-none animate-pulse-slow" />
         <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-wine-600/5 blur-[120px] pointer-events-none animate-pulse-slow" />
@@ -76,15 +87,17 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
         <div className="max-w-5xl mx-auto text-center space-y-8 relative z-10">
           
           {/* Animated Seasonal Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] sm:text-xs font-bold tracking-widest text-gold-400 uppercase"
-          >
-            <Sparkles size={12} className="animate-spin-slow" />
-            <span>{currentCampaign.badgeText}</span>
-          </motion.div>
+          {(currentCampaign.badgeText || config.shippingBarText) && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] sm:text-xs font-bold tracking-widest text-gold-400 uppercase"
+            >
+              <Sparkles size={12} className="animate-spin-slow" />
+              <span>{currentCampaign.badgeText || 'Novidade'}</span>
+            </motion.div>
+          )}
 
           {/* Slogan */}
           <div className="space-y-4">
@@ -94,8 +107,8 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               transition={{ duration: 1, delay: 0.2 }}
               className="font-serif text-4xl sm:text-6xl md:text-7xl font-extralight tracking-tight leading-tight text-white"
             >
-              {currentCampaign.headline.split(' ').map((word, i) => (
-                <span key={i} className={word.toLowerCase().includes('memórias') || word.toLowerCase().includes('presente') || word.toLowerCase().includes('amor') ? 'text-gradient-gold block md:inline font-normal' : ''}>
+              {(config.heroTitle || currentCampaign.headline).split(' ').map((word, i) => (
+                <span key={i} className={word.toLowerCase().includes('memórias') || word.toLowerCase().includes('presente') || word.toLowerCase().includes('amor') || word.toLowerCase().includes('inesquecíveis') ? 'text-gradient-gold block md:inline font-normal' : ''}>
                   {word}{' '}
                 </span>
               ))}
@@ -105,27 +118,26 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.5 }}
-              className="text-xs sm:text-sm md:text-base text-gray-400 max-w-2xl mx-auto font-light leading-relaxed"
+              className="text-gray-300 text-lg sm:text-xl max-w-2xl mx-auto font-light leading-relaxed"
             >
-              {currentCampaign.subheadline}
+              {config.heroSubtitle || currentCampaign.subheadline}
             </motion.p>
           </div>
 
-          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
           >
             <button
               onClick={() => {
                 onSetCatalogFilter({}); // Reset filters to show all
-                onNavigate('catalog');
+                onNavigate(config.heroButtonLink || 'catalog');
               }}
               className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg hover:shadow-gold-500/10 text-luxury-black font-semibold text-xs tracking-widest uppercase px-8 py-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>Ver Coleção</span>
+              <span>{config.heroButtonText || 'Ver Coleção'}</span>
               <ArrowRight size={14} />
             </button>
             

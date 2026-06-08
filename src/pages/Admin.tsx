@@ -29,6 +29,7 @@ import { AdminLayout } from '../components/admin/AdminLayout';
 import { AdminTab } from '../components/admin/AdminSidebar';
 import { ProductsManager } from '../components/admin/ProductsManager';
 import { PaymentsManager } from '../components/admin/PaymentsManager';
+import { StorefrontCustomizer } from '../components/admin/StorefrontCustomizer';
 import { useCampaign } from '../context/CampaignContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -717,6 +718,11 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
           </div>
         </div>
+      )}
+
+      {/* STOREFRONT CUSTOMIZER TAB */}
+      {activeTab === 'storefront' && (
+        <StorefrontCustomizer />
       )}
 
       {/* MODAL ORDER DETAIL (POPUP) */}

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Shield, CheckCircle2, CreditCard } from 'lucide-react';
+import { Heart, Mail, MapPin, Shield, CheckCircle2, CreditCard } from 'lucide-react';
+import { useStorefront } from '../../context/StorefrontContext';
 
 interface FooterProps {
   onNavigate: (page: string, tab?: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const { config } = useStorefront();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -69,18 +71,30 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 py-12">
           
           {/* Brand Col */}
-          <div className="space-y-4">
-            <div className="cursor-pointer" onClick={() => onNavigate('home')}>
-              <span className="font-serif text-xl tracking-widest font-light text-gradient-gold uppercase block">
-                Amour & Co.
-              </span>
-              <span className="text-[8px] tracking-[0.3em] font-medium text-gray-500 uppercase -mt-1 block">
-                Presentes de Luxo
-              </span>
-            </div>
-            <p className="text-xs text-gray-500 leading-relaxed">
-              Transformamos presentes em memórias inesquecíveis. Curadoria de alta sofisticação para celebrar os maiores momentos da vida em todo o Brasil.
+          <div>
+            <h3 className="font-serif text-2xl tracking-widest text-gold-400 uppercase mb-6">
+              {config.storeName}
+            </h3>
+            <p className="text-gray-400 text-sm font-light leading-relaxed mb-6">
+              {config.slogan}
             </p>
+            <div className="flex space-x-4">
+              {config.instagramUrl && (
+                <a href={config.instagramUrl} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-gold-400 transition-colors">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+              )}
+              {config.facebookUrl && (
+                <a href={config.facebookUrl} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-gold-400 transition-colors">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+              )}
+              {config.youtubeUrl && (
+                <a href={config.youtubeUrl} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-gold-400 transition-colors">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                </a>
+              )}
+            </div>
           </div>
 
           {/* Institutional Links */}
@@ -158,25 +172,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
 
           {/* Contact Col */}
-          <div className="space-y-4 text-xs">
-            <h4 className="text-xs font-semibold text-white tracking-widest uppercase mb-4">
-              Atendimento Especial
-            </h4>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-2">
-                <Phone size={14} className="text-gold-500" />
-                <span>0800 500 7000 (Concierge)</span>
+          <div>
+            <h4 className="text-white font-semibold tracking-widest text-sm uppercase mb-6">Contato</h4>
+            <ul className="space-y-4 text-sm font-light">
+              <li className="flex items-start text-gray-400">
+                <MapPin size={16} className="text-gold-400 mr-3 mt-1 flex-shrink-0" />
+                <span>{config.storeAddress}</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Mail size={14} className="text-gold-500" />
-                <span>concierge@amour.com</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <MapPin size={14} className="text-gold-500 shrink-0 mt-0.5" />
-                <span className="text-gray-500">
-                  Alameda Lorena, 1500 - Jardins<br />
-                  São Paulo - SP, CEP 01424-002
-                </span>
+              <li className="flex items-center text-gray-400">
+                <Mail size={16} className="text-gold-400 mr-3" />
+                <span>{config.supportEmail}</span>
               </li>
             </ul>
           </div>
@@ -184,10 +189,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         {/* Footer Bottom - Badges & Copyright */}
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] text-gray-500">
-          <div>
-            <p>© {new Date().getFullYear()} Amour & Co. Presentes S.A. CNPJ 12.345.678/0001-90. Todos os direitos reservados.</p>
-          </div>
+        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs font-light text-gray-500 gap-6">
+          <p>{config.footerText}</p>
           
           {/* Trust Seals */}
           <div className="flex flex-wrap items-center gap-4">

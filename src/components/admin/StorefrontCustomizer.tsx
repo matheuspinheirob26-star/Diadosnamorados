@@ -1,0 +1,516 @@
+import React, { useState, useEffect } from 'react';
+import { useStorefront } from '../../context/StorefrontContext';
+import { StorefrontConfig, DEFAULT_STOREFRONT_CONFIG } from '../../types/storefront';
+import { Save, RefreshCcw, Image as ImageIcon, Link as LinkIcon, Type, Palette, MessageCircle, BarChart } from 'lucide-react';
+
+export const StorefrontCustomizer: React.FC = () => {
+  const { config, setPreviewConfig, updateConfig } = useStorefront();
+  const [localConfig, setLocalConfig] = useState<StorefrontConfig>(config);
+  const [isSaving, setIsSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState<'colors' | 'identity' | 'hero' | 'social' | 'tracking'>('colors');
+
+  // Mantém localConfig atualizado se a config global mudar por fora
+  useEffect(() => {
+    if (config) {
+      setLocalConfig(config);
+    }
+  }, [config]);
+
+  // Atualiza o preview global a cada digitação
+  const handleChange = (field: keyof StorefrontConfig, value: string | number) => {
+    const updated = { ...localConfig, [field]: value };
+    setLocalConfig(updated);
+    setPreviewConfig(updated);
+  };
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    await updateConfig(localConfig);
+    setPreviewConfig(null); // Limpa o preview pois já salvou
+    setIsSaving(false);
+    alert('Configurações da vitrine salvas com sucesso!');
+  };
+
+  const handleRestore = () => {
+    if (window.confirm('Tem certeza que deseja restaurar as configurações originais? Isso não pode ser desfeito.')) {
+      setLocalConfig(DEFAULT_STOREFRONT_CONFIG);
+      setPreviewConfig(DEFAULT_STOREFRONT_CONFIG);
+    }
+  };
+
+  return (
+    <div className="h-full flex flex-col lg:flex-row gap-6">
+      {/* LEFT: FORM (Customizer) */}
+      <div className="flex-1 flex flex-col space-y-4 max-w-2xl">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-serif text-white tracking-wider uppercase mb-1">Personalização</h2>
+            <p className="text-gray-400 text-xs">Altere a vitrine em tempo real.</p>
+          </div>
+          <div className="flex gap-2">
+            <button onClick={handleRestore} className="p-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-gray-300 transition" title="Restaurar Original">
+              <RefreshCcw size={16} />
+            </button>
+            <button onClick={handleSave} disabled={isSaving} className="flex items-center gap-2 px-4 py-2 bg-gradient-gold hover:opacity-90 text-luxury-black text-sm font-bold uppercase rounded-lg transition disabled:opacity-50">
+              <Save size={16} />
+              {isSaving ? 'Salvando...' : 'Salvar'}
+            </button>
+          </div>
+        </div>
+
+        <div className="flex gap-2 border-b border-white/5 pb-2 overflow-x-auto no-scrollbar">
+          {[
+            { id: 'colors', label: 'Cores', icon: Palette },
+            { id: 'identity', label: 'Textos', icon: Type },
+            { id: 'hero', label: 'Banners', icon: ImageIcon },
+            { id: 'social', label: 'Rodapé', icon: MessageCircle },
+            { id: 'tracking', label: 'Pixels', icon: BarChart },
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-t-lg text-xs transition whitespace-nowrap ${
+                activeTab === tab.id 
+                  ? 'bg-white/10 text-gold-400 font-bold border-b-2 border-gold-400' 
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <tab.icon size={14} />
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="bg-luxury-gray border border-white/5 rounded-xl p-4 flex-1 overflow-y-auto custom-scrollbar">
+        
+        {/* TAB CORES */}
+        {activeTab === 'colors' && (
+          <div className="space-y-6 max-w-2xl">
+            <h3 className="text-lg font-serif text-white border-b border-white/10 pb-2">Paleta de Cores da Marca</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Cor Primária (Destaques e Botões)</label>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="color"
+                    value={localConfig.primaryColor}
+                    onChange={e => handleChange('primaryColor', e.target.value)}
+                    className="w-12 h-12 rounded cursor-pointer bg-transparent border-0 p-0"
+                  />
+                  <input 
+                    type="text" 
+                    value={localConfig.primaryColor}
+                    onChange={e => handleChange('primaryColor', e.target.value)}
+                    className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Cor Secundária (Acentos)</label>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="color"
+                    value={localConfig.secondaryColor}
+                    onChange={e => handleChange('secondaryColor', e.target.value)}
+                    className="w-12 h-12 rounded cursor-pointer bg-transparent border-0 p-0"
+                  />
+                  <input 
+                    type="text" 
+                    value={localConfig.secondaryColor}
+                    onChange={e => handleChange('secondaryColor', e.target.value)}
+                    className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB IDENTIDADE */}
+        {activeTab === 'identity' && (
+          <div className="space-y-8 max-w-3xl">
+            <div className="space-y-4">
+              <h3 className="text-lg font-serif text-white border-b border-white/10 pb-2">Informações Básicas</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Nome da Loja</label>
+                  <input
+                    type="text"
+                    value={localConfig.storeName}
+                    onChange={e => handleChange('storeName', e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Slogan</label>
+                  <input
+                    type="text"
+                    value={localConfig.slogan}
+                    onChange={e => handleChange('slogan', e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-lg font-serif text-white border-b border-white/10 pb-2">Logos (URLs)</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Logo Modo Claro</label>
+                  <input
+                    type="text"
+                    placeholder="https://..."
+                    value={localConfig.logoLight}
+                    onChange={e => handleChange('logoLight', e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Logo Modo Escuro</label>
+                  <input
+                    type="text"
+                    placeholder="https://..."
+                    value={localConfig.logoDark}
+                    onChange={e => handleChange('logoDark', e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Favicon</label>
+                  <input
+                    type="text"
+                    placeholder="https://..."
+                    value={localConfig.favicon}
+                    onChange={e => handleChange('favicon', e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-lg font-serif text-white border-b border-white/10 pb-2">Barra de Frete Grátis</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Texto da Barra</label>
+                  <input
+                    type="text"
+                    value={localConfig.shippingBarText}
+                    onChange={e => handleChange('shippingBarText', e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Valor Mín. Frete Grátis (R$)</label>
+                  <input
+                    type="number"
+                    value={localConfig.minFreeShippingValue}
+                    onChange={e => handleChange('minFreeShippingValue', parseFloat(e.target.value) || 0)}
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-lg font-serif text-white border-b border-white/10 pb-2">Pop-up Inicial</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Texto do Pop-up</label>
+                  <input
+                    type="text"
+                    value={localConfig.popupText}
+                    onChange={e => handleChange('popupText', e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Cupom Exibido</label>
+                  <input
+                    type="text"
+                    value={localConfig.popupCoupon}
+                    onChange={e => handleChange('popupCoupon', e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB HERO BANNER */}
+        {activeTab === 'hero' && (
+          <div className="space-y-8 max-w-3xl">
+            <div className="bg-gold-500/10 border border-gold-500/20 p-4 rounded-lg">
+              <p className="text-xs text-gold-400">
+                O Hero Banner padrão da loja (quando não houver uma campanha sazonal ativa sobrepondo).
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Banner Desktop URL</label>
+                <input
+                  type="text"
+                  placeholder="https://..."
+                  value={localConfig.heroBannerDesktop}
+                  onChange={e => handleChange('heroBannerDesktop', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Banner Mobile URL</label>
+                <input
+                  type="text"
+                  placeholder="https://..."
+                  value={localConfig.heroBannerMobile}
+                  onChange={e => handleChange('heroBannerMobile', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Título Principal</label>
+                <input
+                  type="text"
+                  value={localConfig.heroTitle}
+                  onChange={e => handleChange('heroTitle', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Subtítulo</label>
+                <input
+                  type="text"
+                  value={localConfig.heroSubtitle}
+                  onChange={e => handleChange('heroSubtitle', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Texto do Botão</label>
+                <input
+                  type="text"
+                  value={localConfig.heroButtonText}
+                  onChange={e => handleChange('heroButtonText', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Link do Botão</label>
+                <input
+                  type="text"
+                  placeholder="Ex: catalog ou product-123"
+                  value={localConfig.heroButtonLink}
+                  onChange={e => handleChange('heroButtonLink', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB CONTATOS E SOCIAL */}
+        {activeTab === 'social' && (
+          <div className="space-y-8 max-w-3xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block flex items-center gap-1"><MessageCircle size={10}/> WhatsApp Principal</label>
+                <input
+                  type="text"
+                  value={localConfig.whatsapp}
+                  onChange={e => handleChange('whatsapp', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">E-mail de Suporte</label>
+                <input
+                  type="email"
+                  value={localConfig.supportEmail}
+                  onChange={e => handleChange('supportEmail', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Instagram URL</label>
+                <input
+                  type="text"
+                  value={localConfig.instagramUrl}
+                  onChange={e => handleChange('instagramUrl', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Facebook URL</label>
+                <input
+                  type="text"
+                  value={localConfig.facebookUrl}
+                  onChange={e => handleChange('facebookUrl', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">TikTok URL</label>
+                <input
+                  type="text"
+                  value={localConfig.tiktokUrl}
+                  onChange={e => handleChange('tiktokUrl', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">YouTube URL</label>
+                <input
+                  type="text"
+                  value={localConfig.youtubeUrl}
+                  onChange={e => handleChange('youtubeUrl', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1 mt-6">
+              <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Endereço da Loja (Rodapé)</label>
+              <textarea
+                value={localConfig.storeAddress}
+                onChange={e => handleChange('storeAddress', e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white min-h-[60px]"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Texto de Copyright (Rodapé)</label>
+              <textarea
+                value={localConfig.footerText}
+                onChange={e => handleChange('footerText', e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white min-h-[60px]"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* TAB TRACKING */}
+        {activeTab === 'tracking' && (
+          <div className="space-y-4">
+            <h3 className="text-sm font-serif text-white border-b border-white/10 pb-2">Pixels e Analytics</h3>
+            <div className="bg-white/5 border border-white/10 p-3 rounded-lg mb-4">
+              <p className="text-[10px] text-gray-300">
+                Cole aqui os IDs dos seus pixels (ex: <span className="text-gold-400 font-mono">123456789</span> para Meta).
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-4">
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Meta Pixel ID</label>
+                <input
+                  type="text"
+                  placeholder="Ex: 123456789012345"
+                  value={localConfig.metaPixel}
+                  onChange={e => handleChange('metaPixel', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Google Analytics (G-TAG)</label>
+                <input
+                  type="text"
+                  placeholder="Ex: G-XXXXXXXXXX"
+                  value={localConfig.googleAnalytics}
+                  onChange={e => handleChange('googleAnalytics', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Google Tag Manager (GTM)</label>
+                <input
+                  type="text"
+                  placeholder="Ex: GTM-XXXXXX"
+                  value={localConfig.googleTagManager}
+                  onChange={e => handleChange('googleTagManager', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">TikTok Pixel ID</label>
+                <input
+                  type="text"
+                  placeholder="Ex: C1234567890"
+                  value={localConfig.tiktokPixel}
+                  onChange={e => handleChange('tiktokPixel', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+      </div>
+      </div>
+
+      {/* RIGHT: LIVE PREVIEW */}
+      <div className="hidden lg:flex flex-1 flex-col space-y-2 relative">
+        <h3 className="text-xs uppercase tracking-widest text-gray-500 font-bold">Preview ao Vivo</h3>
+        
+        {/* Container do Mock - Escalado para caber na tela */}
+        <div className="flex-1 bg-black rounded-xl border border-white/10 overflow-hidden relative flex flex-col items-center justify-start p-4 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAHElEQVQYV2NkYGAwYcADIwMkgIETUIIhhV0YAAAAASUVORK5CYII=')] bg-repeat">
+          
+          <div className="w-[1024px] h-[768px] origin-top scale-[0.45] xl:scale-[0.55] 2xl:scale-[0.65] bg-luxury-black border border-white/10 shadow-2xl rounded-sm overflow-hidden flex flex-col pointer-events-none select-none transition-all duration-300">
+            
+            {/* Header Mock */}
+            <div className="border-b border-white/5 bg-luxury-gray/90 backdrop-blur-md">
+              <div className="bg-gradient-gold text-luxury-black text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase">
+                {localConfig.shippingBarText} (ACIMA DE R$ {localConfig.minFreeShippingValue})
+              </div>
+              <div className="h-20 px-8 flex items-center justify-between">
+                <div className="text-left">
+                  {localConfig.logoLight ? (
+                    <img src={localConfig.logoLight} alt="Logo" className="h-8 object-contain" />
+                  ) : (
+                    <>
+                      <span className="font-serif text-2xl tracking-widest font-light text-gradient-gold uppercase block">
+                        {localConfig.storeName}
+                      </span>
+                      <span className="text-[9px] tracking-[0.3em] font-medium text-gray-400 uppercase -mt-1 block">
+                        {localConfig.slogan}
+                      </span>
+                    </>
+                  )}
+                </div>
+                <div className="flex space-x-6">
+                  <div className="text-xs font-semibold tracking-widest uppercase text-gold-400 border-b border-gold-400/50 pb-1">INÍCIO</div>
+                  <div className="text-xs font-semibold tracking-widest uppercase text-gray-300">PRESENTES</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Hero Mock */}
+            <div className="flex-1 relative flex items-center justify-center p-8 overflow-hidden">
+              {localConfig.heroBannerDesktop && (
+                <div className="absolute inset-0 bg-cover bg-center opacity-40" style={{ backgroundImage: `url(${localConfig.heroBannerDesktop})` }} />
+              )}
+              <div className="absolute inset-0 bg-gradient-luxury opacity-80" />
+              
+              <div className="relative z-10 text-center space-y-6 max-w-2xl">
+                <h1 className="font-serif text-5xl font-extralight tracking-tight text-white">
+                  {localConfig.heroTitle}
+                </h1>
+                <p className="text-gray-300 text-lg font-light">
+                  {localConfig.heroSubtitle}
+                </p>
+                <button className="bg-gradient-gold text-luxury-black px-8 py-3 rounded-full font-bold tracking-widest uppercase text-sm mt-4">
+                  {localConfig.heroButtonText}
+                </button>
+              </div>
+            </div>
+
+            {/* Footer Mock */}
+            <div className="bg-luxury-gray/50 border-t border-white/5 p-6 flex flex-col items-center justify-center text-center space-y-2">
+               <div className="text-gold-400 font-serif text-xl tracking-widest">{localConfig.storeName}</div>
+               <p className="text-xs text-gray-500">{localConfig.storeAddress}</p>
+               <p className="text-[10px] text-gray-600">{localConfig.footerText}</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
