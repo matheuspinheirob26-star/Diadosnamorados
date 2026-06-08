@@ -406,3 +406,79 @@ CREATE POLICY "payment_attempts_public_insert" ON payment_attempts FOR INSERT WI
 CREATE POLICY "payment_attempts_public_read" ON payment_attempts FOR SELECT USING (true);
 CREATE POLICY "webhook_events_service_all" ON webhook_events FOR ALL USING (true);
 
+
+-- 11. TABELA DE CONFIGURAÇÕES DE IA (AI SETTINGS)
+CREATE TABLE IF NOT EXISTS ai_settings (
+    id INT PRIMARY KEY DEFAULT 1,
+    gemini_api_key TEXT,
+    ai_name TEXT DEFAULT 'Concierge',
+    ai_greeting TEXT DEFAULT 'Olá! Sou seu Concierge de luxo. Como posso ajudar você a encontrar o presente perfeito hoje?',
+    ai_prompt TEXT,
+    human_whatsapp TEXT,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- RLS para ai_settings
+ALTER TABLE ai_settings ENABLE ROW LEVEL SECURITY;
+
+-- Permitir leitura apenas para administradores (usuários autenticados no Supabase)
+CREATE POLICY "Admin Read AI Settings"
+ON ai_settings FOR SELECT
+TO authenticated
+USING (true);
+
+-- Permitir escrita apenas para administradores
+CREATE POLICY "Admin Update AI Settings"
+ON ai_settings FOR UPDATE
+TO authenticated
+USING (true);
+
+CREATE POLICY "Admin Insert AI Settings"
+ON ai_settings FOR INSERT
+TO authenticated
+WITH CHECK (true);
+
+-- Inserir configuração inicial
+INSERT INTO ai_settings (id, ai_prompt) 
+VALUES (
+  1, 
+  'Você é um concierge de luxo da loja Amour & Co. Seu objetivo é ajudar cavalheiros a escolherem o presente perfeito para suas parceiras. Mantenha um tom elegante, educado e focado em converter a venda oferecendo os produtos do catálogo.'
+) ON CONFLICT (id) DO NOTHING;
+
+-- 12. TABELA DE LEADS DO CHAT (CHAT LEADS)
+CREATE TABLE IF NOT EXISTS chat_leads (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT,
+    phone TEXT,
+    email TEXT,
+    chat_history JSONB DEFAULT '[]'::jsonb,
+    status TEXT DEFAULT 'active',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- RLS para chat_leads
+ALTER TABLE chat_leads ENABLE ROW LEVEL SECURITY;
+
+-- Permitir inserção anônima (para o front-end criar o lead)
+CREATE POLICY "Public Insert Chat Leads"
+ON chat_leads FOR INSERT
+TO public
+WITH CHECK (true);
+
+-- Permitir leitura/atualização do próprio lead pelo ID (usado no cookie do navegador)
+CREATE POLICY "Public Update Own Lead"
+ON chat_leads FOR UPDATE
+TO public
+USING (true);
+
+CREATE POLICY "Public Read Own Lead"
+ON chat_leads FOR SELECT
+TO public
+USING (true);
+
+-- Permitir leitura total para admins
+CREATE POLICY "Admin Read All Chat Leads"
+ON chat_leads FOR SELECT
+TO authenticated
+USING (true);

@@ -13,6 +13,7 @@ import { Institutional } from './pages/Institutional';
 import { Admin } from './pages/Admin';
 import { Login } from './pages/Login';
 import { AdminLogin } from './pages/AdminLogin';
+import { ConciergeChatWidget } from './components/chat/ConciergeChatWidget';
 import { CartDrawer } from './components/cart/CartDrawer';
 import { NotificationPopup } from './components/ui/NotificationPopup';
 import { NewsletterPopup } from './components/ui/NewsletterPopup';
@@ -199,22 +200,8 @@ const AppContent = () => {
         <>
           <NotificationPopup />
           <NewsletterPopup />
+          <ConciergeChatWidget />
         </>
-      )}
-
-      {/* WhatsApp Floating Chat Bubble - oculto no admin */}
-      {currentPage !== 'admin' && currentPage !== 'admin-login' && config.whatsapp && (
-        <button
-          onClick={() => {
-            const text = "Olá! Gostaria de falar com o Concierge sobre presentes de luxo.";
-            const num = config.whatsapp.replace(/\D/g, '');
-            window.open(`https://wa.me/${num}?text=${encodeURIComponent(text)}`, '_blank');
-          }}
-          className="fixed bottom-6 right-6 z-40 bg-emerald-500 hover:bg-emerald-600 text-white p-3.5 rounded-full shadow-2xl hover:scale-110 transition duration-300 flex items-center justify-center border border-emerald-400/25 cursor-pointer"
-          title="Concierge WhatsApp"
-        >
-          <MessageCircle size={22} className="fill-white text-emerald-500" />
-        </button>
       )}
 
     </div>

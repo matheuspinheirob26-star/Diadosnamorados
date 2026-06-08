@@ -31,6 +31,7 @@ import { ProductsManager } from '../components/admin/ProductsManager';
 import { PaymentsManager } from '../components/admin/PaymentsManager';
 import { StorefrontCustomizer } from '../components/admin/StorefrontCustomizer';
 import { SystemLogsTab } from '../components/admin/SystemLogsTab';
+import { AiConciergeTab } from '../components/admin/AiConciergeTab';
 import { useCampaign } from '../context/CampaignContext';
 import { useAuth } from '../context/AuthContext';
 import { LogService } from '../lib/LogService';
@@ -944,6 +945,13 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
       {/* 11. SYSTEM LOGS TAB */}
       {activeTab === 'system_logs' && <SystemLogsTab />}
+
+      {/* AI CONCIERGE TAB */}
+      {activeTab === 'ai_concierge' && (
+        <div className="animate-fadeIn">
+          <AiConciergeTab />
+        </div>
+      )}
 
     </AdminLayout>
   );

@@ -31,6 +31,7 @@ export type AdminTab =
   | 'payments'
   | 'storefront'
   | 'system_logs'
+  | 'ai_concierge'
   | 'settings';
 
 interface AdminSidebarProps {
@@ -58,8 +59,9 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     { id: 'reviews', label: 'Avaliações', icon: MessageSquare },
     { id: 'coupons', label: 'Cupons', icon: Tag },
     { id: 'campaigns', label: 'Campanhas', icon: Calendar },
-    { id: 'storefront', label: 'Personalização', icon: Palette },
-    { id: 'payments', label: 'Pagamentos', icon: CreditCard },
+    { id: 'payments', label: 'Pagamentos (Gateway)', icon: CreditCard },
+    { id: 'storefront', label: 'Vitrine & Identidade', icon: Palette },
+    { id: 'ai_concierge', label: 'Concierge IA', icon: Sparkles },
     { id: 'system_logs', label: 'Logs do Sistema', icon: Shield },
     { id: 'settings', label: 'Configurações', icon: Settings },
   ] as const;
