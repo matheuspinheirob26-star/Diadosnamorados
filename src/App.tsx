@@ -17,14 +17,15 @@ import { NewsletterPopup } from './components/ui/NewsletterPopup';
 import { captureUTMParameters, tracking } from './lib/tracking';
 import { MessageCircle } from 'lucide-react';
 const getPageFromPath = (path: string): string => {
-  const p = path.toLowerCase();
+  const cleanPath = path.endsWith('/') && path.length > 1 ? path.slice(0, -1) : path;
+  const p = cleanPath.toLowerCase();
   if (p === '/catalog') return 'catalog';
   if (p === '/checkout') return 'checkout';
   if (p === '/admin') return 'admin';
   if (p === '/login') return 'login';
   if (p === '/institutional') return 'institutional';
   if (p.startsWith('/product/')) {
-    const productId = path.split('/product/')[1];
+    const productId = cleanPath.split('/product/')[1];
     return `product-${productId}`;
   }
   return 'home';
