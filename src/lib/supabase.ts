@@ -569,7 +569,7 @@ export const api = {
   updateProduct: async (product: Product): Promise<Product> => {
     if (supabase) {
       try {
-        const { error } = await supabase.from('products').update({
+        const { error, data } = await supabase.from('products').update({
           name: product.name,
           description: product.description,
           price: product.price,
