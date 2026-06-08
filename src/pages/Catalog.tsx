@@ -43,7 +43,11 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
       
       setLoading(false);
     };
+
     fetchProducts();
+
+    window.addEventListener('productsUpdated', fetchProducts);
+    return () => window.removeEventListener('productsUpdated', fetchProducts);
   }, []);
 
   // Sincronizar parâmetros de filtro vindos da Home ou do Header

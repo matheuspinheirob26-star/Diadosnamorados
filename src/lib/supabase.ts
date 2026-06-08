@@ -553,6 +553,7 @@ export const api = {
     const products = getStorageItem<Product[]>('amr_products', INITIAL_PRODUCTS);
     products.push(product);
     setStorageItem('amr_products', products);
+    window.dispatchEvent(new Event('productsUpdated'));
     return product;
   },
 
@@ -599,6 +600,7 @@ export const api = {
     if (idx !== -1) {
       products[idx] = product;
       setStorageItem('amr_products', products);
+      window.dispatchEvent(new Event('productsUpdated'));
     }
     return product;
   },

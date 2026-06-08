@@ -41,7 +41,11 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
       const rest = published.filter(p => p.id !== main.id).slice(0, 4);
       setFeaturedProducts(rest);
     };
+
     loadProducts();
+
+    window.addEventListener('productsUpdated', loadProducts);
+    return () => window.removeEventListener('productsUpdated', loadProducts);
   }, [currentCampaign]);
 
   const handleCategoryClick = (categoryName: string, options?: { gender?: string; tag?: string }) => {

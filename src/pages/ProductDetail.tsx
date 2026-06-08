@@ -76,7 +76,11 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
       setLoading(false);
       window.scrollTo(0, 0);
     };
+
     loadProductData();
+
+    window.addEventListener('productsUpdated', loadProductData);
+    return () => window.removeEventListener('productsUpdated', loadProductData);
   }, [productId]);
 
   // Calcular preço efetivo com acréscimos de variações
