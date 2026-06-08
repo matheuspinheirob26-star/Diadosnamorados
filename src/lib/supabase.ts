@@ -598,8 +598,12 @@ export const api = {
           canonical_url: product.canonicalUrl || '',
           keyword: product.keyword || '',
           indexing: product.indexing || 'index'
-        }).eq('id', product.id);
+        }).eq('id', product.id).select();
+        
         if (error) throw error;
+        if (!data || data.length === 0) {
+          throw new Error('Nenhuma linha foi atualizada no Supabase. O produto não foi encontrado ou o RLS (Segurança) bloqueou a edição.');
+        }
       } catch (err: any) {
         console.error('Supabase updateProduct falhou:', err);
         throw err; // Stop and report to UI
