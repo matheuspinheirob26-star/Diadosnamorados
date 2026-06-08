@@ -421,7 +421,9 @@ CREATE TABLE IF NOT EXISTS ai_settings (
 -- RLS para ai_settings
 ALTER TABLE ai_settings ENABLE ROW LEVEL SECURITY;
 
--- Permitir leitura apenas para administradores (usuários autenticados no Supabase)
+-- Permitir leitura de dados públicos apenas omitindo a API Key
+-- Não é trivial com RLS, então vamos remover leitura pública total.
+-- O Front-end buscará esses dados via Edge Function.
 CREATE POLICY "Admin Read AI Settings"
 ON ai_settings FOR SELECT
 TO authenticated
@@ -460,25 +462,17 @@ CREATE TABLE IF NOT EXISTS chat_leads (
 -- RLS para chat_leads
 ALTER TABLE chat_leads ENABLE ROW LEVEL SECURITY;
 
--- Permitir inserção anônima (para o front-end criar o lead)
+-- Permitir inserção anônima (para o front-end criar o lead inicial)
 CREATE POLICY "Public Insert Chat Leads"
 ON chat_leads FOR INSERT
 TO public
 WITH CHECK (true);
 
--- Permitir leitura/atualização do próprio lead pelo ID (usado no cookie do navegador)
-CREATE POLICY "Public Update Own Lead"
-ON chat_leads FOR UPDATE
-TO public
-USING (true);
-
-CREATE POLICY "Public Read Own Lead"
-ON chat_leads FOR SELECT
-TO public
-USING (true);
-
--- Permitir leitura total para admins
+-- Permitir leitura total para admins (Painel Admin)
 CREATE POLICY "Admin Read All Chat Leads"
 ON chat_leads FOR SELECT
 TO authenticated
 USING (true);
+
+-- Atualização e leitura para o público foram removidas por segurança.
+-- O widget público fará todas as operações de SELECT e UPDATE via Supabase Edge Function!

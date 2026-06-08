@@ -35,15 +35,18 @@ export const ConciergeChatWidget: React.FC = () => {
   // Initialize and load AI settings
   useEffect(() => {
     const fetchConfig = async () => {
-      if (supabase) {
-        const { data } = await supabase.from('ai_settings').select('ai_name, ai_greeting, human_whatsapp').eq('id', 1).single();
-        if (data) {
+      try {
+        if (!supabase) return;
+        const response = await supabase.functions.invoke('chat-concierge', { body: { action: 'init' } });
+        if (response.data && response.data.config) {
           setAiConfig({
-            ai_name: data.ai_name || 'Concierge',
-            ai_greeting: data.ai_greeting || 'Olá! Sou seu Concierge de luxo.',
-            human_whatsapp: data.human_whatsapp || config.whatsapp
+            ai_name: response.data.config.ai_name || 'Concierge',
+            ai_greeting: response.data.config.ai_greeting || 'Olá! Sou seu Concierge de luxo.',
+            human_whatsapp: response.data.config.human_whatsapp || config.whatsapp
           });
         }
+      } catch (err) {
+        console.error("Erro ao obter configurações iniciais:", err);
       }
     };
     fetchConfig();
@@ -60,11 +63,14 @@ export const ConciergeChatWidget: React.FC = () => {
   }, [config.whatsapp]);
 
   const loadHistory = async (id: string) => {
-    if (supabase) {
-      const { data } = await supabase.from('chat_leads').select('chat_history').eq('id', id).single();
-      if (data && data.chat_history) {
-        setMessages(data.chat_history);
+    try {
+      if (!supabase) return;
+      const response = await supabase.functions.invoke('chat-concierge', { body: { action: 'get_history', leadId: id } });
+      if (response.data && response.data.history) {
+        setMessages(response.data.history);
       }
+    } catch (err) {
+      console.error("Erro ao carregar histórico:", err);
     }
   };
 
@@ -127,9 +133,12 @@ export const ConciergeChatWidget: React.FC = () => {
       
       const response = await supabase.functions.invoke('chat-concierge', {
         body: {
+          action: 'message',
           leadId,
           message: userMessage.content,
-          chatHistory: messages
+          chatHistory: messages,
+          leadName,
+          leadPhone
         }
       });
 
