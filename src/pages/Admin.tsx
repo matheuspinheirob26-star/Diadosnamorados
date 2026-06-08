@@ -33,7 +33,7 @@ import { useAuth } from '../context/AuthContext';
 
 export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
-  const { logout } = useAuth();
+  const { adminLogout } = useAuth();
   const { currentCampaign, setCampaign, allCampaigns } = useCampaign();
 
   // Database States
@@ -175,8 +175,8 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
   };
 
   const handleLogout = () => {
-    logout();
-    onNavigate('home');
+    adminLogout();
+    onNavigate('admin-login');
   };
 
   return (

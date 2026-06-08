@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CampaignProvider } from './context/CampaignContext';
 import { CartProvider } from './context/CartContext';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { Home } from './pages/Home';
@@ -11,6 +11,7 @@ import { Checkout } from './pages/Checkout';
 import { Institutional } from './pages/Institutional';
 import { Admin } from './pages/Admin';
 import { Login } from './pages/Login';
+import { AdminLogin } from './pages/AdminLogin';
 import { CartDrawer } from './components/cart/CartDrawer';
 import { NotificationPopup } from './components/ui/NotificationPopup';
 import { NewsletterPopup } from './components/ui/NewsletterPopup';
@@ -28,6 +29,7 @@ const getPageFromPath = (path: string): string => {
   if (p === '/catalog') return 'catalog';
   if (p === '/checkout') return 'checkout';
   if (p === '/admin') return 'admin';
+  if (p === '/admin/login') return 'admin-login';
   if (p === '/login') return 'login';
   if (p === '/institutional') return 'institutional';
   if (p.startsWith('/product/')) {
@@ -39,7 +41,6 @@ const getPageFromPath = (path: string): string => {
 
 const getPathFromPage = (page: string): string => {
   const isVercel = typeof window !== 'undefined' && window.location.hostname.includes('vercel.app');
-  // Se estamos na Vercel ou já usando hash, manter hash para rotas seguras contra 404
   const useHash = isVercel || (typeof window !== 'undefined' && !!window.location.hash);
   const prefix = useHash ? '#' : '';
 
@@ -47,6 +48,7 @@ const getPathFromPage = (page: string): string => {
   if (page === 'catalog') return prefix + '/catalog';
   if (page === 'checkout') return prefix + '/checkout';
   if (page === 'admin') return prefix + '/admin';
+  if (page === 'admin-login') return prefix + '/admin/login';
   if (page === 'login') return prefix + '/login';
   if (page === 'institutional') return prefix + '/institutional';
   if (page.startsWith('product-')) {
@@ -57,6 +59,7 @@ const getPathFromPage = (page: string): string => {
 };
 
 function AppContent() {
+  const { isAdminAuthenticated } = useAuth();
   const [currentPage, setCurrentPage] = useState(() => {
     if (typeof window !== 'undefined') {
       return getPageFromPath(window.location.pathname);
@@ -125,8 +128,8 @@ function AppContent() {
   return (
     <div className="min-h-screen flex flex-col justify-between text-gray-300 antialiased bg-luxury-black bg-gradient-luxury transition-all duration-500">
       
-      {/* Sticky Header */}
-      {currentPage !== 'admin' && (
+      {/* Sticky Header - oculto no admin e admin-login */}
+      {currentPage !== 'admin' && currentPage !== 'admin-login' && (
         <Header
           onCartOpen={() => setCartOpen(true)}
           onSearch={handleSearch}
@@ -164,16 +167,21 @@ function AppContent() {
         {currentPage === 'login' && (
           <Login onNavigate={handleNavigate} />
         )}
+        {currentPage === 'admin-login' && (
+          <AdminLogin onNavigate={handleNavigate} />
+        )}
         {currentPage === 'institutional' && (
           <Institutional defaultTab={institutionalTab} />
         )}
         {currentPage === 'admin' && (
-          <Admin onNavigate={handleNavigate} />
+          isAdminAuthenticated
+            ? <Admin onNavigate={handleNavigate} />
+            : <AdminLogin onNavigate={handleNavigate} />
         )}
       </main>
 
-      {/* Footer */}
-      {currentPage !== 'admin' && <Footer onNavigate={handleNavigate} />}
+      {/* Footer - oculto no admin e admin-login */}
+      {currentPage !== 'admin' && currentPage !== 'admin-login' && <Footer onNavigate={handleNavigate} />}
 
       {/* Slide-over Cart Drawer */}
       <CartDrawer
@@ -182,25 +190,32 @@ function AppContent() {
         onCheckout={() => handleNavigate('checkout')}
       />
 
-      {/* Social Proof & Conversion Popups */}
-      <NotificationPopup />
-      <NewsletterPopup />
+      {/* Social Proof & Conversion Popups - ocultos no admin */}
+      {currentPage !== 'admin' && currentPage !== 'admin-login' && (
+        <>
+          <NotificationPopup />
+          <NewsletterPopup />
+        </>
+      )}
 
-      {/* WhatsApp Floating Chat Bubble */}
-      <button
-        onClick={() => {
-          const text = "Olá! Gostaria de falar com o Concierge Amour & Co. sobre presentes de luxo.";
-          window.open(`https://wa.me/5511999999999?text=${encodeURIComponent(text)}`, '_blank');
-        }}
-        className="fixed bottom-6 right-6 z-40 bg-emerald-500 hover:bg-emerald-600 text-white p-3.5 rounded-full shadow-2xl hover:scale-110 transition duration-300 flex items-center justify-center border border-emerald-400/25 cursor-pointer"
-        title="Concierge WhatsApp"
-      >
-        <MessageCircle size={22} className="fill-white text-emerald-500" />
-      </button>
+      {/* WhatsApp Floating Chat Bubble - oculto no admin */}
+      {currentPage !== 'admin' && currentPage !== 'admin-login' && (
+        <button
+          onClick={() => {
+            const text = "Olá! Gostaria de falar com o Concierge Amour & Co. sobre presentes de luxo.";
+            window.open(`https://wa.me/5511999999999?text=${encodeURIComponent(text)}`, '_blank');
+          }}
+          className="fixed bottom-6 right-6 z-40 bg-emerald-500 hover:bg-emerald-600 text-white p-3.5 rounded-full shadow-2xl hover:scale-110 transition duration-300 flex items-center justify-center border border-emerald-400/25 cursor-pointer"
+          title="Concierge WhatsApp"
+        >
+          <MessageCircle size={22} className="fill-white text-emerald-500" />
+        </button>
+      )}
 
     </div>
   );
 }
+
 
 function App() {
   return (

@@ -11,9 +11,11 @@ import {
   Settings, 
   LogOut, 
   X, 
-  Sparkles 
+  Sparkles,
+  Shield
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useAuth } from '../../context/AuthContext';
 
 export type AdminTab = 
   | 'dashboard' 
@@ -39,6 +41,9 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
   onCloseMobile, 
   onLogout 
 }) => {
+  const { adminUser } = useAuth();
+  const loginTime = adminUser?.loginAt ? new Date(adminUser.loginAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : '--';
+
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: TrendingUp },
     { id: 'orders', label: 'Pedidos', icon: ShoppingCart },
@@ -118,14 +123,15 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
       {/* Footer / Logout */}
       <div className="space-y-4 pt-6 border-t border-white/5">
-        <div className="bg-white/2 border border-white/5 rounded-2xl p-4 text-[10px] text-gray-500 space-y-1 relative overflow-hidden">
+        <div className="bg-white/2 border border-white/5 rounded-2xl p-4 text-[10px] text-gray-500 space-y-1.5 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-16 h-16 rounded-full bg-gold-600/5 blur-[20px] pointer-events-none" />
-          <div className="flex items-center gap-1.5 text-gold-400 font-bold uppercase tracking-widest text-[9px] mb-1">
-            <Sparkles size={10} />
-            <span>Sistema Seguro</span>
+          <div className="flex items-center gap-1.5 text-gold-400 font-bold uppercase tracking-widest text-[9px] mb-2">
+            <Shield size={10} />
+            <span>Sessão Ativa</span>
           </div>
-          <span className="block font-medium text-gray-400">Logado: admin@amour.com</span>
-          <span className="block text-gray-600">Ambiance: Production</span>
+          <span className="block font-semibold text-gray-300 truncate">{adminUser?.name ?? 'Admin'}</span>
+          <span className="block text-gray-600 truncate">{adminUser?.email ?? 'admin@amour.com'}</span>
+          <span className="block text-gray-700 text-[9px]">Login às {loginTime}</span>
         </div>
 
         <button
