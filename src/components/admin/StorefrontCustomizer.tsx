@@ -1,7 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { useStorefront } from '../../context/StorefrontContext';
 import { StorefrontConfig, DEFAULT_STOREFRONT_CONFIG } from '../../types/storefront';
-import { Save, RefreshCcw, Image as ImageIcon, Link as LinkIcon, Type, Palette, MessageCircle, BarChart, Sparkles } from 'lucide-react';
+import { Save, RefreshCcw, Image as ImageIcon, Link as LinkIcon, Type, Palette, MessageCircle, BarChart, Sparkles, Upload } from 'lucide-react';
+import { api } from '../../lib/supabase';
+
+const ImageUploadInput = ({ label, value, onChange, placeholder }: { label: string, value: string, onChange: (val: string) => void, placeholder?: string }) => {
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || !e.target.files[0]) return;
+    const file = e.target.files[0];
+    setIsUploading(true);
+    try {
+      const url = await api.uploadImage(file, 'product-images', `storefront/${Date.now()}_${file.name}`);
+      if (url) onChange(url);
+    } catch (err) {
+      console.error(err);
+      alert('Erro no upload. Tente novamente ou use uma URL.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-1">
+      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">{label}</label>
+      <div className="flex gap-2">
+        <input
+          type="text"
+          placeholder={placeholder || "https://..."}
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+        />
+        <label className="flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg px-3 cursor-pointer transition" title="Fazer Upload de Imagem">
+          {isUploading ? <span className="w-4 h-4 border-2 border-gold-400 border-t-transparent rounded-full animate-spin"></span> : <Upload size={16} className="text-gray-400 hover:text-gold-400" />}
+          <input type="file" accept="image/*" className="hidden" onChange={handleFile} disabled={isUploading} />
+        </label>
+      </div>
+    </div>
+  );
+};
 
 export const StorefrontCustomizer: React.FC = () => {
   const { config, setPreviewConfig, updateConfig } = useStorefront();
@@ -156,36 +195,21 @@ export const StorefrontCustomizer: React.FC = () => {
             <div className="space-y-4">
               <h3 className="text-lg font-serif text-white border-b border-white/10 pb-2">Logos (URLs)</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Logo Modo Claro</label>
-                  <input
-                    type="text"
-                    placeholder="https://..."
-                    value={localConfig.logoLight}
-                    onChange={e => handleChange('logoLight', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Logo Modo Escuro</label>
-                  <input
-                    type="text"
-                    placeholder="https://..."
-                    value={localConfig.logoDark}
-                    onChange={e => handleChange('logoDark', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Favicon</label>
-                  <input
-                    type="text"
-                    placeholder="https://..."
-                    value={localConfig.favicon}
-                    onChange={e => handleChange('favicon', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
-                  />
-                </div>
+                <ImageUploadInput
+                  label="Logo Modo Claro"
+                  value={localConfig.logoLight}
+                  onChange={v => handleChange('logoLight', v)}
+                />
+                <ImageUploadInput
+                  label="Logo Modo Escuro"
+                  value={localConfig.logoDark}
+                  onChange={v => handleChange('logoDark', v)}
+                />
+                <ImageUploadInput
+                  label="Favicon"
+                  value={localConfig.favicon}
+                  onChange={v => handleChange('favicon', v)}
+                />
               </div>
             </div>
 
@@ -248,26 +272,16 @@ export const StorefrontCustomizer: React.FC = () => {
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Banner Desktop URL</label>
-                <input
-                  type="text"
-                  placeholder="https://..."
-                  value={localConfig.heroBannerDesktop}
-                  onChange={e => handleChange('heroBannerDesktop', e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Banner Mobile URL</label>
-                <input
-                  type="text"
-                  placeholder="https://..."
-                  value={localConfig.heroBannerMobile}
-                  onChange={e => handleChange('heroBannerMobile', e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
-                />
-              </div>
+              <ImageUploadInput
+                label="Banner Desktop URL"
+                value={localConfig.heroBannerDesktop}
+                onChange={v => handleChange('heroBannerDesktop', v)}
+              />
+              <ImageUploadInput
+                label="Banner Mobile URL"
+                value={localConfig.heroBannerMobile}
+                onChange={v => handleChange('heroBannerMobile', v)}
+              />
               <div className="space-y-1">
                 <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Texto da Tag / Badge Exclusivo</label>
                 <input

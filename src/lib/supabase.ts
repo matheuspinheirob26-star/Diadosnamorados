@@ -632,6 +632,33 @@ export const api = {
     });
   },
 
+  uploadImage: async (file: File, bucket: string, pathName: string): Promise<string> => {
+    if (supabase) {
+      try {
+        const { data, error } = await supabase.storage
+          .from(bucket)
+          .upload(pathName, file, { cacheControl: '3600', upsert: true });
+
+        if (error) throw error;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from(bucket)
+          .getPublicUrl(pathName);
+
+        return publicUrl;
+      } catch (err) {
+        console.warn('Supabase Storage upload falhou, usando base64 fallback:', err);
+      }
+    }
+    // Fallback para base64
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  },
+
   deleteProduct: async (id: string): Promise<void> => {
     if (supabase) {
       try {
