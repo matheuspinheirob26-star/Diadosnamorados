@@ -1,7 +1,7 @@
 import React from 'react';
 import { Product } from '../../types';
 import { formatCurrency } from '../../lib/utils';
-import { Star, Eye, ShoppingCart, Flame, Sparkles, AlertTriangle } from 'lucide-react';
+import { Star, Eye, ShoppingCart, Flame, Sparkles, AlertTriangle, Zap } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
 interface ProductCardProps {
@@ -93,6 +93,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
             </span>
           </div>
         )}
+
+        {/* Full delivery badge - bottom left */}
+        <div className="absolute bottom-3 left-3 z-10">
+          <span className="inline-flex items-center gap-1 text-[10px] font-extrabold italic uppercase tracking-wider bg-emerald-500 text-luxury-black px-2.5 py-1 rounded-sm shadow-lg">
+            <Zap size={10} className="fill-luxury-black" /> Entrega FULL
+          </span>
+        </div>
 
         {/* Out of stock overlay */}
         {isOutOfStock && (
