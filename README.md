@@ -45,6 +45,7 @@ O design é inspirado nas identidades estéticas de grandes marcas de luxo globa
   3. *Pagamento:* Pix com QR Code e Copia e Cola, cartão de crédito 10x sem juros
 - **Carrinho Lateral (Cart Drawer):** Suporte a variações combinadas (Kit M + Vanilla e Kit G + Vanilla entram como itens separados), barra de progresso para frete grátis, Order Bump
 - **Popups de Conversão:** Prova social em tempo real e captura de leads com cupom de boas-vindas
+- **Concierge de IA Premium (Gemini):** Chat flutuante integrado ao catálogo em tempo real, que captura leads (nome/telefone) e ajuda os clientes de forma persuasiva, equipado com taxa de limites anti-abuso e fallback para atendimento humano no WhatsApp.
 
 ---
 
@@ -78,6 +79,7 @@ O design é inspirado nas identidades estéticas de grandes marcas de luxo globa
 - **Cupons:** Criação por porcentagem ou valor fixo com validade e mínimo de compra
 - **Campanhas Sazonais:** Alternância do tema visual e curadoria da loja em tempo real
 - **Configurações:** WhatsApp, e-mail, frete grátis, gateways de pagamento
+- **Concierge IA (Gemini):** Configuração segura da Chave de API, nome do bot e prompt do sistema protegido por RLS (Row Level Security).
 
 ---
 
@@ -115,6 +117,12 @@ Para ativar o upload real de imagens no painel admin:
 2. Crie um bucket chamado `product-images`
 3. Marque como **Public**
 4. Configure a política de upload para o role `anon` (ou `authenticated` conforme sua preferência)
+
+### Edge Functions (Supabase)
+
+O serviço do Concierge de IA exige o deploy da nossa Edge Function segura. Se tiver o CLI do Supabase:
+1. Pelo terminal do projeto: `supabase functions deploy chat-concierge --no-verify-jwt`
+2. Configure as variáveis de ambiente necessárias (`SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`) nos *Secrets* da sua Edge Function caso não sejam mapeadas automaticamente.
 
 ---
 
