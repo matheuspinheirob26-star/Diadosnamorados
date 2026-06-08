@@ -23,19 +23,9 @@ import {
 import { Product, ProductVariation } from '../../types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../../lib/supabase';
+import { LogService } from '../../lib/LogService';
 
-// Helper to convert base64 dataurl to File object for upload
-const dataURLtoFile = (dataurl: string, filename: string): File => {
-  const arr = dataurl.split(',');
-  const mime = arr[0].match(/:(.*?);/)![1];
-  const bstr = atob(arr[1]);
-  let n = bstr.length;
-  const u8arr = new Uint8Array(n);
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
-  }
-  return new File([u8arr], filename, { type: mime });
-};
+// Removed dataURLtoFile helper since we will upload files directly
 
 // Zod validation schema
 const productFormSchema = z.object({
@@ -84,6 +74,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
   const [activeFormTab, setActiveFormTab] = useState<'basico' | 'precos' | 'midia' | 'variacoes' | 'seo'>('basico');
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [isUploadingMedia, setIsUploadingMedia] = useState(false);
 
   // States for Image Upload and Gallery
   const [useExternalMainImage, setUseExternalMainImage] = useState(true);
@@ -216,29 +207,50 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
     setActiveFormTab('basico');
   }, [productToEdit, isDuplicating, reset, isOpen]);
 
-  // Main Image Upload Handler (reads file as base64)
-  const handleMainImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Main Image Upload Handler
+  const handleMainImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setValue('mainImage', reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      setIsUploadingMedia(true);
+      try {
+        const url = await api.uploadProductImage(file, `products/${Date.now()}_${file.name}`);
+        if (url) {
+          setValue('mainImage', url);
+          LogService.log('Upload de Imagem', `Upload da imagem principal: ${file.name}`, 'Admin', 'admin@amour.co', 'product', 'upload', 'info');
+        }
+      } catch (err) {
+        console.error('Erro no upload da imagem principal', err);
+        alert('Erro ao fazer upload da imagem.');
+      } finally {
+        setIsUploadingMedia(false);
+      }
     }
   };
 
-  // Gallery Multiple Files Upload Handler (reads files as base64)
-  const handleGalleryFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Gallery Multiple Files Upload Handler
+  const handleGalleryFilesChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
-      Array.from(files).forEach(file => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setGalleryList(prev => [...prev, reader.result as string]);
-        };
-        reader.readAsDataURL(file);
-      });
+      setIsUploadingMedia(true);
+      try {
+        const uploadPromises = Array.from(files).map(async (file) => {
+          const url = await api.uploadProductImage(file, `products/${Date.now()}_${file.name}`);
+          if (url) {
+             LogService.log('Upload de Imagem', `Upload para galeria: ${file.name}`, 'Admin', 'admin@amour.co', 'product', 'upload', 'info');
+          }
+          return url;
+        });
+        
+        const urls = await Promise.all(uploadPromises);
+        const validUrls = urls.filter(url => url !== undefined) as string[];
+        
+        setGalleryList(prev => [...prev, ...validUrls]);
+      } catch (err) {
+        console.error('Erro no upload da galeria', err);
+        alert('Erro ao fazer upload de imagens da galeria.');
+      } finally {
+        setIsUploadingMedia(false);
+      }
     }
   };
 
@@ -320,26 +332,11 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
     const validated = result.data;
 
     try {
-      // 1. Upload Main Image if it is a new base64 file
+      // 1. Imagem Principal
       let uploadedMainUrl = validated.mainImage;
-      if (uploadedMainUrl.startsWith('data:')) {
-        const file = dataURLtoFile(uploadedMainUrl, `main_${Date.now()}.png`);
-        const url = await api.uploadProductImage(file, `products/${validated.slug}/${file.name}`);
-        if (url) uploadedMainUrl = url;
-      }
 
-      // 2. Upload Gallery Images if they are base64 files
-      const uploadedGalleryUrls: string[] = [];
-      for (let i = 0; i < galleryList.length; i++) {
-        const imgStr = galleryList[i];
-        if (imgStr.startsWith('data:')) {
-          const file = dataURLtoFile(imgStr, `gallery_${i}_${Date.now()}.png`);
-          const url = await api.uploadProductImage(file, `products/${validated.slug}/${file.name}`);
-          if (url) uploadedGalleryUrls.push(url);
-        } else {
-          uploadedGalleryUrls.push(imgStr);
-        }
-      }
+      // 2. Imagens da Galeria
+      const uploadedGalleryUrls = galleryList;
 
       const allImages = [uploadedMainUrl, ...uploadedGalleryUrls];
 
@@ -378,7 +375,18 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
         indexing: validated.indexing,
       };
 
-      onSubmit(finalProduct);
+      await onSubmit(finalProduct);
+      
+      LogService.log(
+        productToEdit && !isDuplicating ? 'Produto Editado' : 'Produto Criado',
+        `O produto ${finalProduct.name} (${finalProduct.sku}) foi ${productToEdit && !isDuplicating ? 'atualizado' : 'criado'}.`,
+        'Admin',
+        'admin@amour.co',
+        'product',
+        finalProduct.id,
+        'success'
+      );
+
       onClose();
     } catch (err) {
       console.error('Falha ao processar imagens e salvar produto:', err);
@@ -721,7 +729,9 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                             className="border-2 border-dashed border-white/10 hover:border-gold-500/40 rounded-xl p-6 text-center cursor-pointer transition bg-white/1 flex flex-col items-center justify-center gap-2 group"
                           >
                             <Upload size={20} className="text-gray-400 group-hover:text-gold-400 transition" />
-                            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Clique para selecionar imagem</span>
+                            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                              {isUploadingMedia ? 'Enviando...' : 'Clique para selecionar imagem'}
+                            </span>
                             <span className="text-[9px] text-gray-600">JPG, PNG ou WebP (Máx 5MB)</span>
                             <input
                               type="file"
@@ -764,9 +774,11 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       <button
                         type="button"
                         onClick={() => galleryFileInputRef.current?.click()}
-                        className="bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-[10px] uppercase tracking-wider px-3.5 py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5"
+                        disabled={isUploadingMedia}
+                        className="bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-[10px] uppercase tracking-wider px-3.5 py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
                       >
-                        <Plus size={12} /> Adicionar Fotos
+                        {isUploadingMedia ? <span className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></span> : <Plus size={12} />} 
+                        {isUploadingMedia ? 'Enviando...' : 'Adicionar Fotos'}
                       </button>
                       <input
                         type="file"

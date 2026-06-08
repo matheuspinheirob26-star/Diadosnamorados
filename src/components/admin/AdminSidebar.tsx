@@ -30,6 +30,7 @@ export type AdminTab =
   | 'campaigns' 
   | 'payments'
   | 'storefront'
+  | 'system_logs'
   | 'settings';
 
 interface AdminSidebarProps {
@@ -59,6 +60,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     { id: 'campaigns', label: 'Campanhas', icon: Calendar },
     { id: 'storefront', label: 'Personalização', icon: Palette },
     { id: 'payments', label: 'Pagamentos', icon: CreditCard },
+    { id: 'system_logs', label: 'Logs do Sistema', icon: Shield },
     { id: 'settings', label: 'Configurações', icon: Settings },
   ] as const;
 

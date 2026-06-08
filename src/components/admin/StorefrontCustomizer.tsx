@@ -3,6 +3,7 @@ import { useStorefront } from '../../context/StorefrontContext';
 import { StorefrontConfig, DEFAULT_STOREFRONT_CONFIG } from '../../types/storefront';
 import { Save, RefreshCcw, Image as ImageIcon, Link as LinkIcon, Type, Palette, MessageCircle, BarChart, Sparkles, Upload } from 'lucide-react';
 import { api } from '../../lib/supabase';
+import { LogService } from '../../lib/LogService';
 
 const ImageUploadInput = ({ label, value, onChange, placeholder }: { label: string, value: string, onChange: (val: string) => void, placeholder?: string }) => {
   const [isUploading, setIsUploading] = useState(false);
@@ -17,6 +18,7 @@ const ImageUploadInput = ({ label, value, onChange, placeholder }: { label: stri
     } catch (err) {
       console.error(err);
       alert('Erro no upload. Tente novamente ou use uma URL.');
+      LogService.log('Erro de Configuração', 'Falha ao tentar salvar configurações da vitrine.', 'Admin', 'admin@amour.co', 'sistema', 'storefront', 'error');
     } finally {
       setIsUploading(false);
     }
@@ -67,6 +69,7 @@ export const StorefrontCustomizer: React.FC = () => {
     await updateConfig(localConfig);
     setPreviewConfig(null); // Limpa o preview pois já salvou
     setIsSaving(false);
+    LogService.log('Configuração Alterada', 'Vitrine Pública e identidades visuais foram atualizadas.', 'Admin', 'admin@amour.co', 'sistema', 'storefront', 'success');
     alert('Configurações da vitrine salvas com sucesso!');
   };
 

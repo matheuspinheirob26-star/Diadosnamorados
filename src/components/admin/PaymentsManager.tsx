@@ -11,6 +11,7 @@ import { PaymentService } from '../../lib/payments/PaymentService';
 import { WebhookService } from '../../lib/payments/WebhookService';
 import { GatewayConfig, GatewayName, Transaction, WebhookEvent, PaymentAttempt } from '../../types/payments';
 import { formatCurrency } from '../../lib/utils';
+import { LogService } from '../../lib/LogService';
 
 // ─── Gateway Metadata ────────────────────────────────────────────────────────
 
@@ -96,12 +97,14 @@ export const PaymentsManager: React.FC = () => {
     setSavedGateway(gateway);
     setLocalEdits(prev => { const n = { ...prev }; delete n[gateway]; return n; });
     await loadData();
+    LogService.log('Gateway Configurado', `Configurações salvas para o gateway ${gateway}`, 'Admin', 'admin@amour.co', 'payment', gateway, 'success');
     setSaving(false);
     setTimeout(() => setSavedGateway(null), 2000);
   };
 
   const handleToggle = async (gateway: GatewayName, enabled: boolean) => {
     await GatewayConfigService.update(gateway, { enabled });
+    LogService.log('Gateway Alterado', `Gateway ${gateway} foi ${enabled ? 'ativado' : 'desativado'}.`, 'Admin', 'admin@amour.co', 'payment', gateway, enabled ? 'info' : 'warning');
     await loadData();
   };
 

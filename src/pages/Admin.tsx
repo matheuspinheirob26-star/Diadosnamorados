@@ -30,8 +30,10 @@ import { AdminTab } from '../components/admin/AdminSidebar';
 import { ProductsManager } from '../components/admin/ProductsManager';
 import { PaymentsManager } from '../components/admin/PaymentsManager';
 import { StorefrontCustomizer } from '../components/admin/StorefrontCustomizer';
+import { SystemLogsTab } from '../components/admin/SystemLogsTab';
 import { useCampaign } from '../context/CampaignContext';
 import { useAuth } from '../context/AuthContext';
+import { LogService } from '../lib/LogService';
 
 export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
@@ -103,6 +105,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
     if (selectedOrder && selectedOrder.id === orderId) {
       setSelectedOrder(prev => prev ? { ...prev, status, trackingCode: trackCode || prev.trackingCode } : null);
     }
+    LogService.log('Pedido Atualizado', `Status do pedido #${orderId} alterado para ${status}.`, 'Admin', 'admin@amour.co', 'order', orderId, 'info');
   };
 
   // Aprovar Review
@@ -121,6 +124,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
   const handleDeleteCoupon = async (code: string) => {
     await api.deleteCoupon(code);
     loadAllData();
+    LogService.log('Cupom Excluído', `Cupom de desconto excluído: ${code}`, 'Admin', 'admin@amour.co', 'coupon', code, 'warning');
   };
 
   // Criar Cupom
@@ -136,6 +140,8 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
       expiresAt: newExpiry,
       active: true
     });
+
+    LogService.log('Cupom Criado', `Novo cupom criado: ${newCode.trim().toUpperCase()}`, 'Admin', 'admin@amour.co', 'coupon', newCode.trim().toUpperCase(), 'success');
 
     setNewCode('');
     setShowCouponModal(false);
@@ -935,6 +941,9 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
           <PaymentsManager />
         </div>
       )}
+
+      {/* 11. SYSTEM LOGS TAB */}
+      {activeTab === 'system_logs' && <SystemLogsTab />}
 
     </AdminLayout>
   );

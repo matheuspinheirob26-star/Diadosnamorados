@@ -491,11 +491,17 @@ export const ProductsManager: React.FC = () => {
         </div>
       </div>
 
-      {/* Product Form Modal (Creation / Editing / Duplication) */}
       <ProductFormModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        onSubmit={handleSaveProduct}
+        onSubmit={async (p) => {
+          try {
+            await handleSaveProduct(p);
+          } catch (e) {
+            console.error('Error saving product', e);
+            setLoading(false);
+          }
+        }}
         productToEdit={editProduct}
         isDuplicating={isDuplicating}
       />

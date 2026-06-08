@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { LogService } from '../lib/LogService';
 
 interface AdminUser {
   email: string;
@@ -74,7 +75,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       adminLogout();
     }, remaining);
     return () => clearTimeout(timer);
-  }, [adminUser]);
+  }, [adminUser]); // dependência em adminLogout omitida intencionalmente para não recriar o hook
 
   const login = async (email: string, name = 'Cliente Premium'): Promise<boolean> => {
     const newUser: User = { email, name, role: 'customer' };
@@ -116,6 +117,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const expiresAt = new Date(Date.now() + SESSION_DURATION_MS).toISOString();
     setAdminUser(adminU);
     localStorage.setItem(SESSION_KEY, JSON.stringify({ ...adminU, expiresAt }));
+    LogService.log('Login Admin', `Admin autenticado: ${adminU.name}`, adminU.name, email, 'sistema', 'auth', 'success');
     return { success: true };
   };
 
@@ -125,9 +127,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const adminLogout = useCallback(() => {
+    if (adminUser) {
+      LogService.log('Logout Admin', `Admin deslogou: ${adminUser.name}`, adminUser.name, adminUser.email, 'sistema', 'auth', 'info');
+    }
     setAdminUser(null);
     localStorage.removeItem(SESSION_KEY);
-  }, []);
+  }, [adminUser]);
 
   const isAdmin = user?.role === 'admin';
   const isAdminAuthenticated = adminUser !== null;
