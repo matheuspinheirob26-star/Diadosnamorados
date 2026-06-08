@@ -70,7 +70,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
     <div className="space-y-20 pb-20 overflow-hidden bg-gradient-luxury">
             
       {/* 1. HERO SECTION */}
-      <section className="relative min-h-[90vh] flex items-center justify-center pt-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative min-h-[65vh] flex items-center justify-center pt-32 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Imagem de Fundo do Hero (Desktop) */}
         {(config.heroBannerDesktop || (currentCampaign as any).heroImage) && (
           <div 
