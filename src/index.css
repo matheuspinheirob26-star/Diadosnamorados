@@ -10,7 +10,7 @@
   --color-gold-200: #EADCB9;
   --color-gold-300: #DEC790;
   --color-gold-400: #D3B06B;
-  --color-gold-500: #C59A48;
+  --color-gold-500: #AA0000;
   --color-gold-600: #A87E33;
   --color-gold-700: #896324;
   --color-gold-800: #6B4918;
@@ -60,46 +60,46 @@
   background: rgba(18, 18, 18, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(197, 154, 72, 0.2);
+  border: 1px solid color-mix(in srgb, var(--color-gold-500) 20%, transparent);
 }
 
 @utility glass-wine {
   background: rgba(18, 18, 18, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(126, 40, 50, 0.2);
+  border: 1px solid color-mix(in srgb, var(--color-wine-500) 20%, transparent);
 }
 
 @utility text-gradient-gold {
-  background: linear-gradient(135deg, #F7F0DF 0%, #DEC790 40%, #C59A48 75%, #896324 100%);
+  background: linear-gradient(135deg, var(--color-gold-100) 0%, var(--color-gold-300) 40%, var(--color-gold-500) 75%, var(--color-gold-700) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 @utility text-gradient-wine {
-  background: linear-gradient(135deg, #F3E6E7 0%, #CE9298 30%, #973641 70%, #621D25 100%);
+  background: linear-gradient(135deg, var(--color-wine-100) 0%, var(--color-wine-300) 30%, var(--color-wine-500) 70%, var(--color-wine-700) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 @utility bg-gradient-gold {
-  background: linear-gradient(135deg, #D3B06B 0%, #C59A48 50%, #896324 100%);
+  background: linear-gradient(135deg, var(--color-gold-400) 0%, var(--color-gold-500) 50%, var(--color-gold-700) 100%);
 }
 
 @utility bg-gradient-wine {
-  background: linear-gradient(135deg, #973641 0%, #7E2832 50%, #4B151A 100%);
+  background: linear-gradient(135deg, var(--color-wine-500) 0%, var(--color-wine-600) 50%, var(--color-wine-800) 100%);
 }
 
 @utility bg-gradient-luxury {
-  background: radial-gradient(circle at top right, #2E1519 0%, #0A0A0A 70%);
+  background: radial-gradient(circle at top right, color-mix(in srgb, var(--color-wine-900) 60%, transparent) 0%, #0A0A0A 70%);
 }
 
 @utility glow-gold {
-  box-shadow: 0 0 25px rgba(197, 154, 72, 0.15);
+  box-shadow: 0 0 25px color-mix(in srgb, var(--color-gold-500) 15%, transparent);
 }
 
 @utility glow-wine {
-  box-shadow: 0 0 25px rgba(126, 40, 50, 0.15);
+  box-shadow: 0 0 25px color-mix(in srgb, var(--color-wine-500) 15%, transparent);
 }
 
 @utility no-scrollbar {

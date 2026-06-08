@@ -40,13 +40,24 @@ export const StorefrontProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     return () => window.removeEventListener('storefrontConfigUpdated', handleUpdate);
   }, []);
 
-  // Aplica as cores primárias/secundárias globalmente
+  // Aplica as cores primárias/secundárias globalmente gerando paletas dinâmicas
   const applyThemeColors = (cfg: StorefrontConfig) => {
     if (cfg.primaryColor) {
+      document.documentElement.style.setProperty('--color-gold-100', `color-mix(in srgb, ${cfg.primaryColor} 20%, white)`);
+      document.documentElement.style.setProperty('--color-gold-300', `color-mix(in srgb, ${cfg.primaryColor} 60%, white)`);
+      document.documentElement.style.setProperty('--color-gold-400', `color-mix(in srgb, ${cfg.primaryColor} 80%, white)`);
       document.documentElement.style.setProperty('--color-gold-500', cfg.primaryColor);
+      document.documentElement.style.setProperty('--color-gold-600', `color-mix(in srgb, ${cfg.primaryColor} 80%, black)`);
+      document.documentElement.style.setProperty('--color-gold-700', `color-mix(in srgb, ${cfg.primaryColor} 60%, black)`);
     }
     if (cfg.secondaryColor) {
+      document.documentElement.style.setProperty('--color-wine-100', `color-mix(in srgb, ${cfg.secondaryColor} 20%, white)`);
+      document.documentElement.style.setProperty('--color-wine-300', `color-mix(in srgb, ${cfg.secondaryColor} 60%, white)`);
       document.documentElement.style.setProperty('--color-wine-500', cfg.secondaryColor);
+      document.documentElement.style.setProperty('--color-wine-600', `color-mix(in srgb, ${cfg.secondaryColor} 80%, black)`);
+      document.documentElement.style.setProperty('--color-wine-700', `color-mix(in srgb, ${cfg.secondaryColor} 60%, black)`);
+      document.documentElement.style.setProperty('--color-wine-800', `color-mix(in srgb, ${cfg.secondaryColor} 40%, black)`);
+      document.documentElement.style.setProperty('--color-wine-900', `color-mix(in srgb, ${cfg.secondaryColor} 20%, black)`);
     }
   };
 

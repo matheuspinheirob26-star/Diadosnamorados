@@ -46,7 +46,7 @@ export interface StorefrontConfig {
 }
 
 export const DEFAULT_STOREFRONT_CONFIG: StorefrontConfig = {
-  primaryColor: '#C59A48', // Dourado Amour & Co.
+  primaryColor: '#AA0000', // Changed from #C59A48
   secondaryColor: '#973641', // Vinho Amour & Co.
   
   logoLight: '',
