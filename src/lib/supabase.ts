@@ -399,7 +399,15 @@ const getStorageItem = <T>(key: string, defaultValue: T): T => {
 };
 
 const setStorageItem = <T>(key: string, value: T): void => {
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (err: any) {
+    console.error(`Erro ao salvar no LocalStorage (${key}):`, err);
+    if (err.name === 'QuotaExceededError' || err.message.includes('quota')) {
+      console.warn('O limite do LocalStorage foi atingido. Considere limpar o cache do navegador.');
+      // Opcional: localStorage.removeItem(key) para tentar liberar espaço
+    }
+  }
 };
 
 export const initializeMockDB = () => {
