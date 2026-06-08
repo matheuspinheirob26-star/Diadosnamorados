@@ -336,9 +336,9 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               {/* Buy block */}
               <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
                 <div>
-                  <span className="text-[10px] text-gray-500 line-through block">De R$ 599,90</span>
-                  <span className="text-xl font-bold text-white block">Por R$ 449,90</span>
-                  <span className="text-[10px] text-emerald-400 font-semibold block mt-0.5">Ou R$ 404,91 no Pix (10% OFF)</span>
+                  <span className="text-[10px] text-gray-500 line-through block">De R$ {flagshipProduct.originalPrice?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                  <span className="text-xl font-bold text-white block">Por R$ {flagshipProduct.price?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                  <span className="text-[10px] text-emerald-400 font-semibold block mt-0.5">Ou R$ {(flagshipProduct.price * 0.9).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} no Pix (10% OFF)</span>
                 </div>
 
                 <button
