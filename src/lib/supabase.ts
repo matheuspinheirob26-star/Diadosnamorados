@@ -33,7 +33,16 @@ const INITIAL_PRODUCTS: Product[] = [
       'Embalagem Especial de Luxo Laqueada com Fita de Cetim'
     ],
     details: 'Desenvolvido sob curadoria rigorosa, o Kit Especial Dia dos Namorados Premium é o presente ideal para quem valoriza os detalhes. A camisa de algodão egípcio oferece toque macio e caimento impecável. A carteira slim é compacta e possui proteção RFID contra clonagem de cartões. O perfume Noir Intense destaca-se por notas amadeiradas e marcantes de longa fixação. Tudo isso é envolto em uma caixa rígida de presente com acabamento laqueado, exalando exclusividade desde o primeiro toque.',
-    sizes: ['P', 'M', 'G', 'GG']
+    sizes: ['P', 'M', 'G', 'GG'],
+    status: 'ativo',
+    featured: true,
+    campaign: 'namorados',
+    slug: 'kit-namorados-premium',
+    sku: 'AMR-KIT_NAMORADOS_PREMIUM',
+    seoTitle: 'Kit Especial Dia dos Namorados Premium | Amour & Co.',
+    seoDescription: 'A expressão definitiva de amor e sofisticação. Adquira o kit exclusivo da Amour & Co. com frete grátis.',
+    colors: ['Preto', 'Branco'],
+    models: ['Padrão']
   },
   {
     id: 'kit-momentos-dois',
@@ -56,6 +65,15 @@ const INITIAL_PRODUCTS: Product[] = [
       'Caixa Organizadora Preta com Laço de Cetim'
     ],
     details: 'O Kit Momentos a Dois traz o cenário perfeito para uma noite especial. O espumante brut gelado harmoniza perfeitamente com os chocolates trufados finos de receita belga. As taças de cristal trazem brilho e elegância ao brinde, enquanto a vela aromática de âmbar cria uma atmosfera acolhedora e intensamente romântica.',
+    status: 'ativo',
+    featured: false,
+    campaign: 'namorados',
+    slug: 'kit-momentos-dois',
+    sku: 'AMR-KIT_MOMENTOS_DOIS',
+    seoTitle: 'Kit Momentos a Dois Luxo | Amour & Co.',
+    seoDescription: 'Celebre o amor com espumante, taças de cristal e chocolates finos belgas.',
+    colors: ['Preto'],
+    models: ['Padrão']
   },
   {
     id: 'relogio-chronographe',
@@ -77,7 +95,16 @@ const INITIAL_PRODUCTS: Product[] = [
       'Vidro em Cristal Mineral Hardlex Anti-Risco',
       'Estojo de Apresentação em Couro Ecológico'
     ],
-    details: 'Uma peça de arte para o pulso. O Chronographe Imperial une funcionalidade de cronometragem ativa com design inspirado na relojoaria suíça. Sua pulseira em aço 316L escovado garante durabilidade e conforto no dia a dia, sendo perfeito tanto para o ambiente corporativo quanto para eventos sociais sofisticados.'
+    details: 'Uma peça de arte para o pulso. O Chronographe Imperial une funcionalidade de cronometragem ativa com design inspirado na relojoaria suíça. Sua pulseira em aço 316L escovado garante durabilidade e conforto no dia a dia, sendo perfeito tanto para o ambiente corporativo quanto para eventos sociais sofisticados.',
+    status: 'ativo',
+    featured: true,
+    campaign: 'nenhuma',
+    slug: 'relogio-chronographe',
+    sku: 'AMR-RELOGIO_CHRONOGRAPHE',
+    seoTitle: 'Relógio Chronographe Imperial | Amour & Co.',
+    seoDescription: 'Cronógrafo ativo de quartzo japonês em aço inoxidável 316L escovado.',
+    colors: ['Prata', 'Dourado'],
+    models: ['Imperial']
   },
   {
     id: 'perfume-aurum-gold',
@@ -99,7 +126,16 @@ const INITIAL_PRODUCTS: Product[] = [
       'Notas de Base: Âmbar Negro, Patchouli e Sândalo',
       'Concentração Eau de Parfum com Fixação de até 12 horas'
     ],
-    details: 'Aurum Gold Parfum é uma fragrância intrigante desenvolvida pelos perfumistas mais renomados. Suas notas abrem com a refrescância da bergamota misturada ao calor do cardamomo, evoluindo para um corpo elegante de cedro e lavanda, terminando no poder sedutor do âmbar negro e sândalo. Ideal para noites de gala e encontros especiais.'
+    details: 'Aurum Gold Parfum é uma fragrância intrigante desenvolvida pelos perfumistas mais renomados. Suas notas abrem com a refrescância da bergamota misturada ao calor do cardamomo, evoluindo para um corpo elegante de cedro e lavanda, terminando no poder sedutor do âmbar negro e sândalo. Ideal para noites de gala e encontros especiais.',
+    status: 'ativo',
+    featured: false,
+    campaign: 'nenhuma',
+    slug: 'perfume-aurum-gold',
+    sku: 'AMR-PERFUME_AURUM_GOLD',
+    seoTitle: 'Perfume Aurum Gold Parfum | Amour & Co.',
+    seoDescription: 'Fragrância exclusiva masculina Eau de Parfum com fixação de até 12h.',
+    colors: ['Gold'],
+    models: ['100ml']
   },
   {
     id: 'carteira-premium-couro',
@@ -121,7 +157,16 @@ const INITIAL_PRODUCTS: Product[] = [
       'Porta Cédulas Otimizado de Acesso Rápido',
       'Embalagem Rígida Premium de Presente'
     ],
-    details: 'Uma carteira moderna para quem não quer volumes desnecessários no bolso. Costurada à mão com linha encerada ultra resistente, ela conta com bloqueio magnético que evita a leitura não autorizada de cartões de aproximação. Acompanha uma elegante caixa de presente.'
+    details: 'Uma carteira moderna para quem não quer volumes desnecessários no bolso. Costurada à mão com linha encerada ultra resistente, ela conta com bloqueio magnético que evita a leitura não autorizada de cartões de aproximação. Acompanha uma elegante caixa de presente.',
+    status: 'ativo',
+    featured: false,
+    campaign: 'nenhuma',
+    slug: 'carteira-premium-couro',
+    sku: 'AMR-CARTEIRA_PREMIUM_COURO',
+    seoTitle: 'Carteira Premium Couro Legítimo | Amour & Co.',
+    seoDescription: 'Carteira compacta com bloqueio RFID e fabricação 100% em couro bovino legítimo.',
+    colors: ['Preto', 'Café'],
+    models: ['Saffiano']
   },
   {
     id: 'bolsa-saffiano-eternelle',
@@ -143,7 +188,16 @@ const INITIAL_PRODUCTS: Product[] = [
       'Alça de Ombro Removível e Ajustável',
       'Acompanha Dust Bag protetora de Algodão Orgânico'
     ],
-    details: 'A Bolsa Éternelle é fabricada em couro Saffiano, uma textura clássica da alta moda que resiste a arranhões e umidade. Suas divisórias internas inteligentes permitem organizar celular, maquiagem e carteira com facilidade. As ferragens douradas banhadas a ouro 18k trazem um brilho extra de sofisticação ao design clássico.'
+    details: 'A Bolsa Éternelle é fabricada em couro Saffiano, uma textura clássica da alta moda que resiste a arranhões e umidade. Suas divisórias internas inteligentes permitem organizar celular, maquiagem e carteira com facilidade. As ferragens douradas banhadas a ouro 18k trazem um brilho extra de sofisticação ao design clássico.',
+    status: 'ativo',
+    featured: true,
+    campaign: 'nenhuma',
+    slug: 'bolsa-saffiano-eternelle',
+    sku: 'AMR-BOLSA_SAFFIANO_ETERNELLE',
+    seoTitle: 'Bolsa Couro Saffiano Éternelle | Amour & Co.',
+    seoDescription: 'Bolsa de luxo em couro Saffiano impermeável com ferragens banhadas a ouro 18k.',
+    colors: ['Preto', 'Nude', 'Vermelho'],
+    models: ['Média']
   },
   {
     id: 'pijama-silk-touch',
@@ -166,7 +220,16 @@ const INITIAL_PRODUCTS: Product[] = [
       'Caixa Rígida Aromática de Apresentação'
     ],
     details: 'O Kit Pijama Silk Touch proporciona noites de puro deleite. O cetim com elastano adapta-se perfeitamente aos movimentos do corpo sem prender, oferecendo regulação térmica excelente. A caixa perfumada e o cartão de presente tornam esta opção o presente de luxo ideal para casais celebrando bodas ou datas especiais.',
-    sizes: ['P', 'M', 'G', 'GG']
+    sizes: ['P', 'M', 'G', 'GG'],
+    status: 'ativo',
+    featured: false,
+    campaign: 'namorados',
+    slug: 'pijama-silk-touch',
+    sku: 'AMR-PIJAMA_SILK_TOUCH',
+    seoTitle: 'Kit Pijama Silk Touch Casal | Amour & Co.',
+    seoDescription: 'Pijamas de cetim Silk Touch para noites refinadas de sono e descanso.',
+    colors: ['Azul Marinho', 'Bordô'],
+    models: ['Conjunto Casal']
   },
   {
     id: 'buque-rosas-preservadas',
@@ -188,7 +251,17 @@ const INITIAL_PRODUCTS: Product[] = [
       'Sem Necessidade de Rega ou Luz Solar',
       'Embalagem com Fita de Veludo e Cartão Dedicatório'
     ],
-    details: 'Diferente das flores comuns que murcham em poucos dias, este buquê preservado representa um sentimento perene. As rosas equatorianas de cor vermelha intensa passam por uma desidratação seguida de reidratação com glicerina e óleos naturais, mantendo sua textura macia e aparência de flor recém-colhida por anos. Exibidas sob uma cúpula de cristal protetora.'
+    details: 'Diferente das flores comuns que murcham em poucos dias, este buquê preservado representa um sentimento perene. As rosas equatorianas de cor vermelha intensa passam por uma desidratação seguida de reidratação com glicerina e óleos naturais, mantendo sua textura macia e aparência de flor recém-colhida por anos. Exibidas sob uma cúpula de cristal protetora.',
+    sizes: [''],
+    status: 'ativo',
+    featured: false,
+    campaign: 'namorados',
+    slug: 'buque-rosas-preservadas',
+    sku: 'AMR-ROSAS_PRESERVADAS',
+    seoTitle: 'Buquê de Rosas Vermelhas Preservadas | Amour & Co.',
+    seoDescription: 'Rosas equatorianas naturais preservadas in cúpula de vidro. Durabilidade de até 3 anos.',
+    colors: ['Vermelho'],
+    models: ['Cúpula Média']
   }
 ];
 
@@ -300,20 +373,29 @@ export const api = {
           return data.map(p => ({
             id: p.id,
             name: p.name,
-            description: p.description,
+            description: p.description || '',
             price: Number(p.price),
-            originalPrice: Number(p.original_price),
-            images: p.images,
+            originalPrice: Number(p.original_price || p.price),
+            images: p.images || [],
             video: p.video || undefined,
-            category: p.category,
-            gender: p.gender as any,
-            tags: p.tags,
-            stock: p.stock,
-            rating: Number(p.rating),
-            reviewsCount: p.reviews_count,
-            features: p.features,
-            details: p.details,
-            sizes: p.sizes
+            category: p.category || '',
+            gender: (p.gender as any) || 'unissex',
+            tags: p.tags || [],
+            stock: p.stock || 0,
+            rating: Number(p.rating || 5.0),
+            reviewsCount: p.reviews_count || 0,
+            features: p.features || [],
+            details: p.details || '',
+            sizes: p.sizes || [],
+            status: (p.status as any) || 'ativo',
+            featured: p.featured || false,
+            campaign: p.campaign || 'nenhuma',
+            slug: p.slug || p.id,
+            sku: p.sku || `SKU-${p.id.toUpperCase()}`,
+            seoTitle: p.seo_title || p.name,
+            seoDescription: p.seo_description || p.description || '',
+            colors: p.colors || [],
+            models: p.models || []
           }));
         }
       } catch (err) {
@@ -332,20 +414,29 @@ export const api = {
           return {
             id: data.id,
             name: data.name,
-            description: data.description,
+            description: data.description || '',
             price: Number(data.price),
-            originalPrice: Number(data.original_price),
-            images: data.images,
+            originalPrice: Number(data.original_price || data.price),
+            images: data.images || [],
             video: data.video || undefined,
-            category: data.category,
-            gender: data.gender as any,
-            tags: data.tags,
-            stock: data.stock,
-            rating: Number(data.rating),
-            reviewsCount: data.reviews_count,
-            features: data.features,
-            details: data.details,
-            sizes: data.sizes
+            category: data.category || '',
+            gender: (data.gender as any) || 'unissex',
+            tags: data.tags || [],
+            stock: data.stock || 0,
+            rating: Number(data.rating || 5.0),
+            reviewsCount: data.reviews_count || 0,
+            features: data.features || [],
+            details: data.details || '',
+            sizes: data.sizes || [],
+            status: (data.status as any) || 'ativo',
+            featured: data.featured || false,
+            campaign: data.campaign || 'nenhuma',
+            slug: data.slug || data.id,
+            sku: data.sku || `SKU-${data.id.toUpperCase()}`,
+            seoTitle: data.seo_title || data.name,
+            seoDescription: data.seo_description || data.description || '',
+            colors: data.colors || [],
+            models: data.models || []
           };
         }
       } catch (err) {
@@ -354,6 +445,101 @@ export const api = {
     }
     const products = await api.getProducts();
     return products.find(p => p.id === id) || null;
+  },
+
+  createProduct: async (product: Product): Promise<Product> => {
+    if (supabase) {
+      try {
+        const { error } = await supabase.from('products').insert({
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          original_price: product.originalPrice,
+          images: product.images,
+          video: product.video || null,
+          category: product.category,
+          gender: product.gender,
+          tags: product.tags,
+          stock: product.stock,
+          rating: product.rating || 5.0,
+          reviews_count: product.reviewsCount || 0,
+          features: product.features,
+          details: product.details,
+          sizes: product.sizes || [],
+          status: product.status || 'ativo',
+          featured: product.featured || false,
+          campaign: product.campaign || 'nenhuma',
+          slug: product.slug || product.id,
+          sku: product.sku || `SKU-${product.id.toUpperCase()}`,
+          seo_title: product.seoTitle || product.name,
+          seo_description: product.seoDescription || product.description,
+          colors: product.colors || [],
+          models: product.models || []
+        });
+        if (error) throw error;
+      } catch (err) {
+        console.warn('Supabase createProduct falhou, usando mock local:', err);
+      }
+    }
+    const products = getStorageItem<Product[]>('amr_products', INITIAL_PRODUCTS);
+    products.push(product);
+    setStorageItem('amr_products', products);
+    return product;
+  },
+
+  updateProduct: async (product: Product): Promise<Product> => {
+    if (supabase) {
+      try {
+        const { error } = await supabase.from('products').update({
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          original_price: product.originalPrice,
+          images: product.images,
+          video: product.video || null,
+          category: product.category,
+          gender: product.gender,
+          tags: product.tags,
+          stock: product.stock,
+          features: product.features,
+          details: product.details,
+          sizes: product.sizes || [],
+          status: product.status || 'ativo',
+          featured: product.featured || false,
+          campaign: product.campaign || 'nenhuma',
+          slug: product.slug || product.id,
+          sku: product.sku || `SKU-${product.id.toUpperCase()}`,
+          seo_title: product.seoTitle || product.name,
+          seo_description: product.seoDescription || product.description,
+          colors: product.colors || [],
+          models: product.models || []
+        }).eq('id', product.id);
+        if (error) throw error;
+      } catch (err) {
+        console.warn('Supabase updateProduct falhou, usando mock local:', err);
+      }
+    }
+    const products = getStorageItem<Product[]>('amr_products', INITIAL_PRODUCTS);
+    const idx = products.findIndex(p => p.id === product.id);
+    if (idx !== -1) {
+      products[idx] = product;
+      setStorageItem('amr_products', products);
+    }
+    return product;
+  },
+
+  deleteProduct: async (id: string): Promise<void> => {
+    if (supabase) {
+      try {
+        const { error } = await supabase.from('products').delete().eq('id', id);
+        if (error) throw error;
+      } catch (err) {
+        console.warn('Supabase deleteProduct falhou, usando mock local:', err);
+      }
+    }
+    const products = getStorageItem<Product[]>('amr_products', INITIAL_PRODUCTS);
+    setStorageItem('amr_products', products.filter(p => p.id !== id));
   },
 
   // 2. CUPONS

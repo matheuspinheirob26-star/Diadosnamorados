@@ -126,12 +126,14 @@ function AppContent() {
     <div className="min-h-screen flex flex-col justify-between text-gray-300 antialiased bg-luxury-black bg-gradient-luxury transition-all duration-500">
       
       {/* Sticky Header */}
-      <Header
-        onCartOpen={() => setCartOpen(true)}
-        onSearch={handleSearch}
-        onNavigate={handleNavigate}
-        currentPage={currentPage}
-      />
+      {currentPage !== 'admin' && (
+        <Header
+          onCartOpen={() => setCartOpen(true)}
+          onSearch={handleSearch}
+          onNavigate={handleNavigate}
+          currentPage={currentPage}
+        />
+      )}
 
       {/* Main Pages Content Routing */}
       <main className="flex-grow">
@@ -171,7 +173,7 @@ function AppContent() {
       </main>
 
       {/* Footer */}
-      <Footer onNavigate={handleNavigate} />
+      {currentPage !== 'admin' && <Footer onNavigate={handleNavigate} />}
 
       {/* Slide-over Cart Drawer */}
       <CartDrawer

@@ -15,6 +15,15 @@ export interface Product {
   features: string[]; // Itens que compõem o kit ou características
   details: string; // Descrição longa do produto
   sizes?: string[]; // Tamanhos disponíveis (ex: P, M, G, GG)
+  status?: 'ativo' | 'inativo';
+  featured?: boolean;
+  campaign?: string; // id da campanha
+  slug?: string;
+  sku?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  colors?: string[]; // Variações de cor
+  models?: string[]; // Variações de modelo
 }
 
 export interface CartItem {

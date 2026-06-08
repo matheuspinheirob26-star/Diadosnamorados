@@ -2,10 +2,39 @@ import React, { useEffect, useState } from 'react';
 import { api } from '../lib/supabase';
 import { Order, Lead, Review, Coupon } from '../types';
 import { formatCurrency } from '../lib/utils';
-import { ShieldCheck, TrendingUp, DollarSign, ShoppingCart, Users, MessageSquare, Tag, Plus, Check, Trash2, Edit3, X, Eye, Package, ArrowUpRight } from 'lucide-react';
+import { 
+  ShieldCheck, 
+  TrendingUp, 
+  DollarSign, 
+  ShoppingCart, 
+  Users, 
+  MessageSquare, 
+  Tag, 
+  Plus, 
+  Check, 
+  Trash2, 
+  Edit3, 
+  X, 
+  Eye, 
+  Package, 
+  ArrowUpRight,
+  Calendar,
+  Settings,
+  AlertTriangle,
+  CreditCard,
+  MapPin,
+  Sparkles
+} from 'lucide-react';
+import { AdminLayout } from '../components/admin/AdminLayout';
+import { AdminTab } from '../components/admin/AdminSidebar';
+import { ProductsManager } from '../components/admin/ProductsManager';
+import { useCampaign } from '../context/CampaignContext';
+import { useAuth } from '../context/AuthContext';
 
 export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigate }) => {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'leads' | 'reviews' | 'coupons'>('dashboard');
+  const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
+  const { logout } = useAuth();
+  const { currentCampaign, setCampaign, allCampaigns } = useCampaign();
 
   // Database States
   const [orders, setOrders] = useState<Order[]>([]);
@@ -121,61 +150,41 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
     loadAllData();
   };
 
+  // Clientes
+  const getUniqueCustomers = () => {
+    const custMap = new Map<string, { name: string; email: string; phone: string; cpf: string; totalSpent: number; ordersCount: number }>();
+    orders.forEach(o => {
+      if (o.status !== 'pending') {
+        const existing = custMap.get(o.customerEmail.toLowerCase());
+        if (existing) {
+          existing.totalSpent += o.total;
+          existing.ordersCount += 1;
+        } else {
+          custMap.set(o.customerEmail.toLowerCase(), {
+            name: o.customerName,
+            email: o.customerEmail,
+            phone: o.customerPhone,
+            cpf: o.customerCpf,
+            totalSpent: o.total,
+            ordersCount: 1
+          });
+        }
+      }
+    });
+    return Array.from(custMap.values());
+  };
+
+  const handleLogout = () => {
+    logout();
+    onNavigate('home');
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 min-h-screen">
-      
-      {/* Admin Title Bar */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/5 pb-6">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 text-rose-400">
-            <ShieldCheck size={20} />
-            <span className="text-xs uppercase font-extrabold tracking-widest bg-rose-500/10 border border-rose-500/20 px-2 py-0.5 rounded">
-              Acesso Administrativo Restrito
-            </span>
-          </div>
-          <h1 className="font-serif text-3xl text-white tracking-wide uppercase">Painel de Vendas</h1>
-        </div>
-        
-        <button
-          onClick={() => onNavigate('home')}
-          className="border border-white/10 hover:border-gold-500 text-gray-400 hover:text-white px-5 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition cursor-pointer"
-        >
-          Voltar para Loja
-        </button>
-      </div>
-
-      {/* Admin Tabs */}
-      <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-wider border-b border-white/5 pb-2">
-        {[
-          { id: 'dashboard', label: 'Dashboard', icon: TrendingUp },
-          { id: 'orders', label: 'Pedidos', icon: ShoppingCart },
-          { id: 'leads', label: 'Leads (Carrinhos)', icon: Users },
-          { id: 'reviews', label: 'Avaliações', icon: MessageSquare },
-          { id: 'coupons', label: 'Cupons', icon: Tag }
-        ].map((tab) => {
-          const Icon = tab.icon;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-4 py-3 rounded-lg border transition ${
-                activeTab === tab.id
-                  ? 'border-gold-500 bg-gold-500/10 text-gold-400'
-                  : 'border-transparent text-gray-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <Icon size={14} />
-              <span>{tab.label}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Contents based on tab */}
+    <AdminLayout activeTab={activeTab} setActiveTab={setActiveTab} onLogout={handleLogout}>
       
       {/* 1. DASHBOARD TAB */}
       {activeTab === 'dashboard' && (
-        <div className="space-y-8">
+        <div className="space-y-8 animate-fadeIn">
           
           {/* Metrics grids */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -260,15 +269,15 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
       {/* 2. ORDERS TAB */}
       {activeTab === 'orders' && (
-        <div className="bg-luxury-gray border border-white/5 rounded-3xl overflow-hidden">
-          <div className="p-6 border-b border-white/5">
+        <div className="bg-luxury-gray border border-white/5 rounded-3xl overflow-hidden shadow-2xl animate-fadeIn">
+          <div className="p-6 border-b border-white/5 bg-white/2">
             <h3 className="text-xs font-semibold text-white tracking-widest uppercase">Fila de Pedidos</h3>
           </div>
           
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="text-gray-500 font-bold border-b border-white/5">
+                <tr className="text-gray-500 font-bold border-b border-white/5 bg-white/1 select-none">
                   <th className="p-4">Pedido</th>
                   <th className="p-4">Cliente</th>
                   <th className="p-4">Itens</th>
@@ -315,7 +324,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                             setSelectedOrder(order);
                             setTrackingCodeInput(order.trackingCode || '');
                           }}
-                          className="flex items-center gap-1 text-[10px] font-bold text-gold-400 uppercase tracking-wider hover:text-white"
+                          className="flex items-center gap-1 text-[10px] font-bold text-gold-400 uppercase tracking-wider hover:text-white cursor-pointer"
                         >
                           <Eye size={12} /> Detalhes
                         </button>
@@ -329,17 +338,67 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
         </div>
       )}
 
-      {/* 3. LEADS TAB (Carrinhos Abandonados) */}
+      {/* 3. PRODUCTS TAB */}
+      {activeTab === 'products' && (
+        <div className="animate-fadeIn">
+          <ProductsManager />
+        </div>
+      )}
+
+      {/* 4. CUSTOMERS TAB */}
+      {activeTab === 'customers' && (
+        <div className="bg-luxury-gray border border-white/5 rounded-3xl overflow-hidden shadow-2xl animate-fadeIn">
+          <div className="p-6 border-b border-white/5 bg-white/2">
+            <h3 className="text-xs font-semibold text-white tracking-widest uppercase">Base de Clientes Unificados</h3>
+          </div>
+          
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="text-gray-500 font-bold border-b border-white/5 bg-white/1 select-none">
+                  <th className="p-4">Cliente</th>
+                  <th className="p-4">Contato</th>
+                  <th className="p-4">CPF</th>
+                  <th className="p-4 text-center">Compras</th>
+                  <th className="p-4 text-right">Total Investido</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5 text-gray-300 font-medium">
+                {getUniqueCustomers().length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="p-8 text-center text-gray-500">Nenhum cliente cadastrado no momento.</td>
+                  </tr>
+                ) : (
+                  getUniqueCustomers().map((cust, idx) => (
+                    <tr key={idx} className="hover:bg-white/2 transition">
+                      <td className="p-4 font-semibold text-white">{cust.name}</td>
+                      <td className="p-4">
+                        <span className="block text-white">{cust.email}</span>
+                        <span className="block text-[10px] text-gray-500 mt-0.5">{cust.phone}</span>
+                      </td>
+                      <td className="p-4 font-mono text-gray-400">{cust.cpf}</td>
+                      <td className="p-4 text-center font-bold text-white">{cust.ordersCount} compra(s)</td>
+                      <td className="p-4 text-right font-bold text-gold-400">{formatCurrency(cust.totalSpent)}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* 5. LEADS TAB (Carrinhos Abandonados) */}
       {activeTab === 'leads' && (
-        <div className="bg-luxury-gray border border-white/5 rounded-3xl overflow-hidden">
-          <div className="p-6 border-b border-white/5">
+        <div className="bg-luxury-gray border border-white/5 rounded-3xl overflow-hidden shadow-2xl animate-fadeIn">
+          <div className="p-6 border-b border-white/5 bg-white/2">
             <h3 className="text-xs font-semibold text-white tracking-widest uppercase">Captura de Leads e Carrinhos Abandonados</h3>
           </div>
           
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="text-gray-500 font-bold border-b border-white/5">
+                <tr className="text-gray-500 font-bold border-b border-white/5 bg-white/1 select-none">
                   <th className="p-4">Nome</th>
                   <th className="p-4">Contato</th>
                   <th className="p-4">Carrinho Abandonado</th>
@@ -380,7 +439,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                         {lead.status === 'captured' ? (
                           <button
                             onClick={() => handleRecoverCart(lead)}
-                            className="bg-emerald-500/10 hover:bg-emerald-500/25 border border-emerald-500/35 text-emerald-400 font-bold text-[9px] uppercase tracking-widest px-3 py-1.5 rounded-lg transition"
+                            className="bg-emerald-500/10 hover:bg-emerald-500/25 border border-emerald-500/35 text-emerald-400 font-bold text-[9px] uppercase tracking-widest px-3 py-1.5 rounded-lg transition cursor-pointer"
                           >
                             WhatsApp
                           </button>
@@ -397,10 +456,10 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
         </div>
       )}
 
-      {/* 4. REVIEWS MODERATION TAB */}
+      {/* 6. REVIEWS MODERATION TAB */}
       {activeTab === 'reviews' && (
-        <div className="space-y-6">
-          <div className="bg-luxury-gray border border-white/5 rounded-3xl p-6">
+        <div className="space-y-6 animate-fadeIn">
+          <div className="bg-luxury-gray border border-white/5 rounded-3xl p-6 shadow-2xl">
             <h3 className="text-xs font-semibold text-white tracking-widest uppercase border-b border-white/5 pb-4">
               Moderação de Avaliações
             </h3>
@@ -434,14 +493,14 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                     <div className="flex justify-end gap-2 pt-2 border-t border-white/5">
                       <button
                         onClick={() => handleDeleteReview(rev.id)}
-                        className="text-rose-400 hover:text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded bg-rose-500/5 hover:bg-rose-500/10 transition"
+                        className="text-rose-400 hover:text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded bg-rose-500/5 hover:bg-rose-500/10 transition cursor-pointer"
                       >
                         Excluir
                       </button>
                       {!rev.approved && (
                         <button
                           onClick={() => handleApproveReview(rev.id)}
-                          className="bg-emerald-500/10 hover:bg-emerald-500/25 text-emerald-400 text-[10px] font-bold uppercase tracking-wider px-4 py-1.5 rounded transition"
+                          className="bg-emerald-500/10 hover:bg-emerald-500/25 text-emerald-400 text-[10px] font-bold uppercase tracking-wider px-4 py-1.5 rounded transition cursor-pointer"
                         >
                           Aprovar
                         </button>
@@ -455,9 +514,9 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
         </div>
       )}
 
-      {/* 5. COUPONS TAB */}
+      {/* 7. COUPONS TAB */}
       {activeTab === 'coupons' && (
-        <div className="space-y-6">
+        <div className="space-y-6 animate-fadeIn">
           <div className="flex justify-between items-center">
             <h3 className="text-xs font-semibold text-white tracking-widest uppercase">Gestão de Cupons</h3>
             <button
@@ -468,10 +527,10 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             </button>
           </div>
 
-          <div className="bg-luxury-gray border border-white/5 rounded-3xl overflow-hidden">
+          <div className="bg-luxury-gray border border-white/5 rounded-3xl overflow-hidden shadow-2xl">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="text-gray-500 font-bold border-b border-white/5">
+                <tr className="text-gray-500 font-bold border-b border-white/5 bg-white/2 select-none">
                   <th className="p-4">Cupom</th>
                   <th className="p-4">Tipo</th>
                   <th className="p-4">Desconto</th>
@@ -499,7 +558,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                     <td className="p-4">
                       <button
                         onClick={() => handleDeleteCoupon(coupon.code)}
-                        className="text-rose-400 hover:text-white p-1"
+                        className="text-rose-400 hover:text-white p-1 cursor-pointer"
                         title="Deletar cupom"
                       >
                         <Trash2 size={14} />
@@ -513,16 +572,162 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
         </div>
       )}
 
+      {/* 8. CAMPAIGNS TAB */}
+      {activeTab === 'campaigns' && (
+        <div className="space-y-6 animate-fadeIn">
+          <div className="border-b border-white/5 pb-4">
+            <h3 className="font-serif text-2xl text-white tracking-wide uppercase">Campanhas Sazonais</h3>
+            <p className="text-[10px] text-gray-500 uppercase tracking-widest">Altere o tema visual e a curadoria da loja em tempo real</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {allCampaigns.map((camp) => {
+              const isActive = currentCampaign.id === camp.id;
+              return (
+                <div
+                  key={camp.id}
+                  onClick={() => {
+                    setCampaign(camp.id);
+                  }}
+                  className={`relative p-6 rounded-3xl border transition duration-300 cursor-pointer overflow-hidden group select-none ${
+                    isActive 
+                      ? 'border-gold-500 bg-gold-500/10 shadow-lg glow-gold'
+                      : 'border-white/5 bg-luxury-gray hover:border-white/20'
+                  }`}
+                  style={{ backgroundImage: isActive ? undefined : camp.bgGradient }}
+                >
+                  <div className="flex justify-between items-start">
+                    <span className="text-3xl">{camp.emoji}</span>
+                    {isActive && (
+                      <span className="bg-gradient-gold text-luxury-black font-extrabold text-[9px] uppercase tracking-widest px-2.5 py-1 rounded-full shadow">
+                        Ativa na Loja
+                      </span>
+                    )}
+                  </div>
+                  
+                  <div className="mt-8 space-y-2">
+                    <h4 className="font-serif text-lg text-white group-hover:text-gold-400 transition">{camp.name}</h4>
+                    <p className="text-[10px] text-gray-400 font-light leading-relaxed">{camp.headline}</p>
+                    <span className="block text-[8px] text-gray-500 uppercase tracking-wider mt-4">Badge: {camp.badgeText}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* 9. SETTINGS TAB */}
+      {activeTab === 'settings' && (
+        <div className="space-y-6 max-w-3xl animate-fadeIn">
+          <div className="border-b border-white/5 pb-4">
+            <h3 className="font-serif text-2xl text-white tracking-wide uppercase">Configurações Globais da Loja</h3>
+            <p className="text-[10px] text-gray-500 uppercase tracking-widest">Ajuste parâmetros operacionais, frete e meios de pagamento</p>
+          </div>
+
+          <div className="bg-luxury-gray border border-white/5 p-6 rounded-3xl space-y-6 shadow-2xl">
+            
+            {/* Secao 1: Contato e Concierge */}
+            <div className="space-y-4">
+              <span className="text-xs font-semibold text-white tracking-widest uppercase block border-b border-white/5 pb-2">Atendimento & WhatsApp</span>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">WhatsApp Concierge</label>
+                  <input
+                    type="text"
+                    defaultValue="+55 (11) 99999-9999"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">E-mail de Suporte</label>
+                  <input
+                    type="text"
+                    defaultValue="concierge@amour.com"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Secao 2: Parâmetros de Frete */}
+            <div className="space-y-4 pt-4 border-t border-white/5">
+              <span className="text-xs font-semibold text-white tracking-widest uppercase block border-b border-white/5 pb-2">Logística e Frete</span>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Limite para Frete Grátis (R$)</label>
+                  <input
+                    type="number"
+                    defaultValue={290.00}
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">CEP Origem (Despacho)</label>
+                  <input
+                    type="text"
+                    defaultValue="01424-002"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Secao 3: Gateways e Checkout */}
+            <div className="space-y-4 pt-4 border-t border-white/5">
+              <span className="text-xs font-semibold text-white tracking-widest uppercase block border-b border-white/5 pb-2">Meios de Pagamento Ativos</span>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                <div className="flex items-center gap-2.5 bg-white/2 border border-white/5 p-3.5 rounded-xl">
+                  <input type="checkbox" defaultChecked className="h-4 w-4 text-gold-500" />
+                  <div>
+                    <span className="block font-bold text-white">Pix Imediato</span>
+                    <span className="block text-[8px] text-gray-500">Com 10% OFF</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2.5 bg-white/2 border border-white/5 p-3.5 rounded-xl">
+                  <input type="checkbox" defaultChecked className="h-4 w-4 text-gold-500" />
+                  <div>
+                    <span className="block font-bold text-white">Cartão de Crédito</span>
+                    <span className="block text-[8px] text-gray-500">Até 10x sem juros</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2.5 bg-white/2 border border-white/5 p-3.5 rounded-xl">
+                  <input type="checkbox" defaultChecked className="h-4 w-4 text-gold-500" />
+                  <div>
+                    <span className="block font-bold text-white">Boleto Bancário</span>
+                    <span className="block text-[8px] text-gray-500">Processamento em 24h</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-4">
+              <button
+                type="button"
+                onClick={() => alert('Configurações salvas com sucesso!')}
+                className="bg-gradient-gold text-luxury-black font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-xl hover:shadow-lg transition cursor-pointer"
+              >
+                Salvar Configurações
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
       {/* MODAL ORDER DETAIL (POPUP) */}
       {selectedOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fadeIn">
           <div className="absolute inset-0" onClick={() => setSelectedOrder(null)} />
           
           <div className="relative w-full max-w-2xl bg-luxury-gray border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 glow-gold overflow-y-auto max-h-[90vh] space-y-6">
             
             <button
               onClick={() => setSelectedOrder(null)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-white p-1"
+              className="absolute top-4 right-4 text-gray-500 hover:text-white p-1 cursor-pointer"
             >
               <X size={18} />
             </button>
@@ -606,7 +811,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   />
                   <button
                     onClick={() => handleUpdateOrderStatus(selectedOrder.id, selectedOrder.status, trackingCodeInput)}
-                    className="bg-white/10 hover:bg-gold-500 hover:text-luxury-black border border-white/10 px-4 py-2 font-bold uppercase rounded-lg transition"
+                    className="bg-white/10 hover:bg-gold-500 hover:text-luxury-black border border-white/10 px-4 py-2 font-bold uppercase rounded-lg transition cursor-pointer"
                   >
                     Salvar
                   </button>
@@ -621,7 +826,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
       {/* CREATE COUPON MODAL DIALOG */}
       {showCouponModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fadeIn">
           <div className="absolute inset-0" onClick={() => setShowCouponModal(false)} />
           
           <form onSubmit={handleCreateCoupon} className="relative w-full max-w-md bg-luxury-gray border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 glow-gold space-y-4">
@@ -629,7 +834,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             <button
               type="button"
               onClick={() => setShowCouponModal(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-white p-1"
+              className="absolute top-4 right-4 text-gray-500 hover:text-white p-1 cursor-pointer"
             >
               <X size={18} />
             </button>
@@ -717,7 +922,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
         </div>
       )}
 
-    </div>
+    </AdminLayout>
   );
 };
 export default Admin;
