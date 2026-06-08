@@ -12,7 +12,8 @@ import {
   LogOut, 
   X, 
   Sparkles,
-  Shield
+  Shield,
+  CreditCard
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
@@ -26,6 +27,7 @@ export type AdminTab =
   | 'reviews' 
   | 'coupons' 
   | 'campaigns' 
+  | 'payments'
   | 'settings';
 
 interface AdminSidebarProps {
@@ -53,6 +55,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     { id: 'reviews', label: 'Avaliações', icon: MessageSquare },
     { id: 'coupons', label: 'Cupons', icon: Tag },
     { id: 'campaigns', label: 'Campanhas', icon: Calendar },
+    { id: 'payments', label: 'Pagamentos', icon: CreditCard },
     { id: 'settings', label: 'Configurações', icon: Settings },
   ] as const;
 

@@ -64,7 +64,7 @@ export interface Order {
   state: string;
   shippingMethod: string;
   shippingPrice: number;
-  paymentMethod: 'pix' | 'card' | 'boleto';
+  paymentMethod: 'pix' | 'card' | 'boleto' | 'crypto';
   couponCode?: string;
   items: {
     productId: string;

@@ -237,3 +237,120 @@ VALUES
 ('BEMVINDO50', 'fixed', 50.00, 300.00, '2026-12-31', true),
 ('VIP20', 'percentage', 20.00, 500.00, '2026-12-31', true),
 ('FRETEGRATIS', 'percentage', 0.00, 200.00, '2026-12-31', true);
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- TABELAS DE PAGAMENTO — MULTI-GATEWAY
+-- ═══════════════════════════════════════════════════════════════════════════════
+
+-- 6. CONFIGURAÇÕES DE GATEWAYS DE PAGAMENTO
+-- Armazena apenas chaves públicas/IDs de cliente — NUNCA chaves secretas.
+CREATE TABLE IF NOT EXISTS gateway_configs (
+    id TEXT PRIMARY KEY,
+    gateway TEXT NOT NULL UNIQUE,   -- 'mercadopago' | 'pagarme' | 'efi' | 'asaas' | 'stripe' | 'crypto'
+    label TEXT NOT NULL,
+    enabled BOOLEAN DEFAULT true,
+    priority INTEGER DEFAULT 1,
+    config JSONB DEFAULT '{}',      -- { publicKey, clientId, walletBTC, walletETH, ... }
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Dados iniciais dos gateways (modo demo por padrão)
+INSERT INTO gateway_configs (id, gateway, label, enabled, priority, config)
+VALUES
+    ('gw_mercadopago', 'mercadopago', 'Mercado Pago', true,  1, '{"publicKey":""}'),
+    ('gw_pagarme',     'pagarme',     'Pagar.me',     true,  2, '{"publicKey":""}'),
+    ('gw_efi',         'efi',         'Efí Bank',     true,  3, '{"clientId":""}'),
+    ('gw_asaas',       'asaas',       'Asaas',        false, 4, '{"publicKey":""}'),
+    ('gw_stripe',      'stripe',      'Stripe',       true,  5, '{"publicKey":""}'),
+    ('gw_crypto',      'crypto',      'Criptomoedas', true,  6, '{"walletBTC":"","walletETH":"","walletUSDT_TRC20":"","walletUSDT_ERC20":""}')
+ON CONFLICT (id) DO NOTHING;
+
+-- 7. TRANSAÇÕES DE PAGAMENTO
+CREATE TABLE IF NOT EXISTS transactions (
+    id TEXT PRIMARY KEY,
+    order_id TEXT REFERENCES orders(id) ON DELETE SET NULL,
+    gateway TEXT NOT NULL,
+    gateway_transaction_id TEXT,            -- ID retornado pelo gateway
+    method TEXT NOT NULL,                    -- 'pix' | 'card' | 'boleto' | 'crypto'
+    status TEXT DEFAULT 'pending' NOT NULL, -- 'pending' | 'paid' | 'failed' | 'expired' | 'cancelled' | 'refunded'
+    amount NUMERIC(10, 2) NOT NULL,
+    fee NUMERIC(10, 2) DEFAULT 0,           -- Taxa do gateway
+    net_amount NUMERIC(10, 2),              -- Valor líquido (amount - fee)
+    currency TEXT DEFAULT 'BRL',
+    -- Pix
+    pix_qr_code_image TEXT,
+    pix_copy_paste TEXT,
+    pix_expiration TIMESTAMP WITH TIME ZONE,
+    -- Boleto
+    boleto_url TEXT,
+    boleto_barcode TEXT,
+    boleto_expiration TIMESTAMP WITH TIME ZONE,
+    -- Crypto
+    crypto_address TEXT,
+    crypto_amount NUMERIC(20, 8),
+    crypto_currency TEXT,
+    crypto_expiration TIMESTAMP WITH TIME ZONE,
+    -- Card
+    installments INTEGER,
+    authorization_code TEXT,
+    -- Meta
+    is_demo BOOLEAN DEFAULT true,
+    metadata JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_transactions_order_id ON transactions(order_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_gateway ON transactions(gateway);
+CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status);
+CREATE INDEX IF NOT EXISTS idx_transactions_gateway_tx_id ON transactions(gateway_transaction_id);
+
+-- 8. TENTATIVAS DE PAGAMENTO (rastreia fallbacks)
+CREATE TABLE IF NOT EXISTS payment_attempts (
+    id TEXT PRIMARY KEY,
+    order_id TEXT,
+    gateway TEXT NOT NULL,
+    method TEXT NOT NULL,
+    status TEXT NOT NULL,           -- 'success' | 'failed' | 'fallback_triggered'
+    error_message TEXT,
+    response_time_ms INTEGER,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_payment_attempts_order_id ON payment_attempts(order_id);
+CREATE INDEX IF NOT EXISTS idx_payment_attempts_gateway ON payment_attempts(gateway);
+
+-- 9. EVENTOS DE WEBHOOK
+CREATE TABLE IF NOT EXISTS webhook_events (
+    id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+    gateway TEXT NOT NULL,
+    event_type TEXT NOT NULL,
+    transaction_id TEXT,
+    order_id TEXT,
+    amount NUMERIC(10, 2),
+    payload JSONB NOT NULL DEFAULT '{}',
+    processed BOOLEAN DEFAULT false,
+    received_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_webhook_events_gateway ON webhook_events(gateway);
+CREATE INDEX IF NOT EXISTS idx_webhook_events_event_type ON webhook_events(event_type);
+CREATE INDEX IF NOT EXISTS idx_webhook_events_transaction_id ON webhook_events(transaction_id);
+
+-- Row Level Security (RLS) para as novas tabelas
+ALTER TABLE gateway_configs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE transactions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE payment_attempts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE webhook_events ENABLE ROW LEVEL SECURITY;
+
+-- Políticas de acesso (permitir leitura anônima para configs públicas)
+CREATE POLICY "gateway_configs_public_read" ON gateway_configs FOR SELECT USING (true);
+CREATE POLICY "gateway_configs_admin_write" ON gateway_configs FOR ALL USING (true);
+CREATE POLICY "transactions_public_insert" ON transactions FOR INSERT WITH CHECK (true);
+CREATE POLICY "transactions_public_read" ON transactions FOR SELECT USING (true);
+CREATE POLICY "transactions_public_update" ON transactions FOR UPDATE USING (true);
+CREATE POLICY "payment_attempts_public_insert" ON payment_attempts FOR INSERT WITH CHECK (true);
+CREATE POLICY "payment_attempts_public_read" ON payment_attempts FOR SELECT USING (true);
+CREATE POLICY "webhook_events_service_all" ON webhook_events FOR ALL USING (true);
+

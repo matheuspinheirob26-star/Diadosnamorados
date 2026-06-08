@@ -28,6 +28,7 @@ import {
 import { AdminLayout } from '../components/admin/AdminLayout';
 import { AdminTab } from '../components/admin/AdminSidebar';
 import { ProductsManager } from '../components/admin/ProductsManager';
+import { PaymentsManager } from '../components/admin/PaymentsManager';
 import { useCampaign } from '../context/CampaignContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -919,6 +920,13 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             </div>
 
           </form>
+        </div>
+      )}
+
+      {/* PAYMENTS TAB */}
+      {activeTab === 'payments' && (
+        <div className="animate-fadeIn">
+          <PaymentsManager />
         </div>
       )}
 

@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useCart, ORDER_BUMP_PRODUCT, POST_PURCHASE_UPSELL_PRODUCT } from '../context/CartContext';
 import { api } from '../lib/supabase';
 import { tracking } from '../lib/tracking';
 import { formatCurrency, formatCpf, formatPhone, formatCep, simulateShipping, ShippingOption, validateCpf } from '../lib/utils';
-import { ShieldCheck, Truck, CreditCard, Tag, Sparkles, ChevronRight, Check, AlertCircle, ShoppingBag, ArrowLeft, Download, ExternalLink, Calendar, MessageCircle } from 'lucide-react';
+import { ShieldCheck, Truck, CreditCard, Tag, Sparkles, ChevronRight, Check, AlertCircle, ShoppingBag, ArrowLeft, Download, ExternalLink, Calendar, MessageCircle, Bitcoin, Copy, RefreshCw, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { PaymentService } from '../lib/payments/PaymentService';
+import { CryptoCurrency, PixResponse, BoletoResponse, CryptoResponse } from '../types/payments';
+import { formatCountdown, secondsUntil } from '../lib/payments/utils';
 
 export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigate }) => {
   const {
@@ -44,7 +47,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
   const [step2Error, setStep2Error] = useState('');
 
   // Step 3 Payment Form
-  const [paymentMethod, setPaymentMethod] = useState<'pix' | 'card' | 'boleto'>('pix');
+  const [paymentMethod, setPaymentMethod] = useState<'pix' | 'card' | 'boleto' | 'crypto'>('pix');
   const [cardName, setCardName] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [cardExpiry, setCardExpiry] = useState('');
@@ -52,6 +55,17 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
   const [cardFocused, setCardFocused] = useState(false); // Virar para o CVV
   const [installments, setInstallments] = useState('1');
   const [submittingPayment, setSubmittingPayment] = useState(false);
+  const [paymentError, setPaymentError] = useState('');
+  // Crypto
+  const [selectedCrypto, setSelectedCrypto] = useState<CryptoCurrency>('BTC');
+  // Payment result state
+  const [pixResult, setPixResult] = useState<PixResponse | null>(null);
+  const [boletoResult, setBoletoResult] = useState<BoletoResponse | null>(null);
+  const [cryptoResult, setCryptoResult] = useState<CryptoResponse | null>(null);
+  const [pixCountdown, setPixCountdown] = useState(0);
+  const [pixPaid, setPixPaid] = useState(false);
+  const [copiedPix, setCopiedPix] = useState(false);
+  const [copiedBarcode, setCopiedBarcode] = useState(false);
 
   // Upsell & Success State
   const [showUpsell, setShowUpsell] = useState(false);
@@ -65,21 +79,33 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
     }
   }, []);
 
-  // Timer do Pix QR Code
+  // Timer do Pix QR Code — agora baseado no expiresAt do PaymentService
   useEffect(() => {
-    if (step === 4 && paymentMethod === 'pix' && pixTimeRemaining > 0) {
-      const timer = setInterval(() => {
-        setPixTimeRemaining(prev => prev - 1);
-      }, 1000);
-      return () => clearInterval(timer);
-    }
-  }, [step, paymentMethod, pixTimeRemaining]);
+    if (!pixResult) return;
+    const secs = secondsUntil(pixResult.expiresAt);
+    setPixCountdown(secs);
+    if (secs <= 0) return;
+    const timer = setInterval(() => {
+      setPixCountdown(prev => {
+        if (prev <= 1) { clearInterval(timer); return 0; }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [pixResult]);
 
-  const formatPixTimer = (secs: number) => {
-    const mins = Math.floor(secs / 60);
-    const s = secs % 60;
-    return `${mins}:${s < 10 ? '0' : ''}${s}`;
-  };
+  // Polling de status do Pix a cada 5 segundos
+  useEffect(() => {
+    if (!pixResult || pixPaid || pixCountdown <= 0) return;
+    const poll = setInterval(async () => {
+      const status = await PaymentService.getStatus(pixResult.transactionId, pixResult.gateway);
+      if (status?.status === 'paid') {
+        setPixPaid(true);
+        clearInterval(poll);
+      }
+    }, 5000);
+    return () => clearInterval(poll);
+  }, [pixResult, pixPaid, pixCountdown]);
 
   // CEP Lookup Auto-complete
   const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -154,8 +180,8 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
 
   const handleConfirmOrder = async () => {
     setSubmittingPayment(true);
-    
-    // Total final somando o frete selecionado
+    setPaymentError('');
+
     const shipPrice = shippingMethod ? shippingMethod.price : 0;
     const finalTotal = cartTotal + (cartSubtotal >= 290 ? 0 : shipPrice);
 
@@ -168,50 +194,81 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
       image: item.product.images[0]
     }));
 
+    const customerInfo = { name, email, cpf: cpf.replace(/\D/g, ''), phone };
+    const addressInfo = { street: address, number, complement, neighborhood, city, state, zipCode: cep };
+
     try {
+      // 1. Criar pedido no banco
       const order = await api.createOrder({
-        customerName: name,
-        customerEmail: email,
-        customerPhone: phone,
-        customerCpf: cpf,
-        cep,
-        address,
-        number,
-        complement,
-        neighborhood,
-        city,
-        state,
+        customerName: name, customerEmail: email, customerPhone: phone, customerCpf: cpf,
+        cep, address, number, complement, neighborhood, city, state,
         shippingMethod: shippingMethod ? shippingMethod.name : 'PAC',
         shippingPrice: cartSubtotal >= 290 ? 0 : shipPrice,
         paymentMethod,
         couponCode: activeCoupon?.code,
-        items,
-        subtotal: cartSubtotal,
-        discount: discountAmount,
-        total: finalTotal
+        items, subtotal: cartSubtotal, discount: discountAmount, total: finalTotal
       });
 
       setCreatedOrder(order);
       setLastCreatedOrderId(order.id);
-
-      // Disparar Pixel Purchase
       tracking.purchase(order.id, items, cartSubtotal, discountAmount, finalTotal);
 
-      // Verificar se o pedido qualifica para o Upsell pós-compra
-      // Propomos oferecer o colar se eles não compraram colar ou upsell ja
-      const hasUpsellProduct = cart.some(item => item.product.id === POST_PURCHASE_UPSELL_PRODUCT.id);
-      
-      if (!hasUpsellProduct) {
-        // Abrir modal de Upsell pós-compra
-        setShowUpsell(true);
-      } else {
-        // Segue direto para sucesso
-        setStep(4);
-        clearCart();
+      // 2. Processar pagamento via PaymentService (com fallback automático)
+      if (paymentMethod === 'pix') {
+        const result = await PaymentService.process({
+          method: 'pix', orderId: order.id, amount: finalTotal,
+          customer: customerInfo,
+          description: `Pedido Amour & Co. #${order.id}`,
+          expirationMinutes: 15,
+        });
+        if (result.success && result.result.method === 'pix') {
+          setPixResult(result.result as PixResponse);
+        }
+      } else if (paymentMethod === 'card') {
+        const result = await PaymentService.process({
+          method: 'card', orderId: order.id, amount: finalTotal,
+          installments: parseInt(installments),
+          cardToken: `demo_token_${Date.now()}`, // Em produção: token do SDK do gateway
+          customer: customerInfo,
+        });
+        if (!result.success) {
+          setPaymentError(result.error);
+          setSubmittingPayment(false);
+          return;
+        }
+      } else if (paymentMethod === 'boleto') {
+        const result = await PaymentService.process({
+          method: 'boleto', orderId: order.id, amount: finalTotal,
+          customer: customerInfo,
+          address: addressInfo,
+          expirationDays: 3,
+        });
+        if (result.success && result.result.method === 'boleto') {
+          setBoletoResult(result.result as BoletoResponse);
+        }
+      } else if (paymentMethod === 'crypto') {
+        const result = await PaymentService.process({
+          method: 'crypto', orderId: order.id, amountBRL: finalTotal,
+          currency: selectedCrypto,
+          customerEmail: email,
+        });
+        if (result.success && result.result.method === 'crypto') {
+          setCryptoResult(result.result as CryptoResponse);
+        }
       }
 
-    } catch (err) {
+      // 3. Upsell pós-compra (exceto para cripto — pagamento ainda pendente)
+      const hasUpsellProduct = cart.some(item => item.product.id === POST_PURCHASE_UPSELL_PRODUCT.id);
+      if (!hasUpsellProduct && paymentMethod === 'card') {
+        setShowUpsell(true);
+      } else {
+        setStep(4);
+        if (paymentMethod === 'card') clearCart();
+      }
+
+    } catch (err: any) {
       console.error(err);
+      setPaymentError('Ocorreu um erro ao processar o pagamento. Tente novamente.');
     } finally {
       setSubmittingPayment(false);
     }
@@ -262,6 +319,16 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
   // Frete final
   const currentShippingCost = cartSubtotal >= 290 ? 0 : (shippingMethod ? shippingMethod.price : 0);
   const checkoutFinalTotal = cartTotal + currentShippingCost;
+
+  const copyToClipboard = (text: string, setter: (v: boolean) => void) => {
+    navigator.clipboard.writeText(text);
+    setter(true);
+    setTimeout(() => setter(false), 2000);
+  };
+
+  const CRYPTO_LABELS: Record<CryptoCurrency, string> = {
+    BTC: '₿ Bitcoin', ETH: 'Ξ Ethereum', USDT_TRC20: '💚 USDT TRC20', USDT_ERC20: '🔵 USDT ERC20',
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 min-h-screen">
@@ -535,51 +602,41 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 </div>
 
                 {/* Tabs */}
-                <div className="flex border border-white/10 rounded-xl overflow-hidden text-xs">
-                  <button
-                    type="button"
-                    onClick={() => setPaymentMethod('pix')}
-                    className={`flex-1 py-3 font-semibold text-center uppercase tracking-wider transition ${
-                      paymentMethod === 'pix' ? 'bg-gold-500/20 text-gold-400' : 'bg-white/2 hover:bg-white/5 text-gray-400'
-                    }`}
-                  >
-                    Pix (10% de Desconto)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPaymentMethod('card')}
-                    className={`flex-1 py-3 font-semibold text-center uppercase tracking-wider transition ${
-                      paymentMethod === 'card' ? 'bg-gold-500/20 text-gold-400' : 'bg-white/2 hover:bg-white/5 text-gray-400'
-                    }`}
-                  >
-                    Cartão de Crédito
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPaymentMethod('boleto')}
-                    className={`flex-1 py-3 font-semibold text-center uppercase tracking-wider transition ${
-                      paymentMethod === 'boleto' ? 'bg-gold-500/20 text-gold-400' : 'bg-white/2 hover:bg-white/5 text-gray-400'
-                    }`}
-                  >
-                    Boleto Bancário
-                  </button>
+                <div className="flex flex-wrap border border-white/10 rounded-xl overflow-hidden text-xs">
+                  {(['pix', 'card', 'boleto', 'crypto'] as const).map(m => (
+                    <button
+                      key={m}
+                      type="button"
+                      onClick={() => setPaymentMethod(m)}
+                      className={`flex-1 py-3 font-semibold text-center uppercase tracking-wider transition text-[10px] ${
+                        paymentMethod === m ? 'bg-gold-500/20 text-gold-400' : 'bg-white/2 hover:bg-white/5 text-gray-400'
+                      }`}
+                    >
+                      {m === 'pix' ? '⚡ Pix (10% off)'
+                       : m === 'card' ? '💳 Cartão'
+                       : m === 'boleto' ? '📄 Boleto'
+                       : '₿ Cripto'}
+                    </button>
+                  ))}
                 </div>
 
-                {/* Content based on payment method */}
+                {/* Pix */}
                 {paymentMethod === 'pix' && (
                   <div className="bg-white/2 border border-white/5 rounded-xl p-5 space-y-4 text-center">
                     <div className="mx-auto w-10 h-10 rounded-full bg-emerald-600/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-                      <Check size={18} />
+                      <Zap size={18} />
                     </div>
                     <div className="space-y-1">
                       <h4 className="text-xs font-bold text-white uppercase tracking-wider">Aprovação Instantânea via Pix</h4>
                       <p className="text-[10px] text-gray-400 max-w-sm mx-auto leading-relaxed">
-                        Pague com Pix e garanta aprovação imediata para que seu presente seja preparado e enviado mais rápido. Ganhe <span className="text-emerald-400 font-bold">10% de desconto</span> automático.
+                        Pague com Pix e garanta aprovação imediata. Ganhe <span className="text-emerald-400 font-bold">10% de desconto</span> automático.
+                        O QR Code será gerado após confirmar o pedido.
                       </p>
                     </div>
                   </div>
                 )}
 
+                {/* Boleto */}
                 {paymentMethod === 'boleto' && (
                   <div className="bg-white/2 border border-white/5 rounded-xl p-5 space-y-4 text-center">
                     <div className="mx-auto w-10 h-10 rounded-full bg-gold-600/10 border border-gold-500/20 flex items-center justify-center text-gold-400">
@@ -876,43 +933,101 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
             </div>
           </div>
 
-          {/* PIX QR CODE BLOCK (If PIX payment was selected) */}
-          {paymentMethod === 'pix' && (
+          {/* PIX QR CODE BLOCK */}
+          {paymentMethod === 'pix' && pixResult && (
             <div className="bg-white/5 border border-gold-500/20 rounded-2xl p-6 space-y-4 flex flex-col items-center">
-              <span className="text-[9px] uppercase tracking-wider text-gray-500 font-bold">Pague com Pix Copia e Cola</span>
-              
-              {/* Fake QR code placeholder box with premium styling */}
-              <div className="h-40 w-40 bg-white p-3 rounded-xl relative overflow-hidden flex items-center justify-center shadow-lg">
-                <img
-                  src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=00020101021226830014br.gov.bcb.pix25610014br.gov.bcb.pix0114concierge@amour.com5204000053039865406404.915802BR5910AmourCo6009SaoPaulo62070503AMR"
-                  alt="QR Code Pix"
-                  className="h-full w-full object-contain"
-                />
-              </div>
+              {pixPaid ? (
+                <div className="flex flex-col items-center gap-2 py-4">
+                  <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
+                    <Check size={24} className="text-emerald-400" />
+                  </div>
+                  <p className="text-emerald-400 font-bold text-sm uppercase tracking-wider">Pix Confirmado!</p>
+                  <p className="text-[10px] text-gray-400">Seu pagamento foi aprovado. Seu presente já está sendo preparado. 💛</p>
+                </div>
+              ) : (
+                <>
+                  <span className="text-[9px] uppercase tracking-wider text-gray-500 font-bold">Pague com Pix · {pixResult.isDemo && <span className="text-amber-400">MODO DEMO</span>}</span>
+                  <div className="h-44 w-44 bg-white p-2 rounded-xl shadow-lg">
+                    <img src={pixResult.qrCodeImage} alt="QR Code Pix" className="h-full w-full object-contain" />
+                  </div>
+                  <div className="text-[11px] text-gray-400 font-medium flex items-center gap-1.5">
+                    <RefreshCw size={10} className="text-gold-400 animate-spin" />
+                    Expira em: <span className="text-gold-400 font-bold">{formatCountdown(pixCountdown)}</span>
+                  </div>
+                  <div className="w-full flex gap-1.5">
+                    <input type="text" readOnly value={pixResult.copyPaste}
+                      className="flex-1 bg-luxury-black border border-white/10 rounded-lg px-3 py-2 text-[9px] text-gray-400 font-mono focus:outline-none truncate" />
+                    <button
+                      onClick={() => copyToClipboard(pixResult.copyPaste, setCopiedPix)}
+                      className="bg-gradient-gold text-luxury-black font-semibold text-[10px] px-4 py-2 rounded-lg hover:shadow-lg transition cursor-pointer shrink-0 flex items-center gap-1"
+                    >
+                      {copiedPix ? <><Check size={10} /> Copiado!</> : <><Copy size={10} /> Copiar</>}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
 
-              {/* Timer */}
-              <div className="text-[11px] text-gray-400 font-medium">
-                O QR Code expira em: <span className="text-gold-400 font-bold">{formatPixTimer(pixTimeRemaining)}</span>
+          {/* BOLETO BLOCK */}
+          {paymentMethod === 'boleto' && boletoResult && (
+            <div className="bg-white/5 border border-gold-500/20 rounded-2xl p-6 space-y-4">
+              <span className="text-[9px] uppercase tracking-wider text-gray-500 font-bold block text-center">
+                Boleto Gerado · {boletoResult.isDemo && <span className="text-amber-400">MODO DEMO</span>}
+              </span>
+              <div className="space-y-2">
+                <p className="text-[9px] uppercase text-gray-600">Linha Digitável</p>
+                <div className="flex gap-1.5">
+                  <input type="text" readOnly value={boletoResult.barcode}
+                    className="flex-1 bg-luxury-black border border-white/10 rounded-lg px-3 py-2 text-[9px] text-gray-400 font-mono focus:outline-none truncate" />
+                  <button
+                    onClick={() => copyToClipboard(boletoResult.barcode, setCopiedBarcode)}
+                    className="bg-gradient-gold text-luxury-black font-semibold text-[10px] px-3 py-2 rounded-lg transition cursor-pointer shrink-0 flex items-center gap-1"
+                  >
+                    {copiedBarcode ? <><Check size={10} /> Copiado!</> : <><Copy size={10} /></>}
+                  </button>
+                </div>
               </div>
-
-              {/* Copy & Paste Code */}
-              <div className="w-full flex gap-1.5">
-                <input
-                  type="text"
-                  readOnly
-                  value="00020101021226830014br.gov.bcb.pix25610014br.gov.bcb.pix0114concierge@amour.com5204000053039865406404.915802BR5910AmourCo6009SaoPaulo62070503AMR"
-                  className="flex-1 bg-luxury-black border border-white/10 rounded-lg px-3 py-2 text-[10px] text-gray-400 font-mono focus:outline-none select-all truncate"
-                />
-                <button
-                  onClick={() => {
-                    navigator.clipboard.writeText("00020101021226830014br.gov.bcb.pix25610014br.gov.bcb.pix0114concierge@amour.com5204000053039865406404.915802BR5910AmourCo6009SaoPaulo62070503AMR");
-                    alert('Código Pix copiado com sucesso!');
-                  }}
-                  className="bg-gradient-gold text-luxury-black font-semibold text-[10px] px-4 py-2 rounded-lg hover:shadow-lg transition cursor-pointer shrink-0"
+              <p className="text-[9px] text-gray-500 text-center">
+                Vencimento: {new Date(boletoResult.expiresAt).toLocaleDateString('pt-BR')} · Pague em qualquer banco
+              </p>
+              {boletoResult.pdfUrl && (
+                <a href={boletoResult.pdfUrl} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 w-full border border-white/10 py-2.5 rounded-lg text-[10px] text-gray-400 hover:text-white hover:border-white/20 transition"
                 >
-                  Copiar Código
-                </button>
+                  <Download size={12} /> Baixar PDF do Boleto
+                </a>
+              )}
+            </div>
+          )}
+
+          {/* CRYPTO BLOCK */}
+          {paymentMethod === 'crypto' && cryptoResult && (
+            <div className="bg-white/5 border border-orange-500/20 rounded-2xl p-6 space-y-4 flex flex-col items-center">
+              <span className="text-[9px] uppercase tracking-wider text-orange-400 font-bold">
+                {CRYPTO_LABELS[cryptoResult.currency]} · {cryptoResult.isDemo ? 'Endereço Demo' : 'Pagamento Cripto'}
+              </span>
+              <div className="h-40 w-40 bg-white p-2 rounded-xl shadow-lg">
+                <img src={cryptoResult.qrCodeImage} alt="Carteira Crypto" className="h-full w-full object-contain" />
               </div>
+              <div className="w-full space-y-2">
+                <p className="text-[10px] font-bold text-white text-center">
+                  Enviar exatamente: <span className="text-orange-400">{cryptoResult.cryptoAmount} {cryptoResult.currency.replace('_', ' ')}</span>
+                </p>
+                <div className="flex gap-1.5">
+                  <input type="text" readOnly value={cryptoResult.walletAddress}
+                    className="flex-1 bg-luxury-black border border-white/10 rounded-lg px-3 py-2 text-[9px] text-gray-400 font-mono focus:outline-none truncate" />
+                  <button
+                    onClick={() => copyToClipboard(cryptoResult.walletAddress, (v) => setCopiedPix(v))}
+                    className="bg-orange-500/80 text-white font-semibold text-[10px] px-3 py-2 rounded-lg transition cursor-pointer shrink-0 flex items-center gap-1"
+                  >
+                    {copiedPix ? <Check size={10} /> : <Copy size={10} />}
+                  </button>
+                </div>
+              </div>
+              <p className="text-[9px] text-gray-500">
+                Taxa: {cryptoResult.exchangeRate.toLocaleString('pt-BR')} BRL/{cryptoResult.currency.replace('_', ' ')} · Válido por 60 min
+              </p>
             </div>
           )}
 
