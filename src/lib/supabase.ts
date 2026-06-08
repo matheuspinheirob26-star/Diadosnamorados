@@ -1,6 +1,16 @@
+import { createClient } from '@supabase/supabase-js';
 import { Product, Order, Lead, Coupon, Review } from '../types';
 
-// Mock inicial de Produtos Premium
+// Carregar variáveis de ambiente do Vite
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+
+// Inicializar cliente do Supabase
+export const supabase = (supabaseUrl && supabaseAnonKey)
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
+
+// --- MOCK LOCALSTORAGE BACKUP (FALLBACK) ---
 const INITIAL_PRODUCTS: Product[] = [
   {
     id: 'kit-namorados-premium',
@@ -182,15 +192,13 @@ const INITIAL_PRODUCTS: Product[] = [
   }
 ];
 
-// Mock inicial de Cupons
 const INITIAL_COUPONS: Coupon[] = [
   { code: 'NAMORADOS10', type: 'percentage', value: 10, minPurchaseValue: 150, expiresAt: '2026-12-31', active: true },
   { code: 'BEMVINDO50', type: 'fixed', value: 50, minPurchaseValue: 300, expiresAt: '2026-12-31', active: true },
   { code: 'VIP20', type: 'percentage', value: 20, minPurchaseValue: 500, expiresAt: '2026-12-31', active: true },
-  { code: 'FRETEGRATIS', type: 'percentage', value: 0, minPurchaseValue: 200, expiresAt: '2026-12-31', active: true } // Tratado separadamente para abater o frete
+  { code: 'FRETEGRATIS', type: 'percentage', value: 0, minPurchaseValue: 200, expiresAt: '2026-12-31', active: true }
 ];
 
-// Mock inicial de Avaliações
 const INITIAL_REVIEWS: Review[] = [
   {
     id: 'rev-1',
@@ -213,32 +221,9 @@ const INITIAL_REVIEWS: Review[] = [
     verifiedPurchase: true,
     approved: true,
     createdAt: '2026-06-03T18:10:00Z'
-  },
-  {
-    id: 'rev-3',
-    productId: 'kit-momentos-dois',
-    customerName: 'Beatriz Costa',
-    rating: 4,
-    comment: 'Comprei para comemorar nosso aniversário de namoro e adoramos! O espumante é excelente e a vela aromática deixa o quarto com um perfume maravilhoso de baunilha. Só acho que as taças poderiam ser um pouco maiores, mas são lindas.',
-    photos: ['https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=300&auto=format&fit=crop'],
-    verifiedPurchase: true,
-    approved: true,
-    createdAt: '2026-05-28T20:15:00Z'
-  },
-  {
-    id: 'rev-4',
-    productId: 'relogio-chronographe',
-    customerName: 'Carlos Eduardo',
-    rating: 5,
-    comment: 'Um relógio robusto e elegante. O cronógrafo funciona perfeitamente, o material escovado é impecável e tem um peso que demonstra a qualidade. Veio super bem embalado no estojo de couro. Recomendo muito!',
-    photos: [],
-    verifiedPurchase: true,
-    approved: true,
-    createdAt: '2026-06-01T09:45:00Z'
   }
 ];
 
-// Mock inicial de Pedidos (para popular o Admin de início)
 const INITIAL_ORDERS: Order[] = [
   {
     id: 'AMR-7281',
@@ -272,56 +257,11 @@ const INITIAL_ORDERS: Order[] = [
     total: 424.81,
     status: 'paid',
     createdAt: '2026-06-06T15:30:00Z'
-  },
-  {
-    id: 'AMR-6512',
-    customerName: 'Fernanda Lima',
-    customerEmail: 'fernanda.lima@email.com',
-    customerPhone: '(21) 97123-4567',
-    customerCpf: '987.654.321-11',
-    cep: '22021-001',
-    address: 'Avenida Atlântica',
-    number: '500',
-    neighborhood: 'Copacabana',
-    city: 'Rio de Janeiro',
-    state: 'RJ',
-    shippingMethod: 'PAC (Econômico)',
-    shippingPrice: 12.50,
-    paymentMethod: 'card',
-    items: [
-      {
-        productId: 'kit-momentos-dois',
-        name: 'Kit Momentos a Dois Luxo',
-        price: 299.90,
-        quantity: 1,
-        image: 'https://images.unsplash.com/photo-1512909006721-3d6018887383?q=80&w=600&auto=format&fit=crop'
-      }
-    ],
-    subtotal: 299.90,
-    discount: 0,
-    total: 312.40,
-    status: 'shipped',
-    trackingCode: 'QI876543210BR',
-    createdAt: '2026-06-05T11:15:00Z'
   }
 ];
 
-// Mock inicial de Leads
-const INITIAL_LEADS: Lead[] = [
-  {
-    id: 'lead-1',
-    name: 'Juliana Ferreira',
-    email: 'juliana.f@hotmail.com',
-    phone: '(31) 98888-7777',
-    createdAt: '2026-06-07T10:12:00Z',
-    status: 'captured',
-    cartItems: [
-      { productId: 'bolsa-saffiano-eternelle', name: 'Bolsa Couro Saffiano Éternelle', price: 549.90, quantity: 1 }
-    ]
-  }
-];
+const INITIAL_LEADS: Lead[] = [];
 
-// Helper para ler/escrever do LocalStorage
 const getStorageItem = <T>(key: string, defaultValue: T): T => {
   const item = localStorage.getItem(key);
   if (!item) {
@@ -339,7 +279,6 @@ const setStorageItem = <T>(key: string, value: T): void => {
   localStorage.setItem(key, JSON.stringify(value));
 };
 
-// Inicializar banco local
 export const initializeMockDB = () => {
   getStorageItem('amr_products', INITIAL_PRODUCTS);
   getStorageItem('amr_coupons', INITIAL_COUPONS);
@@ -348,42 +287,134 @@ export const initializeMockDB = () => {
   getStorageItem('amr_leads', INITIAL_LEADS);
 };
 
-// Funções da API
+// --- API HÍBRIDA (SUPABASE COM FALLBACK LOCAL) ---
 export const api = {
-  // Produtos
+  // 1. PRODUTOS
   getProducts: async (): Promise<Product[]> => {
     initializeMockDB();
+    if (supabase) {
+      try {
+        const { data, error } = await supabase.from('products').select('*');
+        if (error) throw error;
+        if (data && data.length > 0) {
+          return data.map(p => ({
+            id: p.id,
+            name: p.name,
+            description: p.description,
+            price: Number(p.price),
+            originalPrice: Number(p.original_price),
+            images: p.images,
+            video: p.video || undefined,
+            category: p.category,
+            gender: p.gender as any,
+            tags: p.tags,
+            stock: p.stock,
+            rating: Number(p.rating),
+            reviewsCount: p.reviews_count,
+            features: p.features,
+            details: p.details,
+            sizes: p.sizes
+          }));
+        }
+      } catch (err) {
+        console.warn('Supabase getProducts falhou, usando mock local:', err);
+      }
+    }
     return getStorageItem('amr_products', INITIAL_PRODUCTS);
   },
 
   getProductById: async (id: string): Promise<Product | null> => {
+    if (supabase) {
+      try {
+        const { data, error } = await supabase.from('products').select('*').eq('id', id).single();
+        if (error) throw error;
+        if (data) {
+          return {
+            id: data.id,
+            name: data.name,
+            description: data.description,
+            price: Number(data.price),
+            originalPrice: Number(data.original_price),
+            images: data.images,
+            video: data.video || undefined,
+            category: data.category,
+            gender: data.gender as any,
+            tags: data.tags,
+            stock: data.stock,
+            rating: Number(data.rating),
+            reviewsCount: data.reviews_count,
+            features: data.features,
+            details: data.details,
+            sizes: data.sizes
+          };
+        }
+      } catch (err) {
+        console.warn(`Supabase getProductById (${id}) falhou, usando mock local:`, err);
+      }
+    }
     const products = await api.getProducts();
     return products.find(p => p.id === id) || null;
   },
 
-  saveProducts: async (products: Product[]): Promise<void> => {
-    setStorageItem('amr_products', products);
-  },
-
-  // Cupons
+  // 2. CUPONS
   getCoupons: async (): Promise<Coupon[]> => {
     initializeMockDB();
+    if (supabase) {
+      try {
+        const { data, error } = await supabase.from('coupons').select('*');
+        if (error) throw error;
+        if (data && data.length > 0) {
+          return data.map(c => ({
+            code: c.code,
+            type: c.type as any,
+            value: Number(c.value),
+            minPurchaseValue: Number(c.min_purchase_value),
+            expiresAt: c.expires_at,
+            active: c.active
+          }));
+        }
+      } catch (err) {
+        console.warn('Supabase getCoupons falhou, usando mock local:', err);
+      }
+    }
     return getStorageItem('amr_coupons', INITIAL_COUPONS);
   },
 
   createCoupon: async (coupon: Coupon): Promise<Coupon> => {
+    if (supabase) {
+      try {
+        const { error } = await supabase.from('coupons').upsert({
+          code: coupon.code,
+          type: coupon.type,
+          value: coupon.value,
+          min_purchase_value: coupon.minPurchaseValue,
+          expires_at: coupon.expiresAt,
+          active: coupon.active
+        });
+        if (error) throw error;
+      } catch (err) {
+        console.warn('Supabase createCoupon falhou, usando mock local:', err);
+      }
+    }
+    // Escrever no LocalStorage
     const coupons = await api.getCoupons();
-    // Remover duplicados
-    const newCoupons = coupons.filter(c => c.code !== coupon.code);
-    newCoupons.push(coupon);
-    setStorageItem('amr_coupons', newCoupons);
+    const filtered = coupons.filter(c => c.code !== coupon.code);
+    filtered.push(coupon);
+    setStorageItem('amr_coupons', filtered);
     return coupon;
   },
 
   deleteCoupon: async (code: string): Promise<void> => {
+    if (supabase) {
+      try {
+        const { error } = await supabase.from('coupons').delete().eq('code', code);
+        if (error) throw error;
+      } catch (err) {
+        console.warn('Supabase deleteCoupon falhou, usando mock local:', err);
+      }
+    }
     const coupons = await api.getCoupons();
-    const filtered = coupons.filter(c => c.code !== code);
-    setStorageItem('amr_coupons', filtered);
+    setStorageItem('amr_coupons', coupons.filter(c => c.code !== code));
   },
 
   validateCoupon: async (code: string, purchaseValue: number): Promise<{ isValid: boolean; message: string; coupon?: Coupon }> => {
@@ -400,7 +431,6 @@ export const api = {
       return { isValid: false, message: `Compra mínima para este cupom é R$ ${coupon.minPurchaseValue.toFixed(2)}.` };
     }
     
-    // Validar expiração (compara datas simples)
     const expDate = new Date(coupon.expiresAt);
     const today = new Date();
     if (expDate < today) {
@@ -410,10 +440,34 @@ export const api = {
     return { isValid: true, message: 'Cupom aplicado com sucesso!', coupon };
   },
 
-  // Avaliações
+  // 3. AVALIAÇÕES (REVIEWS)
   getReviews: async (productId?: string, onlyApproved = true): Promise<Review[]> => {
     initializeMockDB();
-    const reviews = getStorageItem('amr_reviews', INITIAL_REVIEWS);
+    if (supabase) {
+      try {
+        let query = supabase.from('reviews').select('*');
+        if (productId) query = query.eq('product_id', productId);
+        if (onlyApproved) query = query.eq('approved', true);
+        const { data, error } = await query.order('created_at', { ascending: false });
+        if (error) throw error;
+        if (data) {
+          return data.map(r => ({
+            id: r.id,
+            productId: r.product_id,
+            customerName: r.customer_name,
+            rating: r.rating,
+            comment: r.comment,
+            photos: r.photos,
+            verifiedPurchase: r.verified_purchase,
+            approved: r.approved,
+            createdAt: r.created_at
+          }));
+        }
+      } catch (err) {
+        console.warn('Supabase getReviews falhou, usando mock local:', err);
+      }
+    }
+    const reviews = getStorageItem<Review[]>('amr_reviews', INITIAL_REVIEWS);
     let filtered = reviews;
     if (productId) {
       filtered = filtered.filter(r => r.productId === productId);
@@ -425,26 +479,54 @@ export const api = {
   },
 
   createReview: async (review: Omit<Review, 'id' | 'createdAt' | 'approved'>): Promise<Review> => {
-    const reviews = getStorageItem<Review[]>('amr_reviews', INITIAL_REVIEWS);
     const newReview: Review = {
       ...review,
       id: `rev-${Math.random().toString(36).substr(2, 9)}`,
       createdAt: new Date().toISOString(),
-      approved: false // Inicialmente precisa de moderação pelo Admin
+      approved: false
     };
+
+    if (supabase) {
+      try {
+        const { error } = await supabase.from('reviews').insert({
+          id: newReview.id,
+          product_id: newReview.productId,
+          customer_name: newReview.customerName,
+          rating: newReview.rating,
+          comment: newReview.comment,
+          photos: newReview.photos,
+          verified_purchase: newReview.verifiedPurchase,
+          approved: newReview.approved,
+          created_at: newReview.createdAt
+        });
+        if (error) throw error;
+      } catch (err) {
+        console.warn('Supabase createReview falhou, usando mock local:', err);
+      }
+    }
+    
+    const reviews = getStorageItem<Review[]>('amr_reviews', INITIAL_REVIEWS);
     reviews.push(newReview);
     setStorageItem('amr_reviews', reviews);
     return newReview;
   },
 
   approveReview: async (reviewId: string): Promise<void> => {
+    if (supabase) {
+      try {
+        const { error } = await supabase.from('reviews').update({ approved: true }).eq('id', reviewId);
+        if (error) throw error;
+      } catch (err) {
+        console.warn('Supabase approveReview falhou, usando mock local:', err);
+      }
+    }
+
     const reviews = getStorageItem<Review[]>('amr_reviews', INITIAL_REVIEWS);
     const idx = reviews.findIndex(r => r.id === reviewId);
     if (idx !== -1) {
       reviews[idx].approved = true;
       setStorageItem('amr_reviews', reviews);
       
-      // Opcional: Atualizar a média do produto
       const products = getStorageItem<Product[]>('amr_products', INITIAL_PRODUCTS);
       const prodId = reviews[idx].productId;
       const prodIdx = products.findIndex(p => p.id === prodId);
@@ -459,51 +541,120 @@ export const api = {
   },
 
   deleteReview: async (reviewId: string): Promise<void> => {
+    if (supabase) {
+      try {
+        const { error } = await supabase.from('reviews').delete().eq('id', reviewId);
+        if (error) throw error;
+      } catch (err) {
+        console.warn('Supabase deleteReview falhou, usando mock local:', err);
+      }
+    }
     const reviews = getStorageItem<Review[]>('amr_reviews', INITIAL_REVIEWS);
-    const filtered = reviews.filter(r => r.id !== reviewId);
-    setStorageItem('amr_reviews', filtered);
+    setStorageItem('amr_reviews', reviews.filter(r => r.id !== reviewId));
   },
 
-  // Pedidos
+  // 4. PEDIDOS (ORDERS)
   getOrders: async (): Promise<Order[]> => {
     initializeMockDB();
-    const orders = getStorageItem('amr_orders', INITIAL_ORDERS);
+    if (supabase) {
+      try {
+        const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
+        if (error) throw error;
+        if (data) {
+          return data.map(o => ({
+            id: o.id,
+            customerName: o.customer_name,
+            customerEmail: o.customer_email,
+            customerPhone: o.customer_phone,
+            customerCpf: o.customer_cpf,
+            cep: o.cep,
+            address: o.address,
+            number: o.number,
+            complement: o.complement || undefined,
+            neighborhood: o.neighborhood,
+            city: o.city,
+            state: o.state,
+            shippingMethod: o.shipping_method,
+            shippingPrice: Number(o.shipping_price),
+            paymentMethod: o.payment_method as any,
+            couponCode: o.coupon_code || undefined,
+            items: typeof o.items === 'string' ? JSON.parse(o.items) : o.items,
+            subtotal: Number(o.subtotal),
+            discount: Number(o.discount),
+            total: Number(o.total),
+            status: o.status as any,
+            trackingCode: o.tracking_code || undefined,
+            createdAt: o.created_at
+          }));
+        }
+      } catch (err) {
+        console.warn('Supabase getOrders falhou, usando mock local:', err);
+      }
+    }
+    const orders = getStorageItem<Order[]>('amr_orders', INITIAL_ORDERS);
     return orders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   },
 
   createOrder: async (orderData: Omit<Order, 'id' | 'createdAt' | 'status'>): Promise<Order> => {
-    const orders = getStorageItem<Order[]>('amr_orders', INITIAL_ORDERS);
     const newOrder: Order = {
       ...orderData,
       id: `AMR-${Math.floor(1000 + Math.random() * 9000)}`,
       status: 'pending',
       createdAt: new Date().toISOString()
     };
-    orders.push(newOrder);
-    setStorageItem('amr_orders', orders);
 
-    // Abater do estoque dos produtos comprados
-    const products = getStorageItem<Product[]>('amr_products', INITIAL_PRODUCTS);
-    newOrder.items.forEach(item => {
-      const idx = products.findIndex(p => p.id === item.productId);
-      if (idx !== -1) {
-        products[idx].stock = Math.max(0, products[idx].stock - item.quantity);
+    if (supabase) {
+      try {
+        const { error } = await supabase.from('orders').insert({
+          id: newOrder.id,
+          customer_name: newOrder.customerName,
+          customer_email: newOrder.customerEmail,
+          customer_phone: newOrder.customerPhone,
+          customer_cpf: newOrder.customerCpf,
+          cep: newOrder.cep,
+          address: newOrder.address,
+          number: newOrder.number,
+          complement: newOrder.complement || null,
+          neighborhood: newOrder.neighborhood,
+          city: newOrder.city,
+          state: newOrder.state,
+          shipping_method: newOrder.shippingMethod,
+          shipping_price: newOrder.shippingPrice,
+          payment_method: newOrder.paymentMethod,
+          coupon_code: newOrder.couponCode || null,
+          items: newOrder.items,
+          subtotal: newOrder.subtotal,
+          discount: newOrder.discount,
+          total: newOrder.total,
+          status: newOrder.status,
+          tracking_code: newOrder.trackingCode || null,
+          created_at: newOrder.createdAt
+        });
+        if (error) throw error;
+      } catch (err) {
+        console.warn('Supabase createOrder falhou, usando mock local:', err);
       }
-    });
-    setStorageItem('amr_products', products);
-
-    // Se o cliente comprou, podemos remover o lead ou mudar o status dele
-    const leads = getStorageItem<Lead[]>('amr_leads', INITIAL_LEADS);
-    const leadIdx = leads.findIndex(l => l.email.toLowerCase() === orderData.customerEmail.toLowerCase());
-    if (leadIdx !== -1) {
-      leads[leadIdx].status = 'purchased';
-      setStorageItem('amr_leads', leads);
     }
 
+    const orders = getStorageItem<Order[]>('amr_orders', INITIAL_ORDERS);
+    orders.push(newOrder);
+    setStorageItem('amr_orders', orders);
     return newOrder;
   },
 
   updateOrderStatus: async (orderId: string, status: Order['status'], trackingCode?: string): Promise<void> => {
+    if (supabase) {
+      try {
+        const { error } = await supabase.from('orders').update({
+          status,
+          tracking_code: trackingCode || null
+        }).eq('id', orderId);
+        if (error) throw error;
+      } catch (err) {
+        console.warn('Supabase updateOrderStatus falhou, usando mock local:', err);
+      }
+    }
+
     const orders = getStorageItem<Order[]>('amr_orders', INITIAL_ORDERS);
     const idx = orders.findIndex(o => o.id === orderId);
     if (idx !== -1) {
@@ -515,20 +666,79 @@ export const api = {
     }
   },
 
-  // Leads
+  // 5. LEADS
   getLeads: async (): Promise<Lead[]> => {
     initializeMockDB();
+    if (supabase) {
+      try {
+        const { data, error } = await supabase.from('leads').select('*').order('created_at', { ascending: false });
+        if (error) throw error;
+        if (data) {
+          return data.map(l => ({
+            id: l.id,
+            name: l.name,
+            email: l.email,
+            phone: l.phone,
+            status: l.status as any,
+            cartItems: typeof l.cart_items === 'string' ? JSON.parse(l.cart_items) : l.cart_items,
+            createdAt: l.created_at
+          }));
+        }
+      } catch (err) {
+        console.warn('Supabase getLeads falhou, usando mock local:', err);
+      }
+    }
     return getStorageItem('amr_leads', INITIAL_LEADS);
   },
 
   createLead: async (leadData: Omit<Lead, 'id' | 'createdAt' | 'status'>): Promise<Lead> => {
+    const id = `lead-${Math.random().toString(36).substr(2, 9)}`;
+    const createdAt = new Date().toISOString();
+
+    if (supabase) {
+      try {
+        // Verificar se lead já existe
+        const { data: existing } = await supabase.from('leads').select('id, status').eq('email', leadData.email).single();
+        
+        if (existing) {
+          const { error } = await supabase.from('leads').update({
+            name: leadData.name,
+            phone: leadData.phone,
+            cart_items: leadData.cartItems,
+            status: existing.status === 'purchased' ? 'captured' : existing.status
+          }).eq('id', existing.id);
+          
+          if (error) throw error;
+          return {
+            id: existing.id,
+            name: leadData.name,
+            email: leadData.email,
+            phone: leadData.phone,
+            status: existing.status === 'purchased' ? 'captured' : existing.status,
+            cartItems: leadData.cartItems,
+            createdAt
+          };
+        } else {
+          const { error } = await supabase.from('leads').insert({
+            id,
+            name: leadData.name,
+            email: leadData.email,
+            phone: leadData.phone,
+            status: 'captured',
+            cart_items: leadData.cartItems,
+            created_at: createdAt
+          });
+          if (error) throw error;
+        }
+      } catch (err) {
+        console.warn('Supabase createLead falhou, usando mock local:', err);
+      }
+    }
+
+    // Escrita LocalStorage Fallback
     const leads = getStorageItem<Lead[]>('amr_leads', INITIAL_LEADS);
-    
-    // Procurar por lead com o mesmo email para atualizar
     const idx = leads.findIndex(l => l.email.toLowerCase() === leadData.email.toLowerCase());
-    
     if (idx !== -1) {
-      // Atualiza o lead existente (mas se já for 'purchased', mantém se for novo carrinho abandonado)
       const currentStatus = leads[idx].status;
       leads[idx] = {
         ...leads[idx],
@@ -540,12 +750,11 @@ export const api = {
       setStorageItem('amr_leads', leads);
       return leads[idx];
     } else {
-      // Cria novo lead
       const newLead: Lead = {
         ...leadData,
-        id: `lead-${Math.random().toString(36).substr(2, 9)}`,
+        id,
         status: 'captured',
-        createdAt: new Date().toISOString()
+        createdAt
       };
       leads.push(newLead);
       setStorageItem('amr_leads', leads);
@@ -554,6 +763,15 @@ export const api = {
   },
 
   updateLeadStatus: async (leadId: string, status: Lead['status']): Promise<void> => {
+    if (supabase) {
+      try {
+        const { error } = await supabase.from('leads').update({ status }).eq('id', leadId);
+        if (error) throw error;
+      } catch (err) {
+        console.warn('Supabase updateLeadStatus falhou, usando mock local:', err);
+      }
+    }
+
     const leads = getStorageItem<Lead[]>('amr_leads', INITIAL_LEADS);
     const idx = leads.findIndex(l => l.id === leadId);
     if (idx !== -1) {
