@@ -16,9 +16,42 @@ import { NotificationPopup } from './components/ui/NotificationPopup';
 import { NewsletterPopup } from './components/ui/NewsletterPopup';
 import { captureUTMParameters, tracking } from './lib/tracking';
 import { MessageCircle } from 'lucide-react';
+const getPageFromPath = (path: string): string => {
+  const p = path.toLowerCase();
+  if (p === '/catalog') return 'catalog';
+  if (p === '/checkout') return 'checkout';
+  if (p === '/admin') return 'admin';
+  if (p === '/login') return 'login';
+  if (p === '/institutional') return 'institutional';
+  if (p.startsWith('/product/')) {
+    const productId = path.split('/product/')[1];
+    return `product-${productId}`;
+  }
+  return 'home';
+};
+
+const getPathFromPage = (page: string): string => {
+  if (page === 'home') return '/';
+  if (page === 'catalog') return '/catalog';
+  if (page === 'checkout') return '/checkout';
+  if (page === 'admin') return '/admin';
+  if (page === 'login') return '/login';
+  if (page === 'institutional') return '/institutional';
+  if (page.startsWith('product-')) {
+    const id = page.replace('product-', '');
+    return `/product/${id}`;
+  }
+  return '/';
+};
 
 function AppContent() {
-  const [currentPage, setCurrentPage] = useState('home'); // home, catalog, product-[id], checkout, institutional, admin
+  const [currentPage, setCurrentPage] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return getPageFromPath(window.location.pathname);
+    }
+    return 'home';
+  });
+  
   const [cartOpen, setCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [institutionalTab, setInstitutionalTab] = useState('sobre');
@@ -29,13 +62,26 @@ function AppContent() {
   useEffect(() => {
     // Capturar parâmetros de UTM da URL
     captureUTMParameters();
+    
+    // Escutar eventos de voltar/avançar no navegador
+    const handlePopState = () => {
+      setCurrentPage(getPageFromPath(window.location.pathname));
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // Monitorar navegação para disparar Pixel PageView
+  // Monitorar navegação para disparar Pixel PageView e atualizar URL do navegador
   useEffect(() => {
     tracking.pageView(currentPage);
-    // Rolagem para o topo ao trocar de página
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (typeof window !== 'undefined') {
+      const expectedPath = getPathFromPage(currentPage);
+      if (window.location.pathname !== expectedPath) {
+        window.history.pushState(null, '', expectedPath);
+      }
+    }
   }, [currentPage]);
 
   const handleNavigate = (page: string, tab?: string) => {
