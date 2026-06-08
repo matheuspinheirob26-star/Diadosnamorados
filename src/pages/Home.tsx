@@ -71,11 +71,18 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             
       {/* 1. HERO SECTION */}
       <section className="relative min-h-[90vh] flex items-center justify-center pt-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        {/* Imagem de Fundo do Hero (Personalizada ou Campanha) */}
+        {/* Imagem de Fundo do Hero (Desktop) */}
         {(config.heroBannerDesktop || (currentCampaign as any).heroImage) && (
           <div 
-            className="absolute inset-0 bg-cover bg-center opacity-40 transition-all duration-700" 
+            className="hidden sm:block absolute inset-0 bg-cover bg-center opacity-40 transition-all duration-700" 
             style={{ backgroundImage: `url(${config.heroBannerDesktop || (currentCampaign as any).heroImage})` }} 
+          />
+        )}
+        {/* Imagem de Fundo do Hero (Mobile) */}
+        {(config.heroBannerMobile || config.heroBannerDesktop || (currentCampaign as any).heroImage) && (
+          <div 
+            className="block sm:hidden absolute inset-0 bg-cover bg-center opacity-40 transition-all duration-700" 
+            style={{ backgroundImage: `url(${config.heroBannerMobile || config.heroBannerDesktop || (currentCampaign as any).heroImage})` }} 
           />
         )}
         <div className="absolute inset-0 bg-gradient-luxury opacity-80" />
