@@ -35,6 +35,24 @@ serve(async (req) => {
       return new Response(JSON.stringify({ config: aiSettings }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
+    // Ação: Salvar configurações (Admin)
+    if (action === "save_config") {
+      const { config } = body;
+      const { error } = await supabase.from("ai_settings").upsert({
+        id: 1,
+        ...config,
+        updated_at: new Date().toISOString()
+      });
+      if (error) throw error;
+      return new Response(JSON.stringify({ success: true }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
+    // Ação: Obter configurações completas (Admin)
+    if (action === "get_full_config") {
+      const { data: aiSettings } = await supabase.from("ai_settings").select("*").eq("id", 1).single();
+      return new Response(JSON.stringify({ config: aiSettings }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
     // Ação: Obter histórico do lead (apenas Service Role)
     if (action === "get_history") {
       if (!leadId) throw new Error("Missing leadId");

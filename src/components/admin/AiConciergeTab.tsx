@@ -21,15 +21,20 @@ export const AiConciergeTab: React.FC = () => {
   const loadConfig = async () => {
     setLoading(true);
     if (supabase) {
-      const { data, error } = await supabase.from('ai_settings').select('*').eq('id', 1).single();
-      if (data) {
-        setConfig({
-          gemini_api_key: data.gemini_api_key || '',
-          ai_name: data.ai_name || 'Concierge',
-          ai_greeting: data.ai_greeting || '',
-          ai_prompt: data.ai_prompt || '',
-          human_whatsapp: data.human_whatsapp || ''
-        });
+      try {
+        const response = await supabase.functions.invoke('chat-concierge', { body: { action: 'get_full_config' } });
+        if (response.data && response.data.config) {
+          const data = response.data.config;
+          setConfig({
+            gemini_api_key: data.gemini_api_key || '',
+            ai_name: data.ai_name || 'Concierge',
+            ai_greeting: data.ai_greeting || '',
+            ai_prompt: data.ai_prompt || '',
+            human_whatsapp: data.human_whatsapp || ''
+          });
+        }
+      } catch (err) {
+        console.error("Erro ao carregar configurações:", err);
       }
     }
     setLoading(false);
@@ -38,21 +43,25 @@ export const AiConciergeTab: React.FC = () => {
   const handleSave = async () => {
     setSaving(true);
     if (supabase) {
-      const { error } = await supabase.from('ai_settings').upsert({
-        id: 1,
-        gemini_api_key: config.gemini_api_key,
-        ai_name: config.ai_name,
-        ai_greeting: config.ai_greeting,
-        ai_prompt: config.ai_prompt,
-        human_whatsapp: config.human_whatsapp,
-        updated_at: new Date().toISOString()
-      });
-
-      if (error) {
-        alert('Erro ao salvar as configurações.');
-        console.error(error);
-      } else {
+      try {
+        const response = await supabase.functions.invoke('chat-concierge', {
+          body: {
+            action: 'save_config',
+            config: {
+              gemini_api_key: config.gemini_api_key,
+              ai_name: config.ai_name,
+              ai_greeting: config.ai_greeting,
+              ai_prompt: config.ai_prompt,
+              human_whatsapp: config.human_whatsapp,
+            }
+          }
+        });
+        
+        if (response.error) throw response.error;
         alert('Configurações salvas com sucesso!');
+      } catch (error) {
+        alert('Erro ao salvar as configurações. Verifique os logs.');
+        console.error(error);
       }
     }
     setSaving(false);

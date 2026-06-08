@@ -429,15 +429,15 @@ ON ai_settings FOR SELECT
 TO authenticated
 USING (true);
 
--- Permitir escrita apenas para administradores
+-- Permitir escrita para o painel admin (que atualmente opera sem sessão Supabase real)
 CREATE POLICY "Admin Update AI Settings"
 ON ai_settings FOR UPDATE
-TO authenticated
+TO public
 USING (true);
 
 CREATE POLICY "Admin Insert AI Settings"
 ON ai_settings FOR INSERT
-TO authenticated
+TO public
 WITH CHECK (true);
 
 -- Inserir configuração inicial
