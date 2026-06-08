@@ -82,7 +82,10 @@ export const CampaignProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Inicializa a partir do localStorage ou o default 'namorados'
   const [activeCampaignType, setActiveCampaignType] = useState<CampaignType>(() => {
     const stored = localStorage.getItem('amr_active_campaign');
-    return (stored as CampaignType) || 'namorados';
+    if (stored && stored in CAMPAIGNS) {
+      return stored as CampaignType;
+    }
+    return 'namorados';
   });
 
   const setCampaign = (type: CampaignType) => {
