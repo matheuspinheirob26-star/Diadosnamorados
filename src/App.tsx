@@ -17,32 +17,43 @@ import { NewsletterPopup } from './components/ui/NewsletterPopup';
 import { captureUTMParameters, tracking } from './lib/tracking';
 import { MessageCircle } from 'lucide-react';
 const getPageFromPath = (path: string): string => {
-  const cleanPath = path.endsWith('/') && path.length > 1 ? path.slice(0, -1) : path;
-  const p = cleanPath.toLowerCase();
+  // Suporte a hash routing fallback (útil para Vercel sem rewrite ativo)
+  let cleanPath = path;
+  if (typeof window !== 'undefined' && window.location.hash) {
+    cleanPath = window.location.hash.replace('#', '');
+  }
+  
+  const cleanPathNoSlash = cleanPath.endsWith('/') && cleanPath.length > 1 ? cleanPath.slice(0, -1) : cleanPath;
+  const p = cleanPathNoSlash.toLowerCase();
   if (p === '/catalog') return 'catalog';
   if (p === '/checkout') return 'checkout';
   if (p === '/admin') return 'admin';
   if (p === '/login') return 'login';
   if (p === '/institutional') return 'institutional';
   if (p.startsWith('/product/')) {
-    const productId = cleanPath.split('/product/')[1];
+    const productId = cleanPathNoSlash.split('/product/')[1];
     return `product-${productId}`;
   }
   return 'home';
 };
 
 const getPathFromPage = (page: string): string => {
-  if (page === 'home') return '/';
-  if (page === 'catalog') return '/catalog';
-  if (page === 'checkout') return '/checkout';
-  if (page === 'admin') return '/admin';
-  if (page === 'login') return '/login';
-  if (page === 'institutional') return '/institutional';
+  const isVercel = typeof window !== 'undefined' && window.location.hostname.includes('vercel.app');
+  // Se estamos na Vercel ou já usando hash, manter hash para rotas seguras contra 404
+  const useHash = isVercel || (typeof window !== 'undefined' && !!window.location.hash);
+  const prefix = useHash ? '#' : '';
+
+  if (page === 'home') return useHash ? '#/' : '/';
+  if (page === 'catalog') return prefix + '/catalog';
+  if (page === 'checkout') return prefix + '/checkout';
+  if (page === 'admin') return prefix + '/admin';
+  if (page === 'login') return prefix + '/login';
+  if (page === 'institutional') return prefix + '/institutional';
   if (page.startsWith('product-')) {
     const id = page.replace('product-', '');
-    return `/product/${id}`;
+    return prefix + `/product/${id}`;
   }
-  return '/';
+  return useHash ? '#/' : '/';
 };
 
 function AppContent() {
@@ -64,12 +75,19 @@ function AppContent() {
     // Capturar parâmetros de UTM da URL
     captureUTMParameters();
     
-    // Escutar eventos de voltar/avançar no navegador
+    // Escutar eventos de voltar/avançar no navegador (suporte a path e hash)
     const handlePopState = () => {
       setCurrentPage(getPageFromPath(window.location.pathname));
     };
+    const handleHashChange = () => {
+      setCurrentPage(getPageFromPath(window.location.pathname));
+    };
     window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', handleHashChange);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handleHashChange);
+    };
   }, []);
 
   // Monitorar navegação para disparar Pixel PageView e atualizar URL do navegador
@@ -79,7 +97,9 @@ function AppContent() {
 
     if (typeof window !== 'undefined') {
       const expectedPath = getPathFromPage(currentPage);
-      if (window.location.pathname !== expectedPath) {
+      // Evitar loop infinito comparando com a localização correta (seja path ou hash)
+      const currentFullUrl = window.location.hash ? window.location.hash : window.location.pathname;
+      if (currentFullUrl !== expectedPath) {
         window.history.pushState(null, '', expectedPath);
       }
     }
