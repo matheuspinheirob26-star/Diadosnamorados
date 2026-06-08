@@ -64,8 +64,8 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
           {/* Logo Section */}
           <div className="flex-1 md:flex-initial flex justify-center md:justify-start cursor-pointer" onClick={() => onNavigate('home')}>
             <div className="text-center md:text-left">
-              {config.logoLight ? (
-                <img src={config.logoLight} alt={config.storeName} className="h-8 md:h-10 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.1)]" />
+              {(config.logoLight || config.logoDark) ? (
+                <img src={config.logoLight || config.logoDark} alt={config.storeName} className="h-8 md:h-10 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.1)]" />
               ) : (
                 <>
                   <span className="font-serif text-2xl tracking-widest font-light text-gradient-gold uppercase block">

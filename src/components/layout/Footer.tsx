@@ -72,9 +72,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           
           {/* Brand Col */}
           <div>
-            <h3 className="font-serif text-2xl tracking-widest text-gold-400 uppercase mb-6">
-              {config.storeName}
-            </h3>
+            {(config.logoLight || config.logoDark) ? (
+              <img src={config.logoLight || config.logoDark} alt={config.storeName} className="h-8 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.1)] mb-6" />
+            ) : (
+              <h3 className="font-serif text-2xl tracking-widest text-gold-400 uppercase mb-6">
+                {config.storeName}
+              </h3>
+            )}
             <p className="text-gray-400 text-sm font-light leading-relaxed mb-6">
               {config.slogan}
             </p>
