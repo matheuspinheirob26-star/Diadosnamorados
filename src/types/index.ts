@@ -1,3 +1,13 @@
+export interface ProductVariation {
+  id: string;
+  type: 'tamanho' | 'cor' | 'modelo' | 'fragrancia' | 'embalagem';
+  name: string;
+  priceAddition: number;
+  stock: number;
+  sku: string;
+  active: boolean;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -15,7 +25,7 @@ export interface Product {
   features: string[]; // Itens que compõem o kit ou características
   details: string; // Descrição longa do produto
   sizes?: string[]; // Tamanhos disponíveis (ex: P, M, G, GG)
-  status?: 'ativo' | 'inativo';
+  status?: 'rascunho' | 'publicado' | 'arquivado';
   featured?: boolean;
   campaign?: string; // id da campanha
   slug?: string;
@@ -24,12 +34,19 @@ export interface Product {
   seoDescription?: string;
   colors?: string[]; // Variações de cor
   models?: string[]; // Variações de modelo
+  variations?: ProductVariation[];
+  minStock?: number;
+  allowOutOfStockSale?: boolean;
+  canonicalUrl?: string;
+  keyword?: string;
+  indexing?: 'index' | 'noindex';
 }
 
 export interface CartItem {
   product: Product;
   quantity: number;
   selectedSize?: string;
+  selectedVariations?: Record<string, string>;
 }
 
 export interface Order {

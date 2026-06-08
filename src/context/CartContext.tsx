@@ -41,9 +41,9 @@ export const POST_PURCHASE_UPSELL_PRODUCT: Product = {
 
 interface CartContextProps {
   cart: CartItem[];
-  addToCart: (product: Product, quantity?: number, selectedSize?: string) => void;
-  removeFromCart: (productId: string, size?: string) => void;
-  updateQuantity: (productId: string, quantity: number, size?: string) => void;
+  addToCart: (product: Product, quantity?: number, selectedSize?: string, selectedVariations?: Record<string, string>) => void;
+  removeFromCart: (productId: string, size?: string, variationKey?: string) => void;
+  updateQuantity: (productId: string, quantity: number, size?: string, variationKey?: string) => void;
   clearCart: () => void;
   cartSubtotal: number;
   cartTotal: number;
@@ -103,8 +103,22 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('amr_order_bump_active', String(orderBumpSelected));
   }, [orderBumpSelected]);
 
+  // Helper: calcular preço efetivo de um item (base + acréscimos de variações)
+  const calcItemPrice = (item: CartItem): number => {
+    let price = item.product.price;
+    if (item.selectedVariations && item.product.variations) {
+      Object.values(item.selectedVariations).forEach(varId => {
+        const variation = item.product.variations!.find(v => v.id === varId);
+        if (variation && variation.active) {
+          price += variation.priceAddition;
+        }
+      });
+    }
+    return price;
+  };
+
   // Subtotal sem frete ou cupons
-  const cartSubtotal = cart.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
+  const cartSubtotal = cart.reduce((acc, item) => acc + calcItemPrice(item) * item.quantity, 0);
 
   // Frete grátis
   const isFreeShipping = cartSubtotal >= freeShippingThreshold;
@@ -119,18 +133,25 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const cartTotal = Math.max(0, cartSubtotal - discountAmount);
 
+  // Helper: gerar chave única para combinar produto + tamanho + variações
+  const makeItemKey = (productId: string, selectedSize?: string, selectedVariations?: Record<string, string>) => {
+    const varKey = selectedVariations ? JSON.stringify(Object.entries(selectedVariations).sort()) : '';
+    return `${productId}__${selectedSize ?? ''}__${varKey}`;
+  };
+
   // Adicionar ao Carrinho
-  const addToCart = (product: Product, quantity = 1, selectedSize?: string) => {
+  const addToCart = (product: Product, quantity = 1, selectedSize?: string, selectedVariations?: Record<string, string>) => {
     setCart(prevCart => {
+      const key = makeItemKey(product.id, selectedSize, selectedVariations);
       const existingIdx = prevCart.findIndex(
-        item => item.product.id === product.id && item.selectedSize === selectedSize
+        item => makeItemKey(item.product.id, item.selectedSize, item.selectedVariations) === key
       );
 
       let newCart = [...prevCart];
       if (existingIdx !== -1) {
         newCart[existingIdx].quantity += quantity;
       } else {
-        newCart.push({ product, quantity, selectedSize });
+        newCart.push({ product, quantity, selectedSize, selectedVariations });
       }
 
       tracking.addToCart(product.id, product.name, product.price, quantity);
@@ -139,9 +160,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Remover do Carrinho
-  const removeFromCart = (productId: string, size?: string) => {
+  const removeFromCart = (productId: string, size?: string, variationKey?: string) => {
     setCart(prevCart => {
-      const newCart = prevCart.filter(item => !(item.product.id === productId && item.selectedSize === size));
+      const newCart = prevCart.filter(item => {
+        const key = makeItemKey(item.product.id, item.selectedSize, item.selectedVariations);
+        const targetKey = variationKey ?? makeItemKey(productId, size, undefined);
+        if (variationKey) {
+          return key !== variationKey;
+        }
+        return !(item.product.id === productId && item.selectedSize === size && !item.selectedVariations);
+      });
       if (productId === ORDER_BUMP_PRODUCT.id) {
         setOrderBumpSelected(false);
       }
@@ -150,13 +178,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Atualizar Quantidade
-  const updateQuantity = (productId: string, quantity: number, size?: string) => {
+  const updateQuantity = (productId: string, quantity: number, size?: string, variationKey?: string) => {
     if (quantity <= 0) {
-      removeFromCart(productId, size);
+      removeFromCart(productId, size, variationKey);
       return;
     }
     setCart(prevCart => {
-      const idx = prevCart.findIndex(item => item.product.id === productId && item.selectedSize === size);
+      const idx = prevCart.findIndex(item => {
+        if (variationKey) {
+          return makeItemKey(item.product.id, item.selectedSize, item.selectedVariations) === variationKey;
+        }
+        return item.product.id === productId && item.selectedSize === size && !item.selectedVariations;
+      });
       if (idx !== -1) {
         const newCart = [...prevCart];
         newCart[idx].quantity = quantity;

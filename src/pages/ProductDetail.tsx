@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Product } from '../types';
+import React, { useEffect, useState, useMemo } from 'react';
+import { Product, ProductVariation } from '../types';
 import { api } from '../lib/supabase';
 import { useCart } from '../context/CartContext';
 import { tracking } from '../lib/tracking';
@@ -7,7 +7,10 @@ import { formatCurrency, simulateShipping, ShippingOption } from '../lib/utils';
 import { ProductGallery } from '../components/product/ProductGallery';
 import { ReviewsSection } from '../components/product/ReviewsSection';
 import { SizeModal } from '../components/product/SizeModal';
-import { Star, Truck, ShieldCheck, RefreshCw, MessageCircle, HelpCircle, ArrowLeft, Ruler, AlertCircle } from 'lucide-react';
+import {
+  Star, Truck, ShieldCheck, RefreshCw, MessageCircle, ArrowLeft,
+  Ruler, AlertCircle, Flame, Sparkles, PackageX, AlertTriangle, Plus
+} from 'lucide-react';
 import { ProductCard } from '../components/product/ProductCard';
 
 interface ProductDetailProps {
@@ -23,6 +26,9 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   
+  // Variações selecionadas: Record<type, variationId>
+  const [selectedVariations, setSelectedVariations] = useState<Record<string, string>>({});
+
   // CEP Shipping
   const [cep, setCep] = useState('');
   const [shippingOptions, setShippingOptions] = useState<ShippingOption[]>([]);
@@ -39,29 +45,75 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
       setProduct(data);
       
       if (data) {
-        // Disparar Pixel ViewContent
         tracking.viewContent(data.id, data.name, data.price);
         
-        // Carregar similares
         const all = await api.getProducts();
         const related = all
-          .filter(p => p.id !== data.id && (p.category === data.category || p.gender === data.gender))
+          .filter(p => p.id !== data.id && (!p.status || p.status === 'publicado') && (p.category === data.category || p.gender === data.gender))
           .slice(0, 4);
         setRelatedProducts(related);
 
-        // Se tiver tamanhos, pré-selecionar o primeiro
         if (data.sizes && data.sizes.length > 0) {
           setSelectedSize(data.sizes[0]);
         } else {
           setSelectedSize('');
         }
+
+        // Pré-selecionar primeira variação ativa de cada tipo
+        if (data.variations && data.variations.length > 0) {
+          const activeVars = data.variations.filter(v => v.active);
+          const types = [...new Set(activeVars.map(v => v.type))];
+          const initial: Record<string, string> = {};
+          types.forEach(type => {
+            const first = activeVars.find(v => v.type === type);
+            if (first) initial[type] = first.id;
+          });
+          setSelectedVariations(initial);
+        } else {
+          setSelectedVariations({});
+        }
       }
       setLoading(false);
-      // Rolar para o topo
       window.scrollTo(0, 0);
     };
     loadProductData();
   }, [productId]);
+
+  // Calcular preço efetivo com acréscimos de variações
+  const effectivePrice = useMemo(() => {
+    if (!product) return 0;
+    let price = product.price;
+    if (product.variations) {
+      Object.values(selectedVariations).forEach(varId => {
+        const variation = product.variations!.find(v => v.id === varId);
+        if (variation && variation.active) {
+          price += variation.priceAddition;
+        }
+      });
+    }
+    return price;
+  }, [product, selectedVariations]);
+
+  // Agrupar variações ativas por tipo
+  const variationsByType = useMemo(() => {
+    if (!product?.variations) return {} as Record<string, ProductVariation[]>;
+    const active = product.variations.filter(v => v.active);
+    return active.reduce((acc, v) => {
+      if (!acc[v.type]) acc[v.type] = [];
+      acc[v.type].push(v);
+      return acc;
+    }, {} as Record<string, ProductVariation[]>);
+  }, [product]);
+
+  const variationTypes = Object.keys(variationsByType);
+
+  const typeLabels: Record<string, string> = {
+    tamanho: 'Tamanho',
+    cor: 'Cor',
+    modelo: 'Modelo',
+    fragrancia: 'Fragrância',
+    embalagem: 'Tipo de Embalagem',
+  };
 
   if (loading) {
     return (
@@ -85,40 +137,40 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
     );
   }
 
+  const isOutOfStock = product.stock <= 0 && !product.allowOutOfStockSale;
+  const isLowStock = !isOutOfStock && product.stock > 0 && product.stock <= (product.minStock ?? 5);
+
   const handleAddToCart = () => {
-    if (product.stock <= 0) return;
-    
-    addToCart(product, 1, selectedSize || undefined);
-    onCartOpen(); // Abre o carrinho lateral automaticamente
+    if (isOutOfStock) return;
+    addToCart(product, 1, selectedSize || undefined, Object.keys(selectedVariations).length > 0 ? selectedVariations : undefined);
+    onCartOpen();
   };
 
   const handleBuyNow = () => {
-    if (product.stock <= 0) return;
-    
-    addToCart(product, 1, selectedSize || undefined);
-    onNavigate('checkout'); // Direciona para o checkout
+    if (isOutOfStock) return;
+    addToCart(product, 1, selectedSize || undefined, Object.keys(selectedVariations).length > 0 ? selectedVariations : undefined);
+    onNavigate('checkout');
   };
 
   const handleWhatsAppChat = () => {
-    const text = `Olá! Estou na loja virtual e gostaria de saber mais informações sobre o "${product.name}"${selectedSize ? ` no tamanho ${selectedSize}` : ''}. Pode me ajudar?`;
-    const encodedText = encodeURIComponent(text);
-    // WhatsApp comercial fictício
-    window.open(`https://wa.me/5511999999999?text=${encodedText}`, '_blank');
+    const varText = Object.entries(selectedVariations).map(([type, varId]) => {
+      const v = product.variations?.find(x => x.id === varId);
+      return v ? `${typeLabels[type] ?? type}: ${v.name}` : '';
+    }).filter(Boolean).join(', ');
+    const text = `Olá! Quero saber mais sobre "${product.name}"${selectedSize ? ` (Tamanho: ${selectedSize})` : ''}${varText ? ` (${varText})` : ''}. Pode me ajudar?`;
+    window.open(`https://wa.me/5511999999999?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   const handleCalculateShipping = (e: React.FormEvent) => {
     e.preventDefault();
     setShippingError('');
     setShippingOptions([]);
-
     const cleanCep = cep.replace(/\D/g, '');
     if (cleanCep.length !== 8) {
       setShippingError('Digite um CEP válido com 8 dígitos.');
       return;
     }
-
     setShippingLoading(true);
-    // Simula tempo de resposta do Correios / Melhor Envio
     setTimeout(() => {
       const options = simulateShipping(cleanCep);
       setShippingOptions(options);
@@ -126,9 +178,9 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
     }, 1200);
   };
 
-  // Preço Parcelado
-  const installmentValue = product.price / 10;
-  const pixPrice = product.price * 0.9; // 10% OFF no Pix
+  const installmentValue = effectivePrice / 10;
+  const pixPrice = effectivePrice * 0.9;
+  const hasDiscount = product.originalPrice && product.originalPrice > product.price;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
@@ -154,21 +206,33 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
           
           {/* Header */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap gap-2">
               <span className="text-xs font-bold uppercase tracking-widest text-gold-400 bg-gold-500/10 px-3 py-1 rounded">
                 {product.category}
               </span>
-              <div className="flex items-center gap-1.5 text-xs text-gray-400 font-semibold">
-                <div className="flex text-gold-500">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star
-                      key={s}
-                      size={14}
-                      className={s <= Math.round(product.rating) ? 'fill-gold-500 text-gold-500' : 'text-gray-600'}
-                    />
-                  ))}
+              <div className="flex items-center gap-2 flex-wrap">
+                {product.featured && (
+                  <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-gradient-gold text-luxury-black px-2.5 py-1 rounded-full">
+                    <Flame size={9} /> Destaque
+                  </span>
+                )}
+                {product.campaign && (
+                  <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-wine-600/90 text-white px-2.5 py-1 rounded-full border border-wine-400/30">
+                    <Sparkles size={9} /> Campanha
+                  </span>
+                )}
+                <div className="flex items-center gap-1.5 text-xs text-gray-400 font-semibold">
+                  <div className="flex text-gold-500">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star
+                        key={s}
+                        size={14}
+                        className={s <= Math.round(product.rating) ? 'fill-gold-500 text-gold-500' : 'text-gray-600'}
+                      />
+                    ))}
+                  </div>
+                  <span>{product.rating} ({product.reviewsCount} avaliações)</span>
                 </div>
-                <span>{product.rating} ({product.reviewsCount} avaliações)</span>
               </div>
             </div>
             
@@ -181,7 +245,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
             </p>
           </div>
 
-          {/* Sizing guides (for clothing kits) */}
+          {/* Sizing guide (for clothing kits) */}
           {product.sizes && product.sizes.length > 0 && (
             <div className="space-y-3 pt-4 border-t border-white/5">
               <div className="flex justify-between items-center text-xs">
@@ -193,8 +257,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                   <Ruler size={12} /> Tabela de Medidas
                 </button>
               </div>
-
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap">
                 {product.sizes.map((sz) => (
                   <button
                     key={sz}
@@ -212,17 +275,90 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
             </div>
           )}
 
+          {/* === VARIAÇÕES PROFISSIONAIS === */}
+          {variationTypes.length > 0 && (
+            <div className="space-y-5 pt-4 border-t border-white/5">
+              {variationTypes.map(type => {
+                const vars = variationsByType[type];
+                const selectedId = selectedVariations[type];
+                const selectedVar = vars.find(v => v.id === selectedId);
+                
+                return (
+                  <div key={type} className="space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-bold text-white tracking-wide uppercase">
+                        {typeLabels[type] ?? type}
+                      </span>
+                      {selectedVar && (
+                        <span className="text-gray-400">
+                          {selectedVar.name}
+                          {selectedVar.priceAddition > 0 && (
+                            <span className="text-gold-400 ml-1">(+{formatCurrency(selectedVar.priceAddition)})</span>
+                          )}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-2">
+                      {vars.map(v => {
+                        const isSelected = selectedId === v.id;
+                        const varOutOfStock = v.stock <= 0;
+                        
+                        return (
+                          <button
+                            key={v.id}
+                            onClick={() => !varOutOfStock && setSelectedVariations(prev => ({ ...prev, [type]: v.id }))}
+                            disabled={varOutOfStock}
+                            title={varOutOfStock ? 'Esgotado' : `${v.name}${v.priceAddition > 0 ? ` (+${formatCurrency(v.priceAddition)})` : ''}`}
+                            className={`relative px-4 py-2 rounded-lg border text-xs font-semibold transition-all cursor-pointer ${
+                              isSelected
+                                ? 'border-gold-500 bg-gold-500/10 text-gold-400'
+                                : varOutOfStock
+                                ? 'border-white/5 bg-white/2 text-gray-600 cursor-not-allowed line-through'
+                                : 'border-white/10 hover:border-white/30 text-gray-300 hover:text-white'
+                            }`}
+                          >
+                            {type === 'cor' && (
+                              <span
+                                className="inline-block w-3 h-3 rounded-full border border-white/20 mr-1.5 align-middle"
+                                style={{ backgroundColor: v.name.toLowerCase() }}
+                              />
+                            )}
+                            {v.name}
+                            {v.priceAddition > 0 && !varOutOfStock && (
+                              <span className="ml-1 text-[9px] text-gold-500 font-bold">
+                                +{formatCurrency(v.priceAddition)}
+                              </span>
+                            )}
+                            {varOutOfStock && (
+                              <span className="absolute -top-1 -right-1 bg-gray-700 text-[8px] text-gray-400 px-1 rounded">
+                                Esg.
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
           {/* Pricing & Offers info */}
           <div className="bg-white/2 border border-white/5 p-5 rounded-2xl space-y-4">
-            <div className="flex items-baseline gap-2">
-              {product.originalPrice > product.price && (
+            <div className="flex items-baseline gap-3 flex-wrap">
+              {hasDiscount && (
                 <span className="text-xs text-gray-500 line-through">
                   {formatCurrency(product.originalPrice)}
                 </span>
               )}
               <span className="text-2xl font-bold text-white">
-                {formatCurrency(product.price)}
+                {formatCurrency(effectivePrice)}
               </span>
+              {variationTypes.length > 0 && Object.keys(selectedVariations).length > 0 && (
+                <span className="text-[10px] text-gray-400 italic">(com variações selecionadas)</span>
+              )}
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
@@ -240,13 +376,22 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
 
             {/* Stock status indicator */}
             <div className="flex items-center gap-1.5 text-[11px]">
-              <div className={`h-2 w-2 rounded-full ${product.stock > 5 ? 'bg-emerald-500' : 'bg-amber-500 animate-pulse'}`} />
-              <span className="text-gray-400">
-                {product.stock > 5 
-                  ? 'Estoque Disponível' 
-                  : `Apenas ${product.stock} unidades disponíveis no estoque`
-                }
-              </span>
+              {isOutOfStock ? (
+                <>
+                  <PackageX size={13} className="text-rose-400" />
+                  <span className="text-rose-400 font-semibold">Produto Esgotado</span>
+                </>
+              ) : isLowStock ? (
+                <>
+                  <AlertTriangle size={13} className="text-amber-400 animate-pulse" />
+                  <span className="text-amber-400 font-semibold">Apenas {product.stock} unidades disponíveis! Corra!</span>
+                </>
+              ) : (
+                <>
+                  <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                  <span className="text-gray-400">Estoque Disponível</span>
+                </>
+              )}
             </div>
           </div>
 
@@ -254,15 +399,23 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
           <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={handleBuyNow}
-              disabled={product.stock <= 0}
-              className="flex-1 bg-gradient-gold hover:shadow-lg text-luxury-black font-semibold text-xs tracking-widest uppercase py-4 rounded-lg transition duration-300 cursor-pointer text-center"
+              disabled={isOutOfStock}
+              className={`flex-1 font-semibold text-xs tracking-widest uppercase py-4 rounded-lg transition duration-300 cursor-pointer text-center ${
+                isOutOfStock
+                  ? 'bg-white/5 text-gray-500 cursor-not-allowed'
+                  : 'bg-gradient-gold hover:shadow-lg text-luxury-black'
+              }`}
             >
-              Comprar Agora
+              {isOutOfStock ? 'Indisponível' : 'Comprar Agora'}
             </button>
             <button
               onClick={handleAddToCart}
-              disabled={product.stock <= 0}
-              className="flex-1 border border-white/10 hover:border-gold-500 hover:text-gold-400 text-white font-semibold text-xs tracking-widest uppercase py-4 rounded-lg bg-white/2 hover:bg-white/5 transition duration-300 cursor-pointer"
+              disabled={isOutOfStock}
+              className={`flex-1 border font-semibold text-xs tracking-widest uppercase py-4 rounded-lg transition duration-300 cursor-pointer ${
+                isOutOfStock
+                  ? 'border-white/5 text-gray-600 cursor-not-allowed'
+                  : 'border-white/10 hover:border-gold-500 hover:text-gold-400 text-white bg-white/2 hover:bg-white/5'
+              }`}
             >
               Adicionar à Sacola
             </button>
@@ -304,7 +457,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                   <div key={opt.id} className="flex items-center justify-between text-xs pt-2.5 first:pt-0">
                     <div>
                       <span className="font-semibold text-white block">{opt.name}</span>
-                      <span className="text-[9px] text-gray-500 block">Entrega estimada em {opt.deliveryDays} dia{opt.deliveryDays !== 1 && 's'} útil{opt.deliveryDays !== 1 && 's'}</span>
+                      <span className="text-[9px] text-gray-500 block">Entrega estimada em {opt.deliveryDays} dia{opt.deliveryDays !== 1 && 's'} útil{opt.deliveryDays !== 1 && 'is'}</span>
                     </div>
                     <span className="font-bold text-gold-400">{formatCurrency(opt.price)}</span>
                   </div>
@@ -371,20 +524,4 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
   );
 };
 
-const CheckCircle2: React.FC<{ size?: number; className?: string }> = ({ size = 16, className = '' }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-    style={{ width: size, height: size }}
-  >
-    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
-    <path d="m9 12 2 2 4-4" />
-  </svg>
-);
 export default ProductDetail;

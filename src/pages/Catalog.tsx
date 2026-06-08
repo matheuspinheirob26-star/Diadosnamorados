@@ -33,10 +33,12 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
     const fetchProducts = async () => {
       setLoading(true);
       const data = await api.getProducts();
-      setProducts(data);
+      // Apenas produtos publicados na vitrine do cliente
+      const published = data.filter(p => !p.status || p.status === 'publicado');
+      setProducts(published);
       
       // Extrair categorias
-      const cats = Array.from(new Set(data.map(p => p.category)));
+      const cats = Array.from(new Set(published.map(p => p.category)));
       setCategories(['Todos', ...cats]);
       
       setLoading(false);

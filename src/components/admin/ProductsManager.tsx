@@ -25,7 +25,8 @@ export const ProductsManager: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('Todos');
-  const [statusFilter, setStatusFilter] = useState('Todos'); // Todos, ativo, inativo, destaque
+  const [statusFilter, setStatusFilter] = useState('Todos'); // Todos, publicado, rascunho, arquivado
+  const [activeSubTab, setActiveSubTab] = useState<'todos' | 'estoque_baixo' | 'esgotados' | 'destaques' | 'campanhas'>('todos');
 
   // Modal States
   const [modalOpen, setModalOpen] = useState(false);
@@ -91,7 +92,7 @@ export const ProductsManager: React.FC = () => {
   const handleToggleStatus = async (product: Product) => {
     const updated: Product = {
       ...product,
-      status: product.status === 'ativo' ? 'inativo' : 'ativo'
+      status: product.status === 'publicado' ? 'rascunho' : 'publicado'
     };
     await api.updateProduct(updated);
     // Atualizar estado local
@@ -138,11 +139,24 @@ export const ProductsManager: React.FC = () => {
     const matchesCategory = categoryFilter === 'Todos' || p.category === categoryFilter;
     
     let matchesStatus = true;
-    if (statusFilter === 'ativo') matchesStatus = p.status === 'ativo';
-    else if (statusFilter === 'inativo') matchesStatus = p.status === 'inativo';
+    if (statusFilter === 'publicado') matchesStatus = p.status === 'publicado';
+    else if (statusFilter === 'rascunho') matchesStatus = p.status === 'rascunho';
+    else if (statusFilter === 'arquivado') matchesStatus = p.status === 'arquivado';
     else if (statusFilter === 'destaque') matchesStatus = !!p.featured;
 
-    return matchesSearch && matchesCategory && matchesStatus;
+    let matchesSubTab = true;
+    const lowStockThreshold = p.minStock !== undefined ? p.minStock : 5;
+    if (activeSubTab === 'estoque_baixo') {
+      matchesSubTab = p.stock <= lowStockThreshold && p.stock > 0;
+    } else if (activeSubTab === 'esgotados') {
+      matchesSubTab = p.stock <= 0;
+    } else if (activeSubTab === 'destaques') {
+      matchesSubTab = !!p.featured;
+    } else if (activeSubTab === 'campanhas') {
+      matchesSubTab = p.campaign !== undefined && p.campaign !== 'nenhuma' && p.campaign !== '';
+    }
+
+    return matchesSearch && matchesCategory && matchesStatus && matchesSubTab;
   });
 
   // Categorias únicas para filtro
@@ -220,11 +234,48 @@ export const ProductsManager: React.FC = () => {
             className="w-full bg-luxury-black border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
           >
             <option value="Todos">Todos os Status</option>
-            <option value="ativo">Somente Ativos</option>
-            <option value="inativo">Somente Inativos</option>
-            <option value="destaque">Somente Destaques</option>
+            <option value="publicado">Publicado</option>
+            <option value="rascunho">Rascunho</option>
+            <option value="arquivado">Arquivado</option>
           </select>
         </div>
+      </div>
+
+      {/* Sub-tabs panel */}
+      <div className="flex border-b border-white/5 gap-2 pb-px text-[11px] font-bold uppercase tracking-wider overflow-x-auto no-scrollbar">
+        {[
+          { id: 'todos', label: 'Todos' },
+          { id: 'estoque_baixo', label: 'Estoque Baixo' },
+          { id: 'esgotados', label: 'Esgotados' },
+          { id: 'destaques', label: 'Destaques' },
+          { id: 'campanhas', label: 'Campanhas' }
+        ].map(subTab => {
+          const count = products.filter(p => {
+            const lowStockThreshold = p.minStock !== undefined ? p.minStock : 5;
+            if (subTab.id === 'estoque_baixo') return p.stock <= lowStockThreshold && p.stock > 0;
+            if (subTab.id === 'esgotados') return p.stock <= 0;
+            if (subTab.id === 'destaques') return !!p.featured;
+            if (subTab.id === 'campanhas') return p.campaign !== undefined && p.campaign !== 'nenhuma' && p.campaign !== '';
+            return true;
+          }).length;
+          
+          return (
+            <button
+              key={subTab.id}
+              onClick={() => setActiveSubTab(subTab.id as any)}
+              className={`pb-3 px-3 transition-all cursor-pointer relative whitespace-nowrap ${
+                activeSubTab === subTab.id
+                  ? 'text-gold-400 font-bold border-b-2 border-gold-500'
+                  : 'text-gray-500 hover:text-gray-300'
+              }`}
+            >
+              <span>{subTab.label}</span>
+              <span className="ml-1.5 px-1.5 py-0.5 rounded-full text-[9px] bg-white/5 text-gray-400 font-medium">
+                {count}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       {/* Products table list */}
@@ -263,14 +314,14 @@ export const ProductsManager: React.FC = () => {
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         <img 
-                          src={prod.images[0]} 
+                          src={prod.images[0] || 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=200&auto=format&fit=crop'} 
                           alt={prod.name} 
                           className="w-10 h-10 object-cover rounded-lg bg-white/5 border border-white/10 shrink-0" 
                         />
                         <div className="min-w-0">
                           <span className="block text-white font-semibold truncate max-w-[200px] sm:max-w-[260px]">{prod.name}</span>
                           {prod.campaign && prod.campaign !== 'nenhuma' && (
-                            <span className="inline-block text-[8px] bg-rose-500/10 border border-rose-500/20 text-rose-400 font-bold uppercase px-1.5 py-0.5 rounded mt-0.5">
+                            <span className="inline-block text-[8px] bg-rose-500/10 border border-rose-500/20 text-rose-400 font-bold uppercase px-1.5 py-0.5 rounded mt-0.5 animate-pulse">
                               🌹 {prod.campaign}
                             </span>
                           )}
@@ -359,11 +410,11 @@ export const ProductsManager: React.FC = () => {
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                             prod.stock <= 0 
                               ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' 
-                              : prod.stock <= 5 
-                              ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' 
+                              : prod.stock <= (prod.minStock !== undefined ? prod.minStock : 5) 
+                              ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20 animate-pulse' 
                               : 'bg-white/5 border border-white/10'
                           }`}>
-                            {prod.stock} un
+                            {prod.stock <= 0 ? 'Esgotado' : prod.stock <= (prod.minStock !== undefined ? prod.minStock : 5) ? `Poucas Unidades (${prod.stock})` : `${prod.stock} un`}
                           </span>
                           <Edit3 size={10} className="text-gray-600 group-hover:text-gold-400 transition opacity-0 group-hover:opacity-100" />
                         </div>
@@ -383,17 +434,26 @@ export const ProductsManager: React.FC = () => {
                       </button>
                     </td>
 
-                    {/* Column 6: Status Toggle */}
+                    {/* Column 6: Status Tag / Eye Toggle */}
                     <td className="p-4 text-center">
-                      <button
-                        onClick={() => handleToggleStatus(prod)}
-                        className={`p-1.5 rounded-lg hover:bg-white/5 transition cursor-pointer ${
-                          prod.status === 'ativo' ? 'text-emerald-400' : 'text-gray-600'
-                        }`}
-                        title={prod.status === 'ativo' ? 'Desativar produto' : 'Ativar produto'}
-                      >
-                        {prod.status === 'ativo' ? <Eye size={16} /> : <EyeOff size={16} />}
-                      </button>
+                      <div className="flex items-center justify-center gap-2">
+                        <span className={`px-2 py-0.5 rounded text-[9px] font-extrabold uppercase ${
+                          prod.status === 'publicado' 
+                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
+                            : prod.status === 'rascunho'
+                            ? 'bg-gray-500/10 text-gray-400 border border-gray-500/20'
+                            : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                        }`}>
+                          {prod.status || 'publicado'}
+                        </span>
+                        <button
+                          onClick={() => handleToggleStatus(prod)}
+                          className={`p-1 rounded hover:bg-white/5 transition cursor-pointer text-gray-500 hover:text-white`}
+                          title={prod.status === 'publicado' ? 'Tornar Rascunho' : 'Publicar Produto'}
+                        >
+                          {prod.status === 'publicado' ? <Eye size={14} className="text-emerald-400" /> : <EyeOff size={14} />}
+                        </button>
+                      </div>
                     </td>
 
                     {/* Column 7: Actions */}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Product } from '../../types';
 import { formatCurrency } from '../../lib/utils';
-import { Star, Eye, ShoppingCart } from 'lucide-react';
+import { Star, Eye, ShoppingCart, Flame, Sparkles, AlertTriangle } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
 interface ProductCardProps {
@@ -14,21 +14,28 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
   const { addToCart } = useCart();
 
   const isOutOfStock = product.stock <= 0;
+  const isLowStock = !isOutOfStock && product.stock > 0 && product.stock <= (product.minStock ?? 5);
   
-  // Encontrar se tem tags especiais
-  const hasTag = product.tags && product.tags.length > 0;
-  const mainTag = hasTag ? product.tags[0] : '';
-
   // Calcular parcelas
   const installmentValue = product.price / 10;
   const pixPrice = product.price * 0.9; // 10% OFF no Pix
+
+  // Verificar se tem desconto real
+  const hasDiscount = product.originalPrice && product.originalPrice > product.price;
+  const discountPct = hasDiscount
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+    : 0;
+
+  // Variações disponíveis
+  const activeVariations = product.variations?.filter(v => v.active) ?? [];
+  const hasVariations = activeVariations.length > 0;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (isOutOfStock) return;
     
-    // Se tiver tamanhos, adiciona o padrão 'M' ou abre detalhes
-    if (product.sizes && product.sizes.length > 0) {
+    // Se tiver tamanhos ou variações, navegar para detalhe
+    if ((product.sizes && product.sizes.length > 0) || hasVariations) {
       onNavigateToDetail(product.id);
     } else {
       addToCart(product, 1);
@@ -49,18 +56,48 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
           loading="lazy"
         />
         
-        {/* Dynamic Marketing Badges */}
-        {hasTag && (
-          <div className="absolute top-4 left-4 flex flex-col gap-1.5 z-10">
+        {/* Dynamic Marketing Badges - top left */}
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
+          {product.featured && (
+            <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-gradient-gold text-luxury-black px-2.5 py-1 rounded-full shadow-lg">
+              <Flame size={9} /> Destaque
+            </span>
+          )}
+          {product.campaign && !product.featured && (
+            <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-wine-600/90 text-white px-2.5 py-1 rounded-full shadow-lg border border-wine-400/30">
+              <Sparkles size={9} /> Campanha
+            </span>
+          )}
+          {!product.featured && !product.campaign && product.tags?.includes('namorados') && (
             <span className="text-[9px] font-extrabold uppercase tracking-widest bg-gradient-gold text-luxury-black px-2.5 py-1 rounded-full shadow-lg">
-              {mainTag === 'namorados' ? '❤️ Dia dos Namorados' : mainTag === 'mais-vendidos' ? '⭐ Mais Vendido' : mainTag.replace('-', ' ')}
+              ❤️ Dia dos Namorados
+            </span>
+          )}
+          {!product.featured && !product.campaign && product.tags?.includes('mais-vendidos') && (
+            <span className="text-[9px] font-extrabold uppercase tracking-widest bg-white/10 border border-white/20 text-white px-2.5 py-1 rounded-full shadow-lg">
+              ⭐ Mais Vendido
+            </span>
+          )}
+          {isLowStock && (
+            <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-amber-500/90 text-luxury-black px-2.5 py-1 rounded-full shadow-lg">
+              <AlertTriangle size={9} /> Poucas Unidades
+            </span>
+          )}
+        </div>
+
+        {/* Discount badge - top right */}
+        {hasDiscount && !isOutOfStock && (
+          <div className="absolute top-3 right-3 z-10">
+            <span className="text-[9px] font-extrabold uppercase tracking-widest bg-rose-500 text-white px-2 py-1 rounded-full shadow-lg">
+              -{discountPct}%
             </span>
           </div>
         )}
 
+        {/* Out of stock overlay */}
         {isOutOfStock && (
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-10">
-            <span className="text-xs font-bold uppercase tracking-widest border border-white/30 text-white px-4 py-2 bg-black/30">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center z-10">
+            <span className="text-xs font-bold uppercase tracking-widest border border-white/30 text-white px-4 py-2 bg-black/30 rounded">
               Esgotado
             </span>
           </div>
@@ -83,7 +120,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
             <button
               onClick={handleAddToCart}
               className="h-10 w-10 bg-gradient-gold text-luxury-black rounded-full flex items-center justify-center transition-all hover:scale-105 hover:shadow-lg"
-              title="Adicionar ao Carrinho"
+              title={hasVariations || (product.sizes && product.sizes.length > 0) ? 'Escolher Opções' : 'Adicionar ao Carrinho'}
             >
               <ShoppingCart size={16} />
             </button>
@@ -114,11 +151,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
           <p className="text-[11px] text-gray-500 line-clamp-2 leading-relaxed">
             {product.description}
           </p>
+
+          {/* Variations hint */}
+          {hasVariations && (
+            <p className="text-[10px] text-gold-400/70 font-semibold">
+              {activeVariations.length} opção{activeVariations.length !== 1 ? 'ões' : ''} disponível{activeVariations.length !== 1 ? 'is' : ''}
+            </p>
+          )}
         </div>
 
         {/* Pricing */}
         <div className="mt-4 pt-3 border-t border-white/5 space-y-1">
-          {product.originalPrice > product.price && (
+          {hasDiscount && (
             <span className="text-[10px] text-gray-500 line-through">
               {formatCurrency(product.originalPrice)}
             </span>

@@ -21,11 +21,24 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
   useEffect(() => {
     const loadProducts = async () => {
       const all = await api.getProducts();
-      // Filtrar produtos da campanha atual ou mais vendidos
-      const main = all.find(p => p.id === 'kit-namorados-premium') || all[0];
+      // Apenas produtos publicados na vitrine
+      const published = all.filter(p => !p.status || p.status === 'publicado');
+      
+      // Flagship: preferência para produto featured da campanha ativa, depois id fixo, depois primeiro
+      const main = 
+        published.find(p => p.featured && p.campaign === currentCampaign.id) ||
+        published.find(p => p.id === 'kit-namorados-premium') ||
+        published[0];
+      
+      if (!main) {
+        setFlagshipProduct(null);
+        setFeaturedProducts([]);
+        return;
+      }
       setFlagshipProduct(main);
       
-      const rest = all.filter(p => p.id !== main.id).slice(0, 4);
+      // Vitrine: produtos publicados, excluindo a flagship
+      const rest = published.filter(p => p.id !== main.id).slice(0, 4);
       setFeaturedProducts(rest);
     };
     loadProducts();
