@@ -13,9 +13,9 @@ export class StorefrontService {
         const { data, error } = await supabase
           .from('storefront_configs')
           .select('config')
-          .single();
+          .maybeSingle();
 
-        if (error && error.code !== 'PGRST116') {
+        if (error) {
           console.warn('Erro ao buscar storefront config no Supabase', error);
         }
 

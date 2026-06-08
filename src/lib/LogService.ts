@@ -34,7 +34,19 @@ export class LogService {
       try {
         const { error } = await supabase
           .from('system_logs')
-          .insert([newLog]);
+          .insert([{
+            id: newLog.id,
+            action: newLog.action,
+            description: newLog.description,
+            user_name: newLog.user,
+            user_email: newLog.userEmail,
+            entity_type: newLog.entityType,
+            entity_id: newLog.entityId,
+            severity: newLog.severity,
+            ip: '',
+            user_agent: newLog.userAgent,
+            timestamp: newLog.timestamp
+          }]);
 
         if (error) {
           console.warn('Erro ao salvar log no Supabase. Fazendo fallback para localStorage:', error);
@@ -64,7 +76,18 @@ export class LogService {
           .limit(limit);
 
         if (!error && data) {
-          return data as SystemLog[];
+          return data.map((r: any) => ({
+            id: r.id,
+            action: r.action,
+            description: r.description,
+            user: r.user_name,
+            userEmail: r.user_email,
+            entityType: r.entity_type,
+            entityId: r.entity_id,
+            severity: r.severity,
+            timestamp: r.timestamp,
+            userAgent: r.user_agent
+          })) as SystemLog[];
         }
       } catch (err) {
         console.warn('Falha ao buscar logs do Supabase:', err);
