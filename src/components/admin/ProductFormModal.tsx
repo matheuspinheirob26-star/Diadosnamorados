@@ -388,9 +388,9 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
       );
 
       onClose();
-    } catch (err) {
+    } catch (err: any) {
       console.error('Falha ao processar imagens e salvar produto:', err);
-      alert('Houve um erro no salvamento do produto. O console tem mais informações.');
+      alert(`Houve um erro no salvamento do produto.\nDetalhes: ${err?.message || JSON.stringify(err)}`);
     } finally {
       setLoading(false);
     }

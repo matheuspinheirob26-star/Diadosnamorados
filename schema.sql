@@ -19,6 +19,21 @@ CREATE TABLE IF NOT EXISTS products (
     features TEXT[] DEFAULT '{}',
     details TEXT,
     sizes TEXT[] DEFAULT '{}',
+    status TEXT DEFAULT 'publicado',
+    featured BOOLEAN DEFAULT false,
+    campaign TEXT DEFAULT 'nenhuma',
+    slug TEXT,
+    sku TEXT,
+    seo_title TEXT,
+    seo_description TEXT,
+    colors TEXT[] DEFAULT '{}',
+    models TEXT[] DEFAULT '{}',
+    variations JSONB DEFAULT '[]',
+    min_stock INT DEFAULT 5,
+    allow_out_of_stock_sale BOOLEAN DEFAULT false,
+    canonical_url TEXT,
+    keyword TEXT,
+    indexing TEXT DEFAULT 'index',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -47,6 +62,43 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 
 -- 4. TABELA DE PEDIDOS (ORDERS)
+CREATE TABLE IF NOT EXISTS system_logs (
+    id TEXT PRIMARY KEY,
+    action TEXT NOT NULL,
+    description TEXT NOT NULL,
+    user_name TEXT NOT NULL,
+    user_email TEXT NOT NULL,
+    entity_type TEXT NOT NULL,
+    entity_id TEXT NOT NULL,
+    severity TEXT NOT NULL,
+    ip TEXT,
+    user_agent TEXT,
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- ==========================================
+-- SCRIPT DE ATUALIZAÇÃO (MIGRAÇÃO)
+-- Se você já havia rodado o script antigo antes, execute apenas as linhas abaixo para atualizar sua tabela:
+-- ==========================================
+/*
+ALTER TABLE products 
+ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'publicado',
+ADD COLUMN IF NOT EXISTS featured BOOLEAN DEFAULT false,
+ADD COLUMN IF NOT EXISTS campaign TEXT DEFAULT 'nenhuma',
+ADD COLUMN IF NOT EXISTS slug TEXT,
+ADD COLUMN IF NOT EXISTS sku TEXT,
+ADD COLUMN IF NOT EXISTS seo_title TEXT,
+ADD COLUMN IF NOT EXISTS seo_description TEXT,
+ADD COLUMN IF NOT EXISTS colors TEXT[] DEFAULT '{}',
+ADD COLUMN IF NOT EXISTS models TEXT[] DEFAULT '{}',
+ADD COLUMN IF NOT EXISTS variations JSONB DEFAULT '[]',
+ADD COLUMN IF NOT EXISTS min_stock INT DEFAULT 5,
+ADD COLUMN IF NOT EXISTS allow_out_of_stock_sale BOOLEAN DEFAULT false,
+ADD COLUMN IF NOT EXISTS canonical_url TEXT,
+ADD COLUMN IF NOT EXISTS keyword TEXT,
+ADD COLUMN IF NOT EXISTS indexing TEXT DEFAULT 'index';
+*/
+
 CREATE TABLE IF NOT EXISTS orders (
     id TEXT PRIMARY KEY,
     customer_name TEXT NOT NULL,

@@ -538,7 +538,7 @@ export const api = {
           seo_description: product.seoDescription || product.description,
           colors: product.colors || [],
           models: product.models || [],
-          variations: JSON.stringify(product.variations || []),
+          variations: product.variations || [],
           min_stock: product.minStock !== undefined ? product.minStock : 5,
           allow_out_of_stock_sale: product.allowOutOfStockSale || false,
           canonical_url: product.canonicalUrl || '',
@@ -546,8 +546,9 @@ export const api = {
           indexing: product.indexing || 'index'
         });
         if (error) throw error;
-      } catch (err) {
-        console.warn('Supabase createProduct falhou, usando mock local:', err);
+      } catch (err: any) {
+        console.error('Supabase createProduct falhou:', err);
+        throw err; // Stop and report to UI
       }
     }
     const products = getStorageItem<Product[]>('amr_products', INITIAL_PRODUCTS);
@@ -583,7 +584,7 @@ export const api = {
           seo_description: product.seoDescription || product.description,
           colors: product.colors || [],
           models: product.models || [],
-          variations: JSON.stringify(product.variations || []),
+          variations: product.variations || [],
           min_stock: product.minStock !== undefined ? product.minStock : 5,
           allow_out_of_stock_sale: product.allowOutOfStockSale || false,
           canonical_url: product.canonicalUrl || '',
@@ -591,8 +592,9 @@ export const api = {
           indexing: product.indexing || 'index'
         }).eq('id', product.id);
         if (error) throw error;
-      } catch (err) {
-        console.warn('Supabase updateProduct falhou, usando mock local:', err);
+      } catch (err: any) {
+        console.error('Supabase updateProduct falhou:', err);
+        throw err; // Stop and report to UI
       }
     }
     const products = getStorageItem<Product[]>('amr_products', INITIAL_PRODUCTS);

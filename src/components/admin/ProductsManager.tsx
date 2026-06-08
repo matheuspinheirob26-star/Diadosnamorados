@@ -500,6 +500,7 @@ export const ProductsManager: React.FC = () => {
           } catch (e) {
             console.error('Error saving product', e);
             setLoading(false);
+            throw e;
           }
         }}
         productToEdit={editProduct}
