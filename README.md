@@ -1,63 +1,120 @@
 # 🌹 Amour & Co. — E-commerce de Presentes de Luxo
 
-Amour & Co. é uma plataforma premium de comércio eletrônico focada em presentes sofisticados e kits de luxo para datas especiais, inicialmente customizada para o **Dia dos Namorados**, mas com arquitetura modular preparada para transições sazonais completas (Dia das Mães, Dia dos Pais, Natal, Black Friday e Aniversários).
+Amour & Co. é uma plataforma premium de comércio eletrônico focada em presentes sofisticados e kits de luxo para datas especiais. Inicialmente customizada para o **Dia dos Namorados**, com arquitetura modular preparada para transições sazonais completas (Dia das Mães, Dia dos Pais, Natal, Black Friday e Aniversários).
 
-O design e a experiência visual foram inspirados nas identidades estéticas de grandes marcas de luxo globais, como Apple, Rolex e Tesla, utilizando uma paleta refinada de tons de vinho (`wine`) e dourado (`gold`), tipografias elegantes e efeitos de glassmorphism em toda a interface.
+O design é inspirado nas identidades estéticas de grandes marcas de luxo globais (Apple, Rolex, Tesla), utilizando uma paleta refinada de tons de vinho (`wine`) e dourado (`gold`), tipografias elegantes e efeitos de glassmorphism.
 
 ---
 
-## 🚀 Demonstração do Projeto
+## 🚀 Links do Projeto
 
-*   **URL de Produção (Vercel):** [https://diadosnamorados-iota.vercel.app/](https://diadosnamorados-iota.vercel.app/)
-*   **Acesso Rápido ao Painel Administrativo:**
-    *   Vá para a tela de login (`/login` ou clique no ícone de Usuário no menu superior).
-    *   Utilize o botão de **"Acesso Rápido Admin de Testes"** no rodapé para acessar o painel de faturamento imediatamente sem digitar senhas.
-    *   Ou acesse diretamente via URL com fallback seguro: [https://diadosnamorados-iota.vercel.app/#/admin](https://diadosnamorados-iota.vercel.app/#/admin)
+| | |
+|---|---|
+| **Produção (Vercel)** | [https://diadosnamorados-iota.vercel.app/](https://diadosnamorados-iota.vercel.app/) |
+| **Painel Admin** | [https://diadosnamorados-iota.vercel.app/#/admin](https://diadosnamorados-iota.vercel.app/#/admin) |
+| **Login Admin** | [https://diadosnamorados-iota.vercel.app/#/admin/login](https://diadosnamorados-iota.vercel.app/#/admin/login) |
+
+### 🔐 Credenciais do Painel Admin
+
+| Função | E-mail | Senha |
+|---|---|---|
+| Administrador Principal | `admin@amour.com` | `Amour@2024` |
+| Gerente de Loja | `gerente@amour.com` | `Gerente@2024` |
+
+> **Dica:** Na tela de login do admin, use o botão **"Preencher credenciais admin demo"** para acessar com um clique.
 
 ---
 
 ## ✨ Recursos Implementados
 
 ### 🛒 Jornada do Cliente (Storefront)
-*   **Landing Page de Alta Conversão (Home):** Banner hero emocional com badge dinâmico da campanha, carrossel de categorias sazonais, vitrine de lançamentos e depoimentos de prova social com estrelas avaliativas.
-*   **Catálogo Avançado (`/catalog`):** Busca textual inteligente por produtos, filtros dinâmicos por categoria, gênero, preço e ordenação customizada (mais vendidos, maior/menor preço).
-*   **Página de Detalhes do Produto (`/product/:id`):** Galeria premium de imagens e vídeos, simulador de CEP de frete integrado (Melhor Envio & Correios), escolha de tamanho dinâmico e seção de avaliações de clientes.
-*   **Checkout Premium de 3 Passos (`/checkout`):**
-    1.  *Passo 1 (Lead Capture):* Coleta nome, e-mail e telefone em tempo real para recuperação ativa de carrinho abandonado.
-    2.  *Passo 2 (Dados e Envio):* Cadastro de endereço via CEP, cálculo de opções de envio e sistema de cupom de desconto avançado (ex: `NAMORADOS10`, `VIP20`).
-    3.  *Passo 3 (Pagamento):* Integração de tela simulada de Pix com QR Code e Copia e Cola, e cartão de crédito parcelado em até 10x sem juros.
-*   **Carrinho Lateral (Cart Drawer):** Acesso rápido aos itens, indicação de barra de progresso para ganhar Frete Grátis e Order Bump selecionável (embalagem de veludo laqueada).
-*   **Popups de Conversão:** Alertas de prova social em tempo real ("Alguém comprou em São Paulo há 2 min") e convites de captura de leads com cupom de boas-vindas.
 
-### 🛡️ Painel Administrativo Completo (`/admin`)
-*   **Dashboard de Vendas:** KPIs financeiros (Faturamento Aprovado, Ticket Médio, Conversão, Leads Ativos) e gráfico analítico de faturamento diário.
-*   **Gestão de Pedidos:** Fila com filtros de status (Pendente, Pago, Processando, Enviado, Entregue) e detalhamento de dados do comprador, endereço de entrega e código de rastreamento.
-*   **Gestão de Leads (Carrinhos Abandonados):** Lista de carrinhos abandonados com disparo automático de mensagem de desconto personalizada diretamente no WhatsApp do cliente para recuperação ativa.
-*   **Moderação de Avaliações:** Aprovação ou exclusão de reviews de clientes com fotos antes de irem ao ar.
-*   **Criador de Cupons:** Painel para gerenciar, deletar ou criar cupons por porcentagem ou valor fixo, com definição de data de validade e compra mínima.
+- **Home de Alta Conversão:** Hero emocional com badge dinâmico da campanha ativa, carrossel de categorias sazonais, vitrine de lançamentos filtrada por produtos publicados e depoimentos de prova social.
+- **Catálogo Avançado (`/catalog`):** Busca textual, filtros por categoria, gênero e faixa de preço, ordenação (mais vendidos, menor/maior preço, lançamentos). Exibe apenas produtos publicados.
+- **Página de Produto (`/product/:id`):**
+  - Galeria premium com suporte a vídeo
+  - Seletor de variações profissional por tipo (tamanho, cor, modelo, fragrância, embalagem)
+  - **Preço efetivo calculado em tempo real** somando acréscimos de variações
+  - Variações esgotadas bloqueadas e riscadas
+  - Badges dinâmicos: Destaque 🔥, Campanha ✨, Poucas Unidades ⚠️, Esgotado
+  - Simulador de frete por CEP
+  - Atalho para WhatsApp com descrição das variações escolhidas
+- **Checkout Premium de 3 Passos:**
+  1. *Lead Capture:* Nome, e-mail e telefone para recuperação de carrinho abandonado
+  2. *Dados e Envio:* Endereço via CEP + cálculo de frete + cupom de desconto
+  3. *Pagamento:* Pix com QR Code e Copia e Cola, cartão de crédito 10x sem juros
+- **Carrinho Lateral (Cart Drawer):** Suporte a variações combinadas (Kit M + Vanilla e Kit G + Vanilla entram como itens separados), barra de progresso para frete grátis, Order Bump
+- **Popups de Conversão:** Prova social em tempo real e captura de leads com cupom de boas-vindas
+
+---
+
+### 🛡️ Painel Administrativo (`/admin`)
+
+#### 🔒 Autenticação Segura
+- Tela de login admin dedicada em `/admin/login` (layout split-panel premium)
+- Validação de credenciais com e-mail + senha
+- Sessão com **expiração automática em 8 horas**
+- **Proteção brute-force:** bloqueio de 30 segundos após 5 tentativas erradas com contador regressivo
+- Rota `/admin` protegida: redireciona para o login se não autenticado
+- Sidebar exibe nome, e-mail e horário de login do administrador
+
+#### 📊 Funcionalidades do Painel
+- **Dashboard:** KPIs financeiros (faturamento aprovado, ticket médio, leads ativos) + gráfico analítico de faturamento diário
+- **Pedidos:** Fila completa com atualização de status e código de rastreamento
+- **Gestão de Produtos (CRUD completo):**
+  - Listagem com subabas: Todos · Estoque Baixo · Esgotados · Destaques · Campanhas
+  - Busca, filtro por categoria e status
+  - Upload de imagem principal + galeria múltipla (drag & drop, preview, reordenar)
+  - Upload real no Supabase Storage com **fallback automático em base64**
+  - Gerenciador visual de variações (tamanho, cor, modelo, fragrância, embalagem) com preço adicional, estoque e SKU próprios
+  - Controle de estoque avançado: estoque mínimo, alerta de estoque baixo, venda sem estoque
+  - Status: Rascunho · Publicado · Arquivado
+  - Marcar como Destaque ou vincular à Campanha Sazonal
+  - Preview de SEO em tempo real
+  - Duplicar, editar e excluir produtos
+- **Clientes:** Base unificada de compradores com total investido
+- **Leads / Carrinhos Abandonados:** Recuperação com disparo de mensagem personalizada via WhatsApp
+- **Moderação de Avaliações:** Aprovação/exclusão de reviews com fotos
+- **Cupons:** Criação por porcentagem ou valor fixo com validade e mínimo de compra
+- **Campanhas Sazonais:** Alternância do tema visual e curadoria da loja em tempo real
+- **Configurações:** WhatsApp, e-mail, frete grátis, gateways de pagamento
 
 ---
 
 ## 🛠️ Tecnologia Utilizada
 
-*   **Core:** React 19 + TypeScript + Vite.
-*   **Estilização:** Tailwind CSS v4.0 (Custom HSL tokens e gradientes no `index.css`).
-*   **Animações:** Framer Motion (Transições e fade-ins de elementos).
-*   **Banco de Dados & Auth:** Supabase + Fallback Local.
-*   **Arquitetura Híbrida Inteligente:** Se o Supabase estiver fora do ar ou sem tabelas, a aplicação ativa automaticamente um banco mockado no `LocalStorage` (`amr_products`, `amr_orders`, etc.), garantindo que a loja funcione 100% no primeiro clique sem quebrar.
+| Camada | Tecnologia |
+|---|---|
+| **Core** | React 19 + TypeScript + Vite |
+| **Estilização** | Tailwind CSS v4 (tokens HSL customizados no `index.css`) |
+| **Animações** | Framer Motion |
+| **Banco / Auth** | Supabase (com fallback automático para LocalStorage) |
+| **Imagens Admin** | Supabase Storage (bucket `product-images`) + fallback base64 |
+| **Roteamento** | Custom SPA com suporte a hash routing (Vercel) |
+
+### Arquitetura Híbrida
+
+Se o Supabase estiver offline ou sem tabelas configuradas, a aplicação ativa automaticamente um banco mockado no `LocalStorage` (`amr_products`, `amr_orders`, etc.), garantindo que a loja funcione 100% sem quebrar.
 
 ---
 
 ## 💾 Configuração do Banco de Dados (Supabase)
 
-Para conectar o projeto ao seu banco de dados Supabase e popular com o catálogo inicial premium:
+1. Acesse seu projeto no **[Supabase](https://supabase.com/)**
+2. Vá em **SQL Editor → New Query**
+3. Cole o conteúdo do arquivo [`schema.sql`](./schema.sql) da raiz do projeto
+4. Clique em **Run** para criar as tabelas e inserir os dados iniciais
 
-1.  Acesse o painel do seu projeto no **[Supabase](https://supabase.com/)**.
-2.  No menu lateral esquerdo, clique em **SQL Editor** (ícone `SQL`).
-3.  Crie uma nova query (**New Query**).
-4.  Abra o arquivo [`schema.sql`](file:///c:/Users/glaub/OneDrive/Área de Trabalho/loja dos dias dos namorados/schema.sql) localizado na raiz deste projeto, copie todo o seu código SQL e cole-o no SQL Editor do Supabase.
-5.  Clique no botão **Run** no canto inferior direito para rodar o script.
-    *(Este comando criará as tabelas `products`, `coupons`, `reviews`, `orders`, `leads` e injetará os presentes de luxo padrão).*
+*(Tabelas criadas: `products`, `coupons`, `reviews`, `orders`, `leads`)*
+
+### Supabase Storage (Imagens de Produtos)
+
+Para ativar o upload real de imagens no painel admin:
+
+1. No Supabase, vá em **Storage → New Bucket**
+2. Crie um bucket chamado `product-images`
+3. Marque como **Public**
+4. Configure a política de upload para o role `anon` (ou `authenticated` conforme sua preferência)
 
 ---
 
@@ -71,26 +128,60 @@ npm install
 ```
 
 ### 2. Configurar Variáveis de Ambiente
-Crie um arquivo `.env` na raiz do projeto com as chaves do seu Supabase:
+Crie um arquivo `.env` na raiz do projeto:
 ```env
-VITE_SUPABASE_URL=https://dixockjnarjouuvkgpdj.supabase.co
+VITE_SUPABASE_URL=https://SEU_PROJETO.supabase.co
 VITE_SUPABASE_ANON_KEY=sua_anon_key_aqui
 ```
+
+> Sem o `.env`, o projeto funciona normalmente com dados mockados no LocalStorage.
 
 ### 3. Rodar Servidor de Desenvolvimento
 ```bash
 npm run dev
 ```
-O projeto estará rodando localmente em: **[http://localhost:5173/](http://localhost:5173/)**
+Acesse em: **[http://localhost:5173/](http://localhost:5173/)**
 
 ---
 
-## 📦 Implantação e Deploy (Vercel)
+## 📦 Deploy (Vercel)
 
-Este projeto já está configurado com `vercel.json` para permitir que o roteamento de URL limpo do React funcione no servidor sem erros 404 ao atualizar a página.
+O projeto já está configurado com `vercel.json` para roteamento SPA sem erros 404.
 
-Se você estiver fazendo implantação manual pela primeira vez, execute no seu terminal:
 ```bash
 npx vercel --prod
 ```
-E confirme as credenciais para associar o diretório de compilação da Vercel.
+
+Não esqueça de adicionar as variáveis de ambiente `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` no painel da Vercel em **Settings → Environment Variables**.
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+src/
+├── components/
+│   ├── admin/          # AdminLayout, AdminSidebar, ProductsManager, ProductFormModal
+│   ├── cart/           # CartDrawer, OrderBump
+│   ├── layout/         # Header, Footer
+│   ├── product/        # ProductCard, ProductGallery, ReviewsSection
+│   └── ui/             # NotificationPopup, NewsletterPopup
+├── context/
+│   ├── AuthContext.tsx  # Auth admin (login, sessão, expiração)
+│   ├── CartContext.tsx  # Carrinho com suporte a variações
+│   └── CampaignContext.tsx
+├── lib/
+│   ├── supabase.ts     # API híbrida (Supabase + LocalStorage fallback)
+│   ├── tracking.ts     # Pixel / Analytics
+│   └── utils.ts
+├── pages/
+│   ├── Admin.tsx        # Painel admin completo
+│   ├── AdminLogin.tsx   # Tela de login admin dedicada
+│   ├── Catalog.tsx
+│   ├── Checkout.tsx
+│   ├── Home.tsx
+│   ├── Login.tsx        # Login de cliente
+│   └── ProductDetail.tsx
+└── types/
+    └── index.ts        # Product, CartItem, Order, Lead, Coupon, Review, Campaign
+```
