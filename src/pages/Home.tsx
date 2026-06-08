@@ -87,7 +87,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
         <div className="max-w-5xl mx-auto text-center space-y-8 relative z-10">
           
           {/* Animated Seasonal Badge */}
-          {(currentCampaign.badgeText || config.shippingBarText) && (
+          {(config.heroBadge || (currentCampaign as any).badgeText) && (
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -95,7 +95,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] sm:text-xs font-bold tracking-widest text-gold-400 uppercase"
             >
               <Sparkles size={12} className="animate-spin-slow" />
-              <span>{currentCampaign.badgeText || 'Novidade'}</span>
+              <span>{config.heroBadge || (currentCampaign as any).badgeText}</span>
             </motion.div>
           )}
 

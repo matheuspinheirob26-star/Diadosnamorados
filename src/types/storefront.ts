@@ -10,6 +10,7 @@ export interface StorefrontConfig {
   heroBannerDesktop: string;
   heroBannerMobile: string;
   heroImage: string; // Imagem principal solta (caso não use banner full)
+  heroBadge: string; // Badge sazonal exibido acima do título (ex: ❤️ Especial Dia dos Namorados)
 
   // Textos (Identidade e Hero)
   storeName: string;
@@ -54,6 +55,7 @@ export const DEFAULT_STOREFRONT_CONFIG: StorefrontConfig = {
   heroBannerDesktop: '',
   heroBannerMobile: '',
   heroImage: '',
+  heroBadge: '✨ ❤️ ESPECIAL DIA DOS NAMORADOS',
 
   storeName: 'Amour & Co.',
   slogan: 'Presentes de Luxo',

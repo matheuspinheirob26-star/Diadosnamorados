@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStorefront } from '../../context/StorefrontContext';
 import { StorefrontConfig, DEFAULT_STOREFRONT_CONFIG } from '../../types/storefront';
-import { Save, RefreshCcw, Image as ImageIcon, Link as LinkIcon, Type, Palette, MessageCircle, BarChart } from 'lucide-react';
+import { Save, RefreshCcw, Image as ImageIcon, Link as LinkIcon, Type, Palette, MessageCircle, BarChart, Sparkles } from 'lucide-react';
 
 export const StorefrontCustomizer: React.FC = () => {
   const { config, setPreviewConfig, updateConfig } = useStorefront();
@@ -269,6 +269,16 @@ export const StorefrontCustomizer: React.FC = () => {
                 />
               </div>
               <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Texto da Tag / Badge Exclusivo</label>
+                <input
+                  type="text"
+                  placeholder="Ex: ✨ ❤️ ESPECIAL DIA DOS NAMORADOS"
+                  value={localConfig.heroBadge}
+                  onChange={e => handleChange('heroBadge', e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                />
+              </div>
+              <div className="space-y-1">
                 <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Título Principal</label>
                 <input
                   type="text"
@@ -489,6 +499,13 @@ export const StorefrontCustomizer: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-luxury opacity-80" />
               
               <div className="relative z-10 text-center space-y-6 max-w-2xl">
+                {localConfig.heroBadge && (
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] sm:text-xs font-bold tracking-widest text-gold-400 uppercase">
+                    <Sparkles size={12} className="animate-spin-slow" />
+                    <span>{localConfig.heroBadge}</span>
+                  </div>
+                )}
+                
                 <h1 className="font-serif text-5xl font-extralight tracking-tight text-white">
                   {localConfig.heroTitle}
                 </h1>
