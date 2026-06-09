@@ -484,7 +484,7 @@ export const StorefrontCustomizer: React.FC = () => {
             {/* Header Mock */}
             <div className="border-b border-white/5 bg-luxury-gray/90 backdrop-blur-md">
               <div className="bg-gradient-gold text-luxury-black text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase">
-                {localConfig.shippingBarText} (ACIMA DE R$ {localConfig.minFreeShippingValue})
+                {localConfig.shippingBarText}
               </div>
               <div className="h-20 px-8 flex items-center justify-between">
                 <div className="text-left">

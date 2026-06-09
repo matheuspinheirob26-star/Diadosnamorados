@@ -43,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
       {config.shippingBarText && (
         <div className="bg-gradient-gold text-luxury-black text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase flex items-center justify-center gap-2">
           <Sparkles size={12} className="animate-spin-slow" />
-          <span>{config.shippingBarText} {config.minFreeShippingValue > 0 && `(ACIMA DE R$ ${config.minFreeShippingValue})`}</span>
+          <span>{config.shippingBarText}</span>
           <Sparkles size={12} className="animate-spin-slow" />
         </div>
       )}
