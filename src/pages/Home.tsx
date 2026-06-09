@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useCampaign } from '../context/CampaignContext';
 import { useCart } from '../context/CartContext';
 import { useStorefront } from '../context/StorefrontContext';
 import { api } from '../lib/supabase';
 import { Product } from '../types';
 import { ProductCard } from '../components/product/ProductCard';
-import { Truck, ShieldCheck, CreditCard, Headphones, RotateCcw, ArrowRight, Heart, Sparkles, Star } from 'lucide-react';
+import { Truck, ShieldCheck, CreditCard, Headphones, RotateCcw, ArrowRight, Heart, Sparkles, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface HomeProps {
@@ -19,6 +19,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
   const { addToCart } = useCart();
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [flagshipProduct, setFlagshipProduct] = useState<Product | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -378,14 +379,41 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredProducts.map((prod) => (
-            <ProductCard
-              key={prod.id}
-              product={prod}
-              onNavigateToDetail={(id) => onNavigate(`product-${id}`)}
-            />
-          ))}
+        <div className="relative group">
+          {/* Left Arrow */}
+          <button
+            onClick={() => {
+              if (scrollRef.current) scrollRef.current.scrollBy({ left: -320, behavior: 'smooth' });
+            }}
+            className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-luxury-gray/90 border border-white/10 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all hover:bg-gold-500 hover:text-black hidden sm:flex cursor-pointer"
+          >
+            <ChevronLeft size={20} />
+          </button>
+
+          {/* Scroll Container */}
+          <div 
+            ref={scrollRef}
+            className="flex gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-6 pt-2 px-2 -mx-2"
+          >
+            {featuredProducts.map((prod) => (
+              <div key={prod.id} className="min-w-[85vw] sm:min-w-[300px] lg:min-w-[calc(25%-1.125rem)] shrink-0 snap-start">
+                <ProductCard
+                  product={prod}
+                  onNavigateToDetail={(id) => onNavigate(`product-${id}`)}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Right Arrow */}
+          <button
+            onClick={() => {
+              if (scrollRef.current) scrollRef.current.scrollBy({ left: 320, behavior: 'smooth' });
+            }}
+            className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-luxury-gray/90 border border-white/10 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all hover:bg-gold-500 hover:text-black hidden sm:flex cursor-pointer"
+          >
+            <ChevronRight size={20} />
+          </button>
         </div>
       </section>
 
