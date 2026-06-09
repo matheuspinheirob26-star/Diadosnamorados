@@ -167,24 +167,45 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
           )}
         </div>
 
-        {/* Pricing */}
-        <div className="mt-4 pt-3 border-t border-white/5 space-y-1">
-          {hasDiscount && (
-            <span className="text-[10px] text-gray-500 line-through">
-              {formatCurrency(product.originalPrice)}
-            </span>
-          )}
-          <div className="flex items-baseline gap-2">
-            <span className="text-sm font-bold text-white">
-              {formatCurrency(product.price)}
-            </span>
-            <span className="text-[9px] text-emerald-400 font-semibold bg-emerald-500/10 px-1.5 py-0.5 rounded">
-              {formatCurrency(pixPrice)} no Pix
-            </span>
+        {/* Pricing & Actions */}
+        <div className="mt-4 pt-3 border-t border-white/5 flex flex-col gap-3">
+          <div className="space-y-1">
+            {hasDiscount && (
+              <span className="text-[10px] text-gray-500 line-through">
+                {formatCurrency(product.originalPrice)}
+              </span>
+            )}
+            <div className="flex items-baseline gap-2">
+              <span className="text-sm font-bold text-white">
+                {formatCurrency(product.price)}
+              </span>
+              <span className="text-[9px] text-emerald-400 font-semibold bg-emerald-500/10 px-1.5 py-0.5 rounded">
+                {formatCurrency(pixPrice)} no Pix
+              </span>
+            </div>
+            <p className="text-[9px] text-gray-500">
+              ou <span className="text-gray-300 font-medium">10x de {formatCurrency(installmentValue)}</span> sem juros
+            </p>
           </div>
-          <p className="text-[9px] text-gray-500">
-            ou <span className="text-gray-300 font-medium">10x de {formatCurrency(installmentValue)}</span> sem juros
-          </p>
+
+          <button
+            onClick={handleAddToCart}
+            disabled={isOutOfStock}
+            className={`w-full py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 border ${
+              isOutOfStock 
+                ? 'bg-white/5 text-gray-500 border-white/5 cursor-not-allowed'
+                : 'bg-white/5 border-white/10 text-white hover:bg-gradient-gold hover:text-luxury-black hover:border-transparent hover:shadow-lg'
+            }`}
+          >
+            <ShoppingCart size={14} />
+            <span>
+              {isOutOfStock 
+                ? 'Esgotado' 
+                : hasVariations || (product.sizes && product.sizes.length > 0) 
+                  ? 'Escolher Opções' 
+                  : 'Comprar Agora'}
+            </span>
+          </button>
         </div>
       </div>
     </div>
