@@ -40,8 +40,8 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
       }
       setFlagshipProduct(main);
       
-      // Vitrine: produtos publicados, excluindo a flagship
-      const rest = published.filter(p => p.id !== main.id).slice(0, 4);
+      // Vitrine: produtos publicados, excluindo a flagship (mostrar até 12 para o carrossel rolar)
+      const rest = published.filter(p => p.id !== main.id).slice(0, 12);
       setFeaturedProducts(rest);
     };
 
