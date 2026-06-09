@@ -746,12 +746,14 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                           {watchMainImage ? (
                             <div className="relative group rounded-xl overflow-hidden border border-white/10 aspect-square w-24 shrink-0 bg-black">
                               <img src={watchMainImage} alt="Main Preview" className="w-full h-full object-cover" />
+                              <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                               <button
                                 type="button"
                                 onClick={() => setValue('mainImage', '')}
-                                className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-rose-400 cursor-pointer"
+                                className="absolute top-1 right-1 bg-rose-500/90 hover:bg-rose-600 text-white p-1.5 rounded-lg transition-colors shadow-lg cursor-pointer z-10"
+                                title="Remover Imagem Principal"
                               >
-                                <Trash2 size={16} />
+                                <Trash2 size={14} />
                               </button>
                             </div>
                           ) : (
@@ -797,15 +799,25 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                         {galleryList.map((imgUrl, idx) => (
                           <div key={idx} className="relative group border border-white/10 rounded-xl overflow-hidden aspect-square bg-black">
                             <img src={imgUrl} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+                            <div className="absolute top-1 right-1 z-10">
+                              <button
+                                type="button"
+                                onClick={() => removeGalleryImage(idx)}
+                                className="p-1.5 bg-rose-500/90 hover:bg-rose-600 text-white rounded-lg transition shadow-lg cursor-pointer"
+                                title="Remover imagem"
+                              >
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
                             
-                            {/* Controller Buttons */}
-                            <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-2">
-                              <div className="flex justify-between">
+                            {/* Controller Buttons for ordering */}
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2 pointer-events-none">
+                              <div className="flex justify-between pointer-events-auto">
                                 <button
                                   type="button"
                                   disabled={idx === 0}
                                   onClick={() => moveGalleryImage(idx, 'left')}
-                                  className="p-1 bg-white/10 hover:bg-white/25 rounded text-white disabled:opacity-30 cursor-pointer"
+                                  className="p-1 bg-white/20 hover:bg-white/40 rounded text-white disabled:opacity-30 cursor-pointer"
                                 >
                                   ←
                                 </button>
@@ -813,19 +825,9 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                                   type="button"
                                   disabled={idx === galleryList.length - 1}
                                   onClick={() => moveGalleryImage(idx, 'right')}
-                                  className="p-1 bg-white/10 hover:bg-white/25 rounded text-white disabled:opacity-30 cursor-pointer"
+                                  className="p-1 bg-white/20 hover:bg-white/40 rounded text-white disabled:opacity-30 cursor-pointer"
                                 >
                                   →
-                                </button>
-                              </div>
-                              <div className="flex justify-center pb-2">
-                                <button
-                                  type="button"
-                                  onClick={() => removeGalleryImage(idx)}
-                                  className="p-1.5 bg-rose-500/10 hover:bg-rose-500 text-rose-400 hover:text-white rounded-lg transition cursor-pointer"
-                                  title="Remover imagem"
-                                >
-                                  <Trash2 size={12} />
                                 </button>
                               </div>
                             </div>
