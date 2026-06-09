@@ -396,7 +396,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             className="flex gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-6 pt-2 px-2 -mx-2"
           >
             {featuredProducts.map((prod) => (
-              <div key={prod.id} className="min-w-[85vw] sm:min-w-[300px] lg:min-w-[calc(25%-1.125rem)] shrink-0 snap-start">
+              <div key={prod.id} className="w-[85vw] sm:w-[300px] lg:w-[calc(25%-1.125rem)] shrink-0 snap-start">
                 <ProductCard
                   product={prod}
                   onNavigateToDetail={(id) => onNavigate(`product-${id}`)}
