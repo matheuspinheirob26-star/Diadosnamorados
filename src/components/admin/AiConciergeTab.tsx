@@ -79,14 +79,14 @@ export const AiConciergeTab: React.FC = () => {
         <button 
           onClick={handleSave} 
           disabled={saving}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-gold hover:opacity-90 text-luxury-black text-sm font-bold uppercase rounded-lg transition disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-gold hover:opacity-90 text-gray-900 text-sm font-bold uppercase rounded-lg transition disabled:opacity-50"
         >
           <Save size={16} />
           {saving ? 'Salvando...' : 'Salvar Alterações'}
         </button>
       </div>
 
-      <div className="bg-luxury-gray border border-white/5 rounded-xl p-6 space-y-6">
+      <div className="bg-luxury-gray border border-theme-border-faint rounded-xl p-6 space-y-6">
         
         <div className="space-y-2">
           <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block flex items-center gap-1">

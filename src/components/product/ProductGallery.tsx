@@ -31,7 +31,7 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({ images, video })
   return (
     <div className="flex flex-col gap-4">
       {/* Main Viewport */}
-      <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-luxury-gray border border-white/5 shadow-lg">
+      <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-luxury-gray border border-theme-border-faint shadow-lg">
         {showVideo && video ? (
           <div className="w-full h-full relative">
             <iframe
@@ -70,7 +70,7 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({ images, video })
             {video && (
               <button
                 onClick={() => setShowVideo(true)}
-                className="absolute bottom-4 right-4 bg-luxury-black/80 hover:bg-gold-500 hover:text-luxury-black text-white p-2.5 rounded-full border border-white/10 transition-all shadow-lg flex items-center justify-center"
+                className="absolute bottom-4 right-4 bg-luxury-black/80 hover:bg-gold-500 hover:text-gray-900 text-white p-2.5 rounded-full border border-white/10 transition-all shadow-lg flex items-center justify-center"
                 title="Assista ao vídeo do produto"
               >
                 <Play size={16} fill="currentColor" />
@@ -91,7 +91,7 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({ images, video })
                 setShowVideo(false);
               }}
               className={`w-16 h-16 rounded-lg overflow-hidden bg-luxury-gray border transition shrink-0 ${
-                activeIdx === idx && !showVideo ? 'border-gold-500 shadow' : 'border-white/5 opacity-60 hover:opacity-100'
+                activeIdx === idx && !showVideo ? 'border-gold-500 shadow' : 'border-theme-border-faint opacity-60 hover:opacity-100'
               }`}
             >
               <img src={img} alt="" className="w-full h-full object-cover" />
@@ -101,8 +101,8 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({ images, video })
           {video && (
             <button
               onClick={() => setShowVideo(true)}
-              className={`w-16 h-16 rounded-lg bg-luxury-dark border flex flex-col items-center justify-center text-gray-400 hover:text-white transition shrink-0 ${
-                showVideo ? 'border-gold-500' : 'border-white/5 opacity-60 hover:opacity-100'
+              className={`w-16 h-16 rounded-lg bg-theme-border-faint border flex flex-col items-center justify-center text-gray-400 hover:text-white transition shrink-0 ${
+                showVideo ? 'border-gold-500' : 'border-theme-border-faint opacity-60 hover:opacity-100'
               }`}
             >
               <Play size={16} />

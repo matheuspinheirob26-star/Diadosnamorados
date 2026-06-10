@@ -146,7 +146,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
                 onSetCatalogFilter({}); // Reset filters to show all
                 onNavigate(config.heroButtonLink || 'catalog');
               }}
-              className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg hover:shadow-gold-500/10 text-luxury-black font-semibold text-xs tracking-widest uppercase px-8 py-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg hover:shadow-gold-500/10 text-gray-900 font-semibold text-xs tracking-widest uppercase px-8 py-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>{config.heroButtonText || 'Ver Coleção'}</span>
               <ArrowRight size={14} />
@@ -167,7 +167,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
 
       {/* 2. BENEFIT BAR */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 border-y border-white/5 py-10">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 border-y border-theme-border-faint py-10">
           
           <div className="flex flex-col items-center text-center space-y-2.5">
             <div className="h-10 w-10 rounded-full bg-theme-border-faint flex items-center justify-center text-gold-500 border border-theme-border">
@@ -224,7 +224,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
           
           <div
             onClick={() => handleCategoryClick('Dia dos Namorados', { tag: 'namorados' })}
-            className="group relative h-48 rounded-2xl overflow-hidden cursor-pointer border border-white/5 hover:border-gold-500/25 transition-all"
+            className="group relative h-48 rounded-2xl overflow-hidden cursor-pointer border border-theme-border-faint hover:border-gold-500/25 transition-all"
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
             <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=200&auto=format&fit=crop" alt="Dia dos Namorados" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
@@ -236,7 +236,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
 
           <div
             onClick={() => handleCategoryClick('Kits Presenteáveis')}
-            className="group relative h-48 rounded-2xl overflow-hidden cursor-pointer border border-white/5 hover:border-gold-500/25 transition-all"
+            className="group relative h-48 rounded-2xl overflow-hidden cursor-pointer border border-theme-border-faint hover:border-gold-500/25 transition-all"
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
             <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=200&auto=format&fit=crop" alt="Kits Presenteáveis" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
@@ -248,7 +248,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
 
           <div
             onClick={() => handleCategoryClick('Masculino', { gender: 'masculino' })}
-            className="group relative h-48 rounded-2xl overflow-hidden cursor-pointer border border-white/5 hover:border-gold-500/25 transition-all"
+            className="group relative h-48 rounded-2xl overflow-hidden cursor-pointer border border-theme-border-faint hover:border-gold-500/25 transition-all"
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
             <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=200&auto=format&fit=crop" alt="Masculino" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
@@ -260,7 +260,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
 
           <div
             onClick={() => handleCategoryClick('Feminino', { gender: 'feminino' })}
-            className="group relative h-48 rounded-2xl overflow-hidden cursor-pointer border border-white/5 hover:border-gold-500/25 transition-all"
+            className="group relative h-48 rounded-2xl overflow-hidden cursor-pointer border border-theme-border-faint hover:border-gold-500/25 transition-all"
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
             <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=200&auto=format&fit=crop" alt="Feminino" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
@@ -272,7 +272,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
 
           <div
             onClick={() => handleCategoryClick('Romântico')}
-            className="group relative h-48 rounded-2xl overflow-hidden cursor-pointer border border-white/5 hover:border-gold-500/25 transition-all"
+            className="group relative h-48 rounded-2xl overflow-hidden cursor-pointer border border-theme-border-faint hover:border-gold-500/25 transition-all"
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
             <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=200&auto=format&fit=crop" alt="Romântico" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
@@ -284,7 +284,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
 
           <div
             onClick={() => handleCategoryClick('Mais Vendidos', { tag: 'mais-vendidos' })}
-            className="group relative h-48 rounded-2xl overflow-hidden cursor-pointer border border-white/5 hover:border-gold-500/25 transition-all"
+            className="group relative h-48 rounded-2xl overflow-hidden cursor-pointer border border-theme-border-faint hover:border-gold-500/25 transition-all"
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
             <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=200&auto=format&fit=crop" alt="Mais Vendidos" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
@@ -300,7 +300,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
       {/* 4. FLAGSHIP PRODUCT EMOTIONAL BANNER */}
       {flagshipProduct && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="glass-wine rounded-3xl overflow-hidden border border-white/5 grid grid-cols-1 lg:grid-cols-12 glow-wine items-center">
+          <div className="glass-wine rounded-3xl overflow-hidden border border-theme-border-faint grid grid-cols-1 lg:grid-cols-12 glow-wine items-center">
             
             {/* Image Col */}
             <div className="lg:col-span-5 h-[350px] lg:h-full min-h-[350px] relative">
@@ -338,7 +338,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               </div>
 
               {/* Buy block */}
-              <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
+              <div className="pt-6 border-t border-theme-border-faint flex flex-col sm:flex-row items-center justify-between gap-6">
                 <div>
                   <span className="text-[10px] text-gray-500 line-through block">De R$ {flagshipProduct.originalPrice?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
                   <span className="text-xl font-bold text-theme-text block">Por R$ {flagshipProduct.price?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
@@ -347,7 +347,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
 
                 <button
                   onClick={handleBuyFlagship}
-                  className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg text-luxury-black font-semibold text-xs tracking-widest uppercase px-8 py-3.5 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg text-gray-900 font-semibold text-xs tracking-widest uppercase px-8 py-3.5 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>Garantir Presente</span>
                   <ArrowRight size={14} />
@@ -362,7 +362,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
 
       {/* 5. FEATURED VITRINE */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        <div className="flex flex-col sm:flex-row justify-between items-end gap-4 border-b border-white/5 pb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-end gap-4 border-b border-theme-border-faint pb-6">
           <div className="space-y-1">
             <h2 className="font-serif text-2xl text-theme-text tracking-widest uppercase">Novos Lançamentos</h2>
             <p className="text-[10px] text-gray-500 uppercase tracking-widest">Experiências premium recém-chegadas</p>
@@ -419,7 +419,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
 
       {/* 6. SOCIAL PROOF DEPOIMENTOS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white/2 border border-white/5 rounded-3xl p-8 sm:p-12 lg:p-16 space-y-10 relative overflow-hidden">
+        <div className="bg-white/2 border border-theme-border-faint rounded-3xl p-8 sm:p-12 lg:p-16 space-y-10 relative overflow-hidden">
           <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-gold-600/5 blur-[80px]" />
           
           <div className="text-center space-y-2">
@@ -436,7 +436,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             
-            <div className="bg-luxury-gray border border-white/5 p-6 rounded-2xl space-y-4">
+            <div className="bg-luxury-gray border border-theme-border-faint p-6 rounded-2xl space-y-4">
               <p className="text-xs text-theme-muted italic leading-relaxed">
                 "Comprei o Kit Premium para meu namorado. Chegou em menos de 2 dias em Belo Horizonte, a caixa laqueada de madeira chamou atenção antes mesmo de abrir. A qualidade da camisa e carteira é fantástica. Recomendo muito!"
               </p>
@@ -449,7 +449,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               </div>
             </div>
 
-            <div className="bg-luxury-gray border border-white/5 p-6 rounded-2xl space-y-4">
+            <div className="bg-luxury-gray border border-theme-border-faint p-6 rounded-2xl space-y-4">
               <p className="text-xs text-theme-muted italic leading-relaxed">
                 "Experiência incrível. O concierge via WhatsApp me auxiliou na escolha do tamanho. O cartão personalizado em papel linho deu um toque de exclusividade perfeito. Com certeza voltarei a comprar nas próximas datas."
               </p>
@@ -462,7 +462,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               </div>
             </div>
 
-            <div className="bg-luxury-gray border border-white/5 p-6 rounded-2xl space-y-4">
+            <div className="bg-luxury-gray border border-theme-border-faint p-6 rounded-2xl space-y-4">
               <p className="text-xs text-theme-muted italic leading-relaxed">
                 "Surpreendente a atenção aos detalhes. As taças de cristal do kit Momentos a Dois são lapidadas à mão, pesadas e elegantes. O espumante brut estava ótimo e os chocolates belgas são deliciosos. Nota 10 pela apresentação."
               </p>

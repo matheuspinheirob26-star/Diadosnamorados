@@ -28,11 +28,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   };
 
   return (
-    <footer className="bg-luxury-black border-t border-white/5 pt-16 pb-8 text-gray-400">
+    <footer className="bg-luxury-black border-t border-theme-border-faint pt-16 pb-8 text-gray-400">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Footer Top - Newsletter Lead Capture */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-12 border-b border-white/5 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-12 border-b border-theme-border-faint items-center">
           <div className="lg:col-span-1">
             <h3 className="font-serif text-xl text-gradient-gold tracking-widest uppercase mb-2">
               Clube Amour & Co.
@@ -54,7 +54,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               />
               <button
                 type="submit"
-                className="bg-gradient-gold text-luxury-black font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+                className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
               >
                 {subscribed ? 'Cadastrado' : 'Inscrever-se'}
               </button>
@@ -193,7 +193,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         {/* Footer Bottom - Badges & Copyright */}
-        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs font-light text-gray-500 gap-6">
+        <div className="mt-16 pt-8 border-t border-theme-border-faint flex flex-col md:flex-row items-center justify-between text-xs font-light text-gray-500 gap-6">
           <p>{config.footerText}</p>
           
           {/* Trust Seals */}

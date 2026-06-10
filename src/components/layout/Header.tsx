@@ -40,10 +40,10 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
   };
 
   return (
-    <header className="sticky top-0 z-50 glass border-b border-white/5 transition-all duration-300">
+    <header className="sticky top-0 z-50 glass border-b border-theme-border-faint transition-all duration-300">
       {/* Top Bar - Free Shipping Alert */}
       {config.shippingBarText && (
-        <div className="bg-gradient-gold text-luxury-black text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase flex items-center justify-center gap-2">
+        <div className="bg-gradient-gold text-gray-900 text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase flex items-center justify-center gap-2">
           <Sparkles size={12} className="animate-spin-slow" />
           <span>{config.shippingBarText}</span>
           <Sparkles size={12} className="animate-spin-slow" />
@@ -119,7 +119,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
               
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-56 rounded-xl bg-luxury-gray border border-theme-border glow-gold p-2 shadow-2xl z-50">
-                  <div className="text-[10px] uppercase tracking-wider text-theme-muted font-semibold px-3 py-1.5 border-b border-white/5">
+                  <div className="text-[10px] uppercase tracking-wider text-theme-muted font-semibold px-3 py-1.5 border-b border-theme-border-faint">
                     Selecione a Temporada
                   </div>
                   <div className="py-1">
@@ -192,7 +192,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
             >
               <ShoppingBag size={20} />
               {cartItemsCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-gold text-[9px] font-bold text-luxury-black">
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-gold text-[9px] font-bold text-gray-900">
                   {cartItemsCount}
                 </span>
               )}
@@ -204,7 +204,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
 
       {/* Floating Search Bar container */}
       {searchOpen && (
-        <div className="bg-luxury-black/95 border-b border-white/5 py-4 px-4 sm:px-6">
+        <div className="bg-luxury-black/95 border-b border-theme-border-faint py-4 px-4 sm:px-6">
           <form onSubmit={handleSearchSubmit} className="max-w-3xl mx-auto flex gap-2">
             <input
               type="text"
@@ -216,7 +216,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
             />
             <button
               type="submit"
-              className="bg-gradient-gold text-luxury-black font-semibold text-xs tracking-widest uppercase px-6 py-2 rounded-lg hover:shadow-lg transition"
+              className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-6 py-2 rounded-lg hover:shadow-lg transition"
             >
               Buscar
             </button>
@@ -233,7 +233,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
 
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
-        <div className="md:hidden glass border-t border-white/5 py-4 px-6 space-y-4">
+        <div className="md:hidden glass border-t border-theme-border-faint py-4 px-6 space-y-4">
           <div className="flex flex-col space-y-3 text-sm font-semibold tracking-widest uppercase">
             <button
               onClick={() => {
@@ -275,7 +275,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
             )}
             
             {config.allowUserThemeToggle && (
-              <div className="pt-2 mt-2 border-t border-white/5">
+              <div className="pt-2 mt-2 border-t border-theme-border-faint">
                 <button
                   onClick={() => {
                     setTheme(isDark ? 'light' : 'dark');

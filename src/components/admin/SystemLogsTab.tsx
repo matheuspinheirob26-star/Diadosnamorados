@@ -116,7 +116,7 @@ export const SystemLogsTab: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-luxury-gray border border-white/5 rounded-2xl p-4 flex flex-col md:flex-row gap-4 items-end">
+      <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl p-4 flex flex-col md:flex-row gap-4 items-end">
         
         <div className="flex-1 w-full space-y-1">
           <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Busca Textual</label>
@@ -188,7 +188,7 @@ export const SystemLogsTab: React.FC = () => {
       </div>
 
       {/* Logs Table */}
-      <div className="bg-luxury-gray border border-white/5 rounded-2xl overflow-hidden">
+      <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-gray-500">
             <RefreshCw size={24} className="mx-auto animate-spin mb-2" />
@@ -243,7 +243,7 @@ export const SystemLogsTab: React.FC = () => {
 
       {/* Pagination */}
       {!loading && totalPages > 1 && (
-        <div className="flex items-center justify-between bg-luxury-gray border border-white/5 p-4 rounded-xl">
+        <div className="flex items-center justify-between bg-luxury-gray border border-theme-border-faint p-4 rounded-xl">
           <span className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">
             Página {currentPage} de {totalPages} ({filteredLogs.length} registros)
           </span>

@@ -340,7 +340,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
           <div className="lg:col-span-8 space-y-6">
             
             {/* Steps Progress Indicator */}
-            <div className="flex items-center gap-2 bg-white/2 border border-white/5 p-4 rounded-xl text-xs font-semibold uppercase tracking-wider text-gray-500">
+            <div className="flex items-center gap-2 bg-white/2 border border-theme-border-faint p-4 rounded-xl text-xs font-semibold uppercase tracking-wider text-gray-500">
               <span className={`flex items-center gap-1.5 ${step >= 1 ? 'text-gold-400 font-bold' : ''}`}>
                 <span className={`h-5 w-5 rounded-full flex items-center justify-center border ${step >= 1 ? 'border-gold-400 bg-gold-500/10 text-gold-400' : 'border-gray-600'}`}>1</span>
                 Identificação
@@ -359,7 +359,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
 
             {/* STEP 1: Personal Info */}
             {step === 1 && (
-              <form onSubmit={handleNextStep1} className="bg-luxury-gray border border-white/5 rounded-2xl p-6 sm:p-8 space-y-6">
+              <form onSubmit={handleNextStep1} className="bg-luxury-gray border border-theme-border-faint rounded-2xl p-6 sm:p-8 space-y-6">
                 <div className="space-y-1">
                   <h3 className="font-serif text-xl text-theme-text tracking-wider uppercase">Dados Pessoais</h3>
                   <p className="text-[10px] text-gray-500 uppercase tracking-widest">Para emissão da nota fiscal e envio seguro</p>
@@ -426,7 +426,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                   
                   <button
                     type="submit"
-                    className="bg-gradient-gold text-luxury-black font-semibold text-xs tracking-widest uppercase px-8 py-3 rounded-lg hover:shadow-lg transition cursor-pointer"
+                    className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-8 py-3 rounded-lg hover:shadow-lg transition cursor-pointer"
                   >
                     Seguir para Entrega
                   </button>
@@ -436,7 +436,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
 
             {/* STEP 2: Address Info & Shipping */}
             {step === 2 && (
-              <form onSubmit={handleNextStep2} className="bg-luxury-gray border border-white/5 rounded-2xl p-6 sm:p-8 space-y-6">
+              <form onSubmit={handleNextStep2} className="bg-luxury-gray border border-theme-border-faint rounded-2xl p-6 sm:p-8 space-y-6">
                 <div className="space-y-1 flex justify-between items-center">
                   <div>
                     <h3 className="font-serif text-xl text-theme-text tracking-wider uppercase">Endereço de Entrega</h3>
@@ -544,7 +544,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
 
                 {/* Shipping Providers */}
                 {shippingOptions.length > 0 && (
-                  <div className="space-y-3 pt-4 border-t border-white/5">
+                  <div className="space-y-3 pt-4 border-t border-theme-border-faint">
                     <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Opção de Envio</label>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       {shippingOptions.map((opt) => {
@@ -576,7 +576,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 <div className="pt-4 flex justify-end">
                   <button
                     type="submit"
-                    className="bg-gradient-gold text-luxury-black font-semibold text-xs tracking-widest uppercase px-8 py-3 rounded-lg hover:shadow-lg transition cursor-pointer"
+                    className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-8 py-3 rounded-lg hover:shadow-lg transition cursor-pointer"
                   >
                     Ir para Pagamento
                   </button>
@@ -586,7 +586,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
 
             {/* STEP 3: Secure Payment Gateways */}
             {step === 3 && (
-              <div className="bg-luxury-gray border border-white/5 rounded-2xl p-6 sm:p-8 space-y-6">
+              <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl p-6 sm:p-8 space-y-6">
                 
                 <div className="space-y-1 flex justify-between items-center">
                   <div>
@@ -622,7 +622,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
 
                 {/* Pix */}
                 {paymentMethod === 'pix' && (
-                  <div className="bg-white/2 border border-white/5 rounded-xl p-5 space-y-4 text-center">
+                  <div className="bg-white/2 border border-theme-border-faint rounded-xl p-5 space-y-4 text-center">
                     <div className="mx-auto w-10 h-10 rounded-full bg-emerald-600/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
                       <Zap size={18} />
                     </div>
@@ -638,7 +638,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
 
                 {/* Boleto */}
                 {paymentMethod === 'boleto' && (
-                  <div className="bg-white/2 border border-white/5 rounded-xl p-5 space-y-4 text-center">
+                  <div className="bg-white/2 border border-theme-border-faint rounded-xl p-5 space-y-4 text-center">
                     <div className="mx-auto w-10 h-10 rounded-full bg-gold-600/10 border border-gold-500/20 flex items-center justify-center text-gold-400">
                       <Download size={18} />
                     </div>
@@ -690,7 +690,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                           
                           <div className="space-y-1 text-right mt-2">
                             <span className="text-[7px] text-gray-500 block mr-2">CVV</span>
-                            <div className="bg-white/10 rounded px-2.5 py-1 text-[10px] text-theme-text font-bold inline-block border border-white/5 mr-1 font-sans">
+                            <div className="bg-white/10 rounded px-2.5 py-1 text-[10px] text-theme-text font-bold inline-block border border-theme-border-faint mr-1 font-sans">
                               {cardCvv || '•••'}
                             </div>
                           </div>
@@ -784,7 +784,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 )}
 
                 {/* Final Submit action */}
-                <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="pt-6 border-t border-theme-border-faint flex flex-col sm:flex-row items-center justify-between gap-4">
                   <span className="text-[10px] text-gray-500 flex items-center gap-1.5">
                     🔒 Segurança SSL de nível bancário ativa
                   </span>
@@ -792,7 +792,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                   <button
                     onClick={handleConfirmOrder}
                     disabled={submittingPayment}
-                    className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg text-luxury-black font-semibold text-xs tracking-widest uppercase px-8 py-3.5 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg text-gray-900 font-semibold text-xs tracking-widest uppercase px-8 py-3.5 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>{submittingPayment ? 'Processando...' : 'Confirmar Pedido'}</span>
                   </button>
@@ -807,8 +807,8 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
           <div className="lg:col-span-4 space-y-6">
             
             {/* Summary Box */}
-            <div className="bg-luxury-gray border border-white/5 rounded-2xl p-6 space-y-4">
-              <h3 className="font-serif text-base text-theme-text tracking-wider uppercase border-b border-white/5 pb-2.5">
+            <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl p-6 space-y-4">
+              <h3 className="font-serif text-base text-theme-text tracking-wider uppercase border-b border-theme-border-faint pb-2.5">
                 Resumo do Pedido
               </h3>
               
@@ -816,7 +816,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
               <div className="divide-y divide-white/5 space-y-3 max-h-56 overflow-y-auto pr-1 no-scrollbar">
                 {cart.map((item, idx) => (
                   <div key={`${item.product.id}-${idx}`} className="flex gap-3.5 items-center pt-3 first:pt-0">
-                    <img src={item.product.images[0]} alt="" className="w-12 h-12 object-cover rounded-lg bg-theme-border-faint border border-white/5" />
+                    <img src={item.product.images[0]} alt="" className="w-12 h-12 object-cover rounded-lg bg-theme-border-faint border border-theme-border-faint" />
                     <div className="flex-1 min-w-0 text-xs">
                       <h4 className="font-semibold text-theme-text truncate">{item.product.name}</h4>
                       <div className="flex items-center justify-between text-[10px] text-gray-500 mt-1">
@@ -854,7 +854,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
               )}
 
               {/* Totals Table */}
-              <div className="border-t border-white/5 pt-4 space-y-2 text-xs text-theme-muted">
+              <div className="border-t border-theme-border-faint pt-4 space-y-2 text-xs text-theme-muted">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
                   <span className="text-theme-text">{formatCurrency(cartSubtotal)}</span>
@@ -882,7 +882,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                   </div>
                 )}
 
-                <div className="border-t border-white/5 pt-3 flex justify-between text-sm font-bold text-theme-text">
+                <div className="border-t border-theme-border-faint pt-3 flex justify-between text-sm font-bold text-theme-text">
                   <span>Total</span>
                   <span className="text-gold-400 text-base">
                     {formatCurrency(paymentMethod === 'pix' ? checkoutFinalTotal * 0.9 : checkoutFinalTotal)}
@@ -914,13 +914,13 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
           </div>
 
           {/* Details wrapper */}
-          <div className="bg-white/2 border border-white/5 rounded-2xl p-5 text-left space-y-4">
-            <div className="flex justify-between items-center text-xs border-b border-white/5 pb-2.5">
+          <div className="bg-white/2 border border-theme-border-faint rounded-2xl p-5 text-left space-y-4">
+            <div className="flex justify-between items-center text-xs border-b border-theme-border-faint pb-2.5">
               <span className="text-gray-500">Código do Pedido</span>
               <span className="text-theme-text font-mono font-bold">{createdOrder?.id}</span>
             </div>
             
-            <div className="flex justify-between items-center text-xs border-b border-white/5 pb-2.5">
+            <div className="flex justify-between items-center text-xs border-b border-theme-border-faint pb-2.5">
               <span className="text-gray-500">Destinatário</span>
               <span className="text-theme-text font-medium">{createdOrder?.customerName}</span>
             </div>
@@ -959,7 +959,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       className="flex-1 bg-luxury-black border border-theme-border rounded-lg px-3 py-2 text-[9px] text-theme-muted font-mono focus:outline-none truncate" />
                     <button
                       onClick={() => copyToClipboard(pixResult.copyPaste, setCopiedPix)}
-                      className="bg-gradient-gold text-luxury-black font-semibold text-[10px] px-4 py-2 rounded-lg hover:shadow-lg transition cursor-pointer shrink-0 flex items-center gap-1"
+                      className="bg-gradient-gold text-gray-900 font-semibold text-[10px] px-4 py-2 rounded-lg hover:shadow-lg transition cursor-pointer shrink-0 flex items-center gap-1"
                     >
                       {copiedPix ? <><Check size={10} /> Copiado!</> : <><Copy size={10} /> Copiar</>}
                     </button>
@@ -982,7 +982,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                     className="flex-1 bg-luxury-black border border-theme-border rounded-lg px-3 py-2 text-[9px] text-theme-muted font-mono focus:outline-none truncate" />
                   <button
                     onClick={() => copyToClipboard(boletoResult.barcode, setCopiedBarcode)}
-                    className="bg-gradient-gold text-luxury-black font-semibold text-[10px] px-3 py-2 rounded-lg transition cursor-pointer shrink-0 flex items-center gap-1"
+                    className="bg-gradient-gold text-gray-900 font-semibold text-[10px] px-3 py-2 rounded-lg transition cursor-pointer shrink-0 flex items-center gap-1"
                   >
                     {copiedBarcode ? <><Check size={10} /> Copiado!</> : <><Copy size={10} /></>}
                   </button>
@@ -1080,11 +1080,11 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
               </div>
 
               {/* Product Showcase */}
-              <div className="bg-white/2 border border-white/5 rounded-2xl p-4 flex gap-4 items-center text-left">
+              <div className="bg-white/2 border border-theme-border-faint rounded-2xl p-4 flex gap-4 items-center text-left">
                 <img
                   src={POST_PURCHASE_UPSELL_PRODUCT.images[0]}
                   alt={POST_PURCHASE_UPSELL_PRODUCT.name}
-                  className="w-20 h-20 object-cover rounded-xl bg-theme-border-faint border border-white/5"
+                  className="w-20 h-20 object-cover rounded-xl bg-theme-border-faint border border-theme-border-faint"
                 />
                 <div className="flex-1 min-w-0">
                   <h4 className="text-xs font-bold text-theme-text truncate">{POST_PURCHASE_UPSELL_PRODUCT.name}</h4>
@@ -1109,7 +1109,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
               <div className="space-y-3 pt-2">
                 <button
                   onClick={handleAcceptUpsell}
-                  className="w-full bg-gradient-gold text-luxury-black font-semibold tracking-widest uppercase py-3.5 rounded-lg text-xs hover:shadow-lg transition duration-300 cursor-pointer"
+                  className="w-full bg-gradient-gold text-gray-900 font-semibold tracking-widest uppercase py-3.5 rounded-lg text-xs hover:shadow-lg transition duration-300 cursor-pointer"
                 >
                   Sim! Adicionar ao meu Pedido
                 </button>

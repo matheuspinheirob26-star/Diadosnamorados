@@ -151,9 +151,9 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         
         {/* Left Filter Column (Desktop) */}
-        <aside className="hidden lg:block space-y-6 bg-white/2 border border-white/5 p-6 rounded-2xl h-fit">
+        <aside className="hidden lg:block space-y-6 bg-white/2 border border-theme-border-faint p-6 rounded-2xl h-fit">
           
-          <div className="flex items-center justify-between border-b border-white/5 pb-4">
+          <div className="flex items-center justify-between border-b border-theme-border-faint pb-4">
             <span className="text-xs font-semibold text-white tracking-wider uppercase flex items-center gap-2">
               <SlidersHorizontal size={14} className="text-gold-500" /> Filtros
             </span>
@@ -251,7 +251,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
         <div className="lg:col-span-3 space-y-6">
           
           {/* Controls Bar */}
-          <div className="flex items-center justify-between bg-white/2 border border-white/5 px-4 py-3 rounded-xl">
+          <div className="flex items-center justify-between bg-white/2 border border-theme-border-faint px-4 py-3 rounded-xl">
             {/* Mobile Filter Toggle */}
             <button
               onClick={() => setMobileFiltersOpen(true)}
@@ -317,11 +317,11 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map((idx) => (
-                <div key={idx} className="bg-luxury-gray border border-white/5 h-80 rounded-2xl animate-pulse" />
+                <div key={idx} className="bg-luxury-gray border border-theme-border-faint h-80 rounded-2xl animate-pulse" />
               ))}
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="bg-white/2 border border-dashed border-white/5 rounded-3xl p-12 text-center space-y-4">
+            <div className="bg-white/2 border border-dashed border-theme-border-faint rounded-3xl p-12 text-center space-y-4">
               <div className="h-16 w-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mx-auto text-gray-500">
                 <HelpCircle size={24} />
               </div>
@@ -333,7 +333,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
               </div>
               <button
                 onClick={handleClearFilters}
-                className="bg-gradient-gold text-luxury-black font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+                className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
               >
                 Limpar Todos os Filtros
               </button>
@@ -361,9 +361,9 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm cursor-pointer" onClick={() => setMobileFiltersOpen(false)} />
           
           {/* Drawer content */}
-          <div className="relative w-full max-w-xs bg-luxury-gray h-full border-l border-white/5 p-6 flex flex-col justify-between shadow-2xl">
+          <div className="relative w-full max-w-xs bg-luxury-gray h-full border-l border-theme-border-faint p-6 flex flex-col justify-between shadow-2xl">
             <div className="space-y-6">
-              <div className="flex items-center justify-between border-b border-white/5 pb-4">
+              <div className="flex items-center justify-between border-b border-theme-border-faint pb-4">
                 <span className="text-xs font-semibold text-white tracking-wider uppercase flex items-center gap-2">
                   <SlidersHorizontal size={14} className="text-gold-500" /> Filtros
                 </span>
@@ -456,7 +456,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
               </div>
             </div>
 
-            <div className="flex gap-2 border-t border-white/5 pt-4">
+            <div className="flex gap-2 border-t border-theme-border-faint pt-4">
               <button
                 onClick={handleClearFilters}
                 className="flex-1 border border-white/10 hover:bg-white/5 text-white py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition cursor-pointer"
@@ -465,7 +465,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
               </button>
               <button
                 onClick={() => setMobileFiltersOpen(false)}
-                className="flex-1 bg-gradient-gold text-luxury-black py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition cursor-pointer"
+                className="flex-1 bg-gradient-gold text-gray-900 py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition cursor-pointer"
               >
                 Aplicar
               </button>

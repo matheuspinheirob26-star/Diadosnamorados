@@ -181,7 +181,7 @@ export const ConciergeChatWidget: React.FC = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 bg-gradient-gold hover:shadow-gold-500/20 text-luxury-black p-4 rounded-full shadow-2xl hover:scale-105 transition duration-300 flex items-center justify-center cursor-pointer animate-bounce-slow"
+          className="fixed bottom-6 right-6 z-40 bg-gradient-gold hover:shadow-gold-500/20 text-gray-900 p-4 rounded-full shadow-2xl hover:scale-105 transition duration-300 flex items-center justify-center cursor-pointer animate-bounce-slow"
           title="Falar com Concierge"
         >
           <Sparkles size={24} />
@@ -257,7 +257,7 @@ export const ConciergeChatWidget: React.FC = () => {
                     <div 
                       className={`p-3 text-sm rounded-2xl ${
                         msg.role === 'user' 
-                          ? 'bg-gradient-gold text-luxury-black rounded-tr-sm' 
+                          ? 'bg-gradient-gold text-gray-900 rounded-tr-sm' 
                           : 'bg-white/5 border border-white/10 text-gray-200 rounded-tl-sm'
                       }`}
                       dangerouslySetInnerHTML={{ __html: msg.content.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
@@ -297,7 +297,7 @@ export const ConciergeChatWidget: React.FC = () => {
                 <button
                   type="submit"
                   disabled={loading || !input.trim()}
-                  className="w-9 h-9 rounded-full bg-gold-600 text-luxury-black flex items-center justify-center shrink-0 hover:bg-gold-500 transition disabled:opacity-50 cursor-pointer"
+                  className="w-9 h-9 rounded-full bg-gold-600 text-gray-900 flex items-center justify-center shrink-0 hover:bg-gold-500 transition disabled:opacity-50 cursor-pointer"
                 >
                   <Send size={14} className="ml-0.5" />
                 </button>

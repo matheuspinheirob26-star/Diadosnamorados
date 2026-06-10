@@ -411,7 +411,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
             className="relative w-full max-w-4xl bg-luxury-gray border border-theme-border rounded-3xl p-6 sm:p-8 shadow-2xl z-10 glow-gold my-8 flex flex-col max-h-[90vh]"
           >
             {/* Header */}
-            <div className="flex justify-between items-start border-b border-white/5 pb-4 shrink-0">
+            <div className="flex justify-between items-start border-b border-theme-border-faint pb-4 shrink-0">
               <div className="space-y-1">
                 <span className="text-[10px] uppercase tracking-wider text-rose-400 font-extrabold flex items-center gap-1">
                   <Sparkles size={12} className="animate-spin-slow" />
@@ -431,7 +431,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
             </div>
 
             {/* Form Tabs Navigation */}
-            <div className="flex flex-wrap gap-1 border-b border-white/5 py-3 text-[10px] font-bold uppercase tracking-wider shrink-0 overflow-x-auto no-scrollbar">
+            <div className="flex flex-wrap gap-1 border-b border-theme-border-faint py-3 text-[10px] font-bold uppercase tracking-wider shrink-0 overflow-x-auto no-scrollbar">
               {[
                 { id: 'basico', label: '1. Informações Básicas', icon: Info },
                 { id: 'precos', label: '2. Preços & Estoque', icon: DollarSign },
@@ -560,7 +560,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     {formErrors.details && <p className="text-[10px] text-rose-400">{formErrors.details}</p>}
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white/2 border border-white/5 p-4 rounded-2xl">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white/2 border border-theme-border-faint p-4 rounded-2xl">
                     <div className="flex items-center gap-3">
                       <input
                         type="checkbox"
@@ -673,7 +673,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     </div>
                   </div>
 
-                  <div className="bg-white/2 border border-white/5 p-4 rounded-2xl flex items-center gap-3">
+                  <div className="bg-white/2 border border-theme-border-faint p-4 rounded-2xl flex items-center gap-3">
                     <input
                       type="checkbox"
                       id="allowOutOfStockSale"
@@ -693,8 +693,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 <div className="space-y-6 animate-fadeIn">
                   
                   {/* MAIN IMAGE SECTION */}
-                  <div className="bg-white/2 border border-white/5 p-5 rounded-2xl space-y-4">
-                    <div className="flex justify-between items-center border-b border-white/5 pb-2">
+                  <div className="bg-white/2 border border-theme-border-faint p-5 rounded-2xl space-y-4">
+                    <div className="flex justify-between items-center border-b border-theme-border-faint pb-2">
                       <span className="text-xs font-bold text-theme-text uppercase tracking-wider block">Imagem Principal do Produto</span>
                       <button
                         type="button"
@@ -757,7 +757,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                               </button>
                             </div>
                           ) : (
-                            <div className="rounded-xl border border-dashed border-white/5 aspect-square w-24 flex items-center justify-center text-gray-600 text-[10px] font-bold uppercase">
+                            <div className="rounded-xl border border-dashed border-theme-border-faint aspect-square w-24 flex items-center justify-center text-gray-600 text-[10px] font-bold uppercase">
                               Sem arquivo
                             </div>
                           )}
@@ -767,8 +767,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   </div>
 
                   {/* GALLERY IMAGES SECTION */}
-                  <div className="bg-white/2 border border-white/5 p-5 rounded-2xl space-y-4">
-                    <div className="flex justify-between items-center border-b border-white/5 pb-2">
+                  <div className="bg-white/2 border border-theme-border-faint p-5 rounded-2xl space-y-4">
+                    <div className="flex justify-between items-center border-b border-theme-border-faint pb-2">
                       <div>
                         <span className="text-xs font-bold text-theme-text uppercase tracking-wider block">Galeria de Imagens</span>
                         <span className="text-[9px] text-gray-500 block">Adicione fotos adicionais da experiência de unboxing e detalhes do kit.</span>
@@ -856,7 +856,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 <div className="space-y-6 animate-fadeIn">
                   
                   {/* ADD VARIATION FORM */}
-                  <div className="bg-white/2 border border-white/5 p-4 rounded-2xl grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
+                  <div className="bg-white/2 border border-theme-border-faint p-4 rounded-2xl grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
                     <div className="space-y-1.5 sm:col-span-2">
                       <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Selecione o Tipo de Atributo</label>
                       <select
@@ -886,17 +886,17 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     <button
                       type="button"
                       onClick={handleAddVariation}
-                      className="bg-gradient-gold text-luxury-black font-semibold text-xs tracking-widest uppercase py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center justify-center gap-1.5"
+                      className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center justify-center gap-1.5"
                     >
                       <Plus size={14} /> Adicionar
                     </button>
                   </div>
 
                   {/* VARIATIONS TABLE LIST */}
-                  <div className="bg-luxury-black border border-white/5 rounded-2xl overflow-hidden">
+                  <div className="bg-luxury-black border border-theme-border-faint rounded-2xl overflow-hidden">
                     <table className="w-full text-left text-xs border-collapse">
                       <thead>
-                        <tr className="text-gray-500 font-bold border-b border-white/5 bg-white/2 select-none">
+                        <tr className="text-gray-500 font-bold border-b border-theme-border-faint bg-white/2 select-none">
                           <th className="p-3">Atributo</th>
                           <th className="p-3">Nome</th>
                           <th className="p-3 w-28">Preço Adicional (R$)</th>
@@ -996,7 +996,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 <div className="space-y-6 animate-fadeIn">
                   
                   {/* GOOGLE PREVIEW WIDGET */}
-                  <div className="bg-white/2 border border-white/5 p-6 rounded-3xl space-y-3 shadow-2xl">
+                  <div className="bg-white/2 border border-theme-border-faint p-6 rounded-3xl space-y-3 shadow-2xl">
                     <span className="text-[10px] uppercase tracking-wider text-gray-500 font-extrabold flex items-center gap-1">
                       <Search size={12} className="text-blue-500" />
                       <span>Widget Google Search Preview</span>
@@ -1081,7 +1081,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
             </form>
 
             {/* Modal Actions Footer */}
-            <div className="flex justify-end gap-2 pt-4 border-t border-white/5 shrink-0">
+            <div className="flex justify-end gap-2 pt-4 border-t border-theme-border-faint shrink-0">
               <button
                 type="button"
                 onClick={onClose}
@@ -1094,7 +1094,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 type="button"
                 onClick={handleSubmit(onFormSubmit)}
                 disabled={loading}
-                className="bg-gradient-gold text-luxury-black font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+                className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
               >
                 {loading ? (
                   <>

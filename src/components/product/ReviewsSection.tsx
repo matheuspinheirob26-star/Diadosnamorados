@@ -84,12 +84,12 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
   }
 
   return (
-    <div className="space-y-10 pt-10 border-t border-white/5">
+    <div className="space-y-10 pt-10 border-t border-theme-border-faint">
       {/* Header & Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center bg-white/2 px-6 py-8 rounded-2xl border border-white/5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center bg-white/2 px-6 py-8 rounded-2xl border border-theme-border-faint">
         
         {/* Average Score */}
-        <div className="text-center md:border-r md:border-white/5 space-y-2">
+        <div className="text-center md:border-r md:border-theme-border-faint space-y-2">
           <h4 className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Nota Geral</h4>
           <div className="text-4xl font-serif text-white font-medium">
             {averageRating.toFixed(1)}
@@ -154,7 +154,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
 
       {/* Review Submission Form */}
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-luxury-dark border border-white/5 rounded-2xl p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-theme-border-faint border border-theme-border-faint rounded-2xl p-6 space-y-4">
           <h4 className="font-serif text-white tracking-wider text-sm uppercase">Sua Avaliação</h4>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -235,7 +235,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
             <button
               type="submit"
               disabled={submitting}
-              className="bg-gradient-gold text-luxury-black font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+              className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
             >
               {submitting ? 'Enviando...' : 'Enviar Avaliação'}
             </button>
@@ -250,13 +250,13 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
         {loading ? (
           <p className="text-xs text-gray-500">Carregando depoimentos...</p>
         ) : reviews.length === 0 ? (
-          <div className="bg-white/2 border border-dashed border-white/5 rounded-2xl p-6 text-center text-gray-500 text-xs">
+          <div className="bg-white/2 border border-dashed border-theme-border-faint rounded-2xl p-6 text-center text-gray-500 text-xs">
             Nenhuma avaliação exibida ainda. Seja o primeiro a nos avaliar!
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {reviews.map((rev) => (
-              <div key={rev.id} className="bg-luxury-gray border border-white/5 p-5 rounded-2xl space-y-3 flex flex-col justify-between">
+              <div key={rev.id} className="bg-luxury-gray border border-theme-border-faint p-5 rounded-2xl space-y-3 flex flex-col justify-between">
                 <div>
                   {/* Rating & Verified Badge */}
                   <div className="flex items-center justify-between">
@@ -283,7 +283,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
                 </div>
 
                 {/* Footer Review: Author & Photo */}
-                <div className="flex justify-between items-center pt-4 border-t border-white/5">
+                <div className="flex justify-between items-center pt-4 border-t border-theme-border-faint">
                   <div className="space-y-0.5">
                     <span className="text-xs font-semibold text-white block">{rev.customerName}</span>
                     <span className="text-[9px] text-gray-500 font-medium">
@@ -295,7 +295,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
                     <img
                       src={rev.photos[0]}
                       alt="Cliente"
-                      className="w-12 h-12 object-cover rounded-lg bg-white/5 border border-white/5 hover:scale-150 transition-all duration-300"
+                      className="w-12 h-12 object-cover rounded-lg bg-white/5 border border-theme-border-faint hover:scale-150 transition-all duration-300"
                     />
                   )}
                 </div>

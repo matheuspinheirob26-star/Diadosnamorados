@@ -41,13 +41,13 @@ export const SizeModal: React.FC<SizeModalProps> = ({ isOpen, onClose }) => {
 
               {/* Shirt Section */}
               <div className="space-y-3">
-                <h4 className="text-xs font-semibold text-white tracking-widest uppercase border-b border-white/5 pb-1">
+                <h4 className="text-xs font-semibold text-white tracking-widest uppercase border-b border-theme-border-faint pb-1">
                   1. Camisa de Algodão Egípcio
                 </h4>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
-                      <tr className="text-gray-500 font-bold border-b border-white/5">
+                      <tr className="text-gray-500 font-bold border-b border-theme-border-faint">
                         <th className="py-2 pr-4">Tamanho</th>
                         <th className="py-2 px-4">Tórax (cm)</th>
                         <th className="py-2 px-4">Cintura (cm)</th>
@@ -56,21 +56,21 @@ export const SizeModal: React.FC<SizeModalProps> = ({ isOpen, onClose }) => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-300 font-medium">
-                      <tr className="border-b border-white/5 hover:bg-white/2 transition">
+                      <tr className="border-b border-theme-border-faint hover:bg-white/2 transition">
                         <td className="py-2.5 pr-4 text-gold-400 font-bold">P</td>
                         <td className="py-2.5 px-4">96 - 100</td>
                         <td className="py-2.5 px-4">80 - 84</td>
                         <td className="py-2.5 px-4">44</td>
                         <td className="py-2.5 pl-4">63</td>
                       </tr>
-                      <tr className="border-b border-white/5 hover:bg-white/2 transition">
+                      <tr className="border-b border-theme-border-faint hover:bg-white/2 transition">
                         <td className="py-2.5 pr-4 text-gold-400 font-bold">M</td>
                         <td className="py-2.5 px-4">101 - 105</td>
                         <td className="py-2.5 px-4">85 - 89</td>
                         <td className="py-2.5 px-4">46</td>
                         <td className="py-2.5 pl-4">64</td>
                       </tr>
-                      <tr className="border-b border-white/5 hover:bg-white/2 transition">
+                      <tr className="border-b border-theme-border-faint hover:bg-white/2 transition">
                         <td className="py-2.5 pr-4 text-gold-400 font-bold">G</td>
                         <td className="py-2.5 px-4">106 - 110</td>
                         <td className="py-2.5 px-4">90 - 94</td>
@@ -91,30 +91,30 @@ export const SizeModal: React.FC<SizeModalProps> = ({ isOpen, onClose }) => {
 
               {/* Brief Section */}
               <div className="space-y-3">
-                <h4 className="text-xs font-semibold text-white tracking-widest uppercase border-b border-white/5 pb-1">
+                <h4 className="text-xs font-semibold text-white tracking-widest uppercase border-b border-theme-border-faint pb-1">
                   2. Cueca Boxer Modal
                 </h4>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
-                      <tr className="text-gray-500 font-bold border-b border-white/5">
+                      <tr className="text-gray-500 font-bold border-b border-theme-border-faint">
                         <th className="py-2 pr-4">Tamanho</th>
                         <th className="py-2 px-4">Manequim</th>
                         <th className="py-2 pl-4">Cintura (cm)</th>
                       </tr>
                     </thead>
                     <tbody className="text-gray-300 font-medium">
-                      <tr className="border-b border-white/5 hover:bg-white/2 transition">
+                      <tr className="border-b border-theme-border-faint hover:bg-white/2 transition">
                         <td className="py-2.5 pr-4 text-gold-400 font-bold">P</td>
                         <td className="py-2.5 px-4">36 - 38</td>
                         <td className="py-2.5 pl-4">76 - 82</td>
                       </tr>
-                      <tr className="border-b border-white/5 hover:bg-white/2 transition">
+                      <tr className="border-b border-theme-border-faint hover:bg-white/2 transition">
                         <td className="py-2.5 pr-4 text-gold-400 font-bold">M</td>
                         <td className="py-2.5 px-4">40 - 42</td>
                         <td className="py-2.5 pl-4">83 - 90</td>
                       </tr>
-                      <tr className="border-b border-white/5 hover:bg-white/2 transition">
+                      <tr className="border-b border-theme-border-faint hover:bg-white/2 transition">
                         <td className="py-2.5 pr-4 text-gold-400 font-bold">G</td>
                         <td className="py-2.5 px-4">44 - 46</td>
                         <td className="py-2.5 pl-4">91 - 99</td>
@@ -129,7 +129,7 @@ export const SizeModal: React.FC<SizeModalProps> = ({ isOpen, onClose }) => {
                 </div>
               </div>
 
-              <div className="text-[10px] text-gray-500 leading-relaxed bg-white/2 p-3 rounded-lg border border-white/5">
+              <div className="text-[10px] text-gray-500 leading-relaxed bg-white/2 p-3 rounded-lg border border-theme-border-faint">
                 💡 **Dica de tamanho**: Caso suas medidas estejam no limite entre dois tamanhos, recomendamos escolher o tamanho maior para um caimento mais confortável.
               </div>
             </div>

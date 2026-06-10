@@ -166,7 +166,7 @@ export const ProductsManager: React.FC = () => {
     <div className="space-y-6">
       
       {/* Title / Action bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-white/5 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-theme-border-faint pb-5">
         <div className="space-y-1">
           <h2 className="font-serif text-2xl text-white tracking-wide uppercase">Gerenciamento de Catálogo</h2>
           <p className="text-[10px] text-gray-500 uppercase tracking-widest">
@@ -189,7 +189,7 @@ export const ProductsManager: React.FC = () => {
               setIsDuplicating(false);
               setModalOpen(true);
             }}
-            className="bg-gradient-gold text-luxury-black font-semibold text-xs tracking-widest uppercase px-5 py-2.5 rounded-xl hover:shadow-lg transition cursor-pointer flex items-center gap-1.5"
+            className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-5 py-2.5 rounded-xl hover:shadow-lg transition cursor-pointer flex items-center gap-1.5"
           >
             <Plus size={14} />
             <span>Novo Presente</span>
@@ -198,7 +198,7 @@ export const ProductsManager: React.FC = () => {
       </div>
 
       {/* Filter panel */}
-      <div className="bg-luxury-gray border border-white/5 p-4 rounded-2xl grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+      <div className="bg-luxury-gray border border-theme-border-faint p-4 rounded-2xl grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
         <div className="space-y-1.5">
           <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Buscar Presente</label>
           <div className="relative">
@@ -242,7 +242,7 @@ export const ProductsManager: React.FC = () => {
       </div>
 
       {/* Sub-tabs panel */}
-      <div className="flex border-b border-white/5 gap-2 pb-px text-[11px] font-bold uppercase tracking-wider overflow-x-auto no-scrollbar">
+      <div className="flex border-b border-theme-border-faint gap-2 pb-px text-[11px] font-bold uppercase tracking-wider overflow-x-auto no-scrollbar">
         {[
           { id: 'todos', label: 'Todos' },
           { id: 'estoque_baixo', label: 'Estoque Baixo' },
@@ -279,7 +279,7 @@ export const ProductsManager: React.FC = () => {
       </div>
 
       {/* Products table list */}
-      <div className="bg-luxury-gray border border-white/5 rounded-3xl overflow-hidden shadow-2xl relative">
+      <div className="bg-luxury-gray border border-theme-border-faint rounded-3xl overflow-hidden shadow-2xl relative">
         {loading && (
           <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px] z-10 flex items-center justify-center">
             <RefreshCw size={24} className="text-gold-500 animate-spin" />
@@ -289,7 +289,7 @@ export const ProductsManager: React.FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="text-gray-500 font-bold border-b border-white/5 bg-white/2 select-none">
+              <tr className="text-gray-500 font-bold border-b border-theme-border-faint bg-white/2 select-none">
                 <th className="p-4">Presente</th>
                 <th className="p-4">SKU / Categoria</th>
                 <th className="p-4">Preço (R$)</th>
@@ -353,7 +353,7 @@ export const ProductsManager: React.FC = () => {
                           />
                           <button
                             onClick={() => handleSavePriceInline(prod)}
-                            className="bg-gold-500 text-luxury-black font-extrabold px-1.5 py-1 rounded text-[9px] uppercase cursor-pointer"
+                            className="bg-gold-500 text-gray-900 font-extrabold px-1.5 py-1 rounded text-[9px] uppercase cursor-pointer"
                           >
                             Ok
                           </button>
@@ -393,7 +393,7 @@ export const ProductsManager: React.FC = () => {
                           />
                           <button
                             onClick={() => handleSaveStockInline(prod)}
-                            className="bg-gold-500 text-luxury-black font-extrabold px-1.5 py-1 rounded text-[9px] uppercase cursor-pointer"
+                            className="bg-gold-500 text-gray-900 font-extrabold px-1.5 py-1 rounded text-[9px] uppercase cursor-pointer"
                           >
                             Ok
                           </button>
@@ -461,21 +461,21 @@ export const ProductsManager: React.FC = () => {
                       <div className="flex justify-end gap-1.5">
                         <button
                           onClick={() => handleTriggerEdit(prod)}
-                          className="p-1.5 rounded-lg border border-white/5 hover:border-gold-500/30 hover:bg-white/5 text-gray-400 hover:text-white transition cursor-pointer"
+                          className="p-1.5 rounded-lg border border-theme-border-faint hover:border-gold-500/30 hover:bg-white/5 text-gray-400 hover:text-white transition cursor-pointer"
                           title="Editar dados"
                         >
                           <Edit3 size={13} />
                         </button>
                         <button
                           onClick={() => handleTriggerDuplicate(prod)}
-                          className="p-1.5 rounded-lg border border-white/5 hover:border-gold-500/30 hover:bg-white/5 text-gray-400 hover:text-white transition cursor-pointer"
+                          className="p-1.5 rounded-lg border border-theme-border-faint hover:border-gold-500/30 hover:bg-white/5 text-gray-400 hover:text-white transition cursor-pointer"
                           title="Duplicar presente"
                         >
                           <Copy size={13} />
                         </button>
                         <button
                           onClick={() => handleDeleteProduct(prod.id)}
-                          className="p-1.5 rounded-lg border border-white/5 hover:border-rose-500/30 hover:bg-rose-500/5 text-gray-500 hover:text-rose-400 transition cursor-pointer"
+                          className="p-1.5 rounded-lg border border-theme-border-faint hover:border-rose-500/30 hover:bg-rose-500/5 text-gray-500 hover:text-rose-400 transition cursor-pointer"
                           title="Excluir"
                         >
                           <Trash2 size={13} />

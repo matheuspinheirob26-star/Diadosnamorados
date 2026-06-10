@@ -209,7 +209,7 @@ export const PaymentsManager: React.FC = () => {
       )}
 
       {/* Sub-tabs */}
-      <div className="flex gap-1 bg-white/2 border border-white/5 p-1 rounded-xl">
+      <div className="flex gap-1 bg-white/2 border border-theme-border-faint p-1 rounded-xl">
         {tabs.map(tab => {
           const Icon = tab.icon;
           return (
@@ -218,7 +218,7 @@ export const PaymentsManager: React.FC = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all duration-200 cursor-pointer ${
                 activeTab === tab.id
-                  ? 'bg-gradient-gold text-luxury-black shadow-lg'
+                  ? 'bg-gradient-gold text-gray-900 shadow-lg'
                   : 'text-gray-500 hover:text-white hover:bg-white/5'
               }`}
             >
@@ -248,7 +248,7 @@ export const PaymentsManager: React.FC = () => {
                 className={`border rounded-2xl overflow-hidden transition-all duration-200 ${
                   config.enabled
                     ? `${meta.border} ${meta.bg}`
-                    : 'border-white/5 bg-white/2 opacity-60'
+                    : 'border-theme-border-faint bg-white/2 opacity-60'
                 }`}
               >
                 {/* Gateway Header Row */}
@@ -325,7 +325,7 @@ export const PaymentsManager: React.FC = () => {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <div className="px-5 pb-5 pt-2 border-t border-white/5 space-y-4">
+                      <div className="px-5 pb-5 pt-2 border-t border-theme-border-faint space-y-4">
                         {isCrypto ? (
                           // Crypto: wallet addresses
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -401,7 +401,7 @@ export const PaymentsManager: React.FC = () => {
                             URL do Webhook (configure no painel do gateway)
                           </label>
                           <div className="flex items-center gap-2">
-                            <code className="flex-1 bg-white/5 border border-white/5 rounded-lg px-3 py-2 text-[9px] text-gray-400 font-mono truncate">
+                            <code className="flex-1 bg-white/5 border border-theme-border-faint rounded-lg px-3 py-2 text-[9px] text-gray-400 font-mono truncate">
                               {`https://SEU_PROJETO.supabase.co/functions/v1/webhooks-payments?gateway=${config.gateway}`}
                             </code>
                             <button
@@ -422,7 +422,7 @@ export const PaymentsManager: React.FC = () => {
                             <button
                               onClick={() => handleSave(config.gateway)}
                               disabled={saving}
-                              className="flex items-center gap-2 bg-gradient-gold text-luxury-black text-[10px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+                              className="flex items-center gap-2 bg-gradient-gold text-gray-900 text-[10px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
                             >
                               {savedNow
                                 ? <><CheckCircle2 size={12} /> Salvo!</>
@@ -456,7 +456,7 @@ export const PaymentsManager: React.FC = () => {
             ].map(stat => {
               const Icon = stat.icon;
               return (
-                <div key={stat.label} className="bg-luxury-gray border border-white/5 rounded-xl p-4">
+                <div key={stat.label} className="bg-luxury-gray border border-theme-border-faint rounded-xl p-4">
                   <div className={`flex items-center gap-1.5 ${stat.color} mb-1`}>
                     <Icon size={12} />
                     <span className="text-[9px] uppercase tracking-widest font-bold">{stat.label}</span>
@@ -468,8 +468,8 @@ export const PaymentsManager: React.FC = () => {
           </div>
 
           {/* Transaction table */}
-          <div className="bg-luxury-gray border border-white/5 rounded-2xl overflow-hidden">
-            <div className="p-4 border-b border-white/5 flex items-center justify-between">
+          <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl overflow-hidden">
+            <div className="p-4 border-b border-theme-border-faint flex items-center justify-between">
               <h3 className="text-xs font-bold text-white uppercase tracking-wider">Transações Recentes</h3>
               <button onClick={loadData} className="p-1.5 text-gray-500 hover:text-white transition cursor-pointer">
                 <RefreshCw size={12} />
@@ -484,7 +484,7 @@ export const PaymentsManager: React.FC = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-[10px]">
                   <thead>
-                    <tr className="border-b border-white/5 text-gray-500 uppercase tracking-widest">
+                    <tr className="border-b border-theme-border-faint text-gray-500 uppercase tracking-widest">
                       <th className="text-left px-4 py-3">ID</th>
                       <th className="text-left px-4 py-3">Gateway</th>
                       <th className="text-left px-4 py-3">Método</th>
@@ -496,7 +496,7 @@ export const PaymentsManager: React.FC = () => {
                   </thead>
                   <tbody>
                     {transactions.slice(0, 50).map(tx => (
-                      <tr key={tx.id} className="border-b border-white/5 hover:bg-white/2 transition">
+                      <tr key={tx.id} className="border-b border-theme-border-faint hover:bg-white/2 transition">
                         <td className="px-4 py-3 font-mono text-gray-500">{tx.id.substring(0, 12)}...</td>
                         <td className="px-4 py-3">
                           <span className={`font-bold ${GATEWAY_META[tx.gateway]?.color ?? 'text-gray-400'}`}>
@@ -525,8 +525,8 @@ export const PaymentsManager: React.FC = () => {
       {/* ── TAB: WEBHOOKS ─────────────────────────────────────────────────── */}
       {activeTab === 'webhooks' && (
         <div className="space-y-4">
-          <div className="bg-luxury-gray border border-white/5 rounded-2xl overflow-hidden">
-            <div className="p-4 border-b border-white/5 flex items-center justify-between">
+          <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl overflow-hidden">
+            <div className="p-4 border-b border-theme-border-faint flex items-center justify-between">
               <h3 className="text-xs font-bold text-white uppercase tracking-wider">Log de Webhooks</h3>
               <button onClick={loadData} className="p-1.5 text-gray-500 hover:text-white transition cursor-pointer">
                 <RefreshCw size={12} />
@@ -542,7 +542,7 @@ export const PaymentsManager: React.FC = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-[10px]">
                   <thead>
-                    <tr className="border-b border-white/5 text-gray-500 uppercase tracking-widest">
+                    <tr className="border-b border-theme-border-faint text-gray-500 uppercase tracking-widest">
                       <th className="text-left px-4 py-3">Gateway</th>
                       <th className="text-left px-4 py-3">Evento</th>
                       <th className="text-left px-4 py-3">TX ID</th>
@@ -552,7 +552,7 @@ export const PaymentsManager: React.FC = () => {
                   </thead>
                   <tbody>
                     {webhooks.slice(0, 50).map(wh => (
-                      <tr key={wh.id} className="border-b border-white/5 hover:bg-white/2 transition">
+                      <tr key={wh.id} className="border-b border-theme-border-faint hover:bg-white/2 transition">
                         <td className="px-4 py-3 font-bold" style={{ color: GATEWAY_META[wh.gateway]?.color }}>
                           {GATEWAY_META[wh.gateway]?.icon} {wh.gateway}
                         </td>
@@ -588,7 +588,7 @@ export const PaymentsManager: React.FC = () => {
         <div className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Revenue by gateway */}
-            <div className="bg-luxury-gray border border-white/5 rounded-2xl p-5">
+            <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl p-5">
               <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Receita por Gateway</h3>
               <div className="space-y-3">
                 {byGateway.filter(g => g.txCount > 0).length === 0 ? (
@@ -627,14 +627,14 @@ export const PaymentsManager: React.FC = () => {
             </div>
 
             {/* Fallback stats */}
-            <div className="bg-luxury-gray border border-white/5 rounded-2xl p-5">
+            <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl p-5">
               <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Tentativas & Fallbacks</h3>
               {attempts.length === 0 ? (
                 <p className="text-xs text-gray-600 text-center py-6">Sem tentativas registradas ainda.</p>
               ) : (
                 <div className="space-y-2">
                   {attempts.slice(0, 8).map(att => (
-                    <div key={att.id} className="flex items-center justify-between bg-white/2 border border-white/5 rounded-lg px-3 py-2">
+                    <div key={att.id} className="flex items-center justify-between bg-white/2 border border-theme-border-faint rounded-lg px-3 py-2">
                       <div className="flex items-center gap-2">
                         <span className={`font-bold text-[9px] ${GATEWAY_META[att.gateway]?.color}`}>
                           {GATEWAY_META[att.gateway]?.icon}

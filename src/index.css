@@ -50,14 +50,14 @@
 }
 
 .light-mode {
-  --bg-black: #F9FAFB;
+  --bg-black: #FAF9F6;
   --bg-gray: #FFFFFF;
-  --bg-dark: #F3F4F6;
+  --bg-dark: #F3F1EC;
   --bg-input: #FFFFFF;
-  --text-main: #111827;
-  --text-muted: #4B5563;
-  --border-light: rgba(0, 0, 0, 0.1);
-  --border-faint: rgba(0, 0, 0, 0.05);
+  --text-main: #2C2A29;
+  --text-muted: #8C857B;
+  --border-light: rgba(0, 0, 0, 0.08);
+  --border-faint: rgba(0, 0, 0, 0.03);
 }
 
 /* Base custom styles */
@@ -77,21 +77,21 @@
 
 /* Custom Utilities for Premium Look */
 @utility glass {
-  background: rgba(18, 18, 18, 0.75);
+  background: color-mix(in srgb, var(--bg-gray) 75%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-light);
 }
 
 @utility glass-gold {
-  background: rgba(18, 18, 18, 0.85);
+  background: color-mix(in srgb, var(--bg-gray) 85%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid color-mix(in srgb, var(--color-gold-500) 20%, transparent);
 }
 
 @utility glass-wine {
-  background: rgba(18, 18, 18, 0.85);
+  background: color-mix(in srgb, var(--bg-gray) 85%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid color-mix(in srgb, var(--color-wine-500) 20%, transparent);
@@ -118,7 +118,7 @@
 }
 
 @utility bg-gradient-luxury {
-  background: radial-gradient(circle at top right, color-mix(in srgb, var(--color-wine-900) 60%, transparent) 0%, #0A0A0A 70%);
+  background: radial-gradient(circle at top right, color-mix(in srgb, var(--color-wine-900) 30%, transparent) 0%, var(--bg-black) 70%);
 }
 
 @utility glow-gold {

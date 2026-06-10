@@ -143,7 +143,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-gold hover:shadow-lg text-luxury-black font-semibold tracking-widest uppercase py-3.5 rounded-lg text-xs transition-all duration-300 flex items-center justify-center gap-2 mt-6 cursor-pointer"
+            className="w-full bg-gradient-gold hover:shadow-lg text-gray-900 font-semibold tracking-widest uppercase py-3.5 rounded-lg text-xs transition-all duration-300 flex items-center justify-center gap-2 mt-6 cursor-pointer"
           >
             <span>{loading ? 'Acessando...' : isRegistering ? 'Cadastrar' : 'Entrar'}</span>
             <ArrowRight size={14} />
@@ -151,7 +151,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
         </form>
 
         {/* Toggle options */}
-        <div className="mt-6 flex justify-between items-center text-[10px] text-gray-500 border-t border-white/5 pt-4">
+        <div className="mt-6 flex justify-between items-center text-[10px] text-gray-500 border-t border-theme-border-faint pt-4">
           <button
             onClick={() => setIsRegistering(!isRegistering)}
             className="hover:text-gold-400 font-bold uppercase transition"
@@ -165,7 +165,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
         </div>
 
         {/* Quick Admin bypass button (Test helpers) */}
-        <div className="mt-8 pt-6 border-t border-white/5 text-center space-y-3">
+        <div className="mt-8 pt-6 border-t border-theme-border-faint text-center space-y-3">
           <span className="text-[9px] uppercase tracking-wider text-gray-600 block">Ambiente de Demonstração</span>
           <button
             type="button"

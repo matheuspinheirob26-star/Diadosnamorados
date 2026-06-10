@@ -216,7 +216,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
               </span>
               <div className="flex items-center gap-2 flex-wrap">
                 {product.featured && (
-                  <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-gradient-gold text-luxury-black px-2.5 py-1 rounded-full">
+                  <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-gradient-gold text-gray-900 px-2.5 py-1 rounded-full">
                     <Flame size={9} /> Destaque
                   </span>
                 )}
@@ -251,7 +251,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
 
           {/* Sizing guide (for clothing kits) */}
           {product.sizes && product.sizes.length > 0 && (
-            <div className="space-y-3 pt-4 border-t border-white/5">
+            <div className="space-y-3 pt-4 border-t border-theme-border-faint">
               <div className="flex justify-between items-center text-xs">
                 <span className="font-bold text-theme-text tracking-wide uppercase">Selecione o Tamanho</span>
                 <button
@@ -281,7 +281,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
 
           {/* === VARIAÇÕES PROFISSIONAIS === */}
           {variationTypes.length > 0 && (
-            <div className="space-y-5 pt-4 border-t border-white/5">
+            <div className="space-y-5 pt-4 border-t border-theme-border-faint">
               {variationTypes.map(type => {
                 const vars = variationsByType[type];
                 const selectedId = selectedVariations[type];
@@ -318,7 +318,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                               isSelected
                                 ? 'border-gold-500 bg-gold-500/10 text-gold-400'
                                 : varOutOfStock
-                                ? 'border-white/5 bg-white/2 text-gray-600 cursor-not-allowed line-through'
+                                ? 'border-theme-border-faint bg-white/2 text-gray-600 cursor-not-allowed line-through'
                                 : 'border-theme-border hover:border-white/30 text-gray-300 hover:text-theme-text'
                             }`}
                           >
@@ -350,7 +350,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
           )}
 
           {/* Pricing & Offers info */}
-          <div className="bg-white/2 border border-white/5 p-5 rounded-2xl space-y-4">
+          <div className="bg-white/2 border border-theme-border-faint p-5 rounded-2xl space-y-4">
             <div className="flex items-baseline gap-3 flex-wrap">
               {hasDiscount && (
                 <span className="text-xs text-gray-500 line-through">
@@ -366,12 +366,12 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              <div className="bg-theme-border-faint border border-white/5 p-3 rounded-xl">
+              <div className="bg-theme-border-faint border border-theme-border-faint p-3 rounded-xl">
                 <span className="text-gray-500 block text-[9px] uppercase font-bold tracking-wider">Pix com desconto</span>
                 <span className="text-sm font-bold text-emerald-400 block mt-1">{formatCurrency(pixPrice)}</span>
                 <span className="text-[10px] text-theme-muted block mt-0.5">Economize 10% adicionais</span>
               </div>
-              <div className="bg-theme-border-faint border border-white/5 p-3 rounded-xl">
+              <div className="bg-theme-border-faint border border-theme-border-faint p-3 rounded-xl">
                 <span className="text-gray-500 block text-[9px] uppercase font-bold tracking-wider">Cartão de Crédito</span>
                 <span className="text-sm font-bold text-theme-text block mt-1">10x de {formatCurrency(installmentValue)}</span>
                 <span className="text-[10px] text-theme-muted block mt-0.5">Sem juros no parcelamento</span>
@@ -407,7 +407,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
               className={`flex-1 font-semibold text-xs tracking-widest uppercase py-4 rounded-lg transition duration-300 cursor-pointer text-center ${
                 isOutOfStock
                   ? 'bg-theme-border-faint text-gray-500 cursor-not-allowed'
-                  : 'bg-gradient-gold hover:shadow-lg text-luxury-black'
+                  : 'bg-gradient-gold hover:shadow-lg text-gray-900'
               }`}
             >
               {isOutOfStock ? 'Indisponível' : 'Comprar Agora'}
@@ -417,7 +417,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
               disabled={isOutOfStock}
               className={`flex-1 border font-semibold text-xs tracking-widest uppercase py-4 rounded-lg transition duration-300 cursor-pointer ${
                 isOutOfStock
-                  ? 'border-white/5 text-gray-600 cursor-not-allowed'
+                  ? 'border-theme-border-faint text-gray-600 cursor-not-allowed'
                   : 'border-theme-border hover:border-gold-500 hover:text-gold-400 text-theme-text bg-white/2 hover:bg-theme-border-faint'
               }`}
             >
@@ -435,7 +435,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
           </button>
 
           {/* Shipping Estimation Simulator */}
-          <div className="pt-4 border-t border-white/5 space-y-3">
+          <div className="pt-4 border-t border-theme-border-faint space-y-3">
             <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Calcular Frete e Prazo</label>
             <form onSubmit={handleCalculateShipping} className="flex gap-2">
               <input
@@ -456,7 +456,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
             {shippingError && <p className="text-[10px] text-rose-400">{shippingError}</p>}
             
             {shippingOptions.length > 0 && (
-              <div className="bg-white/2 border border-white/5 rounded-xl p-3 divide-y divide-white/5 space-y-2.5">
+              <div className="bg-white/2 border border-theme-border-faint rounded-xl p-3 divide-y divide-white/5 space-y-2.5">
                 {shippingOptions.map((opt) => (
                   <div key={opt.id} className="flex items-center justify-between text-xs pt-2.5 first:pt-0">
                     <div>
@@ -471,7 +471,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
           </div>
 
           {/* Value Props Lists */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-[10px] text-gray-500 pt-6 border-t border-white/5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-[10px] text-gray-500 pt-6 border-t border-theme-border-faint">
             <div className="flex items-center gap-2">
               <Truck size={12} className="text-gold-500" />
               <span>Embalagem protetora luxuosa</span>
@@ -491,7 +491,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
       </div>
 
       {/* Product Long Details Features Tab */}
-      <div className="space-y-4 pt-10 border-t border-white/5">
+      <div className="space-y-4 pt-10 border-t border-theme-border-faint">
         <h3 className="font-serif text-xl text-theme-text tracking-widest uppercase">Características e Itens do Kit</h3>
         <p className="text-xs text-theme-muted leading-relaxed font-light whitespace-pre-line">
           {product.details}
@@ -503,7 +503,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
 
       {/* Related / Cross sell suggestions slider */}
       {relatedProducts.length > 0 && (
-        <div className="space-y-6 pt-10 border-t border-white/5">
+        <div className="space-y-6 pt-10 border-t border-theme-border-faint">
           <div className="space-y-1">
             <h3 className="font-serif text-xl text-theme-text tracking-widest uppercase">Também pode agradar</h3>
             <p className="text-[10px] text-gray-500 uppercase tracking-widest">Complete seu presente com outros mimos</p>

@@ -90,7 +90,7 @@ export const NewsletterPopup: React.FC = () => {
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-gradient-gold hover:shadow-lg text-luxury-black font-semibold tracking-widest uppercase py-3 rounded-lg text-xs transition duration-300 cursor-pointer"
+                    className="w-full bg-gradient-gold hover:shadow-lg text-gray-900 font-semibold tracking-widest uppercase py-3 rounded-lg text-xs transition duration-300 cursor-pointer"
                   >
                     Resgatar R$ 50 OFF
                   </button>

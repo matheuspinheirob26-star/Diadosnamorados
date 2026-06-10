@@ -66,7 +66,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
       <div className="flex-1 flex flex-col min-w-0">
         
         {/* Mobile Header Bar */}
-        <header className="md:hidden h-16 bg-luxury-gray border-b border-white/5 px-4 flex items-center justify-between sticky top-0 z-40">
+        <header className="md:hidden h-16 bg-luxury-gray border-b border-theme-border-faint px-4 flex items-center justify-between sticky top-0 z-40">
           <button
             onClick={() => setMobileOpen(true)}
             className="text-gray-400 hover:text-white p-2 focus:outline-none cursor-pointer"

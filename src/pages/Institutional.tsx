@@ -72,7 +72,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
       </div>
 
       {/* Tabs list */}
-      <div className="flex flex-wrap justify-center border-b border-white/5 pb-2 text-xs font-semibold uppercase tracking-wider">
+      <div className="flex flex-wrap justify-center border-b border-theme-border-faint pb-2 text-xs font-semibold uppercase tracking-wider">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -89,7 +89,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
       </div>
 
       {/* Tab Contents */}
-      <div className="bg-luxury-gray border border-white/5 rounded-3xl p-8 sm:p-10 text-gray-400 leading-relaxed font-light text-xs sm:text-sm">
+      <div className="bg-luxury-gray border border-theme-border-faint rounded-3xl p-8 sm:p-10 text-gray-400 leading-relaxed font-light text-xs sm:text-sm">
         
         {/* SOBRE NOS */}
         {activeTab === 'sobre' && (
@@ -111,15 +111,15 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 text-center text-xs">
-              <div className="bg-white/2 border border-white/5 p-5 rounded-2xl">
+              <div className="bg-white/2 border border-theme-border-faint p-5 rounded-2xl">
                 <span className="text-gold-400 font-bold block uppercase tracking-widest text-[10px] mb-2">Curadoria de Luxo</span>
                 Parcerias exclusivas com artesãos e marcas internacionais de alta costura e relojoaria.
               </div>
-              <div className="bg-white/2 border border-white/5 p-5 rounded-2xl">
+              <div className="bg-white/2 border border-theme-border-faint p-5 rounded-2xl">
                 <span className="text-gold-400 font-bold block uppercase tracking-widest text-[10px] mb-2">Atenção ao Detalhe</span>
                 Toda caixa de presente é finalizada à mão, perfumada e acompanhada de cartão manuscrito.
               </div>
-              <div className="bg-white/2 border border-white/5 p-5 rounded-2xl">
+              <div className="bg-white/2 border border-theme-border-faint p-5 rounded-2xl">
                 <span className="text-gold-400 font-bold block uppercase tracking-widest text-[10px] mb-2">Alcance Nacional</span>
                 Embalagem de transporte blindada garante integridade impecável de norte a sul do Brasil.
               </div>
@@ -130,7 +130,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
         {/* FRETE E PRAZOS */}
         {activeTab === 'frete' && (
           <div className="space-y-6">
-            <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-white/5 pb-2">Políticas de Envio</h3>
+            <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Políticas de Envio</h3>
             
             <p>
               Para assegurar que seus presentes cheguem em perfeito estado e no prazo estipulado, trabalhamos com uma rede de transportadoras privadas de elite e opções prioritárias dos Correios (SEDEX).
@@ -167,7 +167,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
         {/* TROCAS E DEVOLUÇÕES */}
         {activeTab === 'trocas' && (
           <div className="space-y-6">
-            <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-white/5 pb-2">Trocas e Devoluções Facilitadas</h3>
+            <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Trocas e Devoluções Facilitadas</h3>
             
             <p>
               Compre com total segurança. Na Amour & Co., se o tamanho da camisa não vestir perfeitamente ou se o presenteado desejar realizar a troca de qualquer item, nosso processo de devolução é rápido, humanizado e gratuito.
@@ -188,7 +188,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
             
             {/* Contacts Info */}
             <div className="md:col-span-5 space-y-6">
-              <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-white/5 pb-2">Contatos Concierge</h3>
+              <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Contatos Concierge</h3>
               
               <ul className="space-y-4 text-xs">
                 <li className="flex gap-3 items-center">
@@ -214,14 +214,14 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
                 </li>
               </ul>
 
-              <div className="bg-white/2 border border-white/5 p-4 rounded-xl text-[11px] text-gray-500 leading-relaxed">
+              <div className="bg-white/2 border border-theme-border-faint p-4 rounded-xl text-[11px] text-gray-500 leading-relaxed">
                 🕒 **Horário de Atendimento Concierge**: Segunda a Sexta das 08h00 às 20h00. Sábados das 09h00 às 16h00.
               </div>
             </div>
 
             {/* Form Column */}
             <div className="md:col-span-7 space-y-4">
-              <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-white/5 pb-2">Envie uma Mensagem</h3>
+              <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Envie uma Mensagem</h3>
               
               {formSubmitted && (
                 <div className="bg-emerald-500/10 border border-emerald-500/35 text-emerald-400 rounded-xl p-4 flex gap-2.5 items-center">
@@ -290,7 +290,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-gradient-gold text-luxury-black font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center justify-center gap-2"
+                  className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center justify-center gap-2"
                 >
                   <Send size={12} />
                   <span>{isSubmitting ? 'Enviando...' : 'Enviar Mensagem'}</span>
@@ -305,7 +305,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
         {/* TERMOS E PRIVACIDADE */}
         {activeTab === 'termos' && (
           <div className="space-y-6 text-gray-500 text-xs">
-            <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-white/5 pb-2">Políticas Gerais</h3>
+            <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Políticas Gerais</h3>
             
             <div className="space-y-3">
               <h4 className="font-bold text-gray-300">1. Termos de Uso</h4>

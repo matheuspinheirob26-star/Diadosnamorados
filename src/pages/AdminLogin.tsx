@@ -161,7 +161,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
       {/* ── LOGIN PANEL (Right) ── */}
       <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 relative">
         {/* Background */}
-        <div className="absolute inset-0 bg-luxury-gray lg:border-l border-white/5" />
+        <div className="absolute inset-0 bg-luxury-gray lg:border-l border-theme-border-faint" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
 
         <motion.div
@@ -288,7 +288,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
               className={`w-full flex items-center justify-center gap-2.5 font-semibold tracking-widest uppercase py-4 rounded-xl text-xs transition-all duration-300 cursor-pointer mt-2 ${
                 isBlocked || loading
                   ? 'bg-white/5 text-gray-500 cursor-not-allowed'
-                  : 'bg-gradient-gold hover:shadow-lg hover:shadow-gold-500/20 text-luxury-black'
+                  : 'bg-gradient-gold hover:shadow-lg hover:shadow-gold-500/20 text-gray-900'
               }`}
             >
               {loading ? (
@@ -335,7 +335,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
           </div>
 
           {/* Back to store link */}
-          <div className="text-center pt-2 border-t border-white/5">
+          <div className="text-center pt-2 border-t border-theme-border-faint">
             <button
               onClick={() => onNavigate('home')}
               className="text-[11px] text-gray-600 hover:text-gold-400 transition font-medium cursor-pointer"

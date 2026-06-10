@@ -93,14 +93,14 @@ export const StorefrontCustomizer: React.FC = () => {
             <button onClick={handleRestore} className="p-2 bg-theme-border-faint hover:bg-white/10 border border-theme-border rounded-lg text-gray-300 transition" title="Restaurar Original">
               <RefreshCcw size={16} />
             </button>
-            <button onClick={handleSave} disabled={isSaving} className="flex items-center gap-2 px-4 py-2 bg-gradient-gold hover:opacity-90 text-luxury-black text-sm font-bold uppercase rounded-lg transition disabled:opacity-50">
+            <button onClick={handleSave} disabled={isSaving} className="flex items-center gap-2 px-4 py-2 bg-gradient-gold hover:opacity-90 text-gray-900 text-sm font-bold uppercase rounded-lg transition disabled:opacity-50">
               <Save size={16} />
               {isSaving ? 'Salvando...' : 'Salvar'}
             </button>
           </div>
         </div>
 
-        <div className="flex gap-2 border-b border-white/5 pb-2 overflow-x-auto no-scrollbar">
+        <div className="flex gap-2 border-b border-theme-border-faint pb-2 overflow-x-auto no-scrollbar">
           {[
             { id: 'colors', label: 'Cores', icon: Palette },
             { id: 'identity', label: 'Textos', icon: Type },
@@ -123,7 +123,7 @@ export const StorefrontCustomizer: React.FC = () => {
           ))}
         </div>
 
-        <div className="bg-luxury-gray border border-white/5 rounded-xl p-4 flex-1 overflow-y-auto custom-scrollbar">
+        <div className="bg-luxury-gray border border-theme-border-faint rounded-xl p-4 flex-1 overflow-y-auto custom-scrollbar">
         
         {/* TAB CORES & TEMA */}
         {activeTab === 'colors' && (
@@ -514,8 +514,8 @@ export const StorefrontCustomizer: React.FC = () => {
           <div className="w-[1024px] h-[768px] origin-top scale-[0.45] xl:scale-[0.55] 2xl:scale-[0.65] bg-luxury-black border border-theme-border shadow-2xl rounded-sm overflow-hidden flex flex-col pointer-events-none select-none transition-all duration-300">
             
             {/* Header Mock */}
-            <div className="border-b border-white/5 bg-luxury-gray/90 backdrop-blur-md">
-              <div className="bg-gradient-gold text-luxury-black text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase">
+            <div className="border-b border-theme-border-faint bg-luxury-gray/90 backdrop-blur-md">
+              <div className="bg-gradient-gold text-gray-900 text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase">
                 {localConfig.shippingBarText}
               </div>
               <div className="h-20 px-8 flex items-center justify-between">
@@ -561,14 +561,14 @@ export const StorefrontCustomizer: React.FC = () => {
                 <p className="text-gray-300 text-lg font-light">
                   {localConfig.heroSubtitle}
                 </p>
-                <button className="bg-gradient-gold text-luxury-black px-8 py-3 rounded-full font-bold tracking-widest uppercase text-sm mt-4">
+                <button className="bg-gradient-gold text-gray-900 px-8 py-3 rounded-full font-bold tracking-widest uppercase text-sm mt-4">
                   {localConfig.heroButtonText}
                 </button>
               </div>
             </div>
 
             {/* Footer Mock */}
-            <div className="bg-luxury-gray/50 border-t border-white/5 p-6 flex flex-col items-center justify-center text-center space-y-2">
+            <div className="bg-luxury-gray/50 border-t border-theme-border-faint p-6 flex flex-col items-center justify-center text-center space-y-2">
                <div className="text-gold-400 font-serif text-xl tracking-widest">{localConfig.storeName}</div>
                <p className="text-xs text-gray-500">{localConfig.storeAddress}</p>
                <p className="text-[10px] text-gray-600">{localConfig.footerText}</p>
