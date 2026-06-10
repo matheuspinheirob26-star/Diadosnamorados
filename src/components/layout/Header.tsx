@@ -43,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
     <header className="sticky top-0 z-50 glass border-b border-theme-border-faint transition-all duration-300">
       {/* Top Bar - Free Shipping Alert */}
       {config.shippingBarText && (
-        <div className="bg-gradient-gold text-gray-900 text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase flex items-center justify-center gap-2">
+        <div className="bg-gradient-gold text-theme-text text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase flex items-center justify-center gap-2">
           <Sparkles size={12} className="animate-spin-slow" />
           <span>{config.shippingBarText}</span>
           <Sparkles size={12} className="animate-spin-slow" />
@@ -57,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
           <div className="flex md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-gray-300 hover:text-theme-text focus:outline-none"
+              className="text-theme-muted hover:text-theme-text focus:outline-none"
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -85,19 +85,19 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
           <nav className="hidden md:flex space-x-8 text-xs font-semibold tracking-widest uppercase">
             <button
               onClick={() => onNavigate('home')}
-              className={`hover:text-gold-400 transition-colors duration-200 ${currentPage === 'home' ? 'text-gold-400 border-b border-gold-400/50 pb-1' : 'text-gray-300'}`}
+              className={`hover:text-gold-400 transition-colors duration-200 ${currentPage === 'home' ? 'text-gold-400 border-b border-gold-400/50 pb-1' : 'text-theme-muted'}`}
             >
               Início
             </button>
             <button
               onClick={() => onNavigate('catalog')}
-              className={`hover:text-gold-400 transition-colors duration-200 ${currentPage === 'catalog' ? 'text-gold-400 border-b border-gold-400/50 pb-1' : 'text-gray-300'}`}
+              className={`hover:text-gold-400 transition-colors duration-200 ${currentPage === 'catalog' ? 'text-gold-400 border-b border-gold-400/50 pb-1' : 'text-theme-muted'}`}
             >
               Presentes
             </button>
             <button
               onClick={() => onNavigate('institutional')}
-              className={`hover:text-gold-400 transition-colors duration-200 ${currentPage === 'institutional' ? 'text-gold-400 border-b border-gold-400/50 pb-1' : 'text-gray-300'}`}
+              className={`hover:text-gold-400 transition-colors duration-200 ${currentPage === 'institutional' ? 'text-gold-400 border-b border-gold-400/50 pb-1' : 'text-theme-muted'}`}
             >
               Nossa História
             </button>
@@ -110,7 +110,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-theme-border-faint border border-theme-border text-xs font-medium text-gray-200 hover:bg-white/10 hover:border-gold-500/30 transition-all duration-300 cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-theme-border-faint border border-theme-border text-xs font-medium text-theme-muted hover:bg-white/10 hover:border-gold-500/30 transition-all duration-300 cursor-pointer"
               >
                 <span>{currentCampaign.emoji}</span>
                 <span className="hidden lg:inline">{currentCampaign.name}</span>
@@ -128,7 +128,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
                         key={camp.id}
                         onClick={() => handleCampaignChange(camp.id)}
                         className={`w-full flex items-center justify-between px-3 py-2 text-xs text-left rounded-lg hover:bg-theme-border-faint transition-all duration-200 ${
-                          currentCampaign.id === camp.id ? 'text-gold-400 font-medium' : 'text-gray-300'
+                          currentCampaign.id === camp.id ? 'text-gold-400 font-medium' : 'text-theme-muted'
                         }`}
                       >
                         <div className="flex items-center gap-2">
@@ -147,7 +147,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
             {config.allowUserThemeToggle && (
               <button
                 onClick={() => setTheme(isDark ? 'light' : 'dark')}
-                className="text-gray-300 hover:text-gold-400 transition-colors p-1"
+                className="text-theme-muted hover:text-gold-400 transition-colors p-1"
                 title="Alternar Tema"
               >
                 {isDark ? <Sun size={20} /> : <Moon size={20} />}
@@ -157,7 +157,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
             {/* Search Button */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
-              className="text-gray-300 hover:text-gold-400 transition-colors p-1"
+              className="text-theme-muted hover:text-gold-400 transition-colors p-1"
               title="Pesquisar presentes"
             >
               <Search size={20} />
@@ -177,7 +177,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
               ) : (
                 <button
                   onClick={() => onNavigate('login')}
-                  className="text-gray-300 hover:text-gold-400 transition-colors p-1 cursor-pointer"
+                  className="text-theme-muted hover:text-gold-400 transition-colors p-1 cursor-pointer"
                   title="Acessar Área Administrativa"
                 >
                   <User size={20} />
@@ -188,11 +188,11 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
             {/* Cart Button */}
             <button
               onClick={onCartOpen}
-              className="relative text-gray-300 hover:text-gold-400 transition-colors p-1 cursor-pointer"
+              className="relative text-theme-muted hover:text-gold-400 transition-colors p-1 cursor-pointer"
             >
               <ShoppingBag size={20} />
               {cartItemsCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-gold text-[9px] font-bold text-gray-900">
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-gold text-[9px] font-bold text-theme-text">
                   {cartItemsCount}
                 </span>
               )}
@@ -216,7 +216,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
             />
             <button
               type="submit"
-              className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-6 py-2 rounded-lg hover:shadow-lg transition"
+              className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-6 py-2 rounded-lg hover:shadow-lg transition"
             >
               Buscar
             </button>
@@ -240,7 +240,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
                 onNavigate('home');
                 setMobileMenuOpen(false);
               }}
-              className="text-left py-2 text-gray-300 hover:text-gold-400"
+              className="text-left py-2 text-theme-muted hover:text-gold-400"
             >
               Início
             </button>
@@ -249,7 +249,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
                 onNavigate('catalog');
                 setMobileMenuOpen(false);
               }}
-              className="text-left py-2 text-gray-300 hover:text-gold-400"
+              className="text-left py-2 text-theme-muted hover:text-gold-400"
             >
               Presentes
             </button>
@@ -258,7 +258,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
                 onNavigate('institutional');
                 setMobileMenuOpen(false);
               }}
-              className="text-left py-2 text-gray-300 hover:text-gold-400"
+              className="text-left py-2 text-theme-muted hover:text-gold-400"
             >
               Nossa História
             </button>
@@ -280,7 +280,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
                   onClick={() => {
                     setTheme(isDark ? 'light' : 'dark');
                   }}
-                  className="flex items-center gap-2 py-2 text-gray-300 hover:text-gold-400"
+                  className="flex items-center gap-2 py-2 text-theme-muted hover:text-gold-400"
                 >
                   {isDark ? <Sun size={16} /> : <Moon size={16} />}
                   <span>{isDark ? 'Modo Claro' : 'Modo Escuro'}</span>

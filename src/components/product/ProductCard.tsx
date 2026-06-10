@@ -59,7 +59,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
         {/* Dynamic Marketing Badges - top left */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
           {product.featured && (
-            <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-gradient-gold text-gray-900 px-2.5 py-1 rounded-full shadow-lg">
+            <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-gradient-gold text-theme-text px-2.5 py-1 rounded-full shadow-lg">
               <Flame size={9} /> Destaque
             </span>
           )}
@@ -69,7 +69,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
             </span>
           )}
           {!product.featured && !product.campaign && product.tags?.includes('namorados') && (
-            <span className="text-[9px] font-extrabold uppercase tracking-widest bg-gradient-gold text-gray-900 px-2.5 py-1 rounded-full shadow-lg">
+            <span className="text-[9px] font-extrabold uppercase tracking-widest bg-gradient-gold text-theme-text px-2.5 py-1 rounded-full shadow-lg">
               ❤️ Dia dos Namorados
             </span>
           )}
@@ -79,7 +79,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
             </span>
           )}
           {isLowStock && (
-            <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-amber-500/90 text-gray-900 px-2.5 py-1 rounded-full shadow-lg">
+            <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-amber-500/90 text-theme-text px-2.5 py-1 rounded-full shadow-lg">
               <AlertTriangle size={9} /> Poucas Unidades
             </span>
           )}
@@ -96,7 +96,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
 
         {/* Full delivery badge - bottom left */}
         <div className="absolute bottom-3 left-3 z-10">
-          <span className="inline-flex items-center gap-1 text-[10px] font-extrabold italic uppercase tracking-wider bg-emerald-500 text-gray-900 px-2.5 py-1 rounded-sm shadow-lg">
+          <span className="inline-flex items-center gap-1 text-[10px] font-extrabold italic uppercase tracking-wider bg-emerald-500 text-theme-text px-2.5 py-1 rounded-sm shadow-lg">
             <Zap size={10} className="fill-luxury-black" /> Entrega FULL
           </span>
         </div>
@@ -126,7 +126,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
             </button>
             <button
               onClick={handleAddToCart}
-              className="h-10 w-10 bg-gradient-gold text-gray-900 rounded-full flex items-center justify-center transition-all hover:scale-105 hover:shadow-lg"
+              className="h-10 w-10 bg-gradient-gold text-theme-text rounded-full flex items-center justify-center transition-all hover:scale-105 hover:shadow-lg"
               title={hasVariations || (product.sizes && product.sizes.length > 0) ? 'Escolher Opções' : 'Adicionar ao Carrinho'}
             >
               <ShoppingCart size={16} />
@@ -140,7 +140,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
         <div className="space-y-1.5">
           {/* Category & Rating */}
           <div className="flex items-center justify-between">
-            <span className="text-[9px] uppercase tracking-widest text-gray-500 font-bold">
+            <span className="text-[9px] uppercase tracking-widest text-theme-muted font-bold">
               {product.category}
             </span>
             <div className="flex items-center gap-1 text-[10px] text-theme-muted font-semibold">
@@ -155,7 +155,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
           </h3>
 
           {/* Sub description */}
-          <p className="text-[11px] text-gray-500 line-clamp-2 leading-relaxed">
+          <p className="text-[11px] text-theme-muted line-clamp-2 leading-relaxed">
             {product.description}
           </p>
 
@@ -171,7 +171,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
         <div className="mt-4 pt-3 border-t border-theme-border-faint flex flex-col gap-3">
           <div className="space-y-1">
             {hasDiscount && (
-              <span className="text-[10px] text-gray-500 line-through">
+              <span className="text-[10px] text-theme-muted line-through">
                 {formatCurrency(product.originalPrice)}
               </span>
             )}
@@ -183,8 +183,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
                 {formatCurrency(pixPrice)} no Pix
               </span>
             </div>
-            <p className="text-[9px] text-gray-500">
-              ou <span className="text-gray-300 font-medium">10x de {formatCurrency(installmentValue)}</span> sem juros
+            <p className="text-[9px] text-theme-muted">
+              ou <span className="text-theme-muted font-medium">10x de {formatCurrency(installmentValue)}</span> sem juros
             </p>
           </div>
 
@@ -193,8 +193,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
             disabled={isOutOfStock}
             className={`w-full py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 border ${
               isOutOfStock 
-                ? 'bg-theme-border-faint text-gray-500 border-theme-border-faint cursor-not-allowed'
-                : 'bg-theme-border-faint border-theme-border text-theme-text hover:bg-gradient-gold hover:text-gray-900 hover:border-transparent hover:shadow-lg'
+                ? 'bg-theme-border-faint text-theme-muted border-theme-border-faint cursor-not-allowed'
+                : 'bg-theme-border-faint border-theme-border text-theme-text hover:bg-gradient-gold hover:text-theme-text hover:border-transparent hover:shadow-lg'
             }`}
           >
             <ShoppingCart size={14} />

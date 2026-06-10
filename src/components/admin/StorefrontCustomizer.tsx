@@ -26,7 +26,7 @@ const ImageUploadInput = ({ label, value, onChange, placeholder }: { label: stri
 
   return (
     <div className="space-y-1">
-      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">{label}</label>
+      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">{label}</label>
       <div className="flex gap-2">
         <input
           type="text"
@@ -90,10 +90,10 @@ export const StorefrontCustomizer: React.FC = () => {
             <p className="text-theme-muted text-xs">Altere a vitrine em tempo real.</p>
           </div>
           <div className="flex gap-2">
-            <button onClick={handleRestore} className="p-2 bg-theme-border-faint hover:bg-white/10 border border-theme-border rounded-lg text-gray-300 transition" title="Restaurar Original">
+            <button onClick={handleRestore} className="p-2 bg-theme-border-faint hover:bg-white/10 border border-theme-border rounded-lg text-theme-muted transition" title="Restaurar Original">
               <RefreshCcw size={16} />
             </button>
-            <button onClick={handleSave} disabled={isSaving} className="flex items-center gap-2 px-4 py-2 bg-gradient-gold hover:opacity-90 text-gray-900 text-sm font-bold uppercase rounded-lg transition disabled:opacity-50">
+            <button onClick={handleSave} disabled={isSaving} className="flex items-center gap-2 px-4 py-2 bg-gradient-gold hover:opacity-90 text-theme-text text-sm font-bold uppercase rounded-lg transition disabled:opacity-50">
               <Save size={16} />
               {isSaving ? 'Salvando...' : 'Salvar'}
             </button>
@@ -132,7 +132,7 @@ export const StorefrontCustomizer: React.FC = () => {
               <h3 className="text-lg font-serif text-theme-text border-b border-theme-border pb-2">Tema Claro/Escuro</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Tema Padrão da Loja</label>
+                  <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Tema Padrão da Loja</label>
                   <select
                     value={localConfig.defaultTheme}
                     onChange={e => handleChange('defaultTheme', e.target.value)}
@@ -154,7 +154,7 @@ export const StorefrontCustomizer: React.FC = () => {
                     />
                     <span className="text-sm font-medium text-theme-text">Permitir que o cliente alterne o tema?</span>
                   </label>
-                  <p className="text-[10px] text-gray-500 pl-6">Se ativo, exibe o botão 🌓 no menu.</p>
+                  <p className="text-[10px] text-theme-muted pl-6">Se ativo, exibe o botão 🌓 no menu.</p>
                 </div>
               </div>
             </div>
@@ -163,7 +163,7 @@ export const StorefrontCustomizer: React.FC = () => {
               <h3 className="text-lg font-serif text-theme-text border-b border-theme-border pb-2">Paleta de Cores da Marca</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Cor Primária (Destaques e Botões)</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Cor Primária (Destaques e Botões)</label>
                 <div className="flex items-center gap-3">
                   <input
                     type="color"
@@ -180,7 +180,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Cor Secundária (Acentos)</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Cor Secundária (Acentos)</label>
                 <div className="flex items-center gap-3">
                   <input
                     type="color"
@@ -208,7 +208,7 @@ export const StorefrontCustomizer: React.FC = () => {
               <h3 className="text-lg font-serif text-theme-text border-b border-theme-border pb-2">Informações Básicas</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Nome da Loja</label>
+                  <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Nome da Loja</label>
                   <input
                     type="text"
                     value={localConfig.storeName}
@@ -217,7 +217,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Slogan</label>
+                  <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Slogan</label>
                   <input
                     type="text"
                     value={localConfig.slogan}
@@ -253,7 +253,7 @@ export const StorefrontCustomizer: React.FC = () => {
               <h3 className="text-lg font-serif text-theme-text border-b border-theme-border pb-2">Barra de Frete Grátis</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Texto da Barra</label>
+                  <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Texto da Barra</label>
                   <input
                     type="text"
                     value={localConfig.shippingBarText}
@@ -262,7 +262,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Valor Mín. Frete Grátis (R$)</label>
+                  <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Valor Mín. Frete Grátis (R$)</label>
                   <input
                     type="number"
                     value={localConfig.minFreeShippingValue}
@@ -277,7 +277,7 @@ export const StorefrontCustomizer: React.FC = () => {
               <h3 className="text-lg font-serif text-theme-text border-b border-theme-border pb-2">Pop-up Inicial</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Texto do Pop-up</label>
+                  <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Texto do Pop-up</label>
                   <input
                     type="text"
                     value={localConfig.popupText}
@@ -286,7 +286,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Cupom Exibido</label>
+                  <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Cupom Exibido</label>
                   <input
                     type="text"
                     value={localConfig.popupCoupon}
@@ -319,7 +319,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 onChange={v => handleChange('heroBannerMobile', v)}
               />
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Texto da Tag / Badge Exclusivo</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Texto da Tag / Badge Exclusivo</label>
                 <input
                   type="text"
                   placeholder="Ex: ✨ ❤️ ESPECIAL DIA DOS NAMORADOS"
@@ -329,7 +329,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Título Principal</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Título Principal</label>
                 <input
                   type="text"
                   value={localConfig.heroTitle}
@@ -338,7 +338,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Subtítulo</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Subtítulo</label>
                 <input
                   type="text"
                   value={localConfig.heroSubtitle}
@@ -347,7 +347,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Texto do Botão</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Texto do Botão</label>
                 <input
                   type="text"
                   value={localConfig.heroButtonText}
@@ -356,7 +356,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Link do Botão</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Link do Botão</label>
                 <input
                   type="text"
                   placeholder="Ex: catalog ou product-123"
@@ -374,7 +374,7 @@ export const StorefrontCustomizer: React.FC = () => {
           <div className="space-y-8 max-w-3xl">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block flex items-center gap-1"><MessageCircle size={10}/> WhatsApp Principal</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block flex items-center gap-1"><MessageCircle size={10}/> WhatsApp Principal</label>
                 <input
                   type="text"
                   value={localConfig.whatsapp}
@@ -383,7 +383,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">E-mail de Suporte</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">E-mail de Suporte</label>
                 <input
                   type="email"
                   value={localConfig.supportEmail}
@@ -392,7 +392,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Instagram URL</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Instagram URL</label>
                 <input
                   type="text"
                   value={localConfig.instagramUrl}
@@ -401,7 +401,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Facebook URL</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Facebook URL</label>
                 <input
                   type="text"
                   value={localConfig.facebookUrl}
@@ -410,7 +410,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">TikTok URL</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">TikTok URL</label>
                 <input
                   type="text"
                   value={localConfig.tiktokUrl}
@@ -419,7 +419,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">YouTube URL</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">YouTube URL</label>
                 <input
                   type="text"
                   value={localConfig.youtubeUrl}
@@ -430,7 +430,7 @@ export const StorefrontCustomizer: React.FC = () => {
             </div>
 
             <div className="space-y-1 mt-6">
-              <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Endereço da Loja (Rodapé)</label>
+              <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Endereço da Loja (Rodapé)</label>
               <textarea
                 value={localConfig.storeAddress}
                 onChange={e => handleChange('storeAddress', e.target.value)}
@@ -438,7 +438,7 @@ export const StorefrontCustomizer: React.FC = () => {
               />
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Texto de Copyright (Rodapé)</label>
+              <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Texto de Copyright (Rodapé)</label>
               <textarea
                 value={localConfig.footerText}
                 onChange={e => handleChange('footerText', e.target.value)}
@@ -453,13 +453,13 @@ export const StorefrontCustomizer: React.FC = () => {
           <div className="space-y-4">
             <h3 className="text-sm font-serif text-theme-text border-b border-theme-border pb-2">Pixels e Analytics</h3>
             <div className="bg-theme-border-faint border border-theme-border p-3 rounded-lg mb-4">
-              <p className="text-[10px] text-gray-300">
+              <p className="text-[10px] text-theme-muted">
                 Cole aqui os IDs dos seus pixels (ex: <span className="text-gold-400 font-mono">123456789</span> para Meta).
               </p>
             </div>
             <div className="grid grid-cols-1 gap-4">
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Meta Pixel ID</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Meta Pixel ID</label>
                 <input
                   type="text"
                   placeholder="Ex: 123456789012345"
@@ -469,7 +469,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Google Analytics (G-TAG)</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Google Analytics (G-TAG)</label>
                 <input
                   type="text"
                   placeholder="Ex: G-XXXXXXXXXX"
@@ -479,7 +479,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Google Tag Manager (GTM)</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Google Tag Manager (GTM)</label>
                 <input
                   type="text"
                   placeholder="Ex: GTM-XXXXXX"
@@ -489,7 +489,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">TikTok Pixel ID</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">TikTok Pixel ID</label>
                 <input
                   type="text"
                   placeholder="Ex: C1234567890"
@@ -506,7 +506,7 @@ export const StorefrontCustomizer: React.FC = () => {
 
     {/* RIGHT: LIVE PREVIEW */}
       <div className="hidden lg:flex flex-1 flex-col space-y-2 relative">
-        <h3 className="text-xs uppercase tracking-widest text-gray-500 font-bold">Preview ao Vivo</h3>
+        <h3 className="text-xs uppercase tracking-widest text-theme-muted font-bold">Preview ao Vivo</h3>
         
         {/* Container do Mock - Escalado para caber na tela */}
         <div className="flex-1 bg-black rounded-xl border border-theme-border overflow-hidden relative flex flex-col items-center justify-start p-4 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAHElEQVQYV2NkYGAwYcADIwMkgIETUIIhhV0YAAAAASUVORK5CYII=')] bg-repeat">
@@ -515,7 +515,7 @@ export const StorefrontCustomizer: React.FC = () => {
             
             {/* Header Mock */}
             <div className="border-b border-theme-border-faint bg-luxury-gray/90 backdrop-blur-md">
-              <div className="bg-gradient-gold text-gray-900 text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase">
+              <div className="bg-gradient-gold text-theme-text text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase">
                 {localConfig.shippingBarText}
               </div>
               <div className="h-20 px-8 flex items-center justify-between">
@@ -535,7 +535,7 @@ export const StorefrontCustomizer: React.FC = () => {
                 </div>
                 <div className="flex space-x-6">
                   <div className="text-xs font-semibold tracking-widest uppercase text-gold-400 border-b border-gold-400/50 pb-1">INÍCIO</div>
-                  <div className="text-xs font-semibold tracking-widest uppercase text-gray-300">PRESENTES</div>
+                  <div className="text-xs font-semibold tracking-widest uppercase text-theme-muted">PRESENTES</div>
                 </div>
               </div>
             </div>
@@ -558,10 +558,10 @@ export const StorefrontCustomizer: React.FC = () => {
                 <h1 className="font-serif text-5xl font-extralight tracking-tight text-theme-text">
                   {localConfig.heroTitle}
                 </h1>
-                <p className="text-gray-300 text-lg font-light">
+                <p className="text-theme-muted text-lg font-light">
                   {localConfig.heroSubtitle}
                 </p>
-                <button className="bg-gradient-gold text-gray-900 px-8 py-3 rounded-full font-bold tracking-widest uppercase text-sm mt-4">
+                <button className="bg-gradient-gold text-theme-text px-8 py-3 rounded-full font-bold tracking-widest uppercase text-sm mt-4">
                   {localConfig.heroButtonText}
                 </button>
               </div>
@@ -570,8 +570,8 @@ export const StorefrontCustomizer: React.FC = () => {
             {/* Footer Mock */}
             <div className="bg-luxury-gray/50 border-t border-theme-border-faint p-6 flex flex-col items-center justify-center text-center space-y-2">
                <div className="text-gold-400 font-serif text-xl tracking-widest">{localConfig.storeName}</div>
-               <p className="text-xs text-gray-500">{localConfig.storeAddress}</p>
-               <p className="text-[10px] text-gray-600">{localConfig.footerText}</p>
+               <p className="text-xs text-theme-muted">{localConfig.storeAddress}</p>
+               <p className="text-[10px] text-theme-text">{localConfig.footerText}</p>
             </div>
 
           </div>

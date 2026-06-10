@@ -181,7 +181,7 @@ export const ConciergeChatWidget: React.FC = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 bg-gradient-gold hover:shadow-gold-500/20 text-gray-900 p-4 rounded-full shadow-2xl hover:scale-105 transition duration-300 flex items-center justify-center cursor-pointer animate-bounce-slow"
+          className="fixed bottom-6 right-6 z-40 bg-gradient-gold hover:shadow-gold-500/20 text-theme-text p-4 rounded-full shadow-2xl hover:scale-105 transition duration-300 flex items-center justify-center cursor-pointer animate-bounce-slow"
           title="Falar com Concierge"
         >
           <Sparkles size={24} />
@@ -201,12 +201,12 @@ export const ConciergeChatWidget: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-sm font-serif text-white">{aiConfig.ai_name}</h3>
-                <p className="text-[10px] text-gray-400">Concierge de Luxo IA</p>
+                <p className="text-[10px] text-theme-muted">Concierge de Luxo IA</p>
               </div>
             </div>
             <button 
               onClick={() => setIsOpen(false)}
-              className="text-gray-400 hover:text-white transition p-1"
+              className="text-theme-muted hover:text-white transition p-1"
             >
               <X size={20} />
             </button>
@@ -218,7 +218,7 @@ export const ConciergeChatWidget: React.FC = () => {
             {/* Capture Stage */}
             {captureStage !== 'done' ? (
               <div className="flex flex-col gap-3">
-                <div className="bg-white/5 border border-white/10 p-4 rounded-xl rounded-tl-sm self-start text-sm text-gray-200">
+                <div className="bg-white/5 border border-white/10 p-4 rounded-xl rounded-tl-sm self-start text-sm text-theme-muted">
                   <p className="mb-3">Para iniciarmos um atendimento personalizado, por favor, me diga o seu nome e telefone.</p>
                   <form onSubmit={handleCaptureSubmit} className="space-y-3">
                     {captureStage === 'name' && (
@@ -257,12 +257,12 @@ export const ConciergeChatWidget: React.FC = () => {
                     <div 
                       className={`p-3 text-sm rounded-2xl ${
                         msg.role === 'user' 
-                          ? 'bg-gradient-gold text-gray-900 rounded-tr-sm' 
-                          : 'bg-white/5 border border-white/10 text-gray-200 rounded-tl-sm'
+                          ? 'bg-gradient-gold text-theme-text rounded-tr-sm' 
+                          : 'bg-white/5 border border-white/10 text-theme-muted rounded-tl-sm'
                       }`}
                       dangerouslySetInnerHTML={{ __html: msg.content.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
                     />
-                    <span className="text-[9px] text-gray-500 mt-1 px-1">
+                    <span className="text-[9px] text-theme-muted mt-1 px-1">
                       {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
@@ -297,7 +297,7 @@ export const ConciergeChatWidget: React.FC = () => {
                 <button
                   type="submit"
                   disabled={loading || !input.trim()}
-                  className="w-9 h-9 rounded-full bg-gold-600 text-gray-900 flex items-center justify-center shrink-0 hover:bg-gold-500 transition disabled:opacity-50 cursor-pointer"
+                  className="w-9 h-9 rounded-full bg-gold-600 text-theme-text flex items-center justify-center shrink-0 hover:bg-gold-500 transition disabled:opacity-50 cursor-pointer"
                 >
                   <Send size={14} className="ml-0.5" />
                 </button>

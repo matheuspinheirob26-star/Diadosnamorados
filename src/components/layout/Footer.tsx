@@ -28,7 +28,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   };
 
   return (
-    <footer className="bg-luxury-black border-t border-theme-border-faint pt-16 pb-8 text-gray-400">
+    <footer className="bg-luxury-black border-t border-theme-border-faint pt-16 pb-8 text-theme-muted">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Footer Top - Newsletter Lead Capture */}
@@ -37,7 +37,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <h3 className="font-serif text-xl text-gradient-gold tracking-widest uppercase mb-2">
               Clube Amour & Co.
             </h3>
-            <p className="text-xs text-gray-500 max-w-sm">
+            <p className="text-xs text-theme-muted max-w-sm">
               Inscreva-se para receber convites para pré-lançamentos sazonais, edições numeradas e ofertas de frete privado.
             </p>
           </div>
@@ -54,7 +54,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               />
               <button
                 type="submit"
-                className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+                className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
               >
                 {subscribed ? 'Cadastrado' : 'Inscrever-se'}
               </button>
@@ -79,22 +79,22 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 {config.storeName}
               </h3>
             )}
-            <p className="text-gray-400 text-sm font-light leading-relaxed mb-6">
+            <p className="text-theme-muted text-sm font-light leading-relaxed mb-6">
               {config.slogan}
             </p>
             <div className="flex space-x-4">
               {config.instagramUrl && (
-                <a href={config.instagramUrl} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-gold-400 transition-colors">
+                <a href={config.instagramUrl} target="_blank" rel="noreferrer" className="text-theme-muted hover:text-gold-400 transition-colors">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                 </a>
               )}
               {config.facebookUrl && (
-                <a href={config.facebookUrl} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-gold-400 transition-colors">
+                <a href={config.facebookUrl} target="_blank" rel="noreferrer" className="text-theme-muted hover:text-gold-400 transition-colors">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                 </a>
               )}
               {config.youtubeUrl && (
-                <a href={config.youtubeUrl} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-gold-400 transition-colors">
+                <a href={config.youtubeUrl} target="_blank" rel="noreferrer" className="text-theme-muted hover:text-gold-400 transition-colors">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
                 </a>
               )}
@@ -179,11 +179,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div>
             <h4 className="text-white font-semibold tracking-widest text-sm uppercase mb-6">Contato</h4>
             <ul className="space-y-4 text-sm font-light">
-              <li className="flex items-start text-gray-400">
+              <li className="flex items-start text-theme-muted">
                 <MapPin size={16} className="text-gold-400 mr-3 mt-1 flex-shrink-0" />
                 <span>{config.storeAddress}</span>
               </li>
-              <li className="flex items-center text-gray-400">
+              <li className="flex items-center text-theme-muted">
                 <Mail size={16} className="text-gold-400 mr-3" />
                 <span>{config.supportEmail}</span>
               </li>
@@ -193,7 +193,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         {/* Footer Bottom - Badges & Copyright */}
-        <div className="mt-16 pt-8 border-t border-theme-border-faint flex flex-col md:flex-row items-center justify-between text-xs font-light text-gray-500 gap-6">
+        <div className="mt-16 pt-8 border-t border-theme-border-faint flex flex-col md:flex-row items-center justify-between text-xs font-light text-theme-muted gap-6">
           <p>{config.footerText}</p>
           
           {/* Trust Seals */}

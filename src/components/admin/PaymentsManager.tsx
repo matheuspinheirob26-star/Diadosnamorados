@@ -181,7 +181,7 @@ export const PaymentsManager: React.FC = () => {
           <h2 className="font-serif text-2xl text-white tracking-wider uppercase">
             Central de Pagamentos
           </h2>
-          <p className="text-xs text-gray-500 mt-1 uppercase tracking-widest">
+          <p className="text-xs text-theme-muted mt-1 uppercase tracking-widest">
             Multi-gateway · Fallback Automático · Webhooks
           </p>
         </div>
@@ -199,7 +199,7 @@ export const PaymentsManager: React.FC = () => {
           <AlertTriangle size={16} className="text-amber-400 mt-0.5 shrink-0" />
           <div>
             <p className="text-xs font-bold text-amber-400 uppercase tracking-wider">Modo Demonstração Ativo</p>
-            <p className="text-[10px] text-gray-400 mt-1 leading-relaxed">
+            <p className="text-[10px] text-theme-muted mt-1 leading-relaxed">
               Gateways sem chave configurada operam em modo demo (respostas simuladas).
               Para ativar pagamentos reais, insira as chaves públicas abaixo e configure as
               chaves secretas nas variáveis de ambiente das Supabase Edge Functions.
@@ -218,8 +218,8 @@ export const PaymentsManager: React.FC = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all duration-200 cursor-pointer ${
                 activeTab === tab.id
-                  ? 'bg-gradient-gold text-gray-900 shadow-lg'
-                  : 'text-gray-500 hover:text-white hover:bg-white/5'
+                  ? 'bg-gradient-gold text-theme-text shadow-lg'
+                  : 'text-theme-muted hover:text-white hover:bg-white/5'
               }`}
             >
               <Icon size={12} />
@@ -258,15 +258,15 @@ export const PaymentsManager: React.FC = () => {
                     <button
                       onClick={() => handleMoveUp(config.gateway)}
                       disabled={idx === 0}
-                      className="p-0.5 text-gray-600 hover:text-white disabled:opacity-20 transition cursor-pointer"
+                      className="p-0.5 text-theme-text hover:text-white disabled:opacity-20 transition cursor-pointer"
                     >
                       <ChevronUp size={12} />
                     </button>
-                    <span className="text-[9px] text-gray-500 font-bold w-4 text-center">{config.priority}</span>
+                    <span className="text-[9px] text-theme-muted font-bold w-4 text-center">{config.priority}</span>
                     <button
                       onClick={() => handleMoveDown(config.gateway)}
                       disabled={idx === sortedConfigs.length - 1}
-                      className="p-0.5 text-gray-600 hover:text-white disabled:opacity-20 transition cursor-pointer"
+                      className="p-0.5 text-theme-text hover:text-white disabled:opacity-20 transition cursor-pointer"
                     >
                       <ChevronDown size={12} />
                     </button>
@@ -288,10 +288,10 @@ export const PaymentsManager: React.FC = () => {
                         </span>
                       )}
                     </div>
-                    <p className="text-[9px] text-gray-500 mt-0.5 truncate">{meta.description}</p>
+                    <p className="text-[9px] text-theme-muted mt-0.5 truncate">{meta.description}</p>
                     <div className="flex gap-1 mt-1 flex-wrap">
                       {meta.supportedMethods.map(m => (
-                        <span key={m} className="text-[8px] px-1.5 py-0.5 bg-white/5 rounded text-gray-400">{m}</span>
+                        <span key={m} className="text-[8px] px-1.5 py-0.5 bg-white/5 rounded text-theme-muted">{m}</span>
                       ))}
                     </div>
                   </div>
@@ -303,14 +303,14 @@ export const PaymentsManager: React.FC = () => {
                   >
                     {config.enabled
                       ? <ToggleRight size={28} className={meta.color} />
-                      : <ToggleLeft size={28} className="text-gray-600" />
+                      : <ToggleLeft size={28} className="text-theme-text" />
                     }
                   </button>
 
                   {/* Expand */}
                   <button
                     onClick={() => setExpandedGateway(isExpanded ? null : config.gateway)}
-                    className="p-2 text-gray-500 hover:text-white transition cursor-pointer"
+                    className="p-2 text-theme-muted hover:text-white transition cursor-pointer"
                   >
                     {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                   </button>
@@ -339,7 +339,7 @@ export const PaymentsManager: React.FC = () => {
                               const current = (edits as any)[field] ?? (config as any)[field] ?? '';
                               return (
                                 <div key={field} className="space-y-1">
-                                  <label className="text-[9px] uppercase tracking-widest text-gray-500 font-bold block">
+                                  <label className="text-[9px] uppercase tracking-widest text-theme-muted font-bold block">
                                     {labels[field]}
                                   </label>
                                   <input
@@ -357,7 +357,7 @@ export const PaymentsManager: React.FC = () => {
                           // Other gateways: public key / client ID
                           <div className="space-y-3">
                             <div className="space-y-1">
-                              <label className="text-[9px] uppercase tracking-widest text-gray-500 font-bold block">
+                              <label className="text-[9px] uppercase tracking-widest text-theme-muted font-bold block">
                                 {config.gateway === 'efi' ? 'Client ID (público)' : 'Chave Pública'}
                               </label>
                               <div className="relative">
@@ -383,13 +383,13 @@ export const PaymentsManager: React.FC = () => {
                                 <button
                                   type="button"
                                   onClick={() => setShowKeys(p => ({ ...p, [config.gateway]: !p[config.gateway] }))}
-                                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white cursor-pointer"
+                                  className="absolute right-2 top-1/2 -translate-y-1/2 text-theme-muted hover:text-white cursor-pointer"
                                 >
                                   {showKey ? <EyeOff size={12} /> : <Eye size={12} />}
                                 </button>
                               </div>
-                              <p className="text-[8px] text-gray-600 leading-relaxed">
-                                🔒 Chave secreta: configure nas variáveis de ambiente da Supabase Edge Function <code className="text-gray-500">process-payment</code>
+                              <p className="text-[8px] text-theme-text leading-relaxed">
+                                🔒 Chave secreta: configure nas variáveis de ambiente da Supabase Edge Function <code className="text-theme-muted">process-payment</code>
                               </p>
                             </div>
                           </div>
@@ -397,11 +397,11 @@ export const PaymentsManager: React.FC = () => {
 
                         {/* Webhook URL */}
                         <div className="space-y-1">
-                          <label className="text-[9px] uppercase tracking-widest text-gray-500 font-bold block">
+                          <label className="text-[9px] uppercase tracking-widest text-theme-muted font-bold block">
                             URL do Webhook (configure no painel do gateway)
                           </label>
                           <div className="flex items-center gap-2">
-                            <code className="flex-1 bg-white/5 border border-theme-border-faint rounded-lg px-3 py-2 text-[9px] text-gray-400 font-mono truncate">
+                            <code className="flex-1 bg-white/5 border border-theme-border-faint rounded-lg px-3 py-2 text-[9px] text-theme-muted font-mono truncate">
                               {`https://SEU_PROJETO.supabase.co/functions/v1/webhooks-payments?gateway=${config.gateway}`}
                             </code>
                             <button
@@ -409,7 +409,7 @@ export const PaymentsManager: React.FC = () => {
                                 `https://SEU_PROJETO.supabase.co/functions/v1/webhooks-payments?gateway=${config.gateway}`,
                                 config.gateway
                               )}
-                              className="p-2 text-gray-500 hover:text-white transition cursor-pointer"
+                              className="p-2 text-theme-muted hover:text-white transition cursor-pointer"
                             >
                               {copied === config.gateway ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
                             </button>
@@ -422,7 +422,7 @@ export const PaymentsManager: React.FC = () => {
                             <button
                               onClick={() => handleSave(config.gateway)}
                               disabled={saving}
-                              className="flex items-center gap-2 bg-gradient-gold text-gray-900 text-[10px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+                              className="flex items-center gap-2 bg-gradient-gold text-theme-text text-[10px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
                             >
                               {savedNow
                                 ? <><CheckCircle2 size={12} /> Salvo!</>
@@ -471,20 +471,20 @@ export const PaymentsManager: React.FC = () => {
           <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl overflow-hidden">
             <div className="p-4 border-b border-theme-border-faint flex items-center justify-between">
               <h3 className="text-xs font-bold text-white uppercase tracking-wider">Transações Recentes</h3>
-              <button onClick={loadData} className="p-1.5 text-gray-500 hover:text-white transition cursor-pointer">
+              <button onClick={loadData} className="p-1.5 text-theme-muted hover:text-white transition cursor-pointer">
                 <RefreshCw size={12} />
               </button>
             </div>
 
             {transactions.length === 0 ? (
-              <div className="p-10 text-center text-gray-600 text-xs">
+              <div className="p-10 text-center text-theme-text text-xs">
                 Nenhuma transação registrada ainda.
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-[10px]">
                   <thead>
-                    <tr className="border-b border-theme-border-faint text-gray-500 uppercase tracking-widest">
+                    <tr className="border-b border-theme-border-faint text-theme-muted uppercase tracking-widest">
                       <th className="text-left px-4 py-3">ID</th>
                       <th className="text-left px-4 py-3">Gateway</th>
                       <th className="text-left px-4 py-3">Método</th>
@@ -497,19 +497,19 @@ export const PaymentsManager: React.FC = () => {
                   <tbody>
                     {transactions.slice(0, 50).map(tx => (
                       <tr key={tx.id} className="border-b border-theme-border-faint hover:bg-white/2 transition">
-                        <td className="px-4 py-3 font-mono text-gray-500">{tx.id.substring(0, 12)}...</td>
+                        <td className="px-4 py-3 font-mono text-theme-muted">{tx.id.substring(0, 12)}...</td>
                         <td className="px-4 py-3">
-                          <span className={`font-bold ${GATEWAY_META[tx.gateway]?.color ?? 'text-gray-400'}`}>
+                          <span className={`font-bold ${GATEWAY_META[tx.gateway]?.color ?? 'text-theme-muted'}`}>
                             {GATEWAY_META[tx.gateway]?.icon} {tx.gateway}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-gray-400 uppercase">{tx.method}</td>
+                        <td className="px-4 py-3 text-theme-muted uppercase">{tx.method}</td>
                         <td className="px-4 py-3 text-white font-semibold">{formatCurrency(tx.amount)}</td>
                         <td className="px-4 py-3 text-rose-400">{formatCurrency(tx.fee || 0)}</td>
                         <td className="px-4 py-3">
                           <StatusBadge status={tx.status} />
                         </td>
-                        <td className="px-4 py-3 text-gray-600">
+                        <td className="px-4 py-3 text-theme-text">
                           {new Date(tx.createdAt).toLocaleString('pt-BR')}
                         </td>
                       </tr>
@@ -528,21 +528,21 @@ export const PaymentsManager: React.FC = () => {
           <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl overflow-hidden">
             <div className="p-4 border-b border-theme-border-faint flex items-center justify-between">
               <h3 className="text-xs font-bold text-white uppercase tracking-wider">Log de Webhooks</h3>
-              <button onClick={loadData} className="p-1.5 text-gray-500 hover:text-white transition cursor-pointer">
+              <button onClick={loadData} className="p-1.5 text-theme-muted hover:text-white transition cursor-pointer">
                 <RefreshCw size={12} />
               </button>
             </div>
             {webhooks.length === 0 ? (
               <div className="p-10 text-center">
-                <Webhook size={32} className="text-gray-700 mx-auto mb-3" />
-                <p className="text-xs text-gray-600">Nenhum webhook recebido ainda.</p>
-                <p className="text-[10px] text-gray-700 mt-1">Configure as URLs de webhook nos painéis dos gateways.</p>
+                <Webhook size={32} className="text-theme-text mx-auto mb-3" />
+                <p className="text-xs text-theme-text">Nenhum webhook recebido ainda.</p>
+                <p className="text-[10px] text-theme-text mt-1">Configure as URLs de webhook nos painéis dos gateways.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-[10px]">
                   <thead>
-                    <tr className="border-b border-theme-border-faint text-gray-500 uppercase tracking-widest">
+                    <tr className="border-b border-theme-border-faint text-theme-muted uppercase tracking-widest">
                       <th className="text-left px-4 py-3">Gateway</th>
                       <th className="text-left px-4 py-3">Evento</th>
                       <th className="text-left px-4 py-3">TX ID</th>
@@ -560,17 +560,17 @@ export const PaymentsManager: React.FC = () => {
                           <span className={`font-mono ${
                             wh.eventType.includes('approved') ? 'text-emerald-400'
                             : wh.eventType.includes('failed') || wh.eventType.includes('chargeback') ? 'text-rose-400'
-                            : 'text-gray-400'
+                            : 'text-theme-muted'
                           }`}>{wh.eventType}</span>
                         </td>
-                        <td className="px-4 py-3 font-mono text-gray-600 text-[9px]">{wh.transactionId || '—'}</td>
+                        <td className="px-4 py-3 font-mono text-theme-text text-[9px]">{wh.transactionId || '—'}</td>
                         <td className="px-4 py-3">
                           {wh.processed
                             ? <CheckCircle2 size={12} className="text-emerald-400" />
                             : <Clock size={12} className="text-amber-400" />
                           }
                         </td>
-                        <td className="px-4 py-3 text-gray-600">
+                        <td className="px-4 py-3 text-theme-text">
                           {new Date(wh.receivedAt).toLocaleString('pt-BR')}
                         </td>
                       </tr>
@@ -592,7 +592,7 @@ export const PaymentsManager: React.FC = () => {
               <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Receita por Gateway</h3>
               <div className="space-y-3">
                 {byGateway.filter(g => g.txCount > 0).length === 0 ? (
-                  <p className="text-xs text-gray-600 text-center py-6">Sem dados ainda. Processe pagamentos para ver analytics.</p>
+                  <p className="text-xs text-theme-text text-center py-6">Sem dados ainda. Processe pagamentos para ver analytics.</p>
                 ) : (
                   byGateway.sort((a, b) => b.revenue - a.revenue).map(gw => {
                     const meta = GATEWAY_META[gw.gateway];
@@ -601,7 +601,7 @@ export const PaymentsManager: React.FC = () => {
                       <div key={gw.gateway} className="space-y-1">
                         <div className="flex items-center justify-between text-[10px]">
                           <span className={`font-bold ${meta.color}`}>{meta.icon} {gw.label}</span>
-                          <div className="flex items-center gap-3 text-gray-400">
+                          <div className="flex items-center gap-3 text-theme-muted">
                             <span>{gw.txCount} txs</span>
                             <span className="text-emerald-400">{gw.rate}% sucesso</span>
                             <span className="text-white font-semibold">{formatCurrency(gw.revenue)}</span>
@@ -630,7 +630,7 @@ export const PaymentsManager: React.FC = () => {
             <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl p-5">
               <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Tentativas & Fallbacks</h3>
               {attempts.length === 0 ? (
-                <p className="text-xs text-gray-600 text-center py-6">Sem tentativas registradas ainda.</p>
+                <p className="text-xs text-theme-text text-center py-6">Sem tentativas registradas ainda.</p>
               ) : (
                 <div className="space-y-2">
                   {attempts.slice(0, 8).map(att => (
@@ -639,10 +639,10 @@ export const PaymentsManager: React.FC = () => {
                         <span className={`font-bold text-[9px] ${GATEWAY_META[att.gateway]?.color}`}>
                           {GATEWAY_META[att.gateway]?.icon}
                         </span>
-                        <span className="text-[9px] text-gray-400 uppercase font-mono">{att.method}</span>
+                        <span className="text-[9px] text-theme-muted uppercase font-mono">{att.method}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[8px] text-gray-600">{att.responseTimeMs}ms</span>
+                        <span className="text-[8px] text-theme-text">{att.responseTimeMs}ms</span>
                         {att.status === 'success'
                           ? <CheckCircle2 size={10} className="text-emerald-400" />
                           : att.status === 'fallback_triggered'
@@ -669,12 +669,12 @@ const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
     paid:       { color: 'text-emerald-400', bg: 'bg-emerald-500/10', label: 'Pago' },
     pending:    { color: 'text-amber-400',   bg: 'bg-amber-500/10',   label: 'Pendente' },
     failed:     { color: 'text-rose-400',    bg: 'bg-rose-500/10',    label: 'Falhou' },
-    expired:    { color: 'text-gray-400',    bg: 'bg-gray-500/10',    label: 'Expirado' },
-    cancelled:  { color: 'text-gray-400',    bg: 'bg-gray-500/10',    label: 'Cancelado' },
+    expired:    { color: 'text-theme-muted',    bg: 'bg-gray-500/10',    label: 'Expirado' },
+    cancelled:  { color: 'text-theme-muted',    bg: 'bg-gray-500/10',    label: 'Cancelado' },
     refunded:   { color: 'text-violet-400',  bg: 'bg-violet-500/10',  label: 'Reembolsado' },
     processing: { color: 'text-sky-400',     bg: 'bg-sky-500/10',     label: 'Processando' },
   };
-  const s = map[status] ?? { color: 'text-gray-400', bg: 'bg-gray-500/10', label: status };
+  const s = map[status] ?? { color: 'text-theme-muted', bg: 'bg-gray-500/10', label: status };
   return (
     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider ${s.color} ${s.bg}`}>
       {s.label}

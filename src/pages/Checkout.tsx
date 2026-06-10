@@ -340,17 +340,17 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
           <div className="lg:col-span-8 space-y-6">
             
             {/* Steps Progress Indicator */}
-            <div className="flex items-center gap-2 bg-white/2 border border-theme-border-faint p-4 rounded-xl text-xs font-semibold uppercase tracking-wider text-gray-500">
+            <div className="flex items-center gap-2 bg-white/2 border border-theme-border-faint p-4 rounded-xl text-xs font-semibold uppercase tracking-wider text-theme-muted">
               <span className={`flex items-center gap-1.5 ${step >= 1 ? 'text-gold-400 font-bold' : ''}`}>
                 <span className={`h-5 w-5 rounded-full flex items-center justify-center border ${step >= 1 ? 'border-gold-400 bg-gold-500/10 text-gold-400' : 'border-gray-600'}`}>1</span>
                 Identificação
               </span>
-              <ChevronRight size={14} className="text-gray-600" />
+              <ChevronRight size={14} className="text-theme-text" />
               <span className={`flex items-center gap-1.5 ${step >= 2 ? 'text-gold-400 font-bold' : ''}`}>
                 <span className={`h-5 w-5 rounded-full flex items-center justify-center border ${step >= 2 ? 'border-gold-400 bg-gold-500/10 text-gold-400' : 'border-gray-600'}`}>2</span>
                 Entrega
               </span>
-              <ChevronRight size={14} className="text-gray-600" />
+              <ChevronRight size={14} className="text-theme-text" />
               <span className={`flex items-center gap-1.5 ${step >= 3 ? 'text-gold-400 font-bold' : ''}`}>
                 <span className={`h-5 w-5 rounded-full flex items-center justify-center border ${step >= 3 ? 'border-gold-400 bg-gold-500/10 text-gold-400' : 'border-gray-600'}`}>3</span>
                 Pagamento
@@ -362,7 +362,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
               <form onSubmit={handleNextStep1} className="bg-luxury-gray border border-theme-border-faint rounded-2xl p-6 sm:p-8 space-y-6">
                 <div className="space-y-1">
                   <h3 className="font-serif text-xl text-theme-text tracking-wider uppercase">Dados Pessoais</h3>
-                  <p className="text-[10px] text-gray-500 uppercase tracking-widest">Para emissão da nota fiscal e envio seguro</p>
+                  <p className="text-[10px] text-theme-muted uppercase tracking-widest">Para emissão da nota fiscal e envio seguro</p>
                 </div>
                 
                 {step1Error && (
@@ -374,7 +374,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Nome Completo</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Nome Completo</label>
                     <input
                       type="text"
                       placeholder="Seu nome completo"
@@ -385,7 +385,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">E-mail</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">E-mail</label>
                     <input
                       type="email"
                       placeholder="seu.email@exemplo.com"
@@ -396,7 +396,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">WhatsApp / Celular</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">WhatsApp / Celular</label>
                     <input
                       type="tel"
                       placeholder="(11) 99999-9999"
@@ -407,7 +407,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">CPF</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">CPF</label>
                     <input
                       type="text"
                       placeholder="000.000.000-00"
@@ -420,13 +420,13 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 </div>
 
                 <div className="pt-4 flex justify-between items-center">
-                  <span className="text-[10px] text-gray-500 flex items-center gap-1.5">
+                  <span className="text-[10px] text-theme-muted flex items-center gap-1.5">
                     <ShieldCheck size={14} className="text-emerald-500" /> Seus dados estão 100% protegidos
                   </span>
                   
                   <button
                     type="submit"
-                    className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-8 py-3 rounded-lg hover:shadow-lg transition cursor-pointer"
+                    className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-8 py-3 rounded-lg hover:shadow-lg transition cursor-pointer"
                   >
                     Seguir para Entrega
                   </button>
@@ -440,12 +440,12 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 <div className="space-y-1 flex justify-between items-center">
                   <div>
                     <h3 className="font-serif text-xl text-theme-text tracking-wider uppercase">Endereço de Entrega</h3>
-                    <p className="text-[10px] text-gray-500 uppercase tracking-widest">Selecione onde deseja receber seus presentes</p>
+                    <p className="text-[10px] text-theme-muted uppercase tracking-widest">Selecione onde deseja receber seus presentes</p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setStep(1)}
-                    className="text-[10px] text-gray-500 hover:text-theme-text uppercase font-bold"
+                    className="text-[10px] text-theme-muted hover:text-theme-text uppercase font-bold"
                   >
                     Voltar
                   </button>
@@ -460,7 +460,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
 
                 <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
                   <div className="sm:col-span-2 space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">CEP</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">CEP</label>
                     <input
                       type="text"
                       placeholder="00000-000"
@@ -471,7 +471,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                     />
                   </div>
                   <div className="sm:col-span-4 space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Logradouro</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Logradouro</label>
                     <input
                       type="text"
                       placeholder="Av, Rua, Travessa..."
@@ -483,7 +483,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                     />
                   </div>
                   <div className="sm:col-span-2 space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Número</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Número</label>
                     <input
                       type="text"
                       placeholder="Ex: 100"
@@ -494,7 +494,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                     />
                   </div>
                   <div className="sm:col-span-4 space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Complemento / Referência</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Complemento / Referência</label>
                     <input
                       type="text"
                       placeholder="Apto, bloco, portão (Opcional)"
@@ -504,7 +504,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                     />
                   </div>
                   <div className="sm:col-span-2 space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Bairro</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Bairro</label>
                     <input
                       type="text"
                       placeholder="Seu bairro"
@@ -516,7 +516,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                     />
                   </div>
                   <div className="sm:col-span-3 space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Cidade</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Cidade</label>
                     <input
                       type="text"
                       placeholder="Sua cidade"
@@ -528,7 +528,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                     />
                   </div>
                   <div className="sm:col-span-1 space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">UF</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">UF</label>
                     <input
                       type="text"
                       placeholder="SP"
@@ -545,7 +545,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 {/* Shipping Providers */}
                 {shippingOptions.length > 0 && (
                   <div className="space-y-3 pt-4 border-t border-theme-border-faint">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Opção de Envio</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Opção de Envio</label>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       {shippingOptions.map((opt) => {
                         const finalPrice = cartSubtotal >= 290 ? 0 : opt.price;
@@ -561,7 +561,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                           >
                             <div>
                               <span className="text-[10px] uppercase font-bold text-theme-text block">{opt.name}</span>
-                              <span className="text-[9px] text-gray-500 mt-0.5 block">Entrega em {opt.deliveryDays} dia{opt.deliveryDays !== 1 && 's'}</span>
+                              <span className="text-[9px] text-theme-muted mt-0.5 block">Entrega em {opt.deliveryDays} dia{opt.deliveryDays !== 1 && 's'}</span>
                             </div>
                             <span className="text-xs font-bold text-gold-400 mt-2 block">
                               {finalPrice === 0 ? 'Frete Grátis' : formatCurrency(finalPrice)}
@@ -576,7 +576,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 <div className="pt-4 flex justify-end">
                   <button
                     type="submit"
-                    className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-8 py-3 rounded-lg hover:shadow-lg transition cursor-pointer"
+                    className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-8 py-3 rounded-lg hover:shadow-lg transition cursor-pointer"
                   >
                     Ir para Pagamento
                   </button>
@@ -591,11 +591,11 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 <div className="space-y-1 flex justify-between items-center">
                   <div>
                     <h3 className="font-serif text-xl text-theme-text tracking-wider uppercase">Método de Pagamento</h3>
-                    <p className="text-[10px] text-gray-500 uppercase tracking-widest">Ambiente 100% criptografado e seguro</p>
+                    <p className="text-[10px] text-theme-muted uppercase tracking-widest">Ambiente 100% criptografado e seguro</p>
                   </div>
                   <button
                     onClick={() => setStep(2)}
-                    className="text-[10px] text-gray-500 hover:text-theme-text uppercase font-bold"
+                    className="text-[10px] text-theme-muted hover:text-theme-text uppercase font-bold"
                   >
                     Voltar
                   </button>
@@ -674,11 +674,11 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
 
                           <div className="flex justify-between items-end uppercase text-[9px] tracking-wider text-theme-muted">
                             <div>
-                              <span className="block text-[7px] text-gray-500">Nome do Titular</span>
+                              <span className="block text-[7px] text-theme-muted">Nome do Titular</span>
                               <span className="block text-theme-text truncate max-w-[120px] font-sans">{cardName || 'NOME DO TITULAR'}</span>
                             </div>
                             <div>
-                              <span className="block text-[7px] text-gray-500 text-right">Validade</span>
+                              <span className="block text-[7px] text-theme-muted text-right">Validade</span>
                               <span className="block text-theme-text font-sans">{cardExpiry || 'MM/AA'}</span>
                             </div>
                           </div>
@@ -689,13 +689,13 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                           <div className="w-full h-8 bg-black -mx-5 mt-1" />
                           
                           <div className="space-y-1 text-right mt-2">
-                            <span className="text-[7px] text-gray-500 block mr-2">CVV</span>
+                            <span className="text-[7px] text-theme-muted block mr-2">CVV</span>
                             <div className="bg-white/10 rounded px-2.5 py-1 text-[10px] text-theme-text font-bold inline-block border border-theme-border-faint mr-1 font-sans">
                               {cardCvv || '•••'}
                             </div>
                           </div>
 
-                          <div className="text-[7px] text-gray-500 leading-normal">
+                          <div className="text-[7px] text-theme-muted leading-normal">
                             🔒 Assinatura autorizada Amour & Co. Presentes Finos.
                           </div>
                         </div>
@@ -706,7 +706,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                     {/* Card input forms */}
                     <div className="space-y-4">
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Número do Cartão</label>
+                        <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Número do Cartão</label>
                         <input
                           type="text"
                           placeholder="0000 0000 0000 0000"
@@ -717,7 +717,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Nome Impresso no Cartão</label>
+                        <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Nome Impresso no Cartão</label>
                         <input
                           type="text"
                           placeholder="Como está gravado no cartão"
@@ -730,7 +730,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
 
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1">
-                          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Validade</label>
+                          <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Validade</label>
                           <input
                             type="text"
                             placeholder="MM/AA"
@@ -745,7 +745,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                           />
                         </div>
                         <div className="space-y-1">
-                          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">CVV</label>
+                          <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">CVV</label>
                           <input
                             type="text"
                             placeholder="123"
@@ -761,7 +761,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       </div>
 
                       <div className="space-y-1">
-                        <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Parcelamento</label>
+                        <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Parcelamento</label>
                         <select
                           value={installments}
                           onChange={(e) => setInstallments(e.target.value)}
@@ -785,14 +785,14 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
 
                 {/* Final Submit action */}
                 <div className="pt-6 border-t border-theme-border-faint flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <span className="text-[10px] text-gray-500 flex items-center gap-1.5">
+                  <span className="text-[10px] text-theme-muted flex items-center gap-1.5">
                     🔒 Segurança SSL de nível bancário ativa
                   </span>
                   
                   <button
                     onClick={handleConfirmOrder}
                     disabled={submittingPayment}
-                    className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg text-gray-900 font-semibold text-xs tracking-widest uppercase px-8 py-3.5 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg text-theme-text font-semibold text-xs tracking-widest uppercase px-8 py-3.5 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>{submittingPayment ? 'Processando...' : 'Confirmar Pedido'}</span>
                   </button>
@@ -819,9 +819,9 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                     <img src={item.product.images[0]} alt="" className="w-12 h-12 object-cover rounded-lg bg-theme-border-faint border border-theme-border-faint" />
                     <div className="flex-1 min-w-0 text-xs">
                       <h4 className="font-semibold text-theme-text truncate">{item.product.name}</h4>
-                      <div className="flex items-center justify-between text-[10px] text-gray-500 mt-1">
+                      <div className="flex items-center justify-between text-[10px] text-theme-muted mt-1">
                         <span>Quant: {item.quantity} {item.selectedSize && `• Tam: ${item.selectedSize}`}</span>
-                        <span className="font-semibold text-gray-300">{formatCurrency(item.product.price * item.quantity)}</span>
+                        <span className="font-semibold text-theme-muted">{formatCurrency(item.product.price * item.quantity)}</span>
                       </div>
                     </div>
                   </div>
@@ -916,17 +916,17 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
           {/* Details wrapper */}
           <div className="bg-white/2 border border-theme-border-faint rounded-2xl p-5 text-left space-y-4">
             <div className="flex justify-between items-center text-xs border-b border-theme-border-faint pb-2.5">
-              <span className="text-gray-500">Código do Pedido</span>
+              <span className="text-theme-muted">Código do Pedido</span>
               <span className="text-theme-text font-mono font-bold">{createdOrder?.id}</span>
             </div>
             
             <div className="flex justify-between items-center text-xs border-b border-theme-border-faint pb-2.5">
-              <span className="text-gray-500">Destinatário</span>
+              <span className="text-theme-muted">Destinatário</span>
               <span className="text-theme-text font-medium">{createdOrder?.customerName}</span>
             </div>
 
             <div className="flex justify-between items-center text-xs">
-              <span className="text-gray-500">Previsão de Entrega</span>
+              <span className="text-theme-muted">Previsão de Entrega</span>
               <span className="text-gold-400 font-semibold flex items-center gap-1.5">
                 <Calendar size={12} /> {createdOrder?.shippingMethod.includes('SEDEX') ? '1 a 3 dias úteis' : '4 a 7 dias úteis'}
               </span>
@@ -946,7 +946,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 </div>
               ) : (
                 <>
-                  <span className="text-[9px] uppercase tracking-wider text-gray-500 font-bold">Pague com Pix · {pixResult.isDemo && <span className="text-amber-400">MODO DEMO</span>}</span>
+                  <span className="text-[9px] uppercase tracking-wider text-theme-muted font-bold">Pague com Pix · {pixResult.isDemo && <span className="text-amber-400">MODO DEMO</span>}</span>
                   <div className="h-44 w-44 bg-white p-2 rounded-xl shadow-lg">
                     <img src={pixResult.qrCodeImage} alt="QR Code Pix" className="h-full w-full object-contain" />
                   </div>
@@ -959,7 +959,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       className="flex-1 bg-luxury-black border border-theme-border rounded-lg px-3 py-2 text-[9px] text-theme-muted font-mono focus:outline-none truncate" />
                     <button
                       onClick={() => copyToClipboard(pixResult.copyPaste, setCopiedPix)}
-                      className="bg-gradient-gold text-gray-900 font-semibold text-[10px] px-4 py-2 rounded-lg hover:shadow-lg transition cursor-pointer shrink-0 flex items-center gap-1"
+                      className="bg-gradient-gold text-theme-text font-semibold text-[10px] px-4 py-2 rounded-lg hover:shadow-lg transition cursor-pointer shrink-0 flex items-center gap-1"
                     >
                       {copiedPix ? <><Check size={10} /> Copiado!</> : <><Copy size={10} /> Copiar</>}
                     </button>
@@ -972,23 +972,23 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
           {/* BOLETO BLOCK */}
           {paymentMethod === 'boleto' && boletoResult && (
             <div className="bg-theme-border-faint border border-gold-500/20 rounded-2xl p-6 space-y-4">
-              <span className="text-[9px] uppercase tracking-wider text-gray-500 font-bold block text-center">
+              <span className="text-[9px] uppercase tracking-wider text-theme-muted font-bold block text-center">
                 Boleto Gerado · {boletoResult.isDemo && <span className="text-amber-400">MODO DEMO</span>}
               </span>
               <div className="space-y-2">
-                <p className="text-[9px] uppercase text-gray-600">Linha Digitável</p>
+                <p className="text-[9px] uppercase text-theme-text">Linha Digitável</p>
                 <div className="flex gap-1.5">
                   <input type="text" readOnly value={boletoResult.barcode}
                     className="flex-1 bg-luxury-black border border-theme-border rounded-lg px-3 py-2 text-[9px] text-theme-muted font-mono focus:outline-none truncate" />
                   <button
                     onClick={() => copyToClipboard(boletoResult.barcode, setCopiedBarcode)}
-                    className="bg-gradient-gold text-gray-900 font-semibold text-[10px] px-3 py-2 rounded-lg transition cursor-pointer shrink-0 flex items-center gap-1"
+                    className="bg-gradient-gold text-theme-text font-semibold text-[10px] px-3 py-2 rounded-lg transition cursor-pointer shrink-0 flex items-center gap-1"
                   >
                     {copiedBarcode ? <><Check size={10} /> Copiado!</> : <><Copy size={10} /></>}
                   </button>
                 </div>
               </div>
-              <p className="text-[9px] text-gray-500 text-center">
+              <p className="text-[9px] text-theme-muted text-center">
                 Vencimento: {new Date(boletoResult.expiresAt).toLocaleDateString('pt-BR')} · Pague em qualquer banco
               </p>
               {boletoResult.pdfUrl && (
@@ -1025,7 +1025,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                   </button>
                 </div>
               </div>
-              <p className="text-[9px] text-gray-500">
+              <p className="text-[9px] text-theme-muted">
                 Taxa: {cryptoResult.exchangeRate.toLocaleString('pt-BR')} BRL/{cryptoResult.currency.replace('_', ' ')} · Válido por 60 min
               </p>
             </div>
@@ -1046,7 +1046,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
 
             <button
               onClick={() => onNavigate('home')}
-              className="text-xs text-gray-500 hover:text-theme-text uppercase font-bold tracking-wider block mx-auto transition"
+              className="text-xs text-theme-muted hover:text-theme-text uppercase font-bold tracking-wider block mx-auto transition"
             >
               Voltar para a Loja
             </button>
@@ -1088,11 +1088,11 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 />
                 <div className="flex-1 min-w-0">
                   <h4 className="text-xs font-bold text-theme-text truncate">{POST_PURCHASE_UPSELL_PRODUCT.name}</h4>
-                  <p className="text-[10px] text-gray-500 line-clamp-2 mt-1 leading-snug">
+                  <p className="text-[10px] text-theme-muted line-clamp-2 mt-1 leading-snug">
                     {POST_PURCHASE_UPSELL_PRODUCT.description}
                   </p>
                   <div className="flex items-baseline gap-2 mt-2">
-                    <span className="text-[10px] text-gray-500 line-through">
+                    <span className="text-[10px] text-theme-muted line-through">
                       {formatCurrency(POST_PURCHASE_UPSELL_PRODUCT.originalPrice)}
                     </span>
                     <span className="text-xs font-bold text-gold-400">
@@ -1109,19 +1109,19 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
               <div className="space-y-3 pt-2">
                 <button
                   onClick={handleAcceptUpsell}
-                  className="w-full bg-gradient-gold text-gray-900 font-semibold tracking-widest uppercase py-3.5 rounded-lg text-xs hover:shadow-lg transition duration-300 cursor-pointer"
+                  className="w-full bg-gradient-gold text-theme-text font-semibold tracking-widest uppercase py-3.5 rounded-lg text-xs hover:shadow-lg transition duration-300 cursor-pointer"
                 >
                   Sim! Adicionar ao meu Pedido
                 </button>
                 <button
                   onClick={handleDeclineUpsell}
-                  className="w-full text-xs text-gray-500 hover:text-theme-text uppercase font-bold tracking-wider py-2 transition cursor-pointer"
+                  className="w-full text-xs text-theme-muted hover:text-theme-text uppercase font-bold tracking-wider py-2 transition cursor-pointer"
                 >
                   Não, obrigado. Quero concluir sem o colar
                 </button>
               </div>
 
-              <div className="text-[9px] text-gray-600">
+              <div className="text-[9px] text-theme-text">
                 ⚠️ Essa oferta não aparecerá novamente. O item será empacotado na mesma embalagem de envio.
               </div>
 

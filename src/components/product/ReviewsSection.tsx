@@ -90,7 +90,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
         
         {/* Average Score */}
         <div className="text-center md:border-r md:border-theme-border-faint space-y-2">
-          <h4 className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Nota Geral</h4>
+          <h4 className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">Nota Geral</h4>
           <div className="text-4xl font-serif text-white font-medium">
             {averageRating.toFixed(1)}
           </div>
@@ -99,11 +99,11 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
               <Star
                 key={s}
                 size={14}
-                className={s <= Math.round(averageRating) ? 'text-gold-500 fill-gold-500' : 'text-gray-600'}
+                className={s <= Math.round(averageRating) ? 'text-gold-500 fill-gold-500' : 'text-theme-text'}
               />
             ))}
           </div>
-          <p className="text-[10px] text-gray-500">Com base em {totalReviews || 124} avaliações</p>
+          <p className="text-[10px] text-theme-muted">Com base em {totalReviews || 124} avaliações</p>
         </div>
 
         {/* Rating Bar Chart */}
@@ -112,13 +112,13 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
             const count = totalReviews > 0 ? starPercentages[stars - 1] : starPercentages[stars - 1];
             const pct = totalReviews > 0 ? (count / totalReviews) * 100 : count;
             return (
-              <div key={stars} className="flex items-center gap-3 text-[11px] text-gray-400">
+              <div key={stars} className="flex items-center gap-3 text-[11px] text-theme-muted">
                 <span className="w-3 text-right font-medium">{stars}</span>
                 <Star size={10} className="text-gold-500 fill-gold-500 shrink-0" />
                 <div className="flex-1 bg-white/5 rounded-full h-1 overflow-hidden">
                   <div className="bg-gold-500 h-full rounded-full" style={{ width: `${pct}%` }} />
                 </div>
-                <span className="w-8 text-right text-gray-500 font-semibold">{Math.round(pct)}%</span>
+                <span className="w-8 text-right text-theme-muted font-semibold">{Math.round(pct)}%</span>
               </div>
             );
           })}
@@ -127,7 +127,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
         {/* Write a Review CTA */}
         <div className="text-center md:pl-6">
           <h4 className="text-[11px] font-semibold text-white tracking-wide">Compartilhe sua Experiência</h4>
-          <p className="text-[10px] text-gray-500 mt-1 max-w-[200px] mx-auto leading-relaxed">
+          <p className="text-[10px] text-theme-muted mt-1 max-w-[200px] mx-auto leading-relaxed">
             Sua opinião é fundamental para mantermos nossa curadoria de luxo.
           </p>
           <button
@@ -145,7 +145,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
           <Check size={18} className="shrink-0 mt-0.5" />
           <div>
             <h5 className="text-xs font-bold">Avaliação Enviada com Sucesso!</h5>
-            <p className="text-[10px] text-gray-400 mt-0.5 leading-relaxed">
+            <p className="text-[10px] text-theme-muted mt-0.5 leading-relaxed">
               Obrigado por nos avaliar. Para garantir a idoneidade das avaliações e evitar spam, sua mensagem passará por moderação da curadoria da Amour & Co. e será exibida em breve.
             </p>
           </div>
@@ -160,7 +160,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Name */}
             <div className="space-y-1">
-              <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Seu Nome</label>
+              <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Seu Nome</label>
               <input
                 type="text"
                 placeholder="Ex: Mariana S."
@@ -173,7 +173,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
             
             {/* Stars Selection */}
             <div className="space-y-1">
-              <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Sua Nota</label>
+              <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Sua Nota</label>
               <div className="flex items-center gap-1.5 h-10">
                 {[1, 2, 3, 4, 5].map((s) => (
                   <button
@@ -182,14 +182,14 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
                     onClick={() => setRating(s)}
                     onMouseEnter={() => setHoverRating(s)}
                     onMouseLeave={() => setHoverRating(null)}
-                    className="text-gray-600 hover:scale-110 transition cursor-pointer"
+                    className="text-theme-text hover:scale-110 transition cursor-pointer"
                   >
                     <Star
                       size={20}
                       className={
                         s <= (hoverRating ?? rating)
                           ? 'text-gold-500 fill-gold-500'
-                          : 'text-gray-700'
+                          : 'text-theme-text'
                       }
                     />
                   </button>
@@ -200,7 +200,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
 
           {/* Comment */}
           <div className="space-y-1">
-            <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Comentário</label>
+            <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Comentário</label>
             <textarea
               placeholder="Descreva o que achou da embalagem, qualidade dos itens, fragrância e caimento..."
               value={comment}
@@ -212,7 +212,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
 
           {/* Photo Link Simulation */}
           <div className="space-y-1">
-            <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block flex items-center gap-1">
+            <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block flex items-center gap-1">
               <Camera size={12} /> Link da Imagem do Produto (Opcional)
             </label>
             <input
@@ -228,14 +228,14 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
             <button
               type="button"
               onClick={() => setShowForm(false)}
-              className="px-4 py-2 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer"
+              className="px-4 py-2 rounded-lg text-xs font-semibold text-theme-muted hover:text-white transition cursor-pointer"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+              className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
             >
               {submitting ? 'Enviando...' : 'Enviar Avaliação'}
             </button>
@@ -248,9 +248,9 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
         <h4 className="font-serif text-white tracking-widest uppercase text-sm">Depoimentos Recentes</h4>
         
         {loading ? (
-          <p className="text-xs text-gray-500">Carregando depoimentos...</p>
+          <p className="text-xs text-theme-muted">Carregando depoimentos...</p>
         ) : reviews.length === 0 ? (
-          <div className="bg-white/2 border border-dashed border-theme-border-faint rounded-2xl p-6 text-center text-gray-500 text-xs">
+          <div className="bg-white/2 border border-dashed border-theme-border-faint rounded-2xl p-6 text-center text-theme-muted text-xs">
             Nenhuma avaliação exibida ainda. Seja o primeiro a nos avaliar!
           </div>
         ) : (
@@ -265,7 +265,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
                         <Star
                           key={s}
                           size={12}
-                          className={s <= rev.rating ? 'text-gold-500 fill-gold-500' : 'text-gray-700'}
+                          className={s <= rev.rating ? 'text-gold-500 fill-gold-500' : 'text-theme-text'}
                         />
                       ))}
                     </div>
@@ -277,7 +277,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
                   </div>
 
                   {/* Comment */}
-                  <p className="text-[11px] text-gray-300 italic mt-3 leading-relaxed">
+                  <p className="text-[11px] text-theme-muted italic mt-3 leading-relaxed">
                     "{rev.comment}"
                   </p>
                 </div>
@@ -286,7 +286,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
                 <div className="flex justify-between items-center pt-4 border-t border-theme-border-faint">
                   <div className="space-y-0.5">
                     <span className="text-xs font-semibold text-white block">{rev.customerName}</span>
-                    <span className="text-[9px] text-gray-500 font-medium">
+                    <span className="text-[9px] text-theme-muted font-medium">
                       {new Date(rev.createdAt).toLocaleDateString('pt-BR')}
                     </span>
                   </div>

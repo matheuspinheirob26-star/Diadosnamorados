@@ -142,7 +142,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
           {selectedCategory !== 'Todos' ? selectedCategory : 'Coleção de Presentes'}
         </h2>
         <div className="h-0.5 w-16 bg-gradient-gold mx-auto" />
-        <p className="text-xs text-gray-500 uppercase tracking-widest">
+        <p className="text-xs text-theme-muted uppercase tracking-widest">
           {filteredProducts.length} presente{filteredProducts.length !== 1 && 's'} disponível{filteredProducts.length !== 1 && 's'}
         </p>
       </div>
@@ -159,7 +159,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
             </span>
             <button
               onClick={handleClearFilters}
-              className="text-[10px] text-gray-500 hover:text-gold-400 font-bold uppercase tracking-wider transition cursor-pointer"
+              className="text-[10px] text-theme-muted hover:text-gold-400 font-bold uppercase tracking-wider transition cursor-pointer"
             >
               Limpar
             </button>
@@ -167,9 +167,9 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
 
           {/* Search Box */}
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Buscar</label>
+            <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">Buscar</label>
             <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-theme-muted" />
               <input
                 type="text"
                 placeholder="Pesquisar..."
@@ -182,7 +182,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
 
           {/* Categories */}
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Categoria</label>
+            <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">Categoria</label>
             <div className="flex flex-col gap-1">
               {categories.map((cat) => (
                 <button
@@ -191,7 +191,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
                   className={`text-left text-xs py-1.5 px-2 rounded-lg transition-all ${
                     selectedCategory === cat
                       ? 'bg-gold-500/10 text-gold-400 font-semibold'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      : 'text-theme-muted hover:text-white hover:bg-white/5'
                   }`}
                 >
                   {cat}
@@ -202,7 +202,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
 
           {/* Gender */}
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Perfil</label>
+            <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">Perfil</label>
             <div className="flex flex-col gap-1">
               {['Todos', 'Masculino', 'Feminino'].map((gender) => (
                 <button
@@ -211,7 +211,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
                   className={`text-left text-xs py-1.5 px-2 rounded-lg transition-all ${
                     selectedGender === gender
                       ? 'bg-gold-500/10 text-gold-400 font-semibold'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      : 'text-theme-muted hover:text-white hover:bg-white/5'
                   }`}
                 >
                   {gender}
@@ -222,7 +222,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
 
           {/* Price Range */}
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Preço</label>
+            <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">Preço</label>
             <div className="flex flex-col gap-1">
               {[
                 { label: 'Todos os preços', value: 'Todos' },
@@ -236,7 +236,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
                   className={`text-left text-xs py-1.5 px-2 rounded-lg transition-all ${
                     priceRange === range.value
                       ? 'bg-gold-500/10 text-gold-400 font-semibold'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      : 'text-theme-muted hover:text-white hover:bg-white/5'
                   }`}
                 >
                   {range.label}
@@ -261,13 +261,13 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
               <span>Filtros</span>
             </button>
             
-            <span className="hidden sm:inline text-xs text-gray-500">
+            <span className="hidden sm:inline text-xs text-theme-muted">
               Mostrando {filteredProducts.length} de {products.length} presentes
             </span>
 
             {/* Sorting Selector */}
             <div className="flex items-center gap-2">
-              <ArrowUpDown size={12} className="text-gray-400" />
+              <ArrowUpDown size={12} className="text-theme-muted" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
@@ -284,30 +284,30 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
           {/* Active Tags / Filters indicator */}
           {(selectedCategory !== 'Todos' || selectedGender !== 'Todos' || priceRange !== 'Todos' || search.trim() !== '') && (
             <div className="flex flex-wrap gap-2 items-center">
-              <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold mr-1">Filtros ativos:</span>
+              <span className="text-[10px] uppercase tracking-wider text-theme-muted font-bold mr-1">Filtros ativos:</span>
               
               {search.trim() !== '' && (
-                <span className="inline-flex items-center gap-1.5 text-[10px] bg-white/5 border border-white/10 px-2.5 py-1 rounded-full text-gray-300">
+                <span className="inline-flex items-center gap-1.5 text-[10px] bg-white/5 border border-white/10 px-2.5 py-1 rounded-full text-theme-muted">
                   Busca: "{search}"
-                  <X size={10} className="text-gray-500 hover:text-white cursor-pointer" onClick={() => setSearch('')} />
+                  <X size={10} className="text-theme-muted hover:text-white cursor-pointer" onClick={() => setSearch('')} />
                 </span>
               )}
               {selectedCategory !== 'Todos' && (
-                <span className="inline-flex items-center gap-1.5 text-[10px] bg-white/5 border border-white/10 px-2.5 py-1 rounded-full text-gray-300">
+                <span className="inline-flex items-center gap-1.5 text-[10px] bg-white/5 border border-white/10 px-2.5 py-1 rounded-full text-theme-muted">
                   Cat: {selectedCategory}
-                  <X size={10} className="text-gray-500 hover:text-white cursor-pointer" onClick={() => setSelectedCategory('Todos')} />
+                  <X size={10} className="text-theme-muted hover:text-white cursor-pointer" onClick={() => setSelectedCategory('Todos')} />
                 </span>
               )}
               {selectedGender !== 'Todos' && (
-                <span className="inline-flex items-center gap-1.5 text-[10px] bg-white/5 border border-white/10 px-2.5 py-1 rounded-full text-gray-300">
+                <span className="inline-flex items-center gap-1.5 text-[10px] bg-white/5 border border-white/10 px-2.5 py-1 rounded-full text-theme-muted">
                   Perfil: {selectedGender}
-                  <X size={10} className="text-gray-500 hover:text-white cursor-pointer" onClick={() => setSelectedGender('Todos')} />
+                  <X size={10} className="text-theme-muted hover:text-white cursor-pointer" onClick={() => setSelectedGender('Todos')} />
                 </span>
               )}
               {priceRange !== 'Todos' && (
-                <span className="inline-flex items-center gap-1.5 text-[10px] bg-white/5 border border-white/10 px-2.5 py-1 rounded-full text-gray-300">
+                <span className="inline-flex items-center gap-1.5 text-[10px] bg-white/5 border border-white/10 px-2.5 py-1 rounded-full text-theme-muted">
                   Preço: {priceRange === 'ate200' ? 'Até R$200' : priceRange === '200a500' ? 'R$200 a R$500' : 'Acima de R$500'}
-                  <X size={10} className="text-gray-500 hover:text-white cursor-pointer" onClick={() => setPriceRange('Todos')} />
+                  <X size={10} className="text-theme-muted hover:text-white cursor-pointer" onClick={() => setPriceRange('Todos')} />
                 </span>
               )}
             </div>
@@ -322,18 +322,18 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="bg-white/2 border border-dashed border-theme-border-faint rounded-3xl p-12 text-center space-y-4">
-              <div className="h-16 w-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mx-auto text-gray-500">
+              <div className="h-16 w-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mx-auto text-theme-muted">
                 <HelpCircle size={24} />
               </div>
               <div className="space-y-1">
                 <h3 className="font-serif text-white tracking-wider text-lg">Nenhum Presente Encontrado</h3>
-                <p className="text-xs text-gray-500 max-w-sm mx-auto leading-relaxed">
+                <p className="text-xs text-theme-muted max-w-sm mx-auto leading-relaxed">
                   Tente alterar os termos de busca ou redefinir os filtros para explorar toda a nossa coleção de presentes finos.
                 </p>
               </div>
               <button
                 onClick={handleClearFilters}
-                className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+                className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
               >
                 Limpar Todos os Filtros
               </button>
@@ -369,7 +369,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
                 </span>
                 <button
                   onClick={() => setMobileFiltersOpen(false)}
-                  className="text-gray-400 hover:text-white p-1"
+                  className="text-theme-muted hover:text-white p-1"
                 >
                   <X size={18} />
                 </button>
@@ -377,9 +377,9 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
 
               {/* Search Box */}
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Buscar</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">Buscar</label>
                 <div className="relative">
-                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-theme-muted" />
                   <input
                     type="text"
                     placeholder="Pesquisar..."
@@ -392,7 +392,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
 
               {/* Categories */}
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Categoria</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">Categoria</label>
                 <div className="flex flex-wrap gap-1.5">
                   {categories.map((cat) => (
                     <button
@@ -401,7 +401,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
                       className={`text-[10px] py-1.5 px-3 rounded-lg border transition ${
                         selectedCategory === cat
                           ? 'bg-gold-500/15 text-gold-400 border-gold-500/25 font-bold'
-                          : 'bg-white/5 border-transparent text-gray-400'
+                          : 'bg-white/5 border-transparent text-theme-muted'
                       }`}
                     >
                       {cat}
@@ -412,7 +412,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
 
               {/* Gender */}
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Perfil</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">Perfil</label>
                 <div className="flex gap-1.5">
                   {['Todos', 'Masculino', 'Feminino'].map((gender) => (
                     <button
@@ -421,7 +421,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
                       className={`flex-1 text-[10px] py-1.5 rounded-lg border text-center transition ${
                         selectedGender === gender
                           ? 'bg-gold-500/15 text-gold-400 border-gold-500/25 font-bold'
-                          : 'bg-white/5 border-transparent text-gray-400'
+                          : 'bg-white/5 border-transparent text-theme-muted'
                       }`}
                     >
                       {gender}
@@ -432,7 +432,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
 
               {/* Price Range */}
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Preço</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">Preço</label>
                 <div className="flex flex-col gap-1.5">
                   {[
                     { label: 'Todos os preços', value: 'Todos' },
@@ -446,7 +446,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
                       className={`text-left text-[10px] py-1.5 px-3 rounded-lg border transition ${
                         priceRange === range.value
                           ? 'bg-gold-500/15 text-gold-400 border-gold-500/25 font-bold'
-                          : 'bg-white/5 border-transparent text-gray-400'
+                          : 'bg-white/5 border-transparent text-theme-muted'
                       }`}
                     >
                       {range.label}
@@ -465,7 +465,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
               </button>
               <button
                 onClick={() => setMobileFiltersOpen(false)}
-                className="flex-1 bg-gradient-gold text-gray-900 py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition cursor-pointer"
+                className="flex-1 bg-gradient-gold text-theme-text py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition cursor-pointer"
               >
                 Aplicar
               </button>

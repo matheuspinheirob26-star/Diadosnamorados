@@ -109,7 +109,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
             <span className="font-serif text-4xl tracking-widest font-light text-gradient-gold uppercase block">
               Amour & Co.
             </span>
-            <span className="text-[10px] tracking-[0.4em] font-medium text-gray-500 uppercase block mt-1">
+            <span className="text-[10px] tracking-[0.4em] font-medium text-theme-muted uppercase block mt-1">
               Painel Administrativo
             </span>
           </button>
@@ -128,7 +128,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
               <span className="text-gradient-gold">loja com controle</span><br />
               total.
             </h1>
-            <p className="text-sm text-gray-500 leading-relaxed max-w-xs font-light">
+            <p className="text-sm text-theme-muted leading-relaxed max-w-xs font-light">
               Acesse o painel completo de gestão de produtos, pedidos, clientes e campanhas da Amour & Co.
             </p>
           </div>
@@ -141,7 +141,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
               'Relatórios e métricas de vendas',
               'Campanhas sazonais e cupons',
             ].map((item) => (
-              <div key={item} className="flex items-center gap-3 text-xs text-gray-400">
+              <div key={item} className="flex items-center gap-3 text-xs text-theme-muted">
                 <div className="h-4 w-4 rounded-full bg-gold-500/10 border border-gold-500/30 flex items-center justify-center shrink-0">
                   <ChevronRight size={9} className="text-gold-400" />
                 </div>
@@ -152,7 +152,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
         </div>
 
         {/* Bottom badge */}
-        <div className="relative z-10 flex items-center gap-2 text-[10px] text-gray-600">
+        <div className="relative z-10 flex items-center gap-2 text-[10px] text-theme-text">
           <Shield size={12} className="text-gold-500/50" />
           <span>Sessão criptografada · Expiração automática em 8h</span>
         </div>
@@ -175,7 +175,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
             <span className="font-serif text-3xl tracking-widest font-light text-gradient-gold uppercase block">
               Amour & Co.
             </span>
-            <span className="text-[10px] tracking-[0.3em] font-medium text-gray-500 uppercase block mt-1">
+            <span className="text-[10px] tracking-[0.3em] font-medium text-theme-muted uppercase block mt-1">
               Painel Administrativo
             </span>
           </div>
@@ -186,10 +186,10 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
               <div className="h-8 w-8 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center">
                 <Shield size={15} className="text-gold-400" />
               </div>
-              <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Acesso Administrativo</span>
+              <span className="text-[10px] uppercase tracking-widest text-theme-muted font-bold">Acesso Administrativo</span>
             </div>
             <h2 className="font-serif text-2xl text-white tracking-wide">Bem-vindo de volta</h2>
-            <p className="text-xs text-gray-500">Entre com suas credenciais de administrador para continuar.</p>
+            <p className="text-xs text-theme-muted">Entre com suas credenciais de administrador para continuar.</p>
           </div>
 
           {/* Error banner */}
@@ -234,11 +234,11 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
 
             {/* Email */}
             <div className="space-y-1.5">
-              <label htmlFor="admin-email" className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">
+              <label htmlFor="admin-email" className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">
                 E-mail Administrativo
               </label>
               <div className="relative">
-                <Mail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                <Mail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted pointer-events-none" />
                 <input
                   id="admin-email"
                   type="email"
@@ -254,11 +254,11 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
 
             {/* Password */}
             <div className="space-y-1.5">
-              <label htmlFor="admin-password" className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">
+              <label htmlFor="admin-password" className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">
                 Senha de Acesso
               </label>
               <div className="relative">
-                <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted pointer-events-none" />
                 <input
                   id="admin-password"
                   type={showPassword ? 'text' : 'password'}
@@ -272,7 +272,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(v => !v)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition cursor-pointer"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-theme-muted hover:text-theme-muted transition cursor-pointer"
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -287,8 +287,8 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
               whileTap={{ scale: 0.98 }}
               className={`w-full flex items-center justify-center gap-2.5 font-semibold tracking-widest uppercase py-4 rounded-xl text-xs transition-all duration-300 cursor-pointer mt-2 ${
                 isBlocked || loading
-                  ? 'bg-white/5 text-gray-500 cursor-not-allowed'
-                  : 'bg-gradient-gold hover:shadow-lg hover:shadow-gold-500/20 text-gray-900'
+                  ? 'bg-white/5 text-theme-muted cursor-not-allowed'
+                  : 'bg-gradient-gold hover:shadow-lg hover:shadow-gold-500/20 text-theme-text'
               }`}
             >
               {loading ? (
@@ -311,7 +311,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
           </form>
 
           {/* Divider */}
-          <div className="flex items-center gap-3 text-gray-700">
+          <div className="flex items-center gap-3 text-theme-text">
             <div className="flex-1 h-px bg-white/5" />
             <span className="text-[10px] uppercase tracking-widest">ou</span>
             <div className="flex-1 h-px bg-white/5" />
@@ -319,7 +319,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
 
           {/* Quick demo access */}
           <div className="space-y-3">
-            <p className="text-[10px] text-gray-600 text-center uppercase tracking-wider">Acesso rápido de demonstração</p>
+            <p className="text-[10px] text-theme-text text-center uppercase tracking-wider">Acesso rápido de demonstração</p>
             <button
               type="button"
               disabled={loading || isBlocked}
@@ -327,7 +327,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
                 setEmail('admin@amour.com');
                 setPassword('Amour@2024');
               }}
-              className="w-full flex items-center justify-center gap-2 bg-white/3 hover:bg-white/6 border border-white/8 hover:border-white/15 text-gray-400 hover:text-white py-3 rounded-xl text-[11px] font-semibold tracking-wider uppercase transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 bg-white/3 hover:bg-white/6 border border-white/8 hover:border-white/15 text-theme-muted hover:text-white py-3 rounded-xl text-[11px] font-semibold tracking-wider uppercase transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <Shield size={12} className="text-gold-500/60" />
               <span>Preencher credenciais admin demo</span>
@@ -338,7 +338,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
           <div className="text-center pt-2 border-t border-theme-border-faint">
             <button
               onClick={() => onNavigate('home')}
-              className="text-[11px] text-gray-600 hover:text-gold-400 transition font-medium cursor-pointer"
+              className="text-[11px] text-theme-text hover:text-gold-400 transition font-medium cursor-pointer"
             >
               ← Voltar para a loja
             </button>

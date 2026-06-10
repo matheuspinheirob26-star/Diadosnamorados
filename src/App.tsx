@@ -132,7 +132,7 @@ const AppContent = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between text-gray-300 antialiased bg-luxury-black bg-gradient-luxury transition-all duration-500">
+    <div className="min-h-screen flex flex-col justify-between text-theme-muted antialiased bg-luxury-black bg-gradient-luxury transition-all duration-500">
       
       {/* Sticky Header - oculto no admin e admin-login */}
       {currentPage !== 'admin' && currentPage !== 'admin-login' && (

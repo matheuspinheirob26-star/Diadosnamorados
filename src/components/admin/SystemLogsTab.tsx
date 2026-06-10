@@ -94,13 +94,13 @@ export const SystemLogsTab: React.FC = () => {
             <Shield className="text-gold-400" />
             Logs do Sistema
           </h2>
-          <p className="text-gray-400 text-xs">Auditoria de ações, alterações e acesso administrativo.</p>
+          <p className="text-theme-muted text-xs">Auditoria de ações, alterações e acesso administrativo.</p>
         </div>
         <div className="flex gap-2">
           <button 
             onClick={fetchLogs} 
             disabled={loading}
-            className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-gray-300 transition" 
+            className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-theme-muted transition" 
             title="Atualizar Logs"
           >
             <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
@@ -119,9 +119,9 @@ export const SystemLogsTab: React.FC = () => {
       <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl p-4 flex flex-col md:flex-row gap-4 items-end">
         
         <div className="flex-1 w-full space-y-1">
-          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Busca Textual</label>
+          <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">Busca Textual</label>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={14} />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-theme-muted" size={14} />
             <input 
               type="text"
               placeholder="Buscar por descrição ou ID..."
@@ -133,7 +133,7 @@ export const SystemLogsTab: React.FC = () => {
         </div>
 
         <div className="w-full md:w-40 space-y-1">
-          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Severidade</label>
+          <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">Severidade</label>
           <select 
             value={filterSeverity} 
             onChange={e => { setFilterSeverity(e.target.value as LogSeverity | 'all'); setCurrentPage(1); }}
@@ -148,7 +148,7 @@ export const SystemLogsTab: React.FC = () => {
         </div>
 
         <div className="w-full md:w-40 space-y-1">
-          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Ação</label>
+          <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">Ação</label>
           <select 
             value={filterAction} 
             onChange={e => { setFilterAction(e.target.value); setCurrentPage(1); }}
@@ -162,7 +162,7 @@ export const SystemLogsTab: React.FC = () => {
         </div>
 
         <div className="w-full md:w-40 space-y-1">
-          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Usuário</label>
+          <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">Usuário</label>
           <select 
             value={filterUser} 
             onChange={e => { setFilterUser(e.target.value); setCurrentPage(1); }}
@@ -176,7 +176,7 @@ export const SystemLogsTab: React.FC = () => {
         </div>
 
         <div className="w-full md:w-40 space-y-1">
-          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Data Específica</label>
+          <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">Data Específica</label>
           <input 
             type="date"
             value={filterDate}
@@ -190,19 +190,19 @@ export const SystemLogsTab: React.FC = () => {
       {/* Logs Table */}
       <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl overflow-hidden">
         {loading ? (
-          <div className="p-12 text-center text-gray-500">
+          <div className="p-12 text-center text-theme-muted">
             <RefreshCw size={24} className="mx-auto animate-spin mb-2" />
             <p className="text-xs">Carregando logs...</p>
           </div>
         ) : currentLogs.length === 0 ? (
-          <div className="p-12 text-center text-gray-500">
-            <FileText size={32} className="mx-auto text-gray-600 mb-3 opacity-50" />
-            <p className="text-sm text-gray-400">Nenhum log encontrado para os filtros selecionados.</p>
+          <div className="p-12 text-center text-theme-muted">
+            <FileText size={32} className="mx-auto text-theme-text mb-3 opacity-50" />
+            <p className="text-sm text-theme-muted">Nenhum log encontrado para os filtros selecionados.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-[11px]">
-              <thead className="bg-white/5 border-b border-white/10 text-gray-400 font-bold uppercase tracking-wider">
+              <thead className="bg-white/5 border-b border-white/10 text-theme-muted font-bold uppercase tracking-wider">
                 <tr>
                   <th className="px-4 py-3 w-10">St</th>
                   <th className="px-4 py-3">Data / Hora</th>
@@ -218,19 +218,19 @@ export const SystemLogsTab: React.FC = () => {
                     <td className="px-4 py-3 text-center">
                       {getSeverityIcon(log.severity)}
                     </td>
-                    <td className="px-4 py-3 text-gray-500 whitespace-nowrap">
+                    <td className="px-4 py-3 text-theme-muted whitespace-nowrap">
                       {new Date(log.timestamp).toLocaleString('pt-BR')}
                     </td>
                     <td className="px-4 py-3">
                       <span className="font-semibold text-white">{log.action}</span>
                     </td>
-                    <td className="px-4 py-3 text-gray-400 line-clamp-2" title={log.description}>
+                    <td className="px-4 py-3 text-theme-muted line-clamp-2" title={log.description}>
                       {log.description}
                     </td>
-                    <td className="px-4 py-3 text-gray-500">
+                    <td className="px-4 py-3 text-theme-muted">
                       {log.user}
                     </td>
-                    <td className="px-4 py-3 font-mono text-gray-600 truncate max-w-[120px]" title={log.entityId}>
+                    <td className="px-4 py-3 font-mono text-theme-text truncate max-w-[120px]" title={log.entityId}>
                       {log.entityId || '-'}
                     </td>
                   </tr>
@@ -244,7 +244,7 @@ export const SystemLogsTab: React.FC = () => {
       {/* Pagination */}
       {!loading && totalPages > 1 && (
         <div className="flex items-center justify-between bg-luxury-gray border border-theme-border-faint p-4 rounded-xl">
-          <span className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">
+          <span className="text-[10px] text-theme-muted uppercase tracking-widest font-bold">
             Página {currentPage} de {totalPages} ({filteredLogs.length} registros)
           </span>
           <div className="flex gap-2">
@@ -253,14 +253,14 @@ export const SystemLogsTab: React.FC = () => {
               disabled={currentPage === 1}
               className="p-1.5 bg-white/5 hover:bg-white/10 rounded disabled:opacity-30 disabled:cursor-not-allowed transition"
             >
-              <ChevronLeft size={16} className="text-gray-300" />
+              <ChevronLeft size={16} className="text-theme-muted" />
             </button>
             <button
               onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
               className="p-1.5 bg-white/5 hover:bg-white/10 rounded disabled:opacity-30 disabled:cursor-not-allowed transition"
             >
-              <ChevronRight size={16} className="text-gray-300" />
+              <ChevronRight size={16} className="text-theme-muted" />
             </button>
           </div>
         </div>

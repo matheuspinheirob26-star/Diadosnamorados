@@ -70,7 +70,7 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({ images, video })
             {video && (
               <button
                 onClick={() => setShowVideo(true)}
-                className="absolute bottom-4 right-4 bg-luxury-black/80 hover:bg-gold-500 hover:text-gray-900 text-white p-2.5 rounded-full border border-white/10 transition-all shadow-lg flex items-center justify-center"
+                className="absolute bottom-4 right-4 bg-luxury-black/80 hover:bg-gold-500 hover:text-theme-text text-white p-2.5 rounded-full border border-white/10 transition-all shadow-lg flex items-center justify-center"
                 title="Assista ao vídeo do produto"
               >
                 <Play size={16} fill="currentColor" />
@@ -101,7 +101,7 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({ images, video })
           {video && (
             <button
               onClick={() => setShowVideo(true)}
-              className={`w-16 h-16 rounded-lg bg-theme-border-faint border flex flex-col items-center justify-center text-gray-400 hover:text-white transition shrink-0 ${
+              className={`w-16 h-16 rounded-lg bg-theme-border-faint border flex flex-col items-center justify-center text-theme-muted hover:text-white transition shrink-0 ${
                 showVideo ? 'border-gold-500' : 'border-theme-border-faint opacity-60 hover:opacity-100'
               }`}
             >

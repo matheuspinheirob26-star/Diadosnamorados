@@ -19,7 +19,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-luxury-black bg-gradient-luxury text-gray-300 flex">
+    <div className="min-h-screen bg-luxury-black bg-gradient-luxury text-theme-muted flex">
       
       {/* Desktop Fixed Sidebar */}
       <aside className="hidden md:block w-64 shrink-0 h-screen sticky top-0">
@@ -69,7 +69,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
         <header className="md:hidden h-16 bg-luxury-gray border-b border-theme-border-faint px-4 flex items-center justify-between sticky top-0 z-40">
           <button
             onClick={() => setMobileOpen(true)}
-            className="text-gray-400 hover:text-white p-2 focus:outline-none cursor-pointer"
+            className="text-theme-muted hover:text-white p-2 focus:outline-none cursor-pointer"
           >
             <Menu size={20} />
           </button>

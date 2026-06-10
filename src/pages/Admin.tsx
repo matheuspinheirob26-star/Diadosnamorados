@@ -200,7 +200,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             
             <div className="bg-luxury-gray border border-theme-border-faint p-6 rounded-2xl space-y-2 relative overflow-hidden">
               <DollarSign size={24} className="text-gold-500 absolute top-6 right-6 opacity-30" />
-              <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Faturamento Aprovado</span>
+              <span className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Faturamento Aprovado</span>
               <h3 className="text-2xl font-bold text-theme-text block">{formatCurrency(totalRevenue)}</h3>
               <p className="text-[10px] text-theme-muted mt-1 flex items-center gap-1">
                 <span className="text-emerald-400 font-bold flex items-center gap-0.5"><ArrowUpRight size={10} /> +12.4%</span> vs semana passada
@@ -209,7 +209,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
             <div className="bg-luxury-gray border border-theme-border-faint p-6 rounded-2xl space-y-2 relative overflow-hidden">
               <ShoppingCart size={24} className="text-gold-500 absolute top-6 right-6 opacity-30" />
-              <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Vendas Concluídas</span>
+              <span className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Vendas Concluídas</span>
               <h3 className="text-2xl font-bold text-theme-text block">{orders.filter(o => o.status !== 'pending').length}</h3>
               <p className="text-[10px] text-theme-muted mt-1 flex items-center gap-1">
                 Taxa de cancelamento: <span className="text-theme-text font-medium">0%</span>
@@ -218,7 +218,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
             <div className="bg-luxury-gray border border-theme-border-faint p-6 rounded-2xl space-y-2 relative overflow-hidden">
               <TrendingUp size={24} className="text-gold-500 absolute top-6 right-6 opacity-30" />
-              <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Ticket Médio</span>
+              <span className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Ticket Médio</span>
               <h3 className="text-2xl font-bold text-theme-text block">{formatCurrency(avgTicket)}</h3>
               <p className="text-[10px] text-theme-muted mt-1">
                 Foco em kits de maior valor agregado
@@ -227,7 +227,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
             <div className="bg-luxury-gray border border-theme-border-faint p-6 rounded-2xl space-y-2 relative overflow-hidden">
               <Users size={24} className="text-gold-500 absolute top-6 right-6 opacity-30" />
-              <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Carrinhos Abandonados</span>
+              <span className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Carrinhos Abandonados</span>
               <h3 className="text-2xl font-bold text-rose-400 block">{activeLeadsCount}</h3>
               <p className="text-[10px] text-theme-muted mt-1">
                 Qualificados para recuperação ativa
@@ -241,7 +241,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             <div className="flex justify-between items-center border-b border-theme-border-faint pb-4">
               <div className="space-y-1">
                 <h3 className="text-xs font-semibold text-theme-text tracking-widest uppercase">Gráfico de Faturamento Diário</h3>
-                <p className="text-[10px] text-gray-500">Junho 2026 - Período da campanha de Namorados</p>
+                <p className="text-[10px] text-theme-muted">Junho 2026 - Período da campanha de Namorados</p>
               </div>
               <span className="text-[10px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded">
                 Lucro operacional saudável
@@ -267,7 +267,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                     className="w-full bg-gradient-gold rounded-t-md hover:brightness-115 transition duration-300 shadow-lg"
                     style={{ height: `${bar.pct}%` }}
                   />
-                  <span className="text-[9px] text-gray-500 mt-1 font-bold">{bar.day}</span>
+                  <span className="text-[9px] text-theme-muted mt-1 font-bold">{bar.day}</span>
                 </div>
               ))}
             </div>
@@ -286,7 +286,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="text-gray-500 font-bold border-b border-theme-border-faint bg-white/1 select-none">
+                <tr className="text-theme-muted font-bold border-b border-theme-border-faint bg-white/1 select-none">
                   <th className="p-4">Pedido</th>
                   <th className="p-4">Cliente</th>
                   <th className="p-4">Itens</th>
@@ -295,10 +295,10 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   <th className="p-4">Ações</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 text-gray-300 font-medium">
+              <tbody className="divide-y divide-white/5 text-theme-muted font-medium">
                 {orders.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="p-8 text-center text-gray-500">Nenhum pedido efetuado.</td>
+                    <td colSpan={6} className="p-8 text-center text-theme-muted">Nenhum pedido efetuado.</td>
                   </tr>
                 ) : (
                   orders.map((order) => (
@@ -306,11 +306,11 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                       <td className="p-4 font-mono font-bold text-theme-text">{order.id}</td>
                       <td className="p-4">
                         <span className="block text-theme-text font-semibold">{order.customerName}</span>
-                        <span className="block text-[10px] text-gray-500 mt-0.5">{order.city} - {order.state}</span>
+                        <span className="block text-[10px] text-theme-muted mt-0.5">{order.city} - {order.state}</span>
                       </td>
                       <td className="p-4">
                         <span className="block text-[10px] truncate max-w-[150px]">{order.items.map(i => i.name).join(', ')}</span>
-                        <span className="block text-[9px] text-gray-500 mt-0.5">{order.items.length} item{order.items.length !== 1 && 's'}</span>
+                        <span className="block text-[9px] text-theme-muted mt-0.5">{order.items.length} item{order.items.length !== 1 && 's'}</span>
                       </td>
                       <td className="p-4 font-bold text-gold-400">{formatCurrency(order.total)}</td>
                       <td className="p-4">
@@ -364,7 +364,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="text-gray-500 font-bold border-b border-theme-border-faint bg-white/1 select-none">
+                <tr className="text-theme-muted font-bold border-b border-theme-border-faint bg-white/1 select-none">
                   <th className="p-4">Cliente</th>
                   <th className="p-4">Contato</th>
                   <th className="p-4">CPF</th>
@@ -372,10 +372,10 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   <th className="p-4 text-right">Total Investido</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 text-gray-300 font-medium">
+              <tbody className="divide-y divide-white/5 text-theme-muted font-medium">
                 {getUniqueCustomers().length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="p-8 text-center text-gray-500">Nenhum cliente cadastrado no momento.</td>
+                    <td colSpan={5} className="p-8 text-center text-theme-muted">Nenhum cliente cadastrado no momento.</td>
                   </tr>
                 ) : (
                   getUniqueCustomers().map((cust, idx) => (
@@ -383,7 +383,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                       <td className="p-4 font-semibold text-theme-text">{cust.name}</td>
                       <td className="p-4">
                         <span className="block text-theme-text">{cust.email}</span>
-                        <span className="block text-[10px] text-gray-500 mt-0.5">{cust.phone}</span>
+                        <span className="block text-[10px] text-theme-muted mt-0.5">{cust.phone}</span>
                       </td>
                       <td className="p-4 font-mono text-theme-muted">{cust.cpf}</td>
                       <td className="p-4 text-center font-bold text-theme-text">{cust.ordersCount} compra(s)</td>
@@ -407,7 +407,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="text-gray-500 font-bold border-b border-theme-border-faint bg-white/1 select-none">
+                <tr className="text-theme-muted font-bold border-b border-theme-border-faint bg-white/1 select-none">
                   <th className="p-4">Nome</th>
                   <th className="p-4">Contato</th>
                   <th className="p-4">Carrinho Abandonado</th>
@@ -416,10 +416,10 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   <th className="p-4">Recuperação</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 text-gray-300 font-medium">
+              <tbody className="divide-y divide-white/5 text-theme-muted font-medium">
                 {leads.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="p-8 text-center text-gray-500">Nenhum lead capturado.</td>
+                    <td colSpan={6} className="p-8 text-center text-theme-muted">Nenhum lead capturado.</td>
                   </tr>
                 ) : (
                   leads.map((lead) => (
@@ -427,13 +427,13 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                       <td className="p-4 text-theme-text font-semibold">{lead.name}</td>
                       <td className="p-4">
                         <span className="block text-theme-text">{lead.email}</span>
-                        <span className="block text-[10px] text-gray-500 mt-0.5">{lead.phone}</span>
+                        <span className="block text-[10px] text-theme-muted mt-0.5">{lead.phone}</span>
                       </td>
                       <td className="p-4">
                         <span className="block text-[10px] truncate max-w-[150px]">{lead.cartItems.map(i => i.name).join(', ')}</span>
                         <span className="block text-[9px] text-gold-400 mt-0.5">Total: {formatCurrency(lead.cartItems.reduce((acc, curr) => acc + curr.price * curr.quantity, 0))}</span>
                       </td>
-                      <td className="p-4 text-gray-500">{new Date(lead.createdAt).toLocaleString('pt-BR')}</td>
+                      <td className="p-4 text-theme-muted">{new Date(lead.createdAt).toLocaleString('pt-BR')}</td>
                       <td className="p-4">
                         <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase ${
                           lead.status === 'purchased' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
@@ -453,7 +453,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                             WhatsApp
                           </button>
                         ) : (
-                          <span className="text-[10px] text-gray-600 font-semibold uppercase">Finalizado</span>
+                          <span className="text-[10px] text-theme-text font-semibold uppercase">Finalizado</span>
                         )}
                       </td>
                     </tr>
@@ -474,7 +474,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             </h3>
             
             {reviews.length === 0 ? (
-              <p className="text-xs text-gray-500 py-6 text-center">Nenhum comentário submetido.</p>
+              <p className="text-xs text-theme-muted py-6 text-center">Nenhum comentário submetido.</p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
                 {reviews.map((rev) => (
@@ -482,7 +482,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                     <div className="flex justify-between items-start">
                       <div>
                         <span className="block font-bold text-theme-text text-xs">{rev.customerName}</span>
-                        <span className="block text-[9px] text-gray-500 mt-0.5">Nota: {rev.rating} estrelas • Produto ID: {rev.productId}</span>
+                        <span className="block text-[9px] text-theme-muted mt-0.5">Nota: {rev.rating} estrelas • Produto ID: {rev.productId}</span>
                       </div>
                       <span className={`px-2 py-0.5 rounded text-[8px] font-extrabold uppercase ${
                         rev.approved ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'
@@ -530,7 +530,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             <h3 className="text-xs font-semibold text-theme-text tracking-widest uppercase">Gestão de Cupons</h3>
             <button
               onClick={() => setShowCouponModal(true)}
-              className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-4 py-2 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center gap-1.5"
+              className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-4 py-2 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center gap-1.5"
             >
               <Plus size={14} /> Criar Cupom
             </button>
@@ -539,7 +539,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
           <div className="bg-luxury-gray border border-theme-border-faint rounded-3xl overflow-hidden shadow-2xl">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="text-gray-500 font-bold border-b border-theme-border-faint bg-white/2 select-none">
+                <tr className="text-theme-muted font-bold border-b border-theme-border-faint bg-white/2 select-none">
                   <th className="p-4">Cupom</th>
                   <th className="p-4">Tipo</th>
                   <th className="p-4">Desconto</th>
@@ -549,7 +549,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   <th className="p-4">Ações</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 text-gray-300 font-medium">
+              <tbody className="divide-y divide-white/5 text-theme-muted font-medium">
                 {coupons.map((coupon) => (
                   <tr key={coupon.code} className="hover:bg-white/2 transition">
                     <td className="p-4 font-mono font-bold text-theme-text">{coupon.code}</td>
@@ -558,7 +558,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                       {coupon.type === 'percentage' ? `${coupon.value}%` : formatCurrency(coupon.value)}
                     </td>
                     <td className="p-4">{formatCurrency(coupon.minPurchaseValue)}</td>
-                    <td className="p-4 text-gray-500">{coupon.expiresAt}</td>
+                    <td className="p-4 text-theme-muted">{coupon.expiresAt}</td>
                     <td className="p-4">
                       <span className="text-[9px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-bold uppercase">
                         Ativo
@@ -586,7 +586,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
         <div className="space-y-6 animate-fadeIn">
           <div className="border-b border-theme-border-faint pb-4">
             <h3 className="font-serif text-2xl text-theme-text tracking-wide uppercase">Campanhas Sazonais</h3>
-            <p className="text-[10px] text-gray-500 uppercase tracking-widest">Altere o tema visual e a curadoria da loja em tempo real</p>
+            <p className="text-[10px] text-theme-muted uppercase tracking-widest">Altere o tema visual e a curadoria da loja em tempo real</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -608,7 +608,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   <div className="flex justify-between items-start">
                     <span className="text-3xl">{camp.emoji}</span>
                     {isActive && (
-                      <span className="bg-gradient-gold text-gray-900 font-extrabold text-[9px] uppercase tracking-widest px-2.5 py-1 rounded-full shadow">
+                      <span className="bg-gradient-gold text-theme-text font-extrabold text-[9px] uppercase tracking-widest px-2.5 py-1 rounded-full shadow">
                         Ativa na Loja
                       </span>
                     )}
@@ -617,7 +617,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   <div className="mt-8 space-y-2">
                     <h4 className="font-serif text-lg text-theme-text group-hover:text-gold-400 transition">{camp.name}</h4>
                     <p className="text-[10px] text-theme-muted font-light leading-relaxed">{camp.headline}</p>
-                    <span className="block text-[8px] text-gray-500 uppercase tracking-wider mt-4">Badge: {camp.badgeText}</span>
+                    <span className="block text-[8px] text-theme-muted uppercase tracking-wider mt-4">Badge: {camp.badgeText}</span>
                   </div>
                 </div>
               );
@@ -631,7 +631,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
         <div className="space-y-6 max-w-3xl animate-fadeIn">
           <div className="border-b border-theme-border-faint pb-4">
             <h3 className="font-serif text-2xl text-theme-text tracking-wide uppercase">Configurações Globais da Loja</h3>
-            <p className="text-[10px] text-gray-500 uppercase tracking-widest">Ajuste parâmetros operacionais, frete e meios de pagamento</p>
+            <p className="text-[10px] text-theme-muted uppercase tracking-widest">Ajuste parâmetros operacionais, frete e meios de pagamento</p>
           </div>
 
           <div className="bg-luxury-gray border border-theme-border-faint p-6 rounded-3xl space-y-6 shadow-2xl">
@@ -642,7 +642,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">WhatsApp Concierge</label>
+                  <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">WhatsApp Concierge</label>
                   <input
                     type="text"
                     defaultValue="+55 (11) 99999-9999"
@@ -650,7 +650,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">E-mail de Suporte</label>
+                  <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">E-mail de Suporte</label>
                   <input
                     type="text"
                     defaultValue="concierge@amour.com"
@@ -666,7 +666,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Limite para Frete Grátis (R$)</label>
+                  <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Limite para Frete Grátis (R$)</label>
                   <input
                     type="number"
                     defaultValue={290.00}
@@ -674,7 +674,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">CEP Origem (Despacho)</label>
+                  <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">CEP Origem (Despacho)</label>
                   <input
                     type="text"
                     defaultValue="01424-002"
@@ -693,21 +693,21 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   <input type="checkbox" defaultChecked className="h-4 w-4 text-gold-500" />
                   <div>
                     <span className="block font-bold text-theme-text">Pix Imediato</span>
-                    <span className="block text-[8px] text-gray-500">Com 10% OFF</span>
+                    <span className="block text-[8px] text-theme-muted">Com 10% OFF</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2.5 bg-white/2 border border-theme-border-faint p-3.5 rounded-xl">
                   <input type="checkbox" defaultChecked className="h-4 w-4 text-gold-500" />
                   <div>
                     <span className="block font-bold text-theme-text">Cartão de Crédito</span>
-                    <span className="block text-[8px] text-gray-500">Até 10x sem juros</span>
+                    <span className="block text-[8px] text-theme-muted">Até 10x sem juros</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2.5 bg-white/2 border border-theme-border-faint p-3.5 rounded-xl">
                   <input type="checkbox" defaultChecked className="h-4 w-4 text-gold-500" />
                   <div>
                     <span className="block font-bold text-theme-text">Boleto Bancário</span>
-                    <span className="block text-[8px] text-gray-500">Processamento em 24h</span>
+                    <span className="block text-[8px] text-theme-muted">Processamento em 24h</span>
                   </div>
                 </div>
               </div>
@@ -717,7 +717,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
               <button
                 type="button"
                 onClick={() => alert('Configurações salvas com sucesso!')}
-                className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-xl hover:shadow-lg transition cursor-pointer"
+                className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-xl hover:shadow-lg transition cursor-pointer"
               >
                 Salvar Configurações
               </button>
@@ -741,15 +741,15 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             
             <button
               onClick={() => setSelectedOrder(null)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-theme-text p-1 cursor-pointer"
+              className="absolute top-4 right-4 text-theme-muted hover:text-theme-text p-1 cursor-pointer"
             >
               <X size={18} />
             </button>
 
             <div className="border-b border-theme-border-faint pb-4">
-              <span className="text-[9px] uppercase tracking-wider text-gray-500 font-bold">Detalhamento Completo</span>
+              <span className="text-[9px] uppercase tracking-wider text-theme-muted font-bold">Detalhamento Completo</span>
               <h3 className="font-serif text-xl text-theme-text tracking-wide">Pedido {selectedOrder.id}</h3>
-              <p className="text-[10px] text-gray-500">Criado em {new Date(selectedOrder.createdAt).toLocaleString('pt-BR')}</p>
+              <p className="text-[10px] text-theme-muted">Criado em {new Date(selectedOrder.createdAt).toLocaleString('pt-BR')}</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs leading-relaxed">
@@ -784,7 +784,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                       <img src={item.image} alt="" className="w-8 h-8 object-cover rounded bg-theme-border-faint" />
                       <div>
                         <span className="font-semibold text-theme-text block">{item.name}</span>
-                        {item.selectedSize && <span className="text-[9px] text-gray-500">Tamanho: {item.selectedSize}</span>}
+                        {item.selectedSize && <span className="text-[9px] text-theme-muted">Tamanho: {item.selectedSize}</span>}
                       </div>
                     </div>
                     <span>{item.quantity}x de {formatCurrency(item.price)}</span>
@@ -798,7 +798,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
               
               {/* Order Status */}
               <div className="space-y-1.5">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Status do Pedido</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Status do Pedido</label>
                 <select
                   value={selectedOrder.status}
                   onChange={(e) => handleUpdateOrderStatus(selectedOrder.id, e.target.value as any, selectedOrder.trackingCode)}
@@ -814,7 +814,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
               {/* Tracking Code input */}
               <div className="space-y-1.5">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Código de Rastreamento</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Código de Rastreamento</label>
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -825,7 +825,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   />
                   <button
                     onClick={() => handleUpdateOrderStatus(selectedOrder.id, selectedOrder.status, trackingCodeInput)}
-                    className="bg-white/10 hover:bg-gold-500 hover:text-gray-900 border border-theme-border px-4 py-2 font-bold uppercase rounded-lg transition cursor-pointer"
+                    className="bg-white/10 hover:bg-gold-500 hover:text-theme-text border border-theme-border px-4 py-2 font-bold uppercase rounded-lg transition cursor-pointer"
                   >
                     Salvar
                   </button>
@@ -848,7 +848,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             <button
               type="button"
               onClick={() => setShowCouponModal(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-theme-text p-1 cursor-pointer"
+              className="absolute top-4 right-4 text-theme-muted hover:text-theme-text p-1 cursor-pointer"
             >
               <X size={18} />
             </button>
@@ -858,7 +858,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             </div>
 
             <div className="space-y-1">
-              <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Código</label>
+              <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Código</label>
               <input
                 type="text"
                 placeholder="Ex: AMOUR15"
@@ -871,7 +871,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Tipo</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Tipo</label>
                 <select
                   value={newType}
                   onChange={(e) => setNewType(e.target.value as any)}
@@ -882,7 +882,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                 </select>
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Valor do Desconto</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Valor do Desconto</label>
                 <input
                   type="number"
                   value={newValue}
@@ -895,7 +895,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Compra Mínima (R$)</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Compra Mínima (R$)</label>
                 <input
                   type="number"
                   value={newMinSpend}
@@ -905,7 +905,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Data de Expiração</label>
+                <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Data de Expiração</label>
                 <input
                   type="date"
                   value={newExpiry}
@@ -926,7 +926,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
               </button>
               <button
                 type="submit"
-                className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+                className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
               >
                 Criar Cupom
               </button>

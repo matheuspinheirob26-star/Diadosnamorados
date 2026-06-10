@@ -24,7 +24,7 @@ export const SizeModal: React.FC<SizeModalProps> = ({ isOpen, onClose }) => {
             {/* Close */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 text-gray-500 hover:text-white p-1"
+              className="absolute top-4 right-4 text-theme-muted hover:text-white p-1"
             >
               <X size={18} />
             </button>
@@ -34,7 +34,7 @@ export const SizeModal: React.FC<SizeModalProps> = ({ isOpen, onClose }) => {
                 <h3 className="font-serif text-xl text-gradient-gold tracking-widest uppercase">
                   Tabela de Medidas
                 </h3>
-                <p className="text-[10px] text-gray-500 uppercase tracking-widest">
+                <p className="text-[10px] text-theme-muted uppercase tracking-widest">
                   Camisa Premium Egípcia & Boxer Modal
                 </p>
               </div>
@@ -47,7 +47,7 @@ export const SizeModal: React.FC<SizeModalProps> = ({ isOpen, onClose }) => {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
-                      <tr className="text-gray-500 font-bold border-b border-theme-border-faint">
+                      <tr className="text-theme-muted font-bold border-b border-theme-border-faint">
                         <th className="py-2 pr-4">Tamanho</th>
                         <th className="py-2 px-4">Tórax (cm)</th>
                         <th className="py-2 px-4">Cintura (cm)</th>
@@ -55,7 +55,7 @@ export const SizeModal: React.FC<SizeModalProps> = ({ isOpen, onClose }) => {
                         <th className="py-2 pl-4">Manga (cm)</th>
                       </tr>
                     </thead>
-                    <tbody className="text-gray-300 font-medium">
+                    <tbody className="text-theme-muted font-medium">
                       <tr className="border-b border-theme-border-faint hover:bg-white/2 transition">
                         <td className="py-2.5 pr-4 text-gold-400 font-bold">P</td>
                         <td className="py-2.5 px-4">96 - 100</td>
@@ -97,13 +97,13 @@ export const SizeModal: React.FC<SizeModalProps> = ({ isOpen, onClose }) => {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
-                      <tr className="text-gray-500 font-bold border-b border-theme-border-faint">
+                      <tr className="text-theme-muted font-bold border-b border-theme-border-faint">
                         <th className="py-2 pr-4">Tamanho</th>
                         <th className="py-2 px-4">Manequim</th>
                         <th className="py-2 pl-4">Cintura (cm)</th>
                       </tr>
                     </thead>
-                    <tbody className="text-gray-300 font-medium">
+                    <tbody className="text-theme-muted font-medium">
                       <tr className="border-b border-theme-border-faint hover:bg-white/2 transition">
                         <td className="py-2.5 pr-4 text-gold-400 font-bold">P</td>
                         <td className="py-2.5 px-4">36 - 38</td>
@@ -129,7 +129,7 @@ export const SizeModal: React.FC<SizeModalProps> = ({ isOpen, onClose }) => {
                 </div>
               </div>
 
-              <div className="text-[10px] text-gray-500 leading-relaxed bg-white/2 p-3 rounded-lg border border-theme-border-faint">
+              <div className="text-[10px] text-theme-muted leading-relaxed bg-white/2 p-3 rounded-lg border border-theme-border-faint">
                 💡 **Dica de tamanho**: Caso suas medidas estejam no limite entre dois tamanhos, recomendamos escolher o tamanho maior para um caimento mais confortável.
               </div>
             </div>

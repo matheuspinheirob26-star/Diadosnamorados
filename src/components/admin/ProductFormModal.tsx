@@ -424,7 +424,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="text-gray-500 hover:text-theme-text p-1.5 rounded-full hover:bg-theme-border-faint transition"
+                className="text-theme-muted hover:text-theme-text p-1.5 rounded-full hover:bg-theme-border-faint transition"
               >
                 <X size={18} />
               </button>
@@ -449,7 +449,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-lg transition-all duration-300 cursor-pointer ${
                       isTabActive
                         ? 'bg-gold-500/10 text-gold-400 font-bold border-b-2 border-gold-500 rounded-b-none'
-                        : 'text-gray-500 hover:text-theme-text hover:bg-theme-border-faint'
+                        : 'text-theme-muted hover:text-theme-text hover:bg-theme-border-faint'
                     }`}
                   >
                     <TabIcon size={12} />
@@ -467,7 +467,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 <div className="space-y-4 animate-fadeIn">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Nome do Produto *</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Nome do Produto *</label>
                       <input
                         type="text"
                         placeholder="Ex: Caixa Especial Dia dos Namorados"
@@ -480,7 +480,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">URL Slug (Auto-gerada) *</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">URL Slug (Auto-gerada) *</label>
                       <input
                         type="text"
                         placeholder="ex-caixa-especial"
@@ -495,7 +495,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Categoria *</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Categoria *</label>
                       <select
                         {...register('category')}
                         className="w-full bg-luxury-black border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
@@ -510,7 +510,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Gênero Alvo *</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Gênero Alvo *</label>
                       <select
                         {...register('gender')}
                         className="w-full bg-luxury-black border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
@@ -522,7 +522,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Status de Publicação *</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Status de Publicação *</label>
                       <select
                         {...register('status')}
                         className="w-full bg-luxury-black border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
@@ -535,7 +535,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Descrição Curta *</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Descrição Curta *</label>
                     <textarea
                       placeholder="Descrição rápida para cartões da vitrine..."
                       rows={2}
@@ -548,7 +548,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Descrição Detalhada e Itens *</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Descrição Detalhada e Itens *</label>
                     <textarea
                       placeholder="Descreva detalhadamente o kit, a experiência, materiais, e liste cada item incluso no presente..."
                       rows={4}
@@ -570,12 +570,12 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       />
                       <div>
                         <label htmlFor="featured" className="text-xs font-semibold text-theme-text cursor-pointer block">Produto Destaque (Flagship)</label>
-                        <span className="text-[9px] text-gray-500 block">Destaque central com banner emocional na Home page.</span>
+                        <span className="text-[9px] text-theme-muted block">Destaque central com banner emocional na Home page.</span>
                       </div>
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Campanha Sazonal Ativa</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Campanha Sazonal Ativa</label>
                       <select
                         {...register('campaign')}
                         className="w-full bg-luxury-black border border-theme-border rounded-lg px-3.5 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
@@ -598,9 +598,9 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 <div className="space-y-4 animate-fadeIn">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Preço de Venda (R$) *</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Preço de Venda (R$) *</label>
                       <div className="relative">
-                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-gray-500 font-bold">R$</span>
+                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-theme-muted font-bold">R$</span>
                         <input
                           type="number"
                           step="0.01"
@@ -615,9 +615,9 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Preço Original ("De") *</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Preço Original ("De") *</label>
                       <div className="relative">
-                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-gray-500 font-bold">R$</span>
+                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-theme-muted font-bold">R$</span>
                         <input
                           type="number"
                           step="0.01"
@@ -634,7 +634,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Estoque Geral Disponível *</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Estoque Geral Disponível *</label>
                       <input
                         type="number"
                         placeholder="15"
@@ -647,7 +647,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Estoque Mínimo (Alerta) *</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Estoque Mínimo (Alerta) *</label>
                       <input
                         type="number"
                         placeholder="5"
@@ -660,7 +660,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">SKU Master *</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">SKU Master *</label>
                       <input
                         type="text"
                         placeholder="AMR-KIT_EXEMPLO"
@@ -682,7 +682,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     />
                     <div>
                       <label htmlFor="allowOutOfStockSale" className="text-xs font-semibold text-theme-text cursor-pointer block">Permitir Venda sem Estoque (Sob Encomenda)</label>
-                      <span className="text-[9px] text-gray-500 block">Clientes poderão comprar o produto esgotado e ele receberá a marcação "Sob encomenda".</span>
+                      <span className="text-[9px] text-theme-muted block">Clientes poderão comprar o produto esgotado e ele receberá a marcação "Sob encomenda".</span>
                     </div>
                   </div>
                 </div>
@@ -710,7 +710,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
                     {useExternalMainImage ? (
                       <div className="space-y-2">
-                        <label className="text-[9px] uppercase tracking-wider text-gray-500 font-bold block">URL da Imagem Principal</label>
+                        <label className="text-[9px] uppercase tracking-wider text-theme-muted font-bold block">URL da Imagem Principal</label>
                         <input
                           type="text"
                           placeholder="https://images.unsplash.com/photo-..."
@@ -732,7 +732,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                             <span className="text-[10px] text-theme-muted font-bold uppercase tracking-wider">
                               {isUploadingMedia ? 'Enviando...' : 'Clique para selecionar imagem'}
                             </span>
-                            <span className="text-[9px] text-gray-600">JPG, PNG ou WebP (Máx 5MB)</span>
+                            <span className="text-[9px] text-theme-text">JPG, PNG ou WebP (Máx 5MB)</span>
                             <input
                               type="file"
                               ref={mainImageFileInputRef}
@@ -757,7 +757,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                               </button>
                             </div>
                           ) : (
-                            <div className="rounded-xl border border-dashed border-theme-border-faint aspect-square w-24 flex items-center justify-center text-gray-600 text-[10px] font-bold uppercase">
+                            <div className="rounded-xl border border-dashed border-theme-border-faint aspect-square w-24 flex items-center justify-center text-theme-text text-[10px] font-bold uppercase">
                               Sem arquivo
                             </div>
                           )}
@@ -771,7 +771,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     <div className="flex justify-between items-center border-b border-theme-border-faint pb-2">
                       <div>
                         <span className="text-xs font-bold text-theme-text uppercase tracking-wider block">Galeria de Imagens</span>
-                        <span className="text-[9px] text-gray-500 block">Adicione fotos adicionais da experiência de unboxing e detalhes do kit.</span>
+                        <span className="text-[9px] text-theme-muted block">Adicione fotos adicionais da experiência de unboxing e detalhes do kit.</span>
                       </div>
                       <button
                         type="button"
@@ -793,7 +793,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     </div>
 
                     {galleryList.length === 0 ? (
-                      <p className="text-[10px] text-gray-500 text-center py-6">Nenhuma imagem na galeria secundária.</p>
+                      <p className="text-[10px] text-theme-muted text-center py-6">Nenhuma imagem na galeria secundária.</p>
                     ) : (
                       <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                         {galleryList.map((imgUrl, idx) => (
@@ -839,7 +839,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
                   {/* VIDEO FIELD */}
                   <div className="space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Vídeo do Produto (Embed Link do YouTube)</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Vídeo do Produto (Embed Link do YouTube)</label>
                     <input
                       type="text"
                       placeholder="Ex: https://www.youtube.com/embed/dQw4w9WgXcQ"
@@ -858,7 +858,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   {/* ADD VARIATION FORM */}
                   <div className="bg-white/2 border border-theme-border-faint p-4 rounded-2xl grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
                     <div className="space-y-1.5 sm:col-span-2">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Selecione o Tipo de Atributo</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Selecione o Tipo de Atributo</label>
                       <select
                         value={newVarType}
                         onChange={(e) => setNewVarType(e.target.value as any)}
@@ -873,7 +873,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Nome da Opção</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Nome da Opção</label>
                       <input
                         type="text"
                         placeholder="Ex: P, Vermelho"
@@ -886,7 +886,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     <button
                       type="button"
                       onClick={handleAddVariation}
-                      className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center justify-center gap-1.5"
+                      className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center justify-center gap-1.5"
                     >
                       <Plus size={14} /> Adicionar
                     </button>
@@ -896,7 +896,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   <div className="bg-luxury-black border border-theme-border-faint rounded-2xl overflow-hidden">
                     <table className="w-full text-left text-xs border-collapse">
                       <thead>
-                        <tr className="text-gray-500 font-bold border-b border-theme-border-faint bg-white/2 select-none">
+                        <tr className="text-theme-muted font-bold border-b border-theme-border-faint bg-white/2 select-none">
                           <th className="p-3">Atributo</th>
                           <th className="p-3">Nome</th>
                           <th className="p-3 w-28">Preço Adicional (R$)</th>
@@ -906,10 +906,10 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                           <th className="p-3 text-right w-12">Ações</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-white/5 text-gray-300 font-medium">
+                      <tbody className="divide-y divide-white/5 text-theme-muted font-medium">
                         {variationsList.length === 0 ? (
                           <tr>
-                            <td colSpan={7} className="p-8 text-center text-gray-500 font-medium">
+                            <td colSpan={7} className="p-8 text-center text-theme-muted font-medium">
                               Nenhuma variação comercial cadastrada. Use o formulário acima para adicionar.
                             </td>
                           </tr>
@@ -937,7 +937,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                               </td>
                               <td className="p-3">
                                 <div className="relative">
-                                  <span className="absolute left-1.5 top-1/2 -translate-y-1/2 text-[9px] text-gray-600 font-bold">R$</span>
+                                  <span className="absolute left-1.5 top-1/2 -translate-y-1/2 text-[9px] text-theme-text font-bold">R$</span>
                                   <input
                                     type="number"
                                     step="0.01"
@@ -975,7 +975,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                                 <button
                                   type="button"
                                   onClick={() => handleRemoveVariation(v.id)}
-                                  className="text-gray-500 hover:text-rose-400 p-1 transition cursor-pointer"
+                                  className="text-theme-muted hover:text-rose-400 p-1 transition cursor-pointer"
                                   title="Remover variação"
                                 >
                                   <Trash2 size={13} />
@@ -997,7 +997,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   
                   {/* GOOGLE PREVIEW WIDGET */}
                   <div className="bg-white/2 border border-theme-border-faint p-6 rounded-3xl space-y-3 shadow-2xl">
-                    <span className="text-[10px] uppercase tracking-wider text-gray-500 font-extrabold flex items-center gap-1">
+                    <span className="text-[10px] uppercase tracking-wider text-theme-muted font-extrabold flex items-center gap-1">
                       <Search size={12} className="text-blue-500" />
                       <span>Widget Google Search Preview</span>
                     </span>
@@ -1005,9 +1005,9 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       {/* Search result mock */}
                       <div className="space-y-1">
                         <div className="text-[11px] text-theme-muted flex items-center gap-1.5 truncate select-none">
-                          <Globe size={11} className="text-gray-500" />
+                          <Globe size={11} className="text-theme-muted" />
                           <span>{watchCanonicalUrl || `https://amour.co/product/${watchSlug || 'slug'}`}</span>
-                          <span className="text-[9px] text-gray-600">▼</span>
+                          <span className="text-[9px] text-theme-text">▼</span>
                         </div>
                         <h4 className="text-[18px] text-[#8ab4f8] hover:underline cursor-pointer font-medium leading-snug truncate">
                           {watchSeoTitle || `${watchName || 'Título da Página'} | Amour & Co.`}
@@ -1022,7 +1022,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   {/* SEO INPUTS */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Título de Busca (SEO Title)</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Título de Busca (SEO Title)</label>
                       <input
                         type="text"
                         placeholder="Título otimizado para clique no Google..."
@@ -1032,7 +1032,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">URL Canônica (Canonical URL)</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">URL Canônica (Canonical URL)</label>
                       <input
                         type="text"
                         placeholder="Ex: https://amour.co/product/presente-exclusivo"
@@ -1044,7 +1044,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Palavra-chave Principal</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Palavra-chave Principal</label>
                       <input
                         type="text"
                         placeholder="Ex: kit presente namorados luxo"
@@ -1054,7 +1054,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Controle de Indexação (Robots)</label>
+                      <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Controle de Indexação (Robots)</label>
                       <select
                         {...register('indexing')}
                         className="w-full bg-luxury-black border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
@@ -1066,7 +1066,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Descrição de Busca (SEO Meta Description)</label>
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Descrição de Busca (SEO Meta Description)</label>
                     <textarea
                       placeholder="Resumo chamativo otimizado para o Google (recomendado até 160 caracteres)..."
                       rows={3}
@@ -1094,7 +1094,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 type="button"
                 onClick={handleSubmit(onFormSubmit)}
                 disabled={loading}
-                className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+                className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
               >
                 {loading ? (
                   <>

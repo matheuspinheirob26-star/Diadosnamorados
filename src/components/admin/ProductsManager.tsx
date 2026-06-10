@@ -169,7 +169,7 @@ export const ProductsManager: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-theme-border-faint pb-5">
         <div className="space-y-1">
           <h2 className="font-serif text-2xl text-white tracking-wide uppercase">Gerenciamento de Catálogo</h2>
-          <p className="text-[10px] text-gray-500 uppercase tracking-widest">
+          <p className="text-[10px] text-theme-muted uppercase tracking-widest">
             Adicione, duplique, edite ou gerencie o estoque e preços dos presentes de luxo
           </p>
         </div>
@@ -178,7 +178,7 @@ export const ProductsManager: React.FC = () => {
           <button
             onClick={fetchProductsList}
             disabled={loading}
-            className="p-2.5 rounded-xl border border-white/10 hover:border-gold-500/30 hover:bg-white/5 text-gray-400 hover:text-white transition cursor-pointer"
+            className="p-2.5 rounded-xl border border-white/10 hover:border-gold-500/30 hover:bg-white/5 text-theme-muted hover:text-white transition cursor-pointer"
             title="Recarregar produtos"
           >
             <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
@@ -189,7 +189,7 @@ export const ProductsManager: React.FC = () => {
               setIsDuplicating(false);
               setModalOpen(true);
             }}
-            className="bg-gradient-gold text-gray-900 font-semibold text-xs tracking-widest uppercase px-5 py-2.5 rounded-xl hover:shadow-lg transition cursor-pointer flex items-center gap-1.5"
+            className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-5 py-2.5 rounded-xl hover:shadow-lg transition cursor-pointer flex items-center gap-1.5"
           >
             <Plus size={14} />
             <span>Novo Presente</span>
@@ -200,9 +200,9 @@ export const ProductsManager: React.FC = () => {
       {/* Filter panel */}
       <div className="bg-luxury-gray border border-theme-border-faint p-4 rounded-2xl grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
         <div className="space-y-1.5">
-          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Buscar Presente</label>
+          <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Buscar Presente</label>
           <div className="relative">
-            <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500" />
+            <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted" />
             <input
               type="text"
               placeholder="Buscar por nome ou SKU..."
@@ -214,7 +214,7 @@ export const ProductsManager: React.FC = () => {
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Filtrar Categoria</label>
+          <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Filtrar Categoria</label>
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
@@ -227,7 +227,7 @@ export const ProductsManager: React.FC = () => {
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Filtrar Status</label>
+          <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Filtrar Status</label>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -266,11 +266,11 @@ export const ProductsManager: React.FC = () => {
               className={`pb-3 px-3 transition-all cursor-pointer relative whitespace-nowrap ${
                 activeSubTab === subTab.id
                   ? 'text-gold-400 font-bold border-b-2 border-gold-500'
-                  : 'text-gray-500 hover:text-gray-300'
+                  : 'text-theme-muted hover:text-theme-muted'
               }`}
             >
               <span>{subTab.label}</span>
-              <span className="ml-1.5 px-1.5 py-0.5 rounded-full text-[9px] bg-white/5 text-gray-400 font-medium">
+              <span className="ml-1.5 px-1.5 py-0.5 rounded-full text-[9px] bg-white/5 text-theme-muted font-medium">
                 {count}
               </span>
             </button>
@@ -289,7 +289,7 @@ export const ProductsManager: React.FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="text-gray-500 font-bold border-b border-theme-border-faint bg-white/2 select-none">
+              <tr className="text-theme-muted font-bold border-b border-theme-border-faint bg-white/2 select-none">
                 <th className="p-4">Presente</th>
                 <th className="p-4">SKU / Categoria</th>
                 <th className="p-4">Preço (R$)</th>
@@ -299,10 +299,10 @@ export const ProductsManager: React.FC = () => {
                 <th className="p-4 text-right">Ações</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5 text-gray-300 font-medium">
+            <tbody className="divide-y divide-white/5 text-theme-muted font-medium">
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-10 text-center text-gray-500 font-medium">
+                  <td colSpan={7} className="p-10 text-center text-theme-muted font-medium">
                     Nenhum presente de luxo correspondente encontrado no catálogo.
                   </td>
                 </tr>
@@ -331,8 +331,8 @@ export const ProductsManager: React.FC = () => {
 
                     {/* Column 2: SKU / Category */}
                     <td className="p-4">
-                      <span className="block font-mono text-[10px] text-gray-400 font-bold">{prod.sku || `SKU-${prod.id.toUpperCase()}`}</span>
-                      <span className="block text-[10px] text-gray-500 mt-0.5">{prod.category}</span>
+                      <span className="block font-mono text-[10px] text-theme-muted font-bold">{prod.sku || `SKU-${prod.id.toUpperCase()}`}</span>
+                      <span className="block text-[10px] text-theme-muted mt-0.5">{prod.category}</span>
                     </td>
 
                     {/* Column 3: Price Inline Edit */}
@@ -353,7 +353,7 @@ export const ProductsManager: React.FC = () => {
                           />
                           <button
                             onClick={() => handleSavePriceInline(prod)}
-                            className="bg-gold-500 text-gray-900 font-extrabold px-1.5 py-1 rounded text-[9px] uppercase cursor-pointer"
+                            className="bg-gold-500 text-theme-text font-extrabold px-1.5 py-1 rounded text-[9px] uppercase cursor-pointer"
                           >
                             Ok
                           </button>
@@ -368,11 +368,11 @@ export const ProductsManager: React.FC = () => {
                           title="Clique para editar rápido"
                         >
                           <span>{formatCurrency(prod.price)}</span>
-                          <Edit3 size={10} className="text-gray-600 group-hover:text-gold-400 transition opacity-0 group-hover:opacity-100" />
+                          <Edit3 size={10} className="text-theme-text group-hover:text-gold-400 transition opacity-0 group-hover:opacity-100" />
                         </div>
                       )}
                       {prod.originalPrice > prod.price && (
-                        <span className="block text-[9px] text-gray-500 line-through mt-0.5">De: {formatCurrency(prod.originalPrice)}</span>
+                        <span className="block text-[9px] text-theme-muted line-through mt-0.5">De: {formatCurrency(prod.originalPrice)}</span>
                       )}
                     </td>
 
@@ -393,7 +393,7 @@ export const ProductsManager: React.FC = () => {
                           />
                           <button
                             onClick={() => handleSaveStockInline(prod)}
-                            className="bg-gold-500 text-gray-900 font-extrabold px-1.5 py-1 rounded text-[9px] uppercase cursor-pointer"
+                            className="bg-gold-500 text-theme-text font-extrabold px-1.5 py-1 rounded text-[9px] uppercase cursor-pointer"
                           >
                             Ok
                           </button>
@@ -416,7 +416,7 @@ export const ProductsManager: React.FC = () => {
                           }`}>
                             {prod.stock <= 0 ? 'Esgotado' : prod.stock <= (prod.minStock !== undefined ? prod.minStock : 5) ? `Poucas Unidades (${prod.stock})` : `${prod.stock} un`}
                           </span>
-                          <Edit3 size={10} className="text-gray-600 group-hover:text-gold-400 transition opacity-0 group-hover:opacity-100" />
+                          <Edit3 size={10} className="text-theme-text group-hover:text-gold-400 transition opacity-0 group-hover:opacity-100" />
                         </div>
                       )}
                     </td>
@@ -426,7 +426,7 @@ export const ProductsManager: React.FC = () => {
                       <button
                         onClick={() => handleToggleFeatured(prod)}
                         className={`p-1.5 rounded-lg hover:bg-white/5 transition cursor-pointer ${
-                          prod.featured ? 'text-gold-400' : 'text-gray-600'
+                          prod.featured ? 'text-gold-400' : 'text-theme-text'
                         }`}
                         title={prod.featured ? 'Remover dos destaques' : 'Destacar na vitrine'}
                       >
@@ -441,14 +441,14 @@ export const ProductsManager: React.FC = () => {
                           prod.status === 'publicado' 
                             ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
                             : prod.status === 'rascunho'
-                            ? 'bg-gray-500/10 text-gray-400 border border-gray-500/20'
+                            ? 'bg-gray-500/10 text-theme-muted border border-gray-500/20'
                             : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
                         }`}>
                           {prod.status || 'publicado'}
                         </span>
                         <button
                           onClick={() => handleToggleStatus(prod)}
-                          className={`p-1 rounded hover:bg-white/5 transition cursor-pointer text-gray-500 hover:text-white`}
+                          className={`p-1 rounded hover:bg-white/5 transition cursor-pointer text-theme-muted hover:text-white`}
                           title={prod.status === 'publicado' ? 'Tornar Rascunho' : 'Publicar Produto'}
                         >
                           {prod.status === 'publicado' ? <Eye size={14} className="text-emerald-400" /> : <EyeOff size={14} />}
@@ -461,21 +461,21 @@ export const ProductsManager: React.FC = () => {
                       <div className="flex justify-end gap-1.5">
                         <button
                           onClick={() => handleTriggerEdit(prod)}
-                          className="p-1.5 rounded-lg border border-theme-border-faint hover:border-gold-500/30 hover:bg-white/5 text-gray-400 hover:text-white transition cursor-pointer"
+                          className="p-1.5 rounded-lg border border-theme-border-faint hover:border-gold-500/30 hover:bg-white/5 text-theme-muted hover:text-white transition cursor-pointer"
                           title="Editar dados"
                         >
                           <Edit3 size={13} />
                         </button>
                         <button
                           onClick={() => handleTriggerDuplicate(prod)}
-                          className="p-1.5 rounded-lg border border-theme-border-faint hover:border-gold-500/30 hover:bg-white/5 text-gray-400 hover:text-white transition cursor-pointer"
+                          className="p-1.5 rounded-lg border border-theme-border-faint hover:border-gold-500/30 hover:bg-white/5 text-theme-muted hover:text-white transition cursor-pointer"
                           title="Duplicar presente"
                         >
                           <Copy size={13} />
                         </button>
                         <button
                           onClick={() => handleDeleteProduct(prod.id)}
-                          className="p-1.5 rounded-lg border border-theme-border-faint hover:border-rose-500/30 hover:bg-rose-500/5 text-gray-500 hover:text-rose-400 transition cursor-pointer"
+                          className="p-1.5 rounded-lg border border-theme-border-faint hover:border-rose-500/30 hover:bg-rose-500/5 text-theme-muted hover:text-rose-400 transition cursor-pointer"
                           title="Excluir"
                         >
                           <Trash2 size={13} />

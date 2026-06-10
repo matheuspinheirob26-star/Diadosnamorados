@@ -129,7 +129,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.5 }}
-              className="text-gray-300 text-lg sm:text-xl max-w-2xl mx-auto font-light leading-relaxed"
+              className="text-theme-muted text-lg sm:text-xl max-w-2xl mx-auto font-light leading-relaxed"
             >
               {config.heroSubtitle || currentCampaign.subheadline}
             </motion.p>
@@ -146,7 +146,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
                 onSetCatalogFilter({}); // Reset filters to show all
                 onNavigate(config.heroButtonLink || 'catalog');
               }}
-              className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg hover:shadow-gold-500/10 text-gray-900 font-semibold text-xs tracking-widest uppercase px-8 py-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg hover:shadow-gold-500/10 text-theme-text font-semibold text-xs tracking-widest uppercase px-8 py-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>{config.heroButtonText || 'Ver Coleção'}</span>
               <ArrowRight size={14} />
@@ -174,7 +174,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               <Truck size={18} />
             </div>
             <h4 className="text-[11px] font-bold text-theme-text uppercase tracking-wider">Envio Privado</h4>
-            <p className="text-[10px] text-gray-500">Frete Expresso para todo Brasil</p>
+            <p className="text-[10px] text-theme-muted">Frete Expresso para todo Brasil</p>
           </div>
 
           <div className="flex flex-col items-center text-center space-y-2.5">
@@ -182,7 +182,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               <ShieldCheck size={18} />
             </div>
             <h4 className="text-[11px] font-bold text-theme-text uppercase tracking-wider">Compra Blindada</h4>
-            <p className="text-[10px] text-gray-500">Criptografia SSL certificado</p>
+            <p className="text-[10px] text-theme-muted">Criptografia SSL certificado</p>
           </div>
 
           <div className="flex flex-col items-center text-center space-y-2.5 col-span-2 md:col-span-1">
@@ -190,7 +190,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               <CreditCard size={18} />
             </div>
             <h4 className="text-[11px] font-bold text-theme-text uppercase tracking-wider">Pix & Cartão</h4>
-            <p className="text-[10px] text-gray-500">Pix 10% OFF ou até 10x sem juros</p>
+            <p className="text-[10px] text-theme-muted">Pix 10% OFF ou até 10x sem juros</p>
           </div>
 
           <div className="flex flex-col items-center text-center space-y-2.5">
@@ -198,7 +198,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               <Headphones size={18} />
             </div>
             <h4 className="text-[11px] font-bold text-theme-text uppercase tracking-wider">Concierge 24h</h4>
-            <p className="text-[10px] text-gray-500">Suporte humanizado pós-venda</p>
+            <p className="text-[10px] text-theme-muted">Suporte humanizado pós-venda</p>
           </div>
 
           <div className="flex flex-col items-center text-center space-y-2.5">
@@ -206,7 +206,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               <RotateCcw size={18} />
             </div>
             <h4 className="text-[11px] font-bold text-theme-text uppercase tracking-wider">Troca Garantida</h4>
-            <p className="text-[10px] text-gray-500">Primeira devolução sem custos</p>
+            <p className="text-[10px] text-theme-muted">Primeira devolução sem custos</p>
           </div>
 
         </div>
@@ -217,7 +217,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
         <div className="text-center space-y-2">
           <h2 className="font-serif text-3xl text-theme-text tracking-widest uppercase">Coleções Sazonais</h2>
           <div className="h-0.5 w-16 bg-gradient-gold mx-auto" />
-          <p className="text-xs text-gray-500 uppercase tracking-widest">Navegue por categorias exclusivas</p>
+          <p className="text-xs text-theme-muted uppercase tracking-widest">Navegue por categorias exclusivas</p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
@@ -328,7 +328,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               </p>
 
               {/* Items bullet lists */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] text-gray-300">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] text-theme-muted">
                 {flagshipProduct.features.map((item, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <CheckCircle2 size={12} className="text-gold-500 shrink-0" />
@@ -340,14 +340,14 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               {/* Buy block */}
               <div className="pt-6 border-t border-theme-border-faint flex flex-col sm:flex-row items-center justify-between gap-6">
                 <div>
-                  <span className="text-[10px] text-gray-500 line-through block">De R$ {flagshipProduct.originalPrice?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                  <span className="text-[10px] text-theme-muted line-through block">De R$ {flagshipProduct.originalPrice?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
                   <span className="text-xl font-bold text-theme-text block">Por R$ {flagshipProduct.price?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
                   <span className="text-[10px] text-emerald-400 font-semibold block mt-0.5">Ou R$ {(flagshipProduct.price * 0.9).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} no Pix (10% OFF)</span>
                 </div>
 
                 <button
                   onClick={handleBuyFlagship}
-                  className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg text-gray-900 font-semibold text-xs tracking-widest uppercase px-8 py-3.5 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg text-theme-text font-semibold text-xs tracking-widest uppercase px-8 py-3.5 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>Garantir Presente</span>
                   <ArrowRight size={14} />
@@ -365,7 +365,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
         <div className="flex flex-col sm:flex-row justify-between items-end gap-4 border-b border-theme-border-faint pb-6">
           <div className="space-y-1">
             <h2 className="font-serif text-2xl text-theme-text tracking-widest uppercase">Novos Lançamentos</h2>
-            <p className="text-[10px] text-gray-500 uppercase tracking-widest">Experiências premium recém-chegadas</p>
+            <p className="text-[10px] text-theme-muted uppercase tracking-widest">Experiências premium recém-chegadas</p>
           </div>
           <button
             onClick={() => {
@@ -431,7 +431,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               <Star size={14} className="fill-currentColor" />
               <Star size={14} className="fill-currentColor" />
             </div>
-            <p className="text-xs text-gray-500 uppercase tracking-widest">Nota 4.9/5 com base em mais de 5.000 entregas</p>
+            <p className="text-xs text-theme-muted uppercase tracking-widest">Nota 4.9/5 com base em mais de 5.000 entregas</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -444,7 +444,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
                 <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-xs text-gold-400">AM</div>
                 <div>
                   <h4 className="text-xs font-semibold text-theme-text">Aline Mendonça</h4>
-                  <span className="text-[9px] text-gray-500 uppercase tracking-widest">Belo Horizonte - MG</span>
+                  <span className="text-[9px] text-theme-muted uppercase tracking-widest">Belo Horizonte - MG</span>
                 </div>
               </div>
             </div>
@@ -457,7 +457,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
                 <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-xs text-gold-400">FF</div>
                 <div>
                   <h4 className="text-xs font-semibold text-theme-text">Felipe Faria</h4>
-                  <span className="text-[9px] text-gray-500 uppercase tracking-widest">São Paulo - SP</span>
+                  <span className="text-[9px] text-theme-muted uppercase tracking-widest">São Paulo - SP</span>
                 </div>
               </div>
             </div>
@@ -470,7 +470,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
                 <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-xs text-gold-400">CR</div>
                 <div>
                   <h4 className="text-xs font-semibold text-theme-text">Carla Rodrigues</h4>
-                  <span className="text-[9px] text-gray-500 uppercase tracking-widest">Curitiba - PR</span>
+                  <span className="text-[9px] text-theme-muted uppercase tracking-widest">Curitiba - PR</span>
                 </div>
               </div>
             </div>

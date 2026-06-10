@@ -121,7 +121,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center text-gray-500">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center text-theme-muted">
         Carregando detalhes do presente...
       </div>
     );
@@ -192,7 +192,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
       {/* Back to catalog link */}
       <button
         onClick={() => onNavigate('catalog')}
-        className="text-xs text-gray-500 hover:text-gold-400 transition font-semibold flex items-center gap-1.5 cursor-pointer"
+        className="text-xs text-theme-muted hover:text-gold-400 transition font-semibold flex items-center gap-1.5 cursor-pointer"
       >
         <ArrowLeft size={14} /> Voltar para presentes
       </button>
@@ -216,7 +216,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
               </span>
               <div className="flex items-center gap-2 flex-wrap">
                 {product.featured && (
-                  <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-gradient-gold text-gray-900 px-2.5 py-1 rounded-full">
+                  <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-gradient-gold text-theme-text px-2.5 py-1 rounded-full">
                     <Flame size={9} /> Destaque
                   </span>
                 )}
@@ -231,7 +231,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                       <Star
                         key={s}
                         size={14}
-                        className={s <= Math.round(product.rating) ? 'fill-gold-500 text-gold-500' : 'text-gray-600'}
+                        className={s <= Math.round(product.rating) ? 'fill-gold-500 text-gold-500' : 'text-theme-text'}
                       />
                     ))}
                   </div>
@@ -269,7 +269,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                     className={`h-11 w-11 rounded-lg border text-xs font-bold flex items-center justify-center transition cursor-pointer ${
                       selectedSize === sz
                         ? 'border-gold-500 bg-gold-500/10 text-gold-400'
-                        : 'border-theme-border hover:border-white/30 text-gray-300'
+                        : 'border-theme-border hover:border-white/30 text-theme-muted'
                     }`}
                   >
                     {sz}
@@ -318,8 +318,8 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                               isSelected
                                 ? 'border-gold-500 bg-gold-500/10 text-gold-400'
                                 : varOutOfStock
-                                ? 'border-theme-border-faint bg-white/2 text-gray-600 cursor-not-allowed line-through'
-                                : 'border-theme-border hover:border-white/30 text-gray-300 hover:text-theme-text'
+                                ? 'border-theme-border-faint bg-white/2 text-theme-text cursor-not-allowed line-through'
+                                : 'border-theme-border hover:border-white/30 text-theme-muted hover:text-theme-text'
                             }`}
                           >
                             {type === 'cor' && (
@@ -353,7 +353,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
           <div className="bg-white/2 border border-theme-border-faint p-5 rounded-2xl space-y-4">
             <div className="flex items-baseline gap-3 flex-wrap">
               {hasDiscount && (
-                <span className="text-xs text-gray-500 line-through">
+                <span className="text-xs text-theme-muted line-through">
                   {formatCurrency(product.originalPrice)}
                 </span>
               )}
@@ -367,12 +367,12 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div className="bg-theme-border-faint border border-theme-border-faint p-3 rounded-xl">
-                <span className="text-gray-500 block text-[9px] uppercase font-bold tracking-wider">Pix com desconto</span>
+                <span className="text-theme-muted block text-[9px] uppercase font-bold tracking-wider">Pix com desconto</span>
                 <span className="text-sm font-bold text-emerald-400 block mt-1">{formatCurrency(pixPrice)}</span>
                 <span className="text-[10px] text-theme-muted block mt-0.5">Economize 10% adicionais</span>
               </div>
               <div className="bg-theme-border-faint border border-theme-border-faint p-3 rounded-xl">
-                <span className="text-gray-500 block text-[9px] uppercase font-bold tracking-wider">Cartão de Crédito</span>
+                <span className="text-theme-muted block text-[9px] uppercase font-bold tracking-wider">Cartão de Crédito</span>
                 <span className="text-sm font-bold text-theme-text block mt-1">10x de {formatCurrency(installmentValue)}</span>
                 <span className="text-[10px] text-theme-muted block mt-0.5">Sem juros no parcelamento</span>
               </div>
@@ -406,8 +406,8 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
               disabled={isOutOfStock}
               className={`flex-1 font-semibold text-xs tracking-widest uppercase py-4 rounded-lg transition duration-300 cursor-pointer text-center ${
                 isOutOfStock
-                  ? 'bg-theme-border-faint text-gray-500 cursor-not-allowed'
-                  : 'bg-gradient-gold hover:shadow-lg text-gray-900'
+                  ? 'bg-theme-border-faint text-theme-muted cursor-not-allowed'
+                  : 'bg-gradient-gold hover:shadow-lg text-theme-text'
               }`}
             >
               {isOutOfStock ? 'Indisponível' : 'Comprar Agora'}
@@ -417,7 +417,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
               disabled={isOutOfStock}
               className={`flex-1 border font-semibold text-xs tracking-widest uppercase py-4 rounded-lg transition duration-300 cursor-pointer ${
                 isOutOfStock
-                  ? 'border-theme-border-faint text-gray-600 cursor-not-allowed'
+                  ? 'border-theme-border-faint text-theme-text cursor-not-allowed'
                   : 'border-theme-border hover:border-gold-500 hover:text-gold-400 text-theme-text bg-white/2 hover:bg-theme-border-faint'
               }`}
             >
@@ -436,7 +436,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
 
           {/* Shipping Estimation Simulator */}
           <div className="pt-4 border-t border-theme-border-faint space-y-3">
-            <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Calcular Frete e Prazo</label>
+            <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Calcular Frete e Prazo</label>
             <form onSubmit={handleCalculateShipping} className="flex gap-2">
               <input
                 type="text"
@@ -461,7 +461,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                   <div key={opt.id} className="flex items-center justify-between text-xs pt-2.5 first:pt-0">
                     <div>
                       <span className="font-semibold text-theme-text block">{opt.name}</span>
-                      <span className="text-[9px] text-gray-500 block">Entrega estimada em {opt.deliveryDays} dia{opt.deliveryDays !== 1 && 's'} útil{opt.deliveryDays !== 1 && 'is'}</span>
+                      <span className="text-[9px] text-theme-muted block">Entrega estimada em {opt.deliveryDays} dia{opt.deliveryDays !== 1 && 's'} útil{opt.deliveryDays !== 1 && 'is'}</span>
                     </div>
                     <span className="font-bold text-gold-400">{formatCurrency(opt.price)}</span>
                   </div>
@@ -471,7 +471,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
           </div>
 
           {/* Value Props Lists */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-[10px] text-gray-500 pt-6 border-t border-theme-border-faint">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-[10px] text-theme-muted pt-6 border-t border-theme-border-faint">
             <div className="flex items-center gap-2">
               <Truck size={12} className="text-gold-500" />
               <span>Embalagem protetora luxuosa</span>
@@ -506,7 +506,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
         <div className="space-y-6 pt-10 border-t border-theme-border-faint">
           <div className="space-y-1">
             <h3 className="font-serif text-xl text-theme-text tracking-widest uppercase">Também pode agradar</h3>
-            <p className="text-[10px] text-gray-500 uppercase tracking-widest">Complete seu presente com outros mimos</p>
+            <p className="text-[10px] text-theme-muted uppercase tracking-widest">Complete seu presente com outros mimos</p>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

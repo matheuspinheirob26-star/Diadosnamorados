@@ -75,10 +75,10 @@ export const NotificationPopup: React.FC = () => {
           {/* Body */}
           <div className="flex-1 min-w-0">
             <p className="text-[11px] font-bold text-white truncate">Compra Verificada</p>
-            <p className="text-[10px] text-gray-400 mt-0.5 leading-snug">
-              <span className="font-semibold text-gray-200">{currentAlert.name}</span> de {currentAlert.city}/{currentAlert.state} adquiriu o <span className="text-gold-400 font-medium">{currentAlert.product}</span>.
+            <p className="text-[10px] text-theme-muted mt-0.5 leading-snug">
+              <span className="font-semibold text-theme-muted">{currentAlert.name}</span> de {currentAlert.city}/{currentAlert.state} adquiriu o <span className="text-gold-400 font-medium">{currentAlert.product}</span>.
             </p>
-            <span className="text-[8px] text-gray-500 font-semibold uppercase tracking-wider block mt-1">
+            <span className="text-[8px] text-theme-muted font-semibold uppercase tracking-wider block mt-1">
               {currentAlert.time} • {formatCurrency(currentAlert.price)}
             </span>
           </div>
@@ -86,7 +86,7 @@ export const NotificationPopup: React.FC = () => {
           {/* Close button */}
           <button
             onClick={() => setCurrentAlert(null)}
-            className="text-gray-500 hover:text-white shrink-0 self-start p-0.5"
+            className="text-theme-muted hover:text-white shrink-0 self-start p-0.5"
           >
             <X size={12} />
           </button>

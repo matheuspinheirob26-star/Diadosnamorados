@@ -76,12 +76,12 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
             <span className="font-serif text-3xl tracking-widest font-light text-gradient-gold uppercase block">
               Amour & Co.
             </span>
-            <span className="text-[10px] tracking-[0.3em] font-medium text-gray-500 uppercase -mt-1 block">
+            <span className="text-[10px] tracking-[0.3em] font-medium text-theme-muted uppercase -mt-1 block">
               Presentes de Luxo
             </span>
           </div>
 
-          <h2 className="text-xs uppercase tracking-widest text-gray-400 font-bold mt-4">
+          <h2 className="text-xs uppercase tracking-widest text-theme-muted font-bold mt-4">
             {isRegistering ? 'Criar sua Conta Premium' : 'Acesse seu Espaço Exclusivo'}
           </h2>
         </div>
@@ -97,7 +97,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
           
           {isRegistering && (
             <div className="space-y-1">
-              <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Nome Completo</label>
+              <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Nome Completo</label>
               <input
                 type="text"
                 placeholder="Seu nome"
@@ -110,9 +110,9 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
           )}
 
           <div className="space-y-1">
-            <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">E-mail</label>
+            <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">E-mail</label>
             <div className="relative">
-              <Mail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500" />
+              <Mail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted" />
               <input
                 type="email"
                 placeholder="seu.email@exemplo.com"
@@ -125,9 +125,9 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Senha de Acesso</label>
+            <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Senha de Acesso</label>
             <div className="relative">
-              <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500" />
+              <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted" />
               <input
                 type="password"
                 placeholder="••••••••"
@@ -143,7 +143,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-gold hover:shadow-lg text-gray-900 font-semibold tracking-widest uppercase py-3.5 rounded-lg text-xs transition-all duration-300 flex items-center justify-center gap-2 mt-6 cursor-pointer"
+            className="w-full bg-gradient-gold hover:shadow-lg text-theme-text font-semibold tracking-widest uppercase py-3.5 rounded-lg text-xs transition-all duration-300 flex items-center justify-center gap-2 mt-6 cursor-pointer"
           >
             <span>{loading ? 'Acessando...' : isRegistering ? 'Cadastrar' : 'Entrar'}</span>
             <ArrowRight size={14} />
@@ -151,7 +151,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
         </form>
 
         {/* Toggle options */}
-        <div className="mt-6 flex justify-between items-center text-[10px] text-gray-500 border-t border-theme-border-faint pt-4">
+        <div className="mt-6 flex justify-between items-center text-[10px] text-theme-muted border-t border-theme-border-faint pt-4">
           <button
             onClick={() => setIsRegistering(!isRegistering)}
             className="hover:text-gold-400 font-bold uppercase transition"
@@ -166,7 +166,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
 
         {/* Quick Admin bypass button (Test helpers) */}
         <div className="mt-8 pt-6 border-t border-theme-border-faint text-center space-y-3">
-          <span className="text-[9px] uppercase tracking-wider text-gray-600 block">Ambiente de Demonstração</span>
+          <span className="text-[9px] uppercase tracking-wider text-theme-text block">Ambiente de Demonstração</span>
           <button
             type="button"
             onClick={handleQuickAdminLogin}

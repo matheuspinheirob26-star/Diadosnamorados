@@ -74,12 +74,12 @@ export const AiConciergeTab: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-serif text-white tracking-wider uppercase mb-1">Concierge de IA</h2>
-          <p className="text-gray-400 text-xs">Configure o agente Gemini que atenderá pelo botão do WhatsApp.</p>
+          <p className="text-theme-muted text-xs">Configure o agente Gemini que atenderá pelo botão do WhatsApp.</p>
         </div>
         <button 
           onClick={handleSave} 
           disabled={saving}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-gold hover:opacity-90 text-gray-900 text-sm font-bold uppercase rounded-lg transition disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-gold hover:opacity-90 text-theme-text text-sm font-bold uppercase rounded-lg transition disabled:opacity-50"
         >
           <Save size={16} />
           {saving ? 'Salvando...' : 'Salvar Alterações'}
@@ -89,7 +89,7 @@ export const AiConciergeTab: React.FC = () => {
       <div className="bg-luxury-gray border border-theme-border-faint rounded-xl p-6 space-y-6">
         
         <div className="space-y-2">
-          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block flex items-center gap-1">
+          <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block flex items-center gap-1">
             <Bot size={12} /> Gemini API Key (Chave Secreta)
           </label>
           <input
@@ -99,12 +99,12 @@ export const AiConciergeTab: React.FC = () => {
             placeholder="AIzaSy..."
             className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:border-gold-500 transition"
           />
-          <p className="text-[10px] text-gray-500">A chave será usada apenas no servidor seguro (Supabase Edge Functions).</p>
+          <p className="text-[10px] text-theme-muted">A chave será usada apenas no servidor seguro (Supabase Edge Functions).</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">
+            <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">
               Nome do Atendente (IA)
             </label>
             <input
@@ -116,7 +116,7 @@ export const AiConciergeTab: React.FC = () => {
           </div>
           
           <div className="space-y-2">
-            <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">
+            <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">
               WhatsApp de Transbordo (Humano)
             </label>
             <input
@@ -130,7 +130,7 @@ export const AiConciergeTab: React.FC = () => {
         </div>
 
         <div className="space-y-2">
-          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">
+          <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">
             Mensagem de Saudação Inicial
           </label>
           <textarea
@@ -142,7 +142,7 @@ export const AiConciergeTab: React.FC = () => {
         </div>
 
         <div className="space-y-2">
-          <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">
+          <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">
             Prompt de Sistema (Instruções para a IA)
           </label>
           <textarea
@@ -152,7 +152,7 @@ export const AiConciergeTab: React.FC = () => {
             placeholder="Você é um concierge de luxo da loja Amour & Co..."
             className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:border-gold-500 transition"
           />
-          <p className="text-[10px] text-gray-500 flex items-center gap-1">
+          <p className="text-[10px] text-theme-muted flex items-center gap-1">
             <AlertCircle size={10} /> O catálogo de produtos ativos será injetado automaticamente ao final deste prompt.
           </p>
         </div>

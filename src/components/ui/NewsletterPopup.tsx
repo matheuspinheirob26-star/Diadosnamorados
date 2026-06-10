@@ -55,7 +55,7 @@ export const NewsletterPopup: React.FC = () => {
             {/* Close Button */}
             <button
               onClick={handleClose}
-              className="absolute top-4 right-4 text-gray-500 hover:text-white p-1"
+              className="absolute top-4 right-4 text-theme-muted hover:text-white p-1"
             >
               <X size={18} />
             </button>
@@ -71,14 +71,14 @@ export const NewsletterPopup: React.FC = () => {
                   <h3 className="font-serif text-2xl tracking-wider text-gradient-gold uppercase">
                     Clube de Privilégios
                   </h3>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-theme-muted">
                     Junte-se à nossa lista seleta e receba <span className="text-gold-400 font-semibold">R$ 50 de Desconto</span> na sua primeira compra de presentes finos.
                   </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-3">
                   <div className="relative">
-                    <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                    <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-theme-muted" />
                     <input
                       type="email"
                       placeholder="Seu melhor e-mail"
@@ -90,13 +90,13 @@ export const NewsletterPopup: React.FC = () => {
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-gradient-gold hover:shadow-lg text-gray-900 font-semibold tracking-widest uppercase py-3 rounded-lg text-xs transition duration-300 cursor-pointer"
+                    className="w-full bg-gradient-gold hover:shadow-lg text-theme-text font-semibold tracking-widest uppercase py-3 rounded-lg text-xs transition duration-300 cursor-pointer"
                   >
                     Resgatar R$ 50 OFF
                   </button>
                 </form>
 
-                <p className="text-[10px] text-gray-500">
+                <p className="text-[10px] text-theme-muted">
                   Ao se cadastrar, você concorda com nossos termos. Válido para compras acima de R$ 300.
                 </p>
               </div>
@@ -110,13 +110,13 @@ export const NewsletterPopup: React.FC = () => {
                   <h3 className="font-serif text-2xl tracking-wider text-white uppercase">
                     Acesso Concedido
                   </h3>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-theme-muted">
                     Use o cupom abaixo no seu carrinho para aplicar o desconto especial de R$ 50,00.
                   </p>
                 </div>
 
                 <div className="bg-white/5 border border-dashed border-gold-500/40 rounded-xl p-4 flex flex-col items-center gap-1">
-                  <span className="text-[9px] uppercase tracking-wider text-gray-500 font-bold">Código do Cupom</span>
+                  <span className="text-[9px] uppercase tracking-wider text-theme-muted font-bold">Código do Cupom</span>
                   <span className="text-lg font-mono font-bold tracking-widest text-gold-400 uppercase select-all">
                     BEMVINDO50
                   </span>
