@@ -44,7 +44,7 @@
   --bg-dark: #1A1A1A;
   --bg-input: #242424;
   --text-main: #FFFFFF;
-  --text-muted: #9CA3AF;
+  --text-muted: #FFFFFF;
   --border-light: rgba(255, 255, 255, 0.1);
   --border-faint: rgba(255, 255, 255, 0.05);
 }
@@ -54,8 +54,8 @@
   --bg-gray: #FFFFFF;
   --bg-dark: #F3F1EC;
   --bg-input: #FFFFFF;
-  --text-main: #2C2A29;
-  --text-muted: #8C857B;
+  --text-main: #000000;
+  --text-muted: #000000;
   --border-light: rgba(0, 0, 0, 0.08);
   --border-faint: rgba(0, 0, 0, 0.03);
 }
