@@ -3,6 +3,7 @@ import { CampaignProvider } from './context/CampaignContext';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { StorefrontProvider } from './context/StorefrontContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { Home } from './pages/Home';
@@ -209,17 +210,20 @@ const AppContent = () => {
 }
 
 
+
 function App() {
   return (
     <StorefrontProvider>
-      <AuthProvider>
-        <CampaignProvider>
-          <CartProvider>
-            <TrackingScripts />
-            <AppContent />
-          </CartProvider>
-        </CampaignProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <CampaignProvider>
+            <CartProvider>
+              <TrackingScripts />
+              <AppContent />
+            </CartProvider>
+          </CampaignProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </StorefrontProvider>
   );
 }

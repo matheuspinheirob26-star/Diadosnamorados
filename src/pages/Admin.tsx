@@ -201,8 +201,8 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             <div className="bg-luxury-gray border border-white/5 p-6 rounded-2xl space-y-2 relative overflow-hidden">
               <DollarSign size={24} className="text-gold-500 absolute top-6 right-6 opacity-30" />
               <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Faturamento Aprovado</span>
-              <h3 className="text-2xl font-bold text-white block">{formatCurrency(totalRevenue)}</h3>
-              <p className="text-[10px] text-gray-400 mt-1 flex items-center gap-1">
+              <h3 className="text-2xl font-bold text-theme-text block">{formatCurrency(totalRevenue)}</h3>
+              <p className="text-[10px] text-theme-muted mt-1 flex items-center gap-1">
                 <span className="text-emerald-400 font-bold flex items-center gap-0.5"><ArrowUpRight size={10} /> +12.4%</span> vs semana passada
               </p>
             </div>
@@ -210,17 +210,17 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             <div className="bg-luxury-gray border border-white/5 p-6 rounded-2xl space-y-2 relative overflow-hidden">
               <ShoppingCart size={24} className="text-gold-500 absolute top-6 right-6 opacity-30" />
               <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Vendas Concluídas</span>
-              <h3 className="text-2xl font-bold text-white block">{orders.filter(o => o.status !== 'pending').length}</h3>
-              <p className="text-[10px] text-gray-400 mt-1 flex items-center gap-1">
-                Taxa de cancelamento: <span className="text-white font-medium">0%</span>
+              <h3 className="text-2xl font-bold text-theme-text block">{orders.filter(o => o.status !== 'pending').length}</h3>
+              <p className="text-[10px] text-theme-muted mt-1 flex items-center gap-1">
+                Taxa de cancelamento: <span className="text-theme-text font-medium">0%</span>
               </p>
             </div>
 
             <div className="bg-luxury-gray border border-white/5 p-6 rounded-2xl space-y-2 relative overflow-hidden">
               <TrendingUp size={24} className="text-gold-500 absolute top-6 right-6 opacity-30" />
               <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Ticket Médio</span>
-              <h3 className="text-2xl font-bold text-white block">{formatCurrency(avgTicket)}</h3>
-              <p className="text-[10px] text-gray-400 mt-1">
+              <h3 className="text-2xl font-bold text-theme-text block">{formatCurrency(avgTicket)}</h3>
+              <p className="text-[10px] text-theme-muted mt-1">
                 Foco em kits de maior valor agregado
               </p>
             </div>
@@ -229,7 +229,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
               <Users size={24} className="text-gold-500 absolute top-6 right-6 opacity-30" />
               <span className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Carrinhos Abandonados</span>
               <h3 className="text-2xl font-bold text-rose-400 block">{activeLeadsCount}</h3>
-              <p className="text-[10px] text-gray-400 mt-1">
+              <p className="text-[10px] text-theme-muted mt-1">
                 Qualificados para recuperação ativa
               </p>
             </div>
@@ -240,7 +240,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
           <div className="bg-luxury-gray border border-white/5 p-6 sm:p-8 rounded-3xl space-y-6">
             <div className="flex justify-between items-center border-b border-white/5 pb-4">
               <div className="space-y-1">
-                <h3 className="text-xs font-semibold text-white tracking-widest uppercase">Gráfico de Faturamento Diário</h3>
+                <h3 className="text-xs font-semibold text-theme-text tracking-widest uppercase">Gráfico de Faturamento Diário</h3>
                 <p className="text-[10px] text-gray-500">Junho 2026 - Período da campanha de Namorados</p>
               </div>
               <span className="text-[10px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded">
@@ -249,7 +249,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             </div>
 
             {/* Simulates visual bar chart */}
-            <div className="h-56 flex items-end gap-3 sm:gap-6 pt-4 border-b border-white/10 pb-1">
+            <div className="h-56 flex items-end gap-3 sm:gap-6 pt-4 border-b border-theme-border pb-1">
               {[
                 { day: '01/Jun', rev: 1200, pct: 30 },
                 { day: '02/Jun', rev: 1800, pct: 45 },
@@ -280,7 +280,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
       {activeTab === 'orders' && (
         <div className="bg-luxury-gray border border-white/5 rounded-3xl overflow-hidden shadow-2xl animate-fadeIn">
           <div className="p-6 border-b border-white/5 bg-white/2">
-            <h3 className="text-xs font-semibold text-white tracking-widest uppercase">Fila de Pedidos</h3>
+            <h3 className="text-xs font-semibold text-theme-text tracking-widest uppercase">Fila de Pedidos</h3>
           </div>
           
           <div className="overflow-x-auto">
@@ -303,9 +303,9 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                 ) : (
                   orders.map((order) => (
                     <tr key={order.id} className="hover:bg-white/2 transition">
-                      <td className="p-4 font-mono font-bold text-white">{order.id}</td>
+                      <td className="p-4 font-mono font-bold text-theme-text">{order.id}</td>
                       <td className="p-4">
-                        <span className="block text-white font-semibold">{order.customerName}</span>
+                        <span className="block text-theme-text font-semibold">{order.customerName}</span>
                         <span className="block text-[10px] text-gray-500 mt-0.5">{order.city} - {order.state}</span>
                       </td>
                       <td className="p-4">
@@ -319,7 +319,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                           order.status === 'shipped' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' :
                           order.status === 'delivered' ? 'bg-teal-500/10 text-teal-400 border border-teal-500/20' :
                           order.status === 'processing' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
-                          'bg-gray-500/10 text-gray-400 border border-gray-500/20'
+                          'bg-gray-500/10 text-theme-muted border border-gray-500/20'
                         }`}>
                           {order.status === 'paid' ? 'Pago' :
                            order.status === 'shipped' ? 'Enviado' :
@@ -333,7 +333,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                             setSelectedOrder(order);
                             setTrackingCodeInput(order.trackingCode || '');
                           }}
-                          className="flex items-center gap-1 text-[10px] font-bold text-gold-400 uppercase tracking-wider hover:text-white cursor-pointer"
+                          className="flex items-center gap-1 text-[10px] font-bold text-gold-400 uppercase tracking-wider hover:text-theme-text cursor-pointer"
                         >
                           <Eye size={12} /> Detalhes
                         </button>
@@ -358,7 +358,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
       {activeTab === 'customers' && (
         <div className="bg-luxury-gray border border-white/5 rounded-3xl overflow-hidden shadow-2xl animate-fadeIn">
           <div className="p-6 border-b border-white/5 bg-white/2">
-            <h3 className="text-xs font-semibold text-white tracking-widest uppercase">Base de Clientes Unificados</h3>
+            <h3 className="text-xs font-semibold text-theme-text tracking-widest uppercase">Base de Clientes Unificados</h3>
           </div>
           
           <div className="overflow-x-auto">
@@ -380,13 +380,13 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                 ) : (
                   getUniqueCustomers().map((cust, idx) => (
                     <tr key={idx} className="hover:bg-white/2 transition">
-                      <td className="p-4 font-semibold text-white">{cust.name}</td>
+                      <td className="p-4 font-semibold text-theme-text">{cust.name}</td>
                       <td className="p-4">
-                        <span className="block text-white">{cust.email}</span>
+                        <span className="block text-theme-text">{cust.email}</span>
                         <span className="block text-[10px] text-gray-500 mt-0.5">{cust.phone}</span>
                       </td>
-                      <td className="p-4 font-mono text-gray-400">{cust.cpf}</td>
-                      <td className="p-4 text-center font-bold text-white">{cust.ordersCount} compra(s)</td>
+                      <td className="p-4 font-mono text-theme-muted">{cust.cpf}</td>
+                      <td className="p-4 text-center font-bold text-theme-text">{cust.ordersCount} compra(s)</td>
                       <td className="p-4 text-right font-bold text-gold-400">{formatCurrency(cust.totalSpent)}</td>
                     </tr>
                   ))
@@ -401,7 +401,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
       {activeTab === 'leads' && (
         <div className="bg-luxury-gray border border-white/5 rounded-3xl overflow-hidden shadow-2xl animate-fadeIn">
           <div className="p-6 border-b border-white/5 bg-white/2">
-            <h3 className="text-xs font-semibold text-white tracking-widest uppercase">Captura de Leads e Carrinhos Abandonados</h3>
+            <h3 className="text-xs font-semibold text-theme-text tracking-widest uppercase">Captura de Leads e Carrinhos Abandonados</h3>
           </div>
           
           <div className="overflow-x-auto">
@@ -424,9 +424,9 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                 ) : (
                   leads.map((lead) => (
                     <tr key={lead.id} className="hover:bg-white/2 transition">
-                      <td className="p-4 text-white font-semibold">{lead.name}</td>
+                      <td className="p-4 text-theme-text font-semibold">{lead.name}</td>
                       <td className="p-4">
-                        <span className="block text-white">{lead.email}</span>
+                        <span className="block text-theme-text">{lead.email}</span>
                         <span className="block text-[10px] text-gray-500 mt-0.5">{lead.phone}</span>
                       </td>
                       <td className="p-4">
@@ -469,7 +469,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
       {activeTab === 'reviews' && (
         <div className="space-y-6 animate-fadeIn">
           <div className="bg-luxury-gray border border-white/5 rounded-3xl p-6 shadow-2xl">
-            <h3 className="text-xs font-semibold text-white tracking-widest uppercase border-b border-white/5 pb-4">
+            <h3 className="text-xs font-semibold text-theme-text tracking-widest uppercase border-b border-white/5 pb-4">
               Moderação de Avaliações
             </h3>
             
@@ -481,7 +481,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   <div key={rev.id} className="bg-white/2 border border-white/5 p-5 rounded-2xl space-y-4">
                     <div className="flex justify-between items-start">
                       <div>
-                        <span className="block font-bold text-white text-xs">{rev.customerName}</span>
+                        <span className="block font-bold text-theme-text text-xs">{rev.customerName}</span>
                         <span className="block text-[9px] text-gray-500 mt-0.5">Nota: {rev.rating} estrelas • Produto ID: {rev.productId}</span>
                       </div>
                       <span className={`px-2 py-0.5 rounded text-[8px] font-extrabold uppercase ${
@@ -491,7 +491,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                       </span>
                     </div>
 
-                    <p className="text-xs text-gray-400 italic">
+                    <p className="text-xs text-theme-muted italic">
                       "{rev.comment}"
                     </p>
 
@@ -502,7 +502,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                     <div className="flex justify-end gap-2 pt-2 border-t border-white/5">
                       <button
                         onClick={() => handleDeleteReview(rev.id)}
-                        className="text-rose-400 hover:text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded bg-rose-500/5 hover:bg-rose-500/10 transition cursor-pointer"
+                        className="text-rose-400 hover:text-theme-text text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded bg-rose-500/5 hover:bg-rose-500/10 transition cursor-pointer"
                       >
                         Excluir
                       </button>
@@ -527,7 +527,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
       {activeTab === 'coupons' && (
         <div className="space-y-6 animate-fadeIn">
           <div className="flex justify-between items-center">
-            <h3 className="text-xs font-semibold text-white tracking-widest uppercase">Gestão de Cupons</h3>
+            <h3 className="text-xs font-semibold text-theme-text tracking-widest uppercase">Gestão de Cupons</h3>
             <button
               onClick={() => setShowCouponModal(true)}
               className="bg-gradient-gold text-luxury-black font-semibold text-xs tracking-widest uppercase px-4 py-2 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center gap-1.5"
@@ -552,7 +552,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
               <tbody className="divide-y divide-white/5 text-gray-300 font-medium">
                 {coupons.map((coupon) => (
                   <tr key={coupon.code} className="hover:bg-white/2 transition">
-                    <td className="p-4 font-mono font-bold text-white">{coupon.code}</td>
+                    <td className="p-4 font-mono font-bold text-theme-text">{coupon.code}</td>
                     <td className="p-4 capitalize">{coupon.type === 'percentage' ? 'Porcentagem' : 'Valor Fixo'}</td>
                     <td className="p-4 text-gold-400 font-bold">
                       {coupon.type === 'percentage' ? `${coupon.value}%` : formatCurrency(coupon.value)}
@@ -567,7 +567,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                     <td className="p-4">
                       <button
                         onClick={() => handleDeleteCoupon(coupon.code)}
-                        className="text-rose-400 hover:text-white p-1 cursor-pointer"
+                        className="text-rose-400 hover:text-theme-text p-1 cursor-pointer"
                         title="Deletar cupom"
                       >
                         <Trash2 size={14} />
@@ -585,7 +585,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
       {activeTab === 'campaigns' && (
         <div className="space-y-6 animate-fadeIn">
           <div className="border-b border-white/5 pb-4">
-            <h3 className="font-serif text-2xl text-white tracking-wide uppercase">Campanhas Sazonais</h3>
+            <h3 className="font-serif text-2xl text-theme-text tracking-wide uppercase">Campanhas Sazonais</h3>
             <p className="text-[10px] text-gray-500 uppercase tracking-widest">Altere o tema visual e a curadoria da loja em tempo real</p>
           </div>
 
@@ -615,8 +615,8 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   </div>
                   
                   <div className="mt-8 space-y-2">
-                    <h4 className="font-serif text-lg text-white group-hover:text-gold-400 transition">{camp.name}</h4>
-                    <p className="text-[10px] text-gray-400 font-light leading-relaxed">{camp.headline}</p>
+                    <h4 className="font-serif text-lg text-theme-text group-hover:text-gold-400 transition">{camp.name}</h4>
+                    <p className="text-[10px] text-theme-muted font-light leading-relaxed">{camp.headline}</p>
                     <span className="block text-[8px] text-gray-500 uppercase tracking-wider mt-4">Badge: {camp.badgeText}</span>
                   </div>
                 </div>
@@ -630,7 +630,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
       {activeTab === 'settings' && (
         <div className="space-y-6 max-w-3xl animate-fadeIn">
           <div className="border-b border-white/5 pb-4">
-            <h3 className="font-serif text-2xl text-white tracking-wide uppercase">Configurações Globais da Loja</h3>
+            <h3 className="font-serif text-2xl text-theme-text tracking-wide uppercase">Configurações Globais da Loja</h3>
             <p className="text-[10px] text-gray-500 uppercase tracking-widest">Ajuste parâmetros operacionais, frete e meios de pagamento</p>
           </div>
 
@@ -638,7 +638,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             
             {/* Secao 1: Contato e Concierge */}
             <div className="space-y-4">
-              <span className="text-xs font-semibold text-white tracking-widest uppercase block border-b border-white/5 pb-2">Atendimento & WhatsApp</span>
+              <span className="text-xs font-semibold text-theme-text tracking-widest uppercase block border-b border-white/5 pb-2">Atendimento & WhatsApp</span>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 <div className="space-y-1">
@@ -646,7 +646,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   <input
                     type="text"
                     defaultValue="+55 (11) 99999-9999"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                   />
                 </div>
                 <div className="space-y-1">
@@ -654,7 +654,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   <input
                     type="text"
                     defaultValue="concierge@amour.com"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                   />
                 </div>
               </div>
@@ -662,7 +662,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
             {/* Secao 2: Parâmetros de Frete */}
             <div className="space-y-4 pt-4 border-t border-white/5">
-              <span className="text-xs font-semibold text-white tracking-widest uppercase block border-b border-white/5 pb-2">Logística e Frete</span>
+              <span className="text-xs font-semibold text-theme-text tracking-widest uppercase block border-b border-white/5 pb-2">Logística e Frete</span>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 <div className="space-y-1">
@@ -670,7 +670,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   <input
                     type="number"
                     defaultValue={290.00}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                   />
                 </div>
                 <div className="space-y-1">
@@ -678,7 +678,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   <input
                     type="text"
                     defaultValue="01424-002"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                   />
                 </div>
               </div>
@@ -686,27 +686,27 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
             {/* Secao 3: Gateways e Checkout */}
             <div className="space-y-4 pt-4 border-t border-white/5">
-              <span className="text-xs font-semibold text-white tracking-widest uppercase block border-b border-white/5 pb-2">Meios de Pagamento Ativos</span>
+              <span className="text-xs font-semibold text-theme-text tracking-widest uppercase block border-b border-white/5 pb-2">Meios de Pagamento Ativos</span>
               
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
                 <div className="flex items-center gap-2.5 bg-white/2 border border-white/5 p-3.5 rounded-xl">
                   <input type="checkbox" defaultChecked className="h-4 w-4 text-gold-500" />
                   <div>
-                    <span className="block font-bold text-white">Pix Imediato</span>
+                    <span className="block font-bold text-theme-text">Pix Imediato</span>
                     <span className="block text-[8px] text-gray-500">Com 10% OFF</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2.5 bg-white/2 border border-white/5 p-3.5 rounded-xl">
                   <input type="checkbox" defaultChecked className="h-4 w-4 text-gold-500" />
                   <div>
-                    <span className="block font-bold text-white">Cartão de Crédito</span>
+                    <span className="block font-bold text-theme-text">Cartão de Crédito</span>
                     <span className="block text-[8px] text-gray-500">Até 10x sem juros</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2.5 bg-white/2 border border-white/5 p-3.5 rounded-xl">
                   <input type="checkbox" defaultChecked className="h-4 w-4 text-gold-500" />
                   <div>
-                    <span className="block font-bold text-white">Boleto Bancário</span>
+                    <span className="block font-bold text-theme-text">Boleto Bancário</span>
                     <span className="block text-[8px] text-gray-500">Processamento em 24h</span>
                   </div>
                 </div>
@@ -737,18 +737,18 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fadeIn">
           <div className="absolute inset-0" onClick={() => setSelectedOrder(null)} />
           
-          <div className="relative w-full max-w-2xl bg-luxury-gray border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 glow-gold overflow-y-auto max-h-[90vh] space-y-6">
+          <div className="relative w-full max-w-2xl bg-luxury-gray border border-theme-border rounded-3xl p-6 sm:p-8 shadow-2xl z-10 glow-gold overflow-y-auto max-h-[90vh] space-y-6">
             
             <button
               onClick={() => setSelectedOrder(null)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-white p-1 cursor-pointer"
+              className="absolute top-4 right-4 text-gray-500 hover:text-theme-text p-1 cursor-pointer"
             >
               <X size={18} />
             </button>
 
             <div className="border-b border-white/5 pb-4">
               <span className="text-[9px] uppercase tracking-wider text-gray-500 font-bold">Detalhamento Completo</span>
-              <h3 className="font-serif text-xl text-white tracking-wide">Pedido {selectedOrder.id}</h3>
+              <h3 className="font-serif text-xl text-theme-text tracking-wide">Pedido {selectedOrder.id}</h3>
               <p className="text-[10px] text-gray-500">Criado em {new Date(selectedOrder.createdAt).toLocaleString('pt-BR')}</p>
             </div>
 
@@ -757,7 +757,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
               {/* Customer contact Info */}
               <div className="space-y-2 bg-white/2 p-4 rounded-2xl border border-white/5">
                 <span className="text-[10px] uppercase font-bold text-gold-400 block tracking-wider">Informações do Cliente</span>
-                <span className="block text-white font-semibold">Nome: {selectedOrder.customerName}</span>
+                <span className="block text-theme-text font-semibold">Nome: {selectedOrder.customerName}</span>
                 <span className="block">Email: {selectedOrder.customerEmail}</span>
                 <span className="block">Celular: {selectedOrder.customerPhone}</span>
                 <span className="block">CPF: {selectedOrder.customerCpf}</span>
@@ -766,7 +766,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
               {/* Shipping address Info */}
               <div className="space-y-2 bg-white/2 p-4 rounded-2xl border border-white/5">
                 <span className="text-[10px] uppercase font-bold text-gold-400 block tracking-wider">Endereço de Entrega</span>
-                <span className="block text-white font-semibold">CEP: {selectedOrder.cep}</span>
+                <span className="block text-theme-text font-semibold">CEP: {selectedOrder.cep}</span>
                 <span className="block">{selectedOrder.address}, {selectedOrder.number} {selectedOrder.complement && `- ${selectedOrder.complement}`}</span>
                 <span className="block">{selectedOrder.neighborhood}</span>
                 <span className="block">{selectedOrder.city} - {selectedOrder.state}</span>
@@ -776,14 +776,14 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
             {/* Product items table */}
             <div className="bg-white/2 border border-white/5 rounded-2xl p-4 space-y-2.5">
-              <span className="text-[10px] uppercase font-bold text-white tracking-wider block">Itens Comprados</span>
+              <span className="text-[10px] uppercase font-bold text-theme-text tracking-wider block">Itens Comprados</span>
               <div className="divide-y divide-white/5 text-xs">
                 {selectedOrder.items.map((item, idx) => (
                   <div key={idx} className="flex justify-between items-center py-2.5 first:pt-0">
                     <div className="flex items-center gap-2">
-                      <img src={item.image} alt="" className="w-8 h-8 object-cover rounded bg-white/5" />
+                      <img src={item.image} alt="" className="w-8 h-8 object-cover rounded bg-theme-border-faint" />
                       <div>
-                        <span className="font-semibold text-white block">{item.name}</span>
+                        <span className="font-semibold text-theme-text block">{item.name}</span>
                         {item.selectedSize && <span className="text-[9px] text-gray-500">Tamanho: {item.selectedSize}</span>}
                       </div>
                     </div>
@@ -802,7 +802,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                 <select
                   value={selectedOrder.status}
                   onChange={(e) => handleUpdateOrderStatus(selectedOrder.id, e.target.value as any, selectedOrder.trackingCode)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
                 >
                   <option value="pending">Aguardando Pagamento</option>
                   <option value="paid">Pago (Preparar Presente)</option>
@@ -821,11 +821,11 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                     placeholder="Ex: QI123456789BR"
                     value={trackingCodeInput}
                     onChange={(e) => setTrackingCodeInput(e.target.value.toUpperCase())}
-                    className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                    className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                   />
                   <button
                     onClick={() => handleUpdateOrderStatus(selectedOrder.id, selectedOrder.status, trackingCodeInput)}
-                    className="bg-white/10 hover:bg-gold-500 hover:text-luxury-black border border-white/10 px-4 py-2 font-bold uppercase rounded-lg transition cursor-pointer"
+                    className="bg-white/10 hover:bg-gold-500 hover:text-luxury-black border border-theme-border px-4 py-2 font-bold uppercase rounded-lg transition cursor-pointer"
                   >
                     Salvar
                   </button>
@@ -843,18 +843,18 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fadeIn">
           <div className="absolute inset-0" onClick={() => setShowCouponModal(false)} />
           
-          <form onSubmit={handleCreateCoupon} className="relative w-full max-w-md bg-luxury-gray border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 glow-gold space-y-4">
+          <form onSubmit={handleCreateCoupon} className="relative w-full max-w-md bg-luxury-gray border border-theme-border rounded-3xl p-6 sm:p-8 shadow-2xl z-10 glow-gold space-y-4">
             
             <button
               type="button"
               onClick={() => setShowCouponModal(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-white p-1 cursor-pointer"
+              className="absolute top-4 right-4 text-gray-500 hover:text-theme-text p-1 cursor-pointer"
             >
               <X size={18} />
             </button>
 
             <div className="border-b border-white/5 pb-2">
-              <h3 className="font-serif text-lg text-white tracking-wide uppercase">Novo Cupom de Desconto</h3>
+              <h3 className="font-serif text-lg text-theme-text tracking-wide uppercase">Novo Cupom de Desconto</h3>
             </div>
 
             <div className="space-y-1">
@@ -864,7 +864,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                 placeholder="Ex: AMOUR15"
                 value={newCode}
                 onChange={(e) => setNewCode(e.target.value.toUpperCase())}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                 required
               />
             </div>
@@ -875,7 +875,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                 <select
                   value={newType}
                   onChange={(e) => setNewType(e.target.value as any)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
                 >
                   <option value="percentage">Porcentagem (%)</option>
                   <option value="fixed">Valor Fixo (R$)</option>
@@ -887,7 +887,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   type="number"
                   value={newValue}
                   onChange={(e) => setNewValue(Number(e.target.value))}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                   required
                 />
               </div>
@@ -900,7 +900,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   type="number"
                   value={newMinSpend}
                   onChange={(e) => setNewMinSpend(Number(e.target.value))}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                   required
                 />
               </div>
@@ -910,7 +910,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   type="date"
                   value={newExpiry}
                   onChange={(e) => setNewExpiry(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                   required
                 />
               </div>
@@ -920,7 +920,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
               <button
                 type="button"
                 onClick={() => setShowCouponModal(false)}
-                className="px-4 py-2 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer"
+                className="px-4 py-2 rounded-lg text-xs font-semibold text-theme-muted hover:text-theme-text transition cursor-pointer"
               >
                 Cancelar
               </button>

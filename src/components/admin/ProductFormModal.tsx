@@ -408,7 +408,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 20 }}
             transition={{ duration: 0.35 }}
-            className="relative w-full max-w-4xl bg-luxury-gray border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 glow-gold my-8 flex flex-col max-h-[90vh]"
+            className="relative w-full max-w-4xl bg-luxury-gray border border-theme-border rounded-3xl p-6 sm:p-8 shadow-2xl z-10 glow-gold my-8 flex flex-col max-h-[90vh]"
           >
             {/* Header */}
             <div className="flex justify-between items-start border-b border-white/5 pb-4 shrink-0">
@@ -417,14 +417,14 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   <Sparkles size={12} className="animate-spin-slow" />
                   <span>Gerenciador Comercial Amour & Co.</span>
                 </span>
-                <h3 className="font-serif text-xl sm:text-2xl text-white tracking-wide uppercase">
+                <h3 className="font-serif text-xl sm:text-2xl text-theme-text tracking-wide uppercase">
                   {isDuplicating ? 'Duplicar Produto' : productToEdit ? 'Editar Presente de Luxo' : 'Cadastrar Presente de Luxo'}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={onClose}
-                className="text-gray-500 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition"
+                className="text-gray-500 hover:text-theme-text p-1.5 rounded-full hover:bg-theme-border-faint transition"
               >
                 <X size={18} />
               </button>
@@ -449,7 +449,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-lg transition-all duration-300 cursor-pointer ${
                       isTabActive
                         ? 'bg-gold-500/10 text-gold-400 font-bold border-b-2 border-gold-500 rounded-b-none'
-                        : 'text-gray-500 hover:text-white hover:bg-white/5'
+                        : 'text-gray-500 hover:text-theme-text hover:bg-theme-border-faint'
                     }`}
                   >
                     <TabIcon size={12} />
@@ -472,8 +472,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                         type="text"
                         placeholder="Ex: Caixa Especial Dia dos Namorados"
                         {...register('name')}
-                        className={`w-full bg-white/5 border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none transition ${
-                          formErrors.name ? 'border-rose-500' : 'border-white/10 focus:border-gold-500'
+                        className={`w-full bg-theme-border-faint border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none transition ${
+                          formErrors.name ? 'border-rose-500' : 'border-theme-border focus:border-gold-500'
                         }`}
                       />
                       {formErrors.name && <p className="text-[10px] text-rose-400">{formErrors.name}</p>}
@@ -485,8 +485,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                         type="text"
                         placeholder="ex-caixa-especial"
                         {...register('slug')}
-                        className={`w-full bg-white/5 border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none transition ${
-                          formErrors.slug ? 'border-rose-500' : 'border-white/10 focus:border-gold-500'
+                        className={`w-full bg-theme-border-faint border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none transition ${
+                          formErrors.slug ? 'border-rose-500' : 'border-theme-border focus:border-gold-500'
                         }`}
                       />
                       {formErrors.slug && <p className="text-[10px] text-rose-400">{formErrors.slug}</p>}
@@ -498,7 +498,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Categoria *</label>
                       <select
                         {...register('category')}
-                        className="w-full bg-luxury-black border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+                        className="w-full bg-luxury-black border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
                       >
                         <option value="Kits Presenteáveis">Kits Presenteáveis</option>
                         <option value="Romântico">Romântico</option>
@@ -513,7 +513,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Gênero Alvo *</label>
                       <select
                         {...register('gender')}
-                        className="w-full bg-luxury-black border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+                        className="w-full bg-luxury-black border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
                       >
                         <option value="unissex">Unissex</option>
                         <option value="masculino">Masculino</option>
@@ -525,7 +525,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Status de Publicação *</label>
                       <select
                         {...register('status')}
-                        className="w-full bg-luxury-black border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+                        className="w-full bg-luxury-black border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
                       >
                         <option value="publicado">Publicado (Disponível na vitrine)</option>
                         <option value="rascunho">Rascunho (Escondido da vitrine)</option>
@@ -540,8 +540,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       placeholder="Descrição rápida para cartões da vitrine..."
                       rows={2}
                       {...register('description')}
-                      className={`w-full bg-white/5 border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none transition ${
-                        formErrors.description ? 'border-rose-500' : 'border-white/10 focus:border-gold-500'
+                      className={`w-full bg-theme-border-faint border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none transition ${
+                        formErrors.description ? 'border-rose-500' : 'border-theme-border focus:border-gold-500'
                       }`}
                     />
                     {formErrors.description && <p className="text-[10px] text-rose-400">{formErrors.description}</p>}
@@ -553,8 +553,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       placeholder="Descreva detalhadamente o kit, a experiência, materiais, e liste cada item incluso no presente..."
                       rows={4}
                       {...register('details')}
-                      className={`w-full bg-white/5 border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none transition ${
-                        formErrors.details ? 'border-rose-500' : 'border-white/10 focus:border-gold-500'
+                      className={`w-full bg-theme-border-faint border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none transition ${
+                        formErrors.details ? 'border-rose-500' : 'border-theme-border focus:border-gold-500'
                       }`}
                     />
                     {formErrors.details && <p className="text-[10px] text-rose-400">{formErrors.details}</p>}
@@ -566,10 +566,10 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                         type="checkbox"
                         id="featured"
                         {...register('featured')}
-                        className="h-4.5 w-4.5 rounded border-white/10 bg-white/5 text-gold-500 focus:ring-0 cursor-pointer"
+                        className="h-4.5 w-4.5 rounded border-theme-border bg-theme-border-faint text-gold-500 focus:ring-0 cursor-pointer"
                       />
                       <div>
-                        <label htmlFor="featured" className="text-xs font-semibold text-white cursor-pointer block">Produto Destaque (Flagship)</label>
+                        <label htmlFor="featured" className="text-xs font-semibold text-theme-text cursor-pointer block">Produto Destaque (Flagship)</label>
                         <span className="text-[9px] text-gray-500 block">Destaque central com banner emocional na Home page.</span>
                       </div>
                     </div>
@@ -578,7 +578,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Campanha Sazonal Ativa</label>
                       <select
                         {...register('campaign')}
-                        className="w-full bg-luxury-black border border-white/10 rounded-lg px-3.5 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+                        className="w-full bg-luxury-black border border-theme-border rounded-lg px-3.5 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
                       >
                         <option value="nenhuma">Nenhuma (Venda regular)</option>
                         <option value="namorados">Dia dos Namorados 🌹</option>
@@ -606,8 +606,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                           step="0.01"
                           placeholder="299.90"
                           {...register('price')}
-                          className={`w-full bg-white/5 border rounded-lg pl-9 pr-4 py-2.5 text-xs text-white focus:outline-none transition ${
-                            formErrors.price ? 'border-rose-500' : 'border-white/10 focus:border-gold-500'
+                          className={`w-full bg-theme-border-faint border rounded-lg pl-9 pr-4 py-2.5 text-xs text-theme-text focus:outline-none transition ${
+                            formErrors.price ? 'border-rose-500' : 'border-theme-border focus:border-gold-500'
                           }`}
                         />
                       </div>
@@ -623,8 +623,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                           step="0.01"
                           placeholder="399.90"
                           {...register('originalPrice')}
-                          className={`w-full bg-white/5 border rounded-lg pl-9 pr-4 py-2.5 text-xs text-white focus:outline-none transition ${
-                            formErrors.originalPrice ? 'border-rose-500' : 'border-white/10 focus:border-gold-500'
+                          className={`w-full bg-theme-border-faint border rounded-lg pl-9 pr-4 py-2.5 text-xs text-theme-text focus:outline-none transition ${
+                            formErrors.originalPrice ? 'border-rose-500' : 'border-theme-border focus:border-gold-500'
                           }`}
                         />
                       </div>
@@ -639,8 +639,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                         type="number"
                         placeholder="15"
                         {...register('stock')}
-                        className={`w-full bg-white/5 border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none transition ${
-                          formErrors.stock ? 'border-rose-500' : 'border-white/10 focus:border-gold-500'
+                        className={`w-full bg-theme-border-faint border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none transition ${
+                          formErrors.stock ? 'border-rose-500' : 'border-theme-border focus:border-gold-500'
                         }`}
                       />
                       {formErrors.stock && <p className="text-[10px] text-rose-400">{formErrors.stock}</p>}
@@ -652,8 +652,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                         type="number"
                         placeholder="5"
                         {...register('minStock')}
-                        className={`w-full bg-white/5 border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none transition ${
-                          formErrors.minStock ? 'border-rose-500' : 'border-white/10 focus:border-gold-500'
+                        className={`w-full bg-theme-border-faint border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none transition ${
+                          formErrors.minStock ? 'border-rose-500' : 'border-theme-border focus:border-gold-500'
                         }`}
                       />
                       {formErrors.minStock && <p className="text-[10px] text-rose-400">{formErrors.minStock}</p>}
@@ -665,8 +665,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                         type="text"
                         placeholder="AMR-KIT_EXEMPLO"
                         {...register('sku')}
-                        className={`w-full bg-white/5 border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none transition ${
-                          formErrors.sku ? 'border-rose-500' : 'border-white/10 focus:border-gold-500'
+                        className={`w-full bg-theme-border-faint border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none transition ${
+                          formErrors.sku ? 'border-rose-500' : 'border-theme-border focus:border-gold-500'
                         }`}
                       />
                       {formErrors.sku && <p className="text-[10px] text-rose-400">{formErrors.sku}</p>}
@@ -678,10 +678,10 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       type="checkbox"
                       id="allowOutOfStockSale"
                       {...register('allowOutOfStockSale')}
-                      className="h-4.5 w-4.5 rounded border-white/10 bg-white/5 text-gold-500 focus:ring-0 cursor-pointer"
+                      className="h-4.5 w-4.5 rounded border-theme-border bg-theme-border-faint text-gold-500 focus:ring-0 cursor-pointer"
                     />
                     <div>
-                      <label htmlFor="allowOutOfStockSale" className="text-xs font-semibold text-white cursor-pointer block">Permitir Venda sem Estoque (Sob Encomenda)</label>
+                      <label htmlFor="allowOutOfStockSale" className="text-xs font-semibold text-theme-text cursor-pointer block">Permitir Venda sem Estoque (Sob Encomenda)</label>
                       <span className="text-[9px] text-gray-500 block">Clientes poderão comprar o produto esgotado e ele receberá a marcação "Sob encomenda".</span>
                     </div>
                   </div>
@@ -695,14 +695,14 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   {/* MAIN IMAGE SECTION */}
                   <div className="bg-white/2 border border-white/5 p-5 rounded-2xl space-y-4">
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                      <span className="text-xs font-bold text-white uppercase tracking-wider block">Imagem Principal do Produto</span>
+                      <span className="text-xs font-bold text-theme-text uppercase tracking-wider block">Imagem Principal do Produto</span>
                       <button
                         type="button"
                         onClick={() => {
                           setUseExternalMainImage(!useExternalMainImage);
                           setValue('mainImage', '');
                         }}
-                        className="text-[10px] text-gold-400 hover:text-white font-bold uppercase tracking-wider transition cursor-pointer"
+                        className="text-[10px] text-gold-400 hover:text-theme-text font-bold uppercase tracking-wider transition cursor-pointer"
                       >
                         {useExternalMainImage ? 'Fazer Upload de Arquivo' : 'Fornecer URL Externa'}
                       </button>
@@ -715,8 +715,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                           type="text"
                           placeholder="https://images.unsplash.com/photo-..."
                           {...register('mainImage')}
-                          className={`w-full bg-white/5 border rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none transition ${
-                            formErrors.mainImage ? 'border-rose-500' : 'border-white/10 focus:border-gold-500'
+                          className={`w-full bg-theme-border-faint border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none transition ${
+                            formErrors.mainImage ? 'border-rose-500' : 'border-theme-border focus:border-gold-500'
                           }`}
                         />
                         {formErrors.mainImage && <p className="text-[10px] text-rose-400">{formErrors.mainImage}</p>}
@@ -726,10 +726,10 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                         <div className="sm:col-span-3">
                           <div
                             onClick={() => mainImageFileInputRef.current?.click()}
-                            className="border-2 border-dashed border-white/10 hover:border-gold-500/40 rounded-xl p-6 text-center cursor-pointer transition bg-white/1 flex flex-col items-center justify-center gap-2 group"
+                            className="border-2 border-dashed border-theme-border hover:border-gold-500/40 rounded-xl p-6 text-center cursor-pointer transition bg-white/1 flex flex-col items-center justify-center gap-2 group"
                           >
-                            <Upload size={20} className="text-gray-400 group-hover:text-gold-400 transition" />
-                            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                            <Upload size={20} className="text-theme-muted group-hover:text-gold-400 transition" />
+                            <span className="text-[10px] text-theme-muted font-bold uppercase tracking-wider">
                               {isUploadingMedia ? 'Enviando...' : 'Clique para selecionar imagem'}
                             </span>
                             <span className="text-[9px] text-gray-600">JPG, PNG ou WebP (Máx 5MB)</span>
@@ -744,13 +744,13 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                         </div>
                         <div className="flex justify-center">
                           {watchMainImage ? (
-                            <div className="relative group rounded-xl overflow-hidden border border-white/10 aspect-square w-24 shrink-0 bg-black">
+                            <div className="relative group rounded-xl overflow-hidden border border-theme-border aspect-square w-24 shrink-0 bg-black">
                               <img src={watchMainImage} alt="Main Preview" className="w-full h-full object-cover" />
                               <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                               <button
                                 type="button"
                                 onClick={() => setValue('mainImage', '')}
-                                className="absolute top-1 right-1 bg-rose-500/90 hover:bg-rose-600 text-white p-1.5 rounded-lg transition-colors shadow-lg cursor-pointer z-10"
+                                className="absolute top-1 right-1 bg-rose-500/90 hover:bg-rose-600 text-theme-text p-1.5 rounded-lg transition-colors shadow-lg cursor-pointer z-10"
                                 title="Remover Imagem Principal"
                               >
                                 <Trash2 size={14} />
@@ -770,14 +770,14 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   <div className="bg-white/2 border border-white/5 p-5 rounded-2xl space-y-4">
                     <div className="flex justify-between items-center border-b border-white/5 pb-2">
                       <div>
-                        <span className="text-xs font-bold text-white uppercase tracking-wider block">Galeria de Imagens</span>
+                        <span className="text-xs font-bold text-theme-text uppercase tracking-wider block">Galeria de Imagens</span>
                         <span className="text-[9px] text-gray-500 block">Adicione fotos adicionais da experiência de unboxing e detalhes do kit.</span>
                       </div>
                       <button
                         type="button"
                         onClick={() => galleryFileInputRef.current?.click()}
                         disabled={isUploadingMedia}
-                        className="bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-[10px] uppercase tracking-wider px-3.5 py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+                        className="bg-theme-border-faint hover:bg-white/10 border border-theme-border text-theme-text font-bold text-[10px] uppercase tracking-wider px-3.5 py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
                       >
                         {isUploadingMedia ? <span className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></span> : <Plus size={12} />} 
                         {isUploadingMedia ? 'Enviando...' : 'Adicionar Fotos'}
@@ -797,13 +797,13 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     ) : (
                       <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                         {galleryList.map((imgUrl, idx) => (
-                          <div key={idx} className="relative group border border-white/10 rounded-xl overflow-hidden aspect-square bg-black">
+                          <div key={idx} className="relative group border border-theme-border rounded-xl overflow-hidden aspect-square bg-black">
                             <img src={imgUrl} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
                             <div className="absolute top-1 right-1 z-10">
                               <button
                                 type="button"
                                 onClick={() => removeGalleryImage(idx)}
-                                className="p-1.5 bg-rose-500/90 hover:bg-rose-600 text-white rounded-lg transition shadow-lg cursor-pointer"
+                                className="p-1.5 bg-rose-500/90 hover:bg-rose-600 text-theme-text rounded-lg transition shadow-lg cursor-pointer"
                                 title="Remover imagem"
                               >
                                 <Trash2 size={12} />
@@ -817,7 +817,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                                   type="button"
                                   disabled={idx === 0}
                                   onClick={() => moveGalleryImage(idx, 'left')}
-                                  className="p-1 bg-white/20 hover:bg-white/40 rounded text-white disabled:opacity-30 cursor-pointer"
+                                  className="p-1 bg-white/20 hover:bg-white/40 rounded text-theme-text disabled:opacity-30 cursor-pointer"
                                 >
                                   ←
                                 </button>
@@ -825,7 +825,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                                   type="button"
                                   disabled={idx === galleryList.length - 1}
                                   onClick={() => moveGalleryImage(idx, 'right')}
-                                  className="p-1 bg-white/20 hover:bg-white/40 rounded text-white disabled:opacity-30 cursor-pointer"
+                                  className="p-1 bg-white/20 hover:bg-white/40 rounded text-theme-text disabled:opacity-30 cursor-pointer"
                                 >
                                   →
                                 </button>
@@ -844,7 +844,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       type="text"
                       placeholder="Ex: https://www.youtube.com/embed/dQw4w9WgXcQ"
                       {...register('video')}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                     />
                   </div>
 
@@ -862,7 +862,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       <select
                         value={newVarType}
                         onChange={(e) => setNewVarType(e.target.value as any)}
-                        className="w-full bg-luxury-black border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+                        className="w-full bg-luxury-black border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
                       >
                         <option value="tamanho">Tamanho (ex: P, M, G, GG)</option>
                         <option value="cor">Cor (ex: Preto, Vermelho, Nude)</option>
@@ -879,7 +879,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                         placeholder="Ex: P, Vermelho"
                         value={newVarName}
                         onChange={(e) => setNewVarName(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                        className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                       />
                     </div>
 
@@ -932,7 +932,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                                   type="text"
                                   value={v.name}
                                   onChange={(e) => handleUpdateVariationField(v.id, 'name', e.target.value)}
-                                  className="bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-white w-full max-w-[120px] focus:outline-none focus:border-gold-500"
+                                  className="bg-theme-border-faint border border-theme-border rounded px-2 py-1 text-xs text-theme-text w-full max-w-[120px] focus:outline-none focus:border-gold-500"
                                 />
                               </td>
                               <td className="p-3">
@@ -943,7 +943,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                                     step="0.01"
                                     value={v.priceAddition}
                                     onChange={(e) => handleUpdateVariationField(v.id, 'priceAddition', Number(e.target.value))}
-                                    className="bg-white/5 border border-white/10 rounded pl-5 pr-1.5 py-1 text-xs text-white text-right w-24 focus:outline-none focus:border-gold-500"
+                                    className="bg-theme-border-faint border border-theme-border rounded pl-5 pr-1.5 py-1 text-xs text-theme-text text-right w-24 focus:outline-none focus:border-gold-500"
                                   />
                                 </div>
                               </td>
@@ -952,7 +952,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                                   type="number"
                                   value={v.stock}
                                   onChange={(e) => handleUpdateVariationField(v.id, 'stock', Number(e.target.value))}
-                                  className="bg-white/5 border border-white/10 rounded px-1.5 py-1 text-xs text-white text-center w-16 focus:outline-none focus:border-gold-500"
+                                  className="bg-theme-border-faint border border-theme-border rounded px-1.5 py-1 text-xs text-theme-text text-center w-16 focus:outline-none focus:border-gold-500"
                                 />
                               </td>
                               <td className="p-3">
@@ -960,7 +960,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                                   type="text"
                                   value={v.sku}
                                   onChange={(e) => handleUpdateVariationField(v.id, 'sku', e.target.value)}
-                                  className="bg-white/5 border border-white/10 rounded px-2 py-1 text-[10px] text-white font-mono w-full max-w-[160px] focus:outline-none focus:border-gold-500"
+                                  className="bg-theme-border-faint border border-theme-border rounded px-2 py-1 text-[10px] text-theme-text font-mono w-full max-w-[160px] focus:outline-none focus:border-gold-500"
                                 />
                               </td>
                               <td className="p-3 text-center">
@@ -968,7 +968,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                                   type="checkbox"
                                   checked={v.active}
                                   onChange={(e) => handleUpdateVariationField(v.id, 'active', e.target.checked)}
-                                  className="h-4.5 w-4.5 rounded border-white/10 bg-white/5 text-gold-500 focus:ring-0 cursor-pointer"
+                                  className="h-4.5 w-4.5 rounded border-theme-border bg-theme-border-faint text-gold-500 focus:ring-0 cursor-pointer"
                                 />
                               </td>
                               <td className="p-3 text-right">
@@ -1001,10 +1001,10 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       <Search size={12} className="text-blue-500" />
                       <span>Widget Google Search Preview</span>
                     </span>
-                    <div className="border border-white/10 p-5 rounded-2xl bg-luxury-black font-sans leading-normal">
+                    <div className="border border-theme-border p-5 rounded-2xl bg-luxury-black font-sans leading-normal">
                       {/* Search result mock */}
                       <div className="space-y-1">
-                        <div className="text-[11px] text-gray-400 flex items-center gap-1.5 truncate select-none">
+                        <div className="text-[11px] text-theme-muted flex items-center gap-1.5 truncate select-none">
                           <Globe size={11} className="text-gray-500" />
                           <span>{watchCanonicalUrl || `https://amour.co/product/${watchSlug || 'slug'}`}</span>
                           <span className="text-[9px] text-gray-600">▼</span>
@@ -1027,7 +1027,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                         type="text"
                         placeholder="Título otimizado para clique no Google..."
                         {...register('seoTitle')}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                        className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                       />
                     </div>
 
@@ -1037,7 +1037,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                         type="text"
                         placeholder="Ex: https://amour.co/product/presente-exclusivo"
                         {...register('canonicalUrl')}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                        className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                       />
                     </div>
                   </div>
@@ -1049,7 +1049,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                         type="text"
                         placeholder="Ex: kit presente namorados luxo"
                         {...register('keyword')}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                        className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                       />
                     </div>
 
@@ -1057,7 +1057,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       <label className="text-[10px] uppercase tracking-wider text-gray-500 font-bold block">Controle de Indexação (Robots)</label>
                       <select
                         {...register('indexing')}
-                        className="w-full bg-luxury-black border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+                        className="w-full bg-luxury-black border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
                       >
                         <option value="index">Index (Permitir indexar no Google)</option>
                         <option value="noindex">Noindex (Bloquear dos resultados de busca)</option>
@@ -1071,7 +1071,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       placeholder="Resumo chamativo otimizado para o Google (recomendado até 160 caracteres)..."
                       rows={3}
                       {...register('seoDescription')}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
                     />
                   </div>
 
@@ -1086,7 +1086,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 type="button"
                 onClick={onClose}
                 disabled={loading}
-                className="px-5 py-2.5 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer disabled:opacity-30"
+                className="px-5 py-2.5 rounded-lg text-xs font-semibold text-theme-muted hover:text-theme-text transition cursor-pointer disabled:opacity-30"
               >
                 Cancelar
               </button>

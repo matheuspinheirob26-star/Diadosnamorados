@@ -64,7 +64,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
             </span>
           )}
           {product.campaign && !product.featured && (
-            <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-wine-600/90 text-white px-2.5 py-1 rounded-full shadow-lg border border-wine-400/30">
+            <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-wine-600/90 text-theme-text px-2.5 py-1 rounded-full shadow-lg border border-wine-400/30">
               <Sparkles size={9} /> Campanha
             </span>
           )}
@@ -74,7 +74,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
             </span>
           )}
           {!product.featured && !product.campaign && product.tags?.includes('mais-vendidos') && (
-            <span className="text-[9px] font-extrabold uppercase tracking-widest bg-white/10 border border-white/20 text-white px-2.5 py-1 rounded-full shadow-lg">
+            <span className="text-[9px] font-extrabold uppercase tracking-widest bg-white/10 border border-white/20 text-theme-text px-2.5 py-1 rounded-full shadow-lg">
               ⭐ Mais Vendido
             </span>
           )}
@@ -88,7 +88,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
         {/* Discount badge - top right */}
         {hasDiscount && !isOutOfStock && (
           <div className="absolute top-3 right-3 z-10">
-            <span className="text-[9px] font-extrabold uppercase tracking-widest bg-rose-500 text-white px-2 py-1 rounded-full shadow-lg">
+            <span className="text-[9px] font-extrabold uppercase tracking-widest bg-rose-500 text-theme-text px-2 py-1 rounded-full shadow-lg">
               -{discountPct}%
             </span>
           </div>
@@ -104,7 +104,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
         {/* Out of stock overlay */}
         {isOutOfStock && (
           <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center z-10">
-            <span className="text-xs font-bold uppercase tracking-widest border border-white/30 text-white px-4 py-2 bg-black/30 rounded">
+            <span className="text-xs font-bold uppercase tracking-widest border border-white/30 text-theme-text px-4 py-2 bg-black/30 rounded">
               Esgotado
             </span>
           </div>
@@ -119,7 +119,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
                 if (onQuickView) onQuickView(product);
                 else onNavigateToDetail(product.id);
               }}
-              className="h-10 w-10 bg-luxury-gray text-white hover:text-gold-400 rounded-full flex items-center justify-center border border-white/10 transition-all hover:scale-105"
+              className="h-10 w-10 bg-luxury-gray text-theme-text hover:text-gold-400 rounded-full flex items-center justify-center border border-theme-border transition-all hover:scale-105"
               title="Visualização Rápida"
             >
               <Eye size={16} />
@@ -143,14 +143,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
             <span className="text-[9px] uppercase tracking-widest text-gray-500 font-bold">
               {product.category}
             </span>
-            <div className="flex items-center gap-1 text-[10px] text-gray-400 font-semibold">
+            <div className="flex items-center gap-1 text-[10px] text-theme-muted font-semibold">
               <Star size={10} className="text-gold-500 fill-gold-500" />
               <span>{product.rating}</span>
             </div>
           </div>
 
           {/* Title */}
-          <h3 className="font-serif text-white text-sm tracking-wide group-hover:text-gold-400 transition-colors line-clamp-1">
+          <h3 className="font-serif text-theme-text text-sm tracking-wide group-hover:text-gold-400 transition-colors line-clamp-1">
             {product.name}
           </h3>
 
@@ -176,7 +176,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
               </span>
             )}
             <div className="flex items-baseline gap-2">
-              <span className="text-sm font-bold text-white">
+              <span className="text-sm font-bold text-theme-text">
                 {formatCurrency(product.price)}
               </span>
               <span className="text-[9px] text-emerald-400 font-semibold bg-emerald-500/10 px-1.5 py-0.5 rounded">
@@ -193,8 +193,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
             disabled={isOutOfStock}
             className={`w-full py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 border ${
               isOutOfStock 
-                ? 'bg-white/5 text-gray-500 border-white/5 cursor-not-allowed'
-                : 'bg-white/5 border-white/10 text-white hover:bg-gradient-gold hover:text-luxury-black hover:border-transparent hover:shadow-lg'
+                ? 'bg-theme-border-faint text-gray-500 border-white/5 cursor-not-allowed'
+                : 'bg-theme-border-faint border-theme-border text-theme-text hover:bg-gradient-gold hover:text-luxury-black hover:border-transparent hover:shadow-lg'
             }`}
           >
             <ShoppingCart size={14} />

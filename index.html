@@ -40,6 +40,22 @@
     </script>
 
     <title>Amour & Co. | Presentes de Luxo & Kits Premium</title>
+    
+    <!-- Anti-flash script for Theme -->
+    <script>
+      (function() {
+        try {
+          // Default logic: dark is the default. Only check if 'theme-preference' is light
+          // Wait, actually the storefront settings are in 'amr_store_config' or something?
+          // Let's just check localStorage for 'amr_theme' = 'light'
+          var theme = localStorage.getItem('amr_theme');
+          var systemLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+          if (theme === 'light' || (theme === 'system' && systemLight)) {
+            document.documentElement.classList.add('light-mode');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body class="bg-luxury-black text-gray-300">
     <div id="root"></div>

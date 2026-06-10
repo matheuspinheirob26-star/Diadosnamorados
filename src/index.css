@@ -27,17 +27,44 @@
   --color-wine-800: #4B151A;
   --color-wine-900: #3F1115;
   
-  --color-luxury-black: #0A0A0A;
-  --color-luxury-gray: #121212;
-  --color-luxury-dark: #1A1A1A;
-  --color-luxury-input: #242424;
+  --color-luxury-black: var(--bg-black);
+  --color-luxury-gray: var(--bg-gray);
+  --color-luxury-dark: var(--bg-dark);
+  --color-luxury-input: var(--bg-input);
+  
+  --color-theme-text: var(--text-main);
+  --color-theme-muted: var(--text-muted);
+  --color-theme-border: var(--border-light);
+  --color-theme-border-faint: var(--border-faint);
+}
+
+:root {
+  --bg-black: #0A0A0A;
+  --bg-gray: #121212;
+  --bg-dark: #1A1A1A;
+  --bg-input: #242424;
+  --text-main: #FFFFFF;
+  --text-muted: #9CA3AF;
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-faint: rgba(255, 255, 255, 0.05);
+}
+
+.light-mode {
+  --bg-black: #F9FAFB;
+  --bg-gray: #FFFFFF;
+  --bg-dark: #F3F4F6;
+  --bg-input: #FFFFFF;
+  --text-main: #111827;
+  --text-muted: #4B5563;
+  --border-light: rgba(0, 0, 0, 0.1);
+  --border-faint: rgba(0, 0, 0, 0.05);
 }
 
 /* Base custom styles */
 @layer base {
   body {
-    background-color: #0A0A0A;
-    color: #F3F4F6;
+    background-color: var(--bg-black);
+    color: var(--text-main);
     font-family: "Outfit", sans-serif;
     overflow-x: hidden;
   }

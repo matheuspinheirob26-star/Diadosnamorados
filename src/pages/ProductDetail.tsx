@@ -130,7 +130,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
   if (!product) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center space-y-4">
-        <h3 className="font-serif text-xl text-white">Presente não encontrado</h3>
+        <h3 className="font-serif text-xl text-theme-text">Presente não encontrado</h3>
         <button
           onClick={() => onNavigate('catalog')}
           className="text-gold-400 font-semibold flex items-center gap-1 mx-auto"
@@ -221,11 +221,11 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                   </span>
                 )}
                 {product.campaign && (
-                  <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-wine-600/90 text-white px-2.5 py-1 rounded-full border border-wine-400/30">
+                  <span className="inline-flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-widest bg-wine-600/90 text-theme-text px-2.5 py-1 rounded-full border border-wine-400/30">
                     <Sparkles size={9} /> Campanha
                   </span>
                 )}
-                <div className="flex items-center gap-1.5 text-xs text-gray-400 font-semibold">
+                <div className="flex items-center gap-1.5 text-xs text-theme-muted font-semibold">
                   <div className="flex text-gold-500">
                     {[1, 2, 3, 4, 5].map((s) => (
                       <Star
@@ -240,11 +240,11 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
               </div>
             </div>
             
-            <h1 className="font-serif text-3xl sm:text-4xl text-white tracking-wide leading-tight">
+            <h1 className="font-serif text-3xl sm:text-4xl text-theme-text tracking-wide leading-tight">
               {product.name}
             </h1>
             
-            <p className="text-xs text-gray-400 font-light leading-relaxed">
+            <p className="text-xs text-theme-muted font-light leading-relaxed">
               {product.description}
             </p>
           </div>
@@ -253,10 +253,10 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
           {product.sizes && product.sizes.length > 0 && (
             <div className="space-y-3 pt-4 border-t border-white/5">
               <div className="flex justify-between items-center text-xs">
-                <span className="font-bold text-white tracking-wide uppercase">Selecione o Tamanho</span>
+                <span className="font-bold text-theme-text tracking-wide uppercase">Selecione o Tamanho</span>
                 <button
                   onClick={() => setSizeModalOpen(true)}
-                  className="text-gold-400 hover:text-white flex items-center gap-1 transition text-[11px] font-semibold tracking-wider cursor-pointer"
+                  className="text-gold-400 hover:text-theme-text flex items-center gap-1 transition text-[11px] font-semibold tracking-wider cursor-pointer"
                 >
                   <Ruler size={12} /> Tabela de Medidas
                 </button>
@@ -269,7 +269,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                     className={`h-11 w-11 rounded-lg border text-xs font-bold flex items-center justify-center transition cursor-pointer ${
                       selectedSize === sz
                         ? 'border-gold-500 bg-gold-500/10 text-gold-400'
-                        : 'border-white/10 hover:border-white/30 text-gray-300'
+                        : 'border-theme-border hover:border-white/30 text-gray-300'
                     }`}
                   >
                     {sz}
@@ -290,11 +290,11 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                 return (
                   <div key={type} className="space-y-2">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-white tracking-wide uppercase">
+                      <span className="font-bold text-theme-text tracking-wide uppercase">
                         {typeLabels[type] ?? type}
                       </span>
                       {selectedVar && (
-                        <span className="text-gray-400">
+                        <span className="text-theme-muted">
                           {selectedVar.name}
                           {selectedVar.priceAddition > 0 && (
                             <span className="text-gold-400 ml-1">(+{formatCurrency(selectedVar.priceAddition)})</span>
@@ -319,7 +319,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                                 ? 'border-gold-500 bg-gold-500/10 text-gold-400'
                                 : varOutOfStock
                                 ? 'border-white/5 bg-white/2 text-gray-600 cursor-not-allowed line-through'
-                                : 'border-white/10 hover:border-white/30 text-gray-300 hover:text-white'
+                                : 'border-theme-border hover:border-white/30 text-gray-300 hover:text-theme-text'
                             }`}
                           >
                             {type === 'cor' && (
@@ -335,7 +335,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                               </span>
                             )}
                             {varOutOfStock && (
-                              <span className="absolute -top-1 -right-1 bg-gray-700 text-[8px] text-gray-400 px-1 rounded">
+                              <span className="absolute -top-1 -right-1 bg-gray-700 text-[8px] text-theme-muted px-1 rounded">
                                 Esg.
                               </span>
                             )}
@@ -357,24 +357,24 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                   {formatCurrency(product.originalPrice)}
                 </span>
               )}
-              <span className="text-2xl font-bold text-white">
+              <span className="text-2xl font-bold text-theme-text">
                 {formatCurrency(effectivePrice)}
               </span>
               {variationTypes.length > 0 && Object.keys(selectedVariations).length > 0 && (
-                <span className="text-[10px] text-gray-400 italic">(com variações selecionadas)</span>
+                <span className="text-[10px] text-theme-muted italic">(com variações selecionadas)</span>
               )}
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              <div className="bg-white/5 border border-white/5 p-3 rounded-xl">
+              <div className="bg-theme-border-faint border border-white/5 p-3 rounded-xl">
                 <span className="text-gray-500 block text-[9px] uppercase font-bold tracking-wider">Pix com desconto</span>
                 <span className="text-sm font-bold text-emerald-400 block mt-1">{formatCurrency(pixPrice)}</span>
-                <span className="text-[10px] text-gray-400 block mt-0.5">Economize 10% adicionais</span>
+                <span className="text-[10px] text-theme-muted block mt-0.5">Economize 10% adicionais</span>
               </div>
-              <div className="bg-white/5 border border-white/5 p-3 rounded-xl">
+              <div className="bg-theme-border-faint border border-white/5 p-3 rounded-xl">
                 <span className="text-gray-500 block text-[9px] uppercase font-bold tracking-wider">Cartão de Crédito</span>
-                <span className="text-sm font-bold text-white block mt-1">10x de {formatCurrency(installmentValue)}</span>
-                <span className="text-[10px] text-gray-400 block mt-0.5">Sem juros no parcelamento</span>
+                <span className="text-sm font-bold text-theme-text block mt-1">10x de {formatCurrency(installmentValue)}</span>
+                <span className="text-[10px] text-theme-muted block mt-0.5">Sem juros no parcelamento</span>
               </div>
             </div>
 
@@ -393,7 +393,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
               ) : (
                 <>
                   <div className="h-2 w-2 rounded-full bg-emerald-500" />
-                  <span className="text-gray-400">Estoque Disponível</span>
+                  <span className="text-theme-muted">Estoque Disponível</span>
                 </>
               )}
             </div>
@@ -406,7 +406,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
               disabled={isOutOfStock}
               className={`flex-1 font-semibold text-xs tracking-widest uppercase py-4 rounded-lg transition duration-300 cursor-pointer text-center ${
                 isOutOfStock
-                  ? 'bg-white/5 text-gray-500 cursor-not-allowed'
+                  ? 'bg-theme-border-faint text-gray-500 cursor-not-allowed'
                   : 'bg-gradient-gold hover:shadow-lg text-luxury-black'
               }`}
             >
@@ -418,7 +418,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
               className={`flex-1 border font-semibold text-xs tracking-widest uppercase py-4 rounded-lg transition duration-300 cursor-pointer ${
                 isOutOfStock
                   ? 'border-white/5 text-gray-600 cursor-not-allowed'
-                  : 'border-white/10 hover:border-gold-500 hover:text-gold-400 text-white bg-white/2 hover:bg-white/5'
+                  : 'border-theme-border hover:border-gold-500 hover:text-gold-400 text-theme-text bg-white/2 hover:bg-theme-border-faint'
               }`}
             >
               Adicionar à Sacola
@@ -443,12 +443,12 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                 placeholder="Digite seu CEP (ex: 01311-000)"
                 value={cep}
                 onChange={(e) => setCep(e.target.value)}
-                className="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
               />
               <button
                 type="submit"
                 disabled={shippingLoading}
-                className="bg-white/5 hover:bg-white/10 border border-white/10 px-5 py-2 text-xs font-semibold uppercase tracking-wider text-white rounded-lg transition cursor-pointer"
+                className="bg-theme-border-faint hover:bg-white/10 border border-theme-border px-5 py-2 text-xs font-semibold uppercase tracking-wider text-theme-text rounded-lg transition cursor-pointer"
               >
                 {shippingLoading ? 'Calculando...' : 'Calcular'}
               </button>
@@ -460,7 +460,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                 {shippingOptions.map((opt) => (
                   <div key={opt.id} className="flex items-center justify-between text-xs pt-2.5 first:pt-0">
                     <div>
-                      <span className="font-semibold text-white block">{opt.name}</span>
+                      <span className="font-semibold text-theme-text block">{opt.name}</span>
                       <span className="text-[9px] text-gray-500 block">Entrega estimada em {opt.deliveryDays} dia{opt.deliveryDays !== 1 && 's'} útil{opt.deliveryDays !== 1 && 'is'}</span>
                     </div>
                     <span className="font-bold text-gold-400">{formatCurrency(opt.price)}</span>
@@ -492,8 +492,8 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
 
       {/* Product Long Details Features Tab */}
       <div className="space-y-4 pt-10 border-t border-white/5">
-        <h3 className="font-serif text-xl text-white tracking-widest uppercase">Características e Itens do Kit</h3>
-        <p className="text-xs text-gray-400 leading-relaxed font-light whitespace-pre-line">
+        <h3 className="font-serif text-xl text-theme-text tracking-widest uppercase">Características e Itens do Kit</h3>
+        <p className="text-xs text-theme-muted leading-relaxed font-light whitespace-pre-line">
           {product.details}
         </p>
       </div>
@@ -505,7 +505,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
       {relatedProducts.length > 0 && (
         <div className="space-y-6 pt-10 border-t border-white/5">
           <div className="space-y-1">
-            <h3 className="font-serif text-xl text-white tracking-widest uppercase">Também pode agradar</h3>
+            <h3 className="font-serif text-xl text-theme-text tracking-widest uppercase">Também pode agradar</h3>
             <p className="text-[10px] text-gray-500 uppercase tracking-widest">Complete seu presente com outros mimos</p>
           </div>
           

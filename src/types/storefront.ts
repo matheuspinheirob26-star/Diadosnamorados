@@ -1,4 +1,8 @@
 export interface StorefrontConfig {
+  // Tema
+  defaultTheme: 'light' | 'dark' | 'system';
+  allowUserThemeToggle: boolean;
+
   // Cores
   primaryColor: string;
   secondaryColor: string;
@@ -46,6 +50,9 @@ export interface StorefrontConfig {
 }
 
 export const DEFAULT_STOREFRONT_CONFIG: StorefrontConfig = {
+  defaultTheme: 'dark',
+  allowUserThemeToggle: true,
+
   primaryColor: '#AA0000', // Changed from #C59A48
   secondaryColor: '#973641', // Vinho Amour & Co.
   

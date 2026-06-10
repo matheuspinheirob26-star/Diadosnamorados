@@ -100,7 +100,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] sm:text-xs font-bold tracking-widest text-gold-400 uppercase"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-theme-border-faint border border-theme-border text-[10px] sm:text-xs font-bold tracking-widest text-gold-400 uppercase"
             >
               <Sparkles size={12} className="animate-spin-slow" />
               <span>{config.heroBadge || (currentCampaign as any).badgeText}</span>
@@ -113,7 +113,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="font-serif text-4xl sm:text-6xl md:text-7xl font-extralight tracking-tight leading-tight text-white"
+              className="font-serif text-4xl sm:text-6xl md:text-7xl font-extralight tracking-tight leading-tight text-theme-text"
             >
               {(config.heroTitle || currentCampaign.headline).trim().split(/\s+/).map((word, i, arr) => (
                 <React.Fragment key={i}>
@@ -155,7 +155,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             {flagshipProduct && (
               <button
                 onClick={() => onNavigate(`product-${flagshipProduct.id}`)}
-                className="w-full sm:w-auto border border-white/10 hover:border-gold-500 hover:text-gold-400 text-white font-semibold text-xs tracking-widest uppercase px-8 py-4 rounded-lg bg-white/2 hover:bg-white/5 transition duration-300 cursor-pointer"
+                className="w-full sm:w-auto border border-theme-border hover:border-gold-500 hover:text-gold-400 text-theme-text font-semibold text-xs tracking-widest uppercase px-8 py-4 rounded-lg bg-white/2 hover:bg-theme-border-faint transition duration-300 cursor-pointer"
               >
                 Edição Especial
               </button>
@@ -170,42 +170,42 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6 border-y border-white/5 py-10">
           
           <div className="flex flex-col items-center text-center space-y-2.5">
-            <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center text-gold-500 border border-white/10">
+            <div className="h-10 w-10 rounded-full bg-theme-border-faint flex items-center justify-center text-gold-500 border border-theme-border">
               <Truck size={18} />
             </div>
-            <h4 className="text-[11px] font-bold text-white uppercase tracking-wider">Envio Privado</h4>
+            <h4 className="text-[11px] font-bold text-theme-text uppercase tracking-wider">Envio Privado</h4>
             <p className="text-[10px] text-gray-500">Frete Expresso para todo Brasil</p>
           </div>
 
           <div className="flex flex-col items-center text-center space-y-2.5">
-            <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center text-gold-500 border border-white/10">
+            <div className="h-10 w-10 rounded-full bg-theme-border-faint flex items-center justify-center text-gold-500 border border-theme-border">
               <ShieldCheck size={18} />
             </div>
-            <h4 className="text-[11px] font-bold text-white uppercase tracking-wider">Compra Blindada</h4>
+            <h4 className="text-[11px] font-bold text-theme-text uppercase tracking-wider">Compra Blindada</h4>
             <p className="text-[10px] text-gray-500">Criptografia SSL certificado</p>
           </div>
 
           <div className="flex flex-col items-center text-center space-y-2.5 col-span-2 md:col-span-1">
-            <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center text-gold-500 border border-white/10">
+            <div className="h-10 w-10 rounded-full bg-theme-border-faint flex items-center justify-center text-gold-500 border border-theme-border">
               <CreditCard size={18} />
             </div>
-            <h4 className="text-[11px] font-bold text-white uppercase tracking-wider">Pix & Cartão</h4>
+            <h4 className="text-[11px] font-bold text-theme-text uppercase tracking-wider">Pix & Cartão</h4>
             <p className="text-[10px] text-gray-500">Pix 10% OFF ou até 10x sem juros</p>
           </div>
 
           <div className="flex flex-col items-center text-center space-y-2.5">
-            <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center text-gold-500 border border-white/10">
+            <div className="h-10 w-10 rounded-full bg-theme-border-faint flex items-center justify-center text-gold-500 border border-theme-border">
               <Headphones size={18} />
             </div>
-            <h4 className="text-[11px] font-bold text-white uppercase tracking-wider">Concierge 24h</h4>
+            <h4 className="text-[11px] font-bold text-theme-text uppercase tracking-wider">Concierge 24h</h4>
             <p className="text-[10px] text-gray-500">Suporte humanizado pós-venda</p>
           </div>
 
           <div className="flex flex-col items-center text-center space-y-2.5">
-            <div className="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center text-gold-500 border border-white/10">
+            <div className="h-10 w-10 rounded-full bg-theme-border-faint flex items-center justify-center text-gold-500 border border-theme-border">
               <RotateCcw size={18} />
             </div>
-            <h4 className="text-[11px] font-bold text-white uppercase tracking-wider">Troca Garantida</h4>
+            <h4 className="text-[11px] font-bold text-theme-text uppercase tracking-wider">Troca Garantida</h4>
             <p className="text-[10px] text-gray-500">Primeira devolução sem custos</p>
           </div>
 
@@ -215,7 +215,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
       {/* 3. CATEGORIES SECTIONS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <div className="text-center space-y-2">
-          <h2 className="font-serif text-3xl text-white tracking-widest uppercase">Coleções Sazonais</h2>
+          <h2 className="font-serif text-3xl text-theme-text tracking-widest uppercase">Coleções Sazonais</h2>
           <div className="h-0.5 w-16 bg-gradient-gold mx-auto" />
           <p className="text-xs text-gray-500 uppercase tracking-widest">Navegue por categorias exclusivas</p>
         </div>
@@ -230,7 +230,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=200&auto=format&fit=crop" alt="Dia dos Namorados" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
             <div className="absolute bottom-4 left-0 right-0 text-center z-20">
               <span className="text-xl">❤️</span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-white mt-1">Namorados</h4>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-theme-text mt-1">Namorados</h4>
             </div>
           </div>
 
@@ -242,7 +242,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=200&auto=format&fit=crop" alt="Kits Presenteáveis" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
             <div className="absolute bottom-4 left-0 right-0 text-center z-20">
               <span className="text-xl">🎁</span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-white mt-1">Kits Presentes</h4>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-theme-text mt-1">Kits Presentes</h4>
             </div>
           </div>
 
@@ -254,7 +254,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=200&auto=format&fit=crop" alt="Masculino" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
             <div className="absolute bottom-4 left-0 right-0 text-center z-20">
               <span className="text-xl">👔</span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-white mt-1">Masculino</h4>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-theme-text mt-1">Masculino</h4>
             </div>
           </div>
 
@@ -266,7 +266,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=200&auto=format&fit=crop" alt="Feminino" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
             <div className="absolute bottom-4 left-0 right-0 text-center z-20">
               <span className="text-xl">👗</span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-white mt-1">Feminino</h4>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-theme-text mt-1">Feminino</h4>
             </div>
           </div>
 
@@ -278,7 +278,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=200&auto=format&fit=crop" alt="Romântico" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
             <div className="absolute bottom-4 left-0 right-0 text-center z-20">
               <span className="text-xl">🌹</span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-white mt-1">Romântico</h4>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-theme-text mt-1">Romântico</h4>
             </div>
           </div>
 
@@ -290,7 +290,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=200&auto=format&fit=crop" alt="Mais Vendidos" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
             <div className="absolute bottom-4 left-0 right-0 text-center z-20">
               <span className="text-xl">⭐</span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-white mt-1">Mais Vendidos</h4>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-theme-text mt-1">Mais Vendidos</h4>
             </div>
           </div>
 
@@ -319,11 +319,11 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
                 <Heart size={10} className="fill-currentColor" /> Campanha Oficial
               </div>
 
-              <h2 className="font-serif text-3xl sm:text-4xl text-white tracking-wide leading-tight">
+              <h2 className="font-serif text-3xl sm:text-4xl text-theme-text tracking-wide leading-tight">
                 {flagshipProduct.name}
               </h2>
               
-              <p className="text-xs text-gray-400 leading-relaxed font-light">
+              <p className="text-xs text-theme-muted leading-relaxed font-light">
                 {flagshipProduct.description}
               </p>
 
@@ -341,7 +341,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
                 <div>
                   <span className="text-[10px] text-gray-500 line-through block">De R$ {flagshipProduct.originalPrice?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-                  <span className="text-xl font-bold text-white block">Por R$ {flagshipProduct.price?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                  <span className="text-xl font-bold text-theme-text block">Por R$ {flagshipProduct.price?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
                   <span className="text-[10px] text-emerald-400 font-semibold block mt-0.5">Ou R$ {(flagshipProduct.price * 0.9).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} no Pix (10% OFF)</span>
                 </div>
 
@@ -364,7 +364,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <div className="flex flex-col sm:flex-row justify-between items-end gap-4 border-b border-white/5 pb-6">
           <div className="space-y-1">
-            <h2 className="font-serif text-2xl text-white tracking-widest uppercase">Novos Lançamentos</h2>
+            <h2 className="font-serif text-2xl text-theme-text tracking-widest uppercase">Novos Lançamentos</h2>
             <p className="text-[10px] text-gray-500 uppercase tracking-widest">Experiências premium recém-chegadas</p>
           </div>
           <button
@@ -372,7 +372,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               onSetCatalogFilter({});
               onNavigate('catalog');
             }}
-            className="text-xs text-gold-400 hover:text-white transition font-semibold tracking-wider flex items-center gap-1 group cursor-pointer"
+            className="text-xs text-gold-400 hover:text-theme-text transition font-semibold tracking-wider flex items-center gap-1 group cursor-pointer"
           >
             <span>Ver Catálogo Completo</span>
             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -385,7 +385,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             onClick={() => {
               if (scrollRef.current) scrollRef.current.scrollBy({ left: -320, behavior: 'smooth' });
             }}
-            className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-luxury-gray/90 border border-white/10 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all hover:bg-gold-500 hover:text-black hidden sm:flex cursor-pointer"
+            className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-luxury-gray/90 border border-theme-border rounded-full flex items-center justify-center text-theme-text opacity-0 group-hover:opacity-100 transition-all hover:bg-gold-500 hover:text-black hidden sm:flex cursor-pointer"
           >
             <ChevronLeft size={20} />
           </button>
@@ -410,7 +410,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             onClick={() => {
               if (scrollRef.current) scrollRef.current.scrollBy({ left: 320, behavior: 'smooth' });
             }}
-            className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-luxury-gray/90 border border-white/10 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all hover:bg-gold-500 hover:text-black hidden sm:flex cursor-pointer"
+            className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-luxury-gray/90 border border-theme-border rounded-full flex items-center justify-center text-theme-text opacity-0 group-hover:opacity-100 transition-all hover:bg-gold-500 hover:text-black hidden sm:flex cursor-pointer"
           >
             <ChevronRight size={20} />
           </button>
@@ -423,7 +423,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
           <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-gold-600/5 blur-[80px]" />
           
           <div className="text-center space-y-2">
-            <h2 className="font-serif text-2xl text-white tracking-widest uppercase">O que dizem sobre nós</h2>
+            <h2 className="font-serif text-2xl text-theme-text tracking-widest uppercase">O que dizem sobre nós</h2>
             <div className="flex justify-center gap-0.5 text-gold-500">
               <Star size={14} className="fill-currentColor" />
               <Star size={14} className="fill-currentColor" />
@@ -437,39 +437,39 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             
             <div className="bg-luxury-gray border border-white/5 p-6 rounded-2xl space-y-4">
-              <p className="text-xs text-gray-400 italic leading-relaxed">
+              <p className="text-xs text-theme-muted italic leading-relaxed">
                 "Comprei o Kit Premium para meu namorado. Chegou em menos de 2 dias em Belo Horizonte, a caixa laqueada de madeira chamou atenção antes mesmo de abrir. A qualidade da camisa e carteira é fantástica. Recomendo muito!"
               </p>
               <div className="flex items-center gap-3">
                 <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-xs text-gold-400">AM</div>
                 <div>
-                  <h4 className="text-xs font-semibold text-white">Aline Mendonça</h4>
+                  <h4 className="text-xs font-semibold text-theme-text">Aline Mendonça</h4>
                   <span className="text-[9px] text-gray-500 uppercase tracking-widest">Belo Horizonte - MG</span>
                 </div>
               </div>
             </div>
 
             <div className="bg-luxury-gray border border-white/5 p-6 rounded-2xl space-y-4">
-              <p className="text-xs text-gray-400 italic leading-relaxed">
+              <p className="text-xs text-theme-muted italic leading-relaxed">
                 "Experiência incrível. O concierge via WhatsApp me auxiliou na escolha do tamanho. O cartão personalizado em papel linho deu um toque de exclusividade perfeito. Com certeza voltarei a comprar nas próximas datas."
               </p>
               <div className="flex items-center gap-3">
                 <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-xs text-gold-400">FF</div>
                 <div>
-                  <h4 className="text-xs font-semibold text-white">Felipe Faria</h4>
+                  <h4 className="text-xs font-semibold text-theme-text">Felipe Faria</h4>
                   <span className="text-[9px] text-gray-500 uppercase tracking-widest">São Paulo - SP</span>
                 </div>
               </div>
             </div>
 
             <div className="bg-luxury-gray border border-white/5 p-6 rounded-2xl space-y-4">
-              <p className="text-xs text-gray-400 italic leading-relaxed">
+              <p className="text-xs text-theme-muted italic leading-relaxed">
                 "Surpreendente a atenção aos detalhes. As taças de cristal do kit Momentos a Dois são lapidadas à mão, pesadas e elegantes. O espumante brut estava ótimo e os chocolates belgas são deliciosos. Nota 10 pela apresentação."
               </p>
               <div className="flex items-center gap-3">
                 <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-xs text-gold-400">CR</div>
                 <div>
-                  <h4 className="text-xs font-semibold text-white">Carla Rodrigues</h4>
+                  <h4 className="text-xs font-semibold text-theme-text">Carla Rodrigues</h4>
                   <span className="text-[9px] text-gray-500 uppercase tracking-widest">Curitiba - PR</span>
                 </div>
               </div>

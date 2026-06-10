@@ -3,8 +3,9 @@ import { useCampaign } from '../../context/CampaignContext';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { useStorefront } from '../../context/StorefrontContext';
+import { useTheme } from '../../context/ThemeContext';
 import { CampaignType } from '../../types';
-import { Search, ShoppingBag, Heart, User, Menu, X, ChevronDown, Check, Sparkles, ShieldCheck } from 'lucide-react';
+import { Search, ShoppingBag, Heart, User, Menu, X, ChevronDown, Check, Sparkles, ShieldCheck, Sun, Moon } from 'lucide-react';
 
 interface HeaderProps {
   onCartOpen: () => void;
@@ -18,6 +19,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
   const { cart } = useCart();
   const { user, isAdmin, loginAsAdmin, logout } = useAuth();
   const { config } = useStorefront();
+  const { theme, setTheme, isDark } = useTheme();
   
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -55,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
           <div className="flex md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-gray-300 hover:text-white focus:outline-none"
+              className="text-gray-300 hover:text-theme-text focus:outline-none"
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -71,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
                   <span className="font-serif text-2xl tracking-widest font-light text-gradient-gold uppercase block">
                     {config.storeName}
                   </span>
-                  <span className="text-[9px] tracking-[0.3em] font-medium text-gray-400 uppercase -mt-1 block">
+                  <span className="text-[9px] tracking-[0.3em] font-medium text-theme-muted uppercase -mt-1 block">
                     {config.slogan}
                   </span>
                 </>
@@ -108,16 +110,16 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-200 hover:bg-white/10 hover:border-gold-500/30 transition-all duration-300 cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-theme-border-faint border border-theme-border text-xs font-medium text-gray-200 hover:bg-white/10 hover:border-gold-500/30 transition-all duration-300 cursor-pointer"
               >
                 <span>{currentCampaign.emoji}</span>
                 <span className="hidden lg:inline">{currentCampaign.name}</span>
-                <ChevronDown size={12} className="text-gray-400" />
+                <ChevronDown size={12} className="text-theme-muted" />
               </button>
               
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 rounded-xl bg-luxury-gray border border-white/10 glow-gold p-2 shadow-2xl z-50">
-                  <div className="text-[10px] uppercase tracking-wider text-gray-400 font-semibold px-3 py-1.5 border-b border-white/5">
+                <div className="absolute right-0 mt-2 w-56 rounded-xl bg-luxury-gray border border-theme-border glow-gold p-2 shadow-2xl z-50">
+                  <div className="text-[10px] uppercase tracking-wider text-theme-muted font-semibold px-3 py-1.5 border-b border-white/5">
                     Selecione a Temporada
                   </div>
                   <div className="py-1">
@@ -125,7 +127,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
                       <button
                         key={camp.id}
                         onClick={() => handleCampaignChange(camp.id)}
-                        className={`w-full flex items-center justify-between px-3 py-2 text-xs text-left rounded-lg hover:bg-white/5 transition-all duration-200 ${
+                        className={`w-full flex items-center justify-between px-3 py-2 text-xs text-left rounded-lg hover:bg-theme-border-faint transition-all duration-200 ${
                           currentCampaign.id === camp.id ? 'text-gold-400 font-medium' : 'text-gray-300'
                         }`}
                       >
@@ -140,6 +142,17 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
                 </div>
               )}
             </div>
+
+            {/* Theme Toggle Button */}
+            {config.allowUserThemeToggle && (
+              <button
+                onClick={() => setTheme(isDark ? 'light' : 'dark')}
+                className="text-gray-300 hover:text-gold-400 transition-colors p-1"
+                title="Alternar Tema"
+              >
+                {isDark ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+            )}
 
             {/* Search Button */}
             <button
@@ -198,7 +211,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
               placeholder="Digite o que procura... (ex: Kit Namorados, Perfume, Carteira)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition"
+              className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
               autoFocus
             />
             <button
@@ -210,7 +223,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
             <button
               type="button"
               onClick={() => setSearchOpen(false)}
-              className="text-gray-400 hover:text-white px-2"
+              className="text-theme-muted hover:text-theme-text px-2"
             >
               <X size={20} />
             </button>
@@ -259,6 +272,20 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
               >
                 Painel Administrativo
               </button>
+            )}
+            
+            {config.allowUserThemeToggle && (
+              <div className="pt-2 mt-2 border-t border-white/5">
+                <button
+                  onClick={() => {
+                    setTheme(isDark ? 'light' : 'dark');
+                  }}
+                  className="flex items-center gap-2 py-2 text-gray-300 hover:text-gold-400"
+                >
+                  {isDark ? <Sun size={16} /> : <Moon size={16} />}
+                  <span>{isDark ? 'Modo Claro' : 'Modo Escuro'}</span>
+                </button>
+              </div>
             )}
           </div>
         </div>
