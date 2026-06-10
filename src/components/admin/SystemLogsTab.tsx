@@ -94,7 +94,7 @@ export const SystemLogsTab: React.FC = () => {
             <Shield className="text-gold-400" />
             Logs do Sistema
           </h2>
-          <p className="text-theme-muted text-xs">Auditoria de ações, alterações e acesso administrativo.</p>
+          <p className="text-theme-muted text-sm">Auditoria de ações, alterações e acesso administrativo.</p>
         </div>
         <div className="flex gap-2">
           <button 
@@ -107,7 +107,7 @@ export const SystemLogsTab: React.FC = () => {
           </button>
           <button 
             onClick={handleExportCSV}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold uppercase tracking-widest rounded-lg transition"
+            className="flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-bold uppercase tracking-widest rounded-lg transition"
           >
             <Download size={14} />
             Exportar CSV
@@ -127,7 +127,7 @@ export const SystemLogsTab: React.FC = () => {
               placeholder="Buscar por descrição ou ID..."
               value={searchTerm}
               onChange={e => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-              className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+              className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-3 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition"
             />
           </div>
         </div>
@@ -137,7 +137,7 @@ export const SystemLogsTab: React.FC = () => {
           <select 
             value={filterSeverity} 
             onChange={e => { setFilterSeverity(e.target.value as LogSeverity | 'all'); setCurrentPage(1); }}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
           >
             <option value="all">Todas</option>
             <option value="info">Info</option>
@@ -152,7 +152,7 @@ export const SystemLogsTab: React.FC = () => {
           <select 
             value={filterAction} 
             onChange={e => { setFilterAction(e.target.value); setCurrentPage(1); }}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
           >
             <option value="all">Todas as Ações</option>
             {uniqueActions.map(action => (
@@ -166,7 +166,7 @@ export const SystemLogsTab: React.FC = () => {
           <select 
             value={filterUser} 
             onChange={e => { setFilterUser(e.target.value); setCurrentPage(1); }}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
           >
             <option value="all">Todos os Usuários</option>
             {uniqueUsers.map(user => (
@@ -181,7 +181,7 @@ export const SystemLogsTab: React.FC = () => {
             type="date"
             value={filterDate}
             onChange={e => { setFilterDate(e.target.value); setCurrentPage(1); }}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
           />
         </div>
 
@@ -192,12 +192,12 @@ export const SystemLogsTab: React.FC = () => {
         {loading ? (
           <div className="p-12 text-center text-theme-muted">
             <RefreshCw size={24} className="mx-auto animate-spin mb-2" />
-            <p className="text-xs">Carregando logs...</p>
+            <p className="text-sm">Carregando logs...</p>
           </div>
         ) : currentLogs.length === 0 ? (
           <div className="p-12 text-center text-theme-muted">
             <FileText size={32} className="mx-auto text-theme-text mb-3 opacity-50" />
-            <p className="text-sm text-theme-muted">Nenhum log encontrado para os filtros selecionados.</p>
+            <p className="text-base text-theme-muted">Nenhum log encontrado para os filtros selecionados.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">

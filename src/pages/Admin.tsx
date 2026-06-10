@@ -240,7 +240,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
           <div className="bg-luxury-gray border border-theme-border-faint p-6 sm:p-8 rounded-3xl space-y-6">
             <div className="flex justify-between items-center border-b border-theme-border-faint pb-4">
               <div className="space-y-1">
-                <h3 className="text-xs font-semibold text-theme-text tracking-widest uppercase">Gráfico de Faturamento Diário</h3>
+                <h3 className="text-sm font-semibold text-theme-text tracking-widest uppercase">Gráfico de Faturamento Diário</h3>
                 <p className="text-[10px] text-theme-muted">Junho 2026 - Período da campanha de Namorados</p>
               </div>
               <span className="text-[10px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded">
@@ -280,11 +280,11 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
       {activeTab === 'orders' && (
         <div className="bg-luxury-gray border border-theme-border-faint rounded-3xl overflow-hidden shadow-2xl animate-fadeIn">
           <div className="p-6 border-b border-theme-border-faint bg-white/2">
-            <h3 className="text-xs font-semibold text-theme-text tracking-widest uppercase">Fila de Pedidos</h3>
+            <h3 className="text-sm font-semibold text-theme-text tracking-widest uppercase">Fila de Pedidos</h3>
           </div>
           
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
+            <table className="w-full text-left text-sm border-collapse">
               <thead>
                 <tr className="text-theme-muted font-bold border-b border-theme-border-faint bg-white/1 select-none">
                   <th className="p-4">Pedido</th>
@@ -358,11 +358,11 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
       {activeTab === 'customers' && (
         <div className="bg-luxury-gray border border-theme-border-faint rounded-3xl overflow-hidden shadow-2xl animate-fadeIn">
           <div className="p-6 border-b border-theme-border-faint bg-white/2">
-            <h3 className="text-xs font-semibold text-theme-text tracking-widest uppercase">Base de Clientes Unificados</h3>
+            <h3 className="text-sm font-semibold text-theme-text tracking-widest uppercase">Base de Clientes Unificados</h3>
           </div>
           
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
+            <table className="w-full text-left text-sm border-collapse">
               <thead>
                 <tr className="text-theme-muted font-bold border-b border-theme-border-faint bg-white/1 select-none">
                   <th className="p-4">Cliente</th>
@@ -401,11 +401,11 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
       {activeTab === 'leads' && (
         <div className="bg-luxury-gray border border-theme-border-faint rounded-3xl overflow-hidden shadow-2xl animate-fadeIn">
           <div className="p-6 border-b border-theme-border-faint bg-white/2">
-            <h3 className="text-xs font-semibold text-theme-text tracking-widest uppercase">Captura de Leads e Carrinhos Abandonados</h3>
+            <h3 className="text-sm font-semibold text-theme-text tracking-widest uppercase">Captura de Leads e Carrinhos Abandonados</h3>
           </div>
           
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
+            <table className="w-full text-left text-sm border-collapse">
               <thead>
                 <tr className="text-theme-muted font-bold border-b border-theme-border-faint bg-white/1 select-none">
                   <th className="p-4">Nome</th>
@@ -469,19 +469,19 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
       {activeTab === 'reviews' && (
         <div className="space-y-6 animate-fadeIn">
           <div className="bg-luxury-gray border border-theme-border-faint rounded-3xl p-6 shadow-2xl">
-            <h3 className="text-xs font-semibold text-theme-text tracking-widest uppercase border-b border-theme-border-faint pb-4">
+            <h3 className="text-sm font-semibold text-theme-text tracking-widest uppercase border-b border-theme-border-faint pb-4">
               Moderação de Avaliações
             </h3>
             
             {reviews.length === 0 ? (
-              <p className="text-xs text-theme-muted py-6 text-center">Nenhum comentário submetido.</p>
+              <p className="text-sm text-theme-muted py-6 text-center">Nenhum comentário submetido.</p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
                 {reviews.map((rev) => (
                   <div key={rev.id} className="bg-white/2 border border-theme-border-faint p-5 rounded-2xl space-y-4">
                     <div className="flex justify-between items-start">
                       <div>
-                        <span className="block font-bold text-theme-text text-xs">{rev.customerName}</span>
+                        <span className="block font-bold text-theme-text text-sm">{rev.customerName}</span>
                         <span className="block text-[9px] text-theme-muted mt-0.5">Nota: {rev.rating} estrelas • Produto ID: {rev.productId}</span>
                       </div>
                       <span className={`px-2 py-0.5 rounded text-[8px] font-extrabold uppercase ${
@@ -491,7 +491,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                       </span>
                     </div>
 
-                    <p className="text-xs text-theme-muted italic">
+                    <p className="text-sm text-theme-muted italic">
                       "{rev.comment}"
                     </p>
 
@@ -527,17 +527,17 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
       {activeTab === 'coupons' && (
         <div className="space-y-6 animate-fadeIn">
           <div className="flex justify-between items-center">
-            <h3 className="text-xs font-semibold text-theme-text tracking-widest uppercase">Gestão de Cupons</h3>
+            <h3 className="text-sm font-semibold text-theme-text tracking-widest uppercase">Gestão de Cupons</h3>
             <button
               onClick={() => setShowCouponModal(true)}
-              className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-4 py-2 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center gap-1.5"
+              className="bg-gradient-gold text-theme-text font-semibold text-sm tracking-widest uppercase px-4 py-2 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center gap-1.5"
             >
               <Plus size={14} /> Criar Cupom
             </button>
           </div>
 
           <div className="bg-luxury-gray border border-theme-border-faint rounded-3xl overflow-hidden shadow-2xl">
-            <table className="w-full text-left text-xs border-collapse">
+            <table className="w-full text-left text-sm border-collapse">
               <thead>
                 <tr className="text-theme-muted font-bold border-b border-theme-border-faint bg-white/2 select-none">
                   <th className="p-4">Cupom</th>
@@ -615,7 +615,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   </div>
                   
                   <div className="mt-8 space-y-2">
-                    <h4 className="font-serif text-lg text-theme-text group-hover:text-gold-400 transition">{camp.name}</h4>
+                    <h4 className="font-serif text-xl text-theme-text group-hover:text-gold-400 transition">{camp.name}</h4>
                     <p className="text-[10px] text-theme-muted font-light leading-relaxed">{camp.headline}</p>
                     <span className="block text-[8px] text-theme-muted uppercase tracking-wider mt-4">Badge: {camp.badgeText}</span>
                   </div>
@@ -638,15 +638,15 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             
             {/* Secao 1: Contato e Concierge */}
             <div className="space-y-4">
-              <span className="text-xs font-semibold text-theme-text tracking-widest uppercase block border-b border-theme-border-faint pb-2">Atendimento & WhatsApp</span>
+              <span className="text-sm font-semibold text-theme-text tracking-widest uppercase block border-b border-theme-border-faint pb-2">Atendimento & WhatsApp</span>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div className="space-y-1">
                   <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">WhatsApp Concierge</label>
                   <input
                     type="text"
                     defaultValue="+55 (11) 99999-9999"
-                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                   />
                 </div>
                 <div className="space-y-1">
@@ -654,7 +654,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   <input
                     type="text"
                     defaultValue="concierge@amour.com"
-                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                   />
                 </div>
               </div>
@@ -662,15 +662,15 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
             {/* Secao 2: Parâmetros de Frete */}
             <div className="space-y-4 pt-4 border-t border-theme-border-faint">
-              <span className="text-xs font-semibold text-theme-text tracking-widest uppercase block border-b border-theme-border-faint pb-2">Logística e Frete</span>
+              <span className="text-sm font-semibold text-theme-text tracking-widest uppercase block border-b border-theme-border-faint pb-2">Logística e Frete</span>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div className="space-y-1">
                   <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Limite para Frete Grátis (R$)</label>
                   <input
                     type="number"
                     defaultValue={290.00}
-                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                   />
                 </div>
                 <div className="space-y-1">
@@ -678,7 +678,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   <input
                     type="text"
                     defaultValue="01424-002"
-                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3.5 py-2.5 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                   />
                 </div>
               </div>
@@ -686,9 +686,9 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
             {/* Secao 3: Gateways e Checkout */}
             <div className="space-y-4 pt-4 border-t border-theme-border-faint">
-              <span className="text-xs font-semibold text-theme-text tracking-widest uppercase block border-b border-theme-border-faint pb-2">Meios de Pagamento Ativos</span>
+              <span className="text-sm font-semibold text-theme-text tracking-widest uppercase block border-b border-theme-border-faint pb-2">Meios de Pagamento Ativos</span>
               
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
                 <div className="flex items-center gap-2.5 bg-white/2 border border-theme-border-faint p-3.5 rounded-xl">
                   <input type="checkbox" defaultChecked className="h-4 w-4 text-gold-500" />
                   <div>
@@ -717,7 +717,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
               <button
                 type="button"
                 onClick={() => alert('Configurações salvas com sucesso!')}
-                className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-xl hover:shadow-lg transition cursor-pointer"
+                className="bg-gradient-gold text-theme-text font-semibold text-sm tracking-widest uppercase px-6 py-2.5 rounded-xl hover:shadow-lg transition cursor-pointer"
               >
                 Salvar Configurações
               </button>
@@ -752,7 +752,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
               <p className="text-[10px] text-theme-muted">Criado em {new Date(selectedOrder.createdAt).toLocaleString('pt-BR')}</p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs leading-relaxed">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm leading-relaxed">
               
               {/* Customer contact Info */}
               <div className="space-y-2 bg-white/2 p-4 rounded-2xl border border-theme-border-faint">
@@ -777,7 +777,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             {/* Product items table */}
             <div className="bg-white/2 border border-theme-border-faint rounded-2xl p-4 space-y-2.5">
               <span className="text-[10px] uppercase font-bold text-theme-text tracking-wider block">Itens Comprados</span>
-              <div className="divide-y divide-white/5 text-xs">
+              <div className="divide-y divide-white/5 text-sm">
                 {selectedOrder.items.map((item, idx) => (
                   <div key={idx} className="flex justify-between items-center py-2.5 first:pt-0">
                     <div className="flex items-center gap-2">
@@ -794,7 +794,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             </div>
 
             {/* Action edit order */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs items-end pt-4 border-t border-theme-border-faint">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm items-end pt-4 border-t border-theme-border-faint">
               
               {/* Order Status */}
               <div className="space-y-1.5">
@@ -802,7 +802,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                 <select
                   value={selectedOrder.status}
                   onChange={(e) => handleUpdateOrderStatus(selectedOrder.id, e.target.value as any, selectedOrder.trackingCode)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
                 >
                   <option value="pending">Aguardando Pagamento</option>
                   <option value="paid">Pago (Preparar Presente)</option>
@@ -821,7 +821,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                     placeholder="Ex: QI123456789BR"
                     value={trackingCodeInput}
                     onChange={(e) => setTrackingCodeInput(e.target.value.toUpperCase())}
-                    className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                    className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                   />
                   <button
                     onClick={() => handleUpdateOrderStatus(selectedOrder.id, selectedOrder.status, trackingCodeInput)}
@@ -854,7 +854,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
             </button>
 
             <div className="border-b border-theme-border-faint pb-2">
-              <h3 className="font-serif text-lg text-theme-text tracking-wide uppercase">Novo Cupom de Desconto</h3>
+              <h3 className="font-serif text-xl text-theme-text tracking-wide uppercase">Novo Cupom de Desconto</h3>
             </div>
 
             <div className="space-y-1">
@@ -864,7 +864,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                 placeholder="Ex: AMOUR15"
                 value={newCode}
                 onChange={(e) => setNewCode(e.target.value.toUpperCase())}
-                className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                 required
               />
             </div>
@@ -875,7 +875,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                 <select
                   value={newType}
                   onChange={(e) => setNewType(e.target.value as any)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
                 >
                   <option value="percentage">Porcentagem (%)</option>
                   <option value="fixed">Valor Fixo (R$)</option>
@@ -887,7 +887,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   type="number"
                   value={newValue}
                   onChange={(e) => setNewValue(Number(e.target.value))}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                   required
                 />
               </div>
@@ -900,7 +900,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   type="number"
                   value={newMinSpend}
                   onChange={(e) => setNewMinSpend(Number(e.target.value))}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                   required
                 />
               </div>
@@ -910,7 +910,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
                   type="date"
                   value={newExpiry}
                   onChange={(e) => setNewExpiry(e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                   required
                 />
               </div>
@@ -920,13 +920,13 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
               <button
                 type="button"
                 onClick={() => setShowCouponModal(false)}
-                className="px-4 py-2 rounded-lg text-xs font-semibold text-theme-muted hover:text-theme-text transition cursor-pointer"
+                className="px-4 py-2 rounded-lg text-sm font-semibold text-theme-muted hover:text-theme-text transition cursor-pointer"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
-                className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+                className="bg-gradient-gold text-theme-text font-semibold text-sm tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
               >
                 Criar Cupom
               </button>

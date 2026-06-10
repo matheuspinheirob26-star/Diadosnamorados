@@ -104,7 +104,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
         {/* Out of stock overlay */}
         {isOutOfStock && (
           <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center z-10">
-            <span className="text-xs font-bold uppercase tracking-widest border border-white/30 text-theme-text px-4 py-2 bg-black/30 rounded">
+            <span className="text-sm font-bold uppercase tracking-widest border border-white/30 text-theme-text px-4 py-2 bg-black/30 rounded">
               Esgotado
             </span>
           </div>
@@ -150,7 +150,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
           </div>
 
           {/* Title */}
-          <h3 className="font-serif text-theme-text text-sm tracking-wide group-hover:text-gold-400 transition-colors line-clamp-1">
+          <h3 className="font-serif text-theme-text text-base tracking-wide group-hover:text-gold-400 transition-colors line-clamp-1">
             {product.name}
           </h3>
 
@@ -176,7 +176,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigateToD
               </span>
             )}
             <div className="flex items-baseline gap-2">
-              <span className="text-sm font-bold text-theme-text">
+              <span className="text-base font-bold text-theme-text">
                 {formatCurrency(product.price)}
               </span>
               <span className="text-[9px] text-emerald-400 font-semibold bg-emerald-500/10 px-1.5 py-0.5 rounded">

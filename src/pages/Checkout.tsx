@@ -340,7 +340,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
           <div className="lg:col-span-8 space-y-6">
             
             {/* Steps Progress Indicator */}
-            <div className="flex items-center gap-2 bg-white/2 border border-theme-border-faint p-4 rounded-xl text-xs font-semibold uppercase tracking-wider text-theme-muted">
+            <div className="flex items-center gap-2 bg-white/2 border border-theme-border-faint p-4 rounded-xl text-sm font-semibold uppercase tracking-wider text-theme-muted">
               <span className={`flex items-center gap-1.5 ${step >= 1 ? 'text-gold-400 font-bold' : ''}`}>
                 <span className={`h-5 w-5 rounded-full flex items-center justify-center border ${step >= 1 ? 'border-gold-400 bg-gold-500/10 text-gold-400' : 'border-gray-600'}`}>1</span>
                 Identificação
@@ -366,7 +366,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 </div>
                 
                 {step1Error && (
-                  <div className="bg-rose-500/10 border border-rose-500/35 text-rose-400 text-xs p-3 rounded-lg flex items-center gap-2">
+                  <div className="bg-rose-500/10 border border-rose-500/35 text-rose-400 text-sm p-3 rounded-lg flex items-center gap-2">
                     <AlertCircle size={16} />
                     <span>{step1Error}</span>
                   </div>
@@ -380,7 +380,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       placeholder="Seu nome completo"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                       required
                     />
                   </div>
@@ -391,7 +391,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       placeholder="seu.email@exemplo.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                       required
                     />
                   </div>
@@ -402,7 +402,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       placeholder="(11) 99999-9999"
                       value={phone}
                       onChange={(e) => setPhone(formatPhone(e.target.value))}
-                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                       required
                     />
                   </div>
@@ -413,7 +413,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       placeholder="000.000.000-00"
                       value={cpf}
                       onChange={(e) => setCpf(formatCpf(e.target.value))}
-                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                       required
                     />
                   </div>
@@ -426,7 +426,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                   
                   <button
                     type="submit"
-                    className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-8 py-3 rounded-lg hover:shadow-lg transition cursor-pointer"
+                    className="bg-gradient-gold text-theme-text font-semibold text-sm tracking-widest uppercase px-8 py-3 rounded-lg hover:shadow-lg transition cursor-pointer"
                   >
                     Seguir para Entrega
                   </button>
@@ -452,7 +452,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 </div>
 
                 {step2Error && (
-                  <div className="bg-rose-500/10 border border-rose-500/35 text-rose-400 text-xs p-3 rounded-lg flex items-center gap-2">
+                  <div className="bg-rose-500/10 border border-rose-500/35 text-rose-400 text-sm p-3 rounded-lg flex items-center gap-2">
                     <AlertCircle size={16} />
                     <span>{step2Error}</span>
                   </div>
@@ -466,7 +466,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       placeholder="00000-000"
                       value={cep}
                       onChange={handleCepChange}
-                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                       required
                     />
                   </div>
@@ -478,7 +478,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                       disabled={addressLoading}
-                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition disabled:opacity-50"
+                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition disabled:opacity-50"
                       required
                     />
                   </div>
@@ -489,7 +489,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       placeholder="Ex: 100"
                       value={number}
                       onChange={(e) => setNumber(e.target.value)}
-                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                       required
                     />
                   </div>
@@ -500,7 +500,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       placeholder="Apto, bloco, portão (Opcional)"
                       value={complement}
                       onChange={(e) => setComplement(e.target.value)}
-                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                     />
                   </div>
                   <div className="sm:col-span-2 space-y-1">
@@ -511,7 +511,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       value={neighborhood}
                       onChange={(e) => setNeighborhood(e.target.value)}
                       disabled={addressLoading}
-                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition disabled:opacity-50"
+                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition disabled:opacity-50"
                       required
                     />
                   </div>
@@ -523,7 +523,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
                       disabled={addressLoading}
-                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition disabled:opacity-50"
+                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition disabled:opacity-50"
                       required
                     />
                   </div>
@@ -535,7 +535,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       value={state}
                       onChange={(e) => setState(e.target.value)}
                       disabled={addressLoading}
-                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-xs text-theme-text text-center focus:outline-none focus:border-gold-500 transition disabled:opacity-50"
+                      className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2.5 text-sm text-theme-text text-center focus:outline-none focus:border-gold-500 transition disabled:opacity-50"
                       maxLength={2}
                       required
                     />
@@ -563,7 +563,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                               <span className="text-[10px] uppercase font-bold text-theme-text block">{opt.name}</span>
                               <span className="text-[9px] text-theme-muted mt-0.5 block">Entrega em {opt.deliveryDays} dia{opt.deliveryDays !== 1 && 's'}</span>
                             </div>
-                            <span className="text-xs font-bold text-gold-400 mt-2 block">
+                            <span className="text-sm font-bold text-gold-400 mt-2 block">
                               {finalPrice === 0 ? 'Frete Grátis' : formatCurrency(finalPrice)}
                             </span>
                           </div>
@@ -576,7 +576,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 <div className="pt-4 flex justify-end">
                   <button
                     type="submit"
-                    className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-8 py-3 rounded-lg hover:shadow-lg transition cursor-pointer"
+                    className="bg-gradient-gold text-theme-text font-semibold text-sm tracking-widest uppercase px-8 py-3 rounded-lg hover:shadow-lg transition cursor-pointer"
                   >
                     Ir para Pagamento
                   </button>
@@ -602,7 +602,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 </div>
 
                 {/* Tabs */}
-                <div className="flex flex-wrap border border-theme-border rounded-xl overflow-hidden text-xs">
+                <div className="flex flex-wrap border border-theme-border rounded-xl overflow-hidden text-sm">
                   {(['pix', 'card', 'boleto', 'crypto'] as const).map(m => (
                     <button
                       key={m}
@@ -627,7 +627,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       <Zap size={18} />
                     </div>
                     <div className="space-y-1">
-                      <h4 className="text-xs font-bold text-theme-text uppercase tracking-wider">Aprovação Instantânea via Pix</h4>
+                      <h4 className="text-sm font-bold text-theme-text uppercase tracking-wider">Aprovação Instantânea via Pix</h4>
                       <p className="text-[10px] text-theme-muted max-w-sm mx-auto leading-relaxed">
                         Pague com Pix e garanta aprovação imediata. Ganhe <span className="text-emerald-400 font-bold">10% de desconto</span> automático.
                         O QR Code será gerado após confirmar o pedido.
@@ -643,7 +643,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       <Download size={18} />
                     </div>
                     <div className="space-y-1">
-                      <h4 className="text-xs font-bold text-theme-text uppercase tracking-wider">Boleto Bancário</h4>
+                      <h4 className="text-sm font-bold text-theme-text uppercase tracking-wider">Boleto Bancário</h4>
                       <p className="text-[10px] text-theme-muted max-w-sm mx-auto leading-relaxed">
                         O boleto será gerado após a confirmação do pedido. Prazo de compensação bancária de 1 a 2 dias úteis.
                       </p>
@@ -659,7 +659,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                       <motion.div
                         animate={{ rotateY: cardFocused ? 180 : 0 }}
                         transition={{ type: 'spring', damping: 20, stiffness: 100 }}
-                        className="w-72 h-44 bg-gradient-to-br from-neutral-800 via-neutral-900 to-zinc-800 border border-theme-border rounded-2xl p-5 shadow-2xl relative preserve-3d transform-style text-theme-text text-xs font-mono"
+                        className="w-72 h-44 bg-gradient-to-br from-neutral-800 via-neutral-900 to-zinc-800 border border-theme-border rounded-2xl p-5 shadow-2xl relative preserve-3d transform-style text-theme-text text-sm font-mono"
                       >
                         {/* Front Side */}
                         <div className="absolute inset-0 p-5 flex flex-col justify-between backface-hidden">
@@ -668,7 +668,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                             <span className="font-serif italic font-bold tracking-widest text-[11px] text-gradient-gold">AMOUR</span>
                           </div>
                           
-                          <div className="text-sm tracking-[0.2em] font-semibold py-2">
+                          <div className="text-base tracking-[0.2em] font-semibold py-2">
                             {cardNumber || '•••• •••• •••• ••••'}
                           </div>
 
@@ -712,7 +712,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                           placeholder="0000 0000 0000 0000"
                           value={cardNumber}
                           onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, '').replace(/(\d{4})(?=\d)/g, '$1 ').substring(0, 19))}
-                          className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                          className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                           required
                         />
                       </div>
@@ -723,7 +723,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                           placeholder="Como está gravado no cartão"
                           value={cardName}
                           onChange={(e) => setCardName(e.target.value.toUpperCase())}
-                          className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                          className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                           required
                         />
                       </div>
@@ -739,7 +739,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                               const v = e.target.value.replace(/\D/g, '');
                               setCardExpiry(v.length >= 2 ? `${v.substring(0, 2)}/${v.substring(2, 4)}` : v);
                             }}
-                            className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2 text-xs text-theme-text text-center focus:outline-none focus:border-gold-500 transition"
+                            className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2 text-sm text-theme-text text-center focus:outline-none focus:border-gold-500 transition"
                             maxLength={5}
                             required
                           />
@@ -753,7 +753,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                             onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, '').substring(0, 4))}
                             onFocus={() => setCardFocused(true)}
                             onBlur={() => setCardFocused(false)}
-                            className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2 text-xs text-theme-text text-center focus:outline-none focus:border-gold-500 transition"
+                            className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2 text-sm text-theme-text text-center focus:outline-none focus:border-gold-500 transition"
                             maxLength={4}
                             required
                           />
@@ -765,7 +765,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                         <select
                           value={installments}
                           onChange={(e) => setInstallments(e.target.value)}
-                          className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
+                          className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition cursor-pointer"
                         >
                           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => {
                             const val = checkoutFinalTotal / num;
@@ -792,7 +792,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                   <button
                     onClick={handleConfirmOrder}
                     disabled={submittingPayment}
-                    className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg text-theme-text font-semibold text-xs tracking-widest uppercase px-8 py-3.5 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg text-theme-text font-semibold text-sm tracking-widest uppercase px-8 py-3.5 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>{submittingPayment ? 'Processando...' : 'Confirmar Pedido'}</span>
                   </button>
@@ -808,7 +808,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
             
             {/* Summary Box */}
             <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl p-6 space-y-4">
-              <h3 className="font-serif text-base text-theme-text tracking-wider uppercase border-b border-theme-border-faint pb-2.5">
+              <h3 className="font-serif text-lg text-theme-text tracking-wider uppercase border-b border-theme-border-faint pb-2.5">
                 Resumo do Pedido
               </h3>
               
@@ -817,7 +817,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 {cart.map((item, idx) => (
                   <div key={`${item.product.id}-${idx}`} className="flex gap-3.5 items-center pt-3 first:pt-0">
                     <img src={item.product.images[0]} alt="" className="w-12 h-12 object-cover rounded-lg bg-theme-border-faint border border-theme-border-faint" />
-                    <div className="flex-1 min-w-0 text-xs">
+                    <div className="flex-1 min-w-0 text-sm">
                       <h4 className="font-semibold text-theme-text truncate">{item.product.name}</h4>
                       <div className="flex items-center justify-between text-[10px] text-theme-muted mt-1">
                         <span>Quant: {item.quantity} {item.selectedSize && `• Tam: ${item.selectedSize}`}</span>
@@ -854,7 +854,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
               )}
 
               {/* Totals Table */}
-              <div className="border-t border-theme-border-faint pt-4 space-y-2 text-xs text-theme-muted">
+              <div className="border-t border-theme-border-faint pt-4 space-y-2 text-sm text-theme-muted">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
                   <span className="text-theme-text">{formatCurrency(cartSubtotal)}</span>
@@ -882,9 +882,9 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                   </div>
                 )}
 
-                <div className="border-t border-theme-border-faint pt-3 flex justify-between text-sm font-bold text-theme-text">
+                <div className="border-t border-theme-border-faint pt-3 flex justify-between text-base font-bold text-theme-text">
                   <span>Total</span>
-                  <span className="text-gold-400 text-base">
+                  <span className="text-gold-400 text-lg">
                     {formatCurrency(paymentMethod === 'pix' ? checkoutFinalTotal * 0.9 : checkoutFinalTotal)}
                   </span>
                 </div>
@@ -908,24 +908,24 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
           <div className="space-y-2">
             <span className="text-[10px] uppercase font-bold tracking-widest text-gold-400">Pedido Recebido com Sucesso</span>
             <h2 className="font-serif text-2xl sm:text-3xl text-theme-text tracking-wide">Obrigado pela sua compra!</h2>
-            <p className="text-xs text-theme-muted max-w-sm mx-auto">
+            <p className="text-sm text-theme-muted max-w-sm mx-auto">
               Nossa equipe de concierge já foi notificada e está iniciando a preparação meticulosa do seu presente.
             </p>
           </div>
 
           {/* Details wrapper */}
           <div className="bg-white/2 border border-theme-border-faint rounded-2xl p-5 text-left space-y-4">
-            <div className="flex justify-between items-center text-xs border-b border-theme-border-faint pb-2.5">
+            <div className="flex justify-between items-center text-sm border-b border-theme-border-faint pb-2.5">
               <span className="text-theme-muted">Código do Pedido</span>
               <span className="text-theme-text font-mono font-bold">{createdOrder?.id}</span>
             </div>
             
-            <div className="flex justify-between items-center text-xs border-b border-theme-border-faint pb-2.5">
+            <div className="flex justify-between items-center text-sm border-b border-theme-border-faint pb-2.5">
               <span className="text-theme-muted">Destinatário</span>
               <span className="text-theme-text font-medium">{createdOrder?.customerName}</span>
             </div>
 
-            <div className="flex justify-between items-center text-xs">
+            <div className="flex justify-between items-center text-sm">
               <span className="text-theme-muted">Previsão de Entrega</span>
               <span className="text-gold-400 font-semibold flex items-center gap-1.5">
                 <Calendar size={12} /> {createdOrder?.shippingMethod.includes('SEDEX') ? '1 a 3 dias úteis' : '4 a 7 dias úteis'}
@@ -941,7 +941,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                   <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
                     <Check size={24} className="text-emerald-400" />
                   </div>
-                  <p className="text-emerald-400 font-bold text-sm uppercase tracking-wider">Pix Confirmado!</p>
+                  <p className="text-emerald-400 font-bold text-base uppercase tracking-wider">Pix Confirmado!</p>
                   <p className="text-[10px] text-theme-muted">Seu pagamento foi aprovado. Seu presente já está sendo preparado. 💛</p>
                 </div>
               ) : (
@@ -1038,7 +1038,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 const text = `Olá! Gostaria de confirmar o pagamento do meu pedido "${createdOrder?.id}" realizado na Amour & Co. no valor de ${formatCurrency(createdOrder?.total)}.`;
                 window.open(`https://wa.me/5511999999999?text=${encodeURIComponent(text)}`, '_blank');
               }}
-              className="w-full flex items-center justify-center gap-2 text-xs font-semibold text-emerald-400 border border-emerald-500/20 py-3 rounded-lg bg-emerald-500/5 hover:bg-emerald-500/10 transition cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-emerald-400 border border-emerald-500/20 py-3 rounded-lg bg-emerald-500/5 hover:bg-emerald-500/10 transition cursor-pointer"
             >
               <MessageCircle size={16} />
               <span>Confirmar Pagamento no WhatsApp</span>
@@ -1046,7 +1046,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
 
             <button
               onClick={() => onNavigate('home')}
-              className="text-xs text-theme-muted hover:text-theme-text uppercase font-bold tracking-wider block mx-auto transition"
+              className="text-sm text-theme-muted hover:text-theme-text uppercase font-bold tracking-wider block mx-auto transition"
             >
               Voltar para a Loja
             </button>
@@ -1074,7 +1074,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                 <h3 className="font-serif text-2xl text-theme-text tracking-wide">
                   Complete seu presente pela metade do preço!
                 </h3>
-                <p className="text-xs text-theme-muted leading-relaxed max-w-sm mx-auto">
+                <p className="text-sm text-theme-muted leading-relaxed max-w-sm mx-auto">
                   Como agradecimento pelo seu pedido, adicione o <span className="text-theme-text font-bold">{POST_PURCHASE_UPSELL_PRODUCT.name}</span> ao seu pacote com <span className="text-gold-400 font-bold">50% de Desconto</span>.
                 </p>
               </div>
@@ -1087,7 +1087,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                   className="w-20 h-20 object-cover rounded-xl bg-theme-border-faint border border-theme-border-faint"
                 />
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-xs font-bold text-theme-text truncate">{POST_PURCHASE_UPSELL_PRODUCT.name}</h4>
+                  <h4 className="text-sm font-bold text-theme-text truncate">{POST_PURCHASE_UPSELL_PRODUCT.name}</h4>
                   <p className="text-[10px] text-theme-muted line-clamp-2 mt-1 leading-snug">
                     {POST_PURCHASE_UPSELL_PRODUCT.description}
                   </p>
@@ -1095,7 +1095,7 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
                     <span className="text-[10px] text-theme-muted line-through">
                       {formatCurrency(POST_PURCHASE_UPSELL_PRODUCT.originalPrice)}
                     </span>
-                    <span className="text-xs font-bold text-gold-400">
+                    <span className="text-sm font-bold text-gold-400">
                       {formatCurrency(POST_PURCHASE_UPSELL_PRODUCT.price)}
                     </span>
                     <span className="text-[8px] bg-rose-500/15 text-rose-400 px-1.5 py-0.5 rounded font-extrabold uppercase">
@@ -1109,13 +1109,13 @@ export const Checkout: React.FC<{ onNavigate: (page: string) => void }> = ({ onN
               <div className="space-y-3 pt-2">
                 <button
                   onClick={handleAcceptUpsell}
-                  className="w-full bg-gradient-gold text-theme-text font-semibold tracking-widest uppercase py-3.5 rounded-lg text-xs hover:shadow-lg transition duration-300 cursor-pointer"
+                  className="w-full bg-gradient-gold text-theme-text font-semibold tracking-widest uppercase py-3.5 rounded-lg text-sm hover:shadow-lg transition duration-300 cursor-pointer"
                 >
                   Sim! Adicionar ao meu Pedido
                 </button>
                 <button
                   onClick={handleDeclineUpsell}
-                  className="w-full text-xs text-theme-muted hover:text-theme-text uppercase font-bold tracking-wider py-2 transition cursor-pointer"
+                  className="w-full text-sm text-theme-muted hover:text-theme-text uppercase font-bold tracking-wider py-2 transition cursor-pointer"
                 >
                   Não, obrigado. Quero concluir sem o colar
                 </button>

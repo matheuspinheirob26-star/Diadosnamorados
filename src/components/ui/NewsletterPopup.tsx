@@ -71,7 +71,7 @@ export const NewsletterPopup: React.FC = () => {
                   <h3 className="font-serif text-2xl tracking-wider text-gradient-gold uppercase">
                     Clube de Privilégios
                   </h3>
-                  <p className="text-xs text-theme-muted">
+                  <p className="text-sm text-theme-muted">
                     Junte-se à nossa lista seleta e receba <span className="text-gold-400 font-semibold">R$ 50 de Desconto</span> na sua primeira compra de presentes finos.
                   </p>
                 </div>
@@ -84,13 +84,13 @@ export const NewsletterPopup: React.FC = () => {
                       placeholder="Seu melhor e-mail"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 transition"
                       required
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-gradient-gold hover:shadow-lg text-theme-text font-semibold tracking-widest uppercase py-3 rounded-lg text-xs transition duration-300 cursor-pointer"
+                    className="w-full bg-gradient-gold hover:shadow-lg text-theme-text font-semibold tracking-widest uppercase py-3 rounded-lg text-sm transition duration-300 cursor-pointer"
                   >
                     Resgatar R$ 50 OFF
                   </button>
@@ -110,21 +110,21 @@ export const NewsletterPopup: React.FC = () => {
                   <h3 className="font-serif text-2xl tracking-wider text-white uppercase">
                     Acesso Concedido
                   </h3>
-                  <p className="text-xs text-theme-muted">
+                  <p className="text-sm text-theme-muted">
                     Use o cupom abaixo no seu carrinho para aplicar o desconto especial de R$ 50,00.
                   </p>
                 </div>
 
                 <div className="bg-white/5 border border-dashed border-gold-500/40 rounded-xl p-4 flex flex-col items-center gap-1">
                   <span className="text-[9px] uppercase tracking-wider text-theme-muted font-bold">Código do Cupom</span>
-                  <span className="text-lg font-mono font-bold tracking-widest text-gold-400 uppercase select-all">
+                  <span className="text-xl font-mono font-bold tracking-widest text-gold-400 uppercase select-all">
                     BEMVINDO50
                   </span>
                 </div>
 
                 <button
                   onClick={handleClose}
-                  className="w-full border border-white/10 hover:bg-white/5 text-white py-3 rounded-lg text-xs font-semibold uppercase tracking-wider transition cursor-pointer"
+                  className="w-full border border-white/10 hover:bg-white/5 text-white py-3 rounded-lg text-sm font-semibold uppercase tracking-wider transition cursor-pointer"
                 >
                   Ir para a Loja
                 </button>

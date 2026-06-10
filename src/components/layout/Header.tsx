@@ -43,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
     <header className="sticky top-0 z-50 glass border-b border-theme-border-faint transition-all duration-300">
       {/* Top Bar - Free Shipping Alert */}
       {config.shippingBarText && (
-        <div className="bg-gradient-gold text-theme-text text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase flex items-center justify-center gap-2">
+        <div className="bg-gradient-gold text-theme-text text-sm font-semibold py-1.5 px-4 text-center tracking-widest uppercase flex items-center justify-center gap-2">
           <Sparkles size={12} className="animate-spin-slow" />
           <span>{config.shippingBarText}</span>
           <Sparkles size={12} className="animate-spin-slow" />
@@ -82,7 +82,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
           </div>
 
           {/* Navigation Links - Desktop */}
-          <nav className="hidden md:flex space-x-8 text-xs font-semibold tracking-widest uppercase">
+          <nav className="hidden md:flex space-x-8 text-sm font-semibold tracking-widest uppercase">
             <button
               onClick={() => onNavigate('home')}
               className={`hover:text-gold-400 transition-colors duration-200 ${currentPage === 'home' ? 'text-gold-400 border-b border-gold-400/50 pb-1' : 'text-theme-muted'}`}
@@ -110,7 +110,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-theme-border-faint border border-theme-border text-xs font-medium text-theme-muted hover:bg-white/10 hover:border-gold-500/30 transition-all duration-300 cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-theme-border-faint border border-theme-border text-sm font-medium text-theme-muted hover:bg-white/10 hover:border-gold-500/30 transition-all duration-300 cursor-pointer"
               >
                 <span>{currentCampaign.emoji}</span>
                 <span className="hidden lg:inline">{currentCampaign.name}</span>
@@ -127,7 +127,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
                       <button
                         key={camp.id}
                         onClick={() => handleCampaignChange(camp.id)}
-                        className={`w-full flex items-center justify-between px-3 py-2 text-xs text-left rounded-lg hover:bg-theme-border-faint transition-all duration-200 ${
+                        className={`w-full flex items-center justify-between px-3 py-2 text-sm text-left rounded-lg hover:bg-theme-border-faint transition-all duration-200 ${
                           currentCampaign.id === camp.id ? 'text-gold-400 font-medium' : 'text-theme-muted'
                         }`}
                       >
@@ -168,7 +168,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
               {isAdmin ? (
                 <button
                   onClick={() => onNavigate('admin')}
-                  className="flex items-center gap-1.5 text-xs font-bold text-rose-400 border border-rose-500/25 px-2.5 py-1 rounded bg-rose-500/5 hover:bg-rose-500/10 transition"
+                  className="flex items-center gap-1.5 text-sm font-bold text-rose-400 border border-rose-500/25 px-2.5 py-1 rounded bg-rose-500/5 hover:bg-rose-500/10 transition"
                   title="Painel Admin"
                 >
                   <ShieldCheck size={16} />
@@ -211,12 +211,12 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
               placeholder="Digite o que procura... (ex: Kit Namorados, Perfume, Carteira)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
+              className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2 text-base text-theme-text focus:outline-none focus:border-gold-500 transition"
               autoFocus
             />
             <button
               type="submit"
-              className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-6 py-2 rounded-lg hover:shadow-lg transition"
+              className="bg-gradient-gold text-theme-text font-semibold text-sm tracking-widest uppercase px-6 py-2 rounded-lg hover:shadow-lg transition"
             >
               Buscar
             </button>
@@ -234,7 +234,7 @@ export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
         <div className="md:hidden glass border-t border-theme-border-faint py-4 px-6 space-y-4">
-          <div className="flex flex-col space-y-3 text-sm font-semibold tracking-widest uppercase">
+          <div className="flex flex-col space-y-3 text-base font-semibold tracking-widest uppercase">
             <button
               onClick={() => {
                 onNavigate('home');

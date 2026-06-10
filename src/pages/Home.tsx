@@ -100,7 +100,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-theme-border-faint border border-theme-border text-[10px] sm:text-xs font-bold tracking-widest text-gold-400 uppercase"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-theme-border-faint border border-theme-border text-[10px] sm:text-sm font-bold tracking-widest text-gold-400 uppercase"
             >
               <Sparkles size={12} className="animate-spin-slow" />
               <span>{config.heroBadge || (currentCampaign as any).badgeText}</span>
@@ -129,7 +129,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.5 }}
-              className="text-theme-muted text-lg sm:text-xl max-w-2xl mx-auto font-light leading-relaxed"
+              className="text-theme-muted text-xl sm:text-xl max-w-2xl mx-auto font-light leading-relaxed"
             >
               {config.heroSubtitle || currentCampaign.subheadline}
             </motion.p>
@@ -146,7 +146,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
                 onSetCatalogFilter({}); // Reset filters to show all
                 onNavigate(config.heroButtonLink || 'catalog');
               }}
-              className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg hover:shadow-gold-500/10 text-theme-text font-semibold text-xs tracking-widest uppercase px-8 py-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg hover:shadow-gold-500/10 text-theme-text font-semibold text-sm tracking-widest uppercase px-8 py-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>{config.heroButtonText || 'Ver Coleção'}</span>
               <ArrowRight size={14} />
@@ -155,7 +155,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             {flagshipProduct && (
               <button
                 onClick={() => onNavigate(`product-${flagshipProduct.id}`)}
-                className="w-full sm:w-auto border border-theme-border hover:border-gold-500 hover:text-gold-400 text-theme-text font-semibold text-xs tracking-widest uppercase px-8 py-4 rounded-lg bg-white/2 hover:bg-theme-border-faint transition duration-300 cursor-pointer"
+                className="w-full sm:w-auto border border-theme-border hover:border-gold-500 hover:text-gold-400 text-theme-text font-semibold text-sm tracking-widest uppercase px-8 py-4 rounded-lg bg-white/2 hover:bg-theme-border-faint transition duration-300 cursor-pointer"
               >
                 Edição Especial
               </button>
@@ -217,7 +217,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
         <div className="text-center space-y-2">
           <h2 className="font-serif text-3xl text-theme-text tracking-widest uppercase">Coleções Sazonais</h2>
           <div className="h-0.5 w-16 bg-gradient-gold mx-auto" />
-          <p className="text-xs text-theme-muted uppercase tracking-widest">Navegue por categorias exclusivas</p>
+          <p className="text-sm text-theme-muted uppercase tracking-widest">Navegue por categorias exclusivas</p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
@@ -230,7 +230,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=200&auto=format&fit=crop" alt="Dia dos Namorados" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
             <div className="absolute bottom-4 left-0 right-0 text-center z-20">
               <span className="text-xl">❤️</span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-theme-text mt-1">Namorados</h4>
+              <h4 className="text-sm font-bold uppercase tracking-wider text-theme-text mt-1">Namorados</h4>
             </div>
           </div>
 
@@ -242,7 +242,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=200&auto=format&fit=crop" alt="Kits Presenteáveis" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
             <div className="absolute bottom-4 left-0 right-0 text-center z-20">
               <span className="text-xl">🎁</span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-theme-text mt-1">Kits Presentes</h4>
+              <h4 className="text-sm font-bold uppercase tracking-wider text-theme-text mt-1">Kits Presentes</h4>
             </div>
           </div>
 
@@ -254,7 +254,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=200&auto=format&fit=crop" alt="Masculino" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
             <div className="absolute bottom-4 left-0 right-0 text-center z-20">
               <span className="text-xl">👔</span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-theme-text mt-1">Masculino</h4>
+              <h4 className="text-sm font-bold uppercase tracking-wider text-theme-text mt-1">Masculino</h4>
             </div>
           </div>
 
@@ -266,7 +266,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=200&auto=format&fit=crop" alt="Feminino" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
             <div className="absolute bottom-4 left-0 right-0 text-center z-20">
               <span className="text-xl">👗</span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-theme-text mt-1">Feminino</h4>
+              <h4 className="text-sm font-bold uppercase tracking-wider text-theme-text mt-1">Feminino</h4>
             </div>
           </div>
 
@@ -278,7 +278,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=200&auto=format&fit=crop" alt="Romântico" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
             <div className="absolute bottom-4 left-0 right-0 text-center z-20">
               <span className="text-xl">🌹</span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-theme-text mt-1">Romântico</h4>
+              <h4 className="text-sm font-bold uppercase tracking-wider text-theme-text mt-1">Romântico</h4>
             </div>
           </div>
 
@@ -290,7 +290,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
             <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=200&auto=format&fit=crop" alt="Mais Vendidos" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
             <div className="absolute bottom-4 left-0 right-0 text-center z-20">
               <span className="text-xl">⭐</span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-theme-text mt-1">Mais Vendidos</h4>
+              <h4 className="text-sm font-bold uppercase tracking-wider text-theme-text mt-1">Mais Vendidos</h4>
             </div>
           </div>
 
@@ -323,7 +323,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
                 {flagshipProduct.name}
               </h2>
               
-              <p className="text-xs text-theme-muted leading-relaxed font-light">
+              <p className="text-sm text-theme-muted leading-relaxed font-light">
                 {flagshipProduct.description}
               </p>
 
@@ -347,7 +347,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
 
                 <button
                   onClick={handleBuyFlagship}
-                  className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg text-theme-text font-semibold text-xs tracking-widest uppercase px-8 py-3.5 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full sm:w-auto bg-gradient-gold hover:shadow-lg text-theme-text font-semibold text-sm tracking-widest uppercase px-8 py-3.5 rounded-lg transition duration-300 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>Garantir Presente</span>
                   <ArrowRight size={14} />
@@ -372,7 +372,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               onSetCatalogFilter({});
               onNavigate('catalog');
             }}
-            className="text-xs text-gold-400 hover:text-theme-text transition font-semibold tracking-wider flex items-center gap-1 group cursor-pointer"
+            className="text-sm text-gold-400 hover:text-theme-text transition font-semibold tracking-wider flex items-center gap-1 group cursor-pointer"
           >
             <span>Ver Catálogo Completo</span>
             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -431,45 +431,45 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSetCatalogFilter }) =>
               <Star size={14} className="fill-currentColor" />
               <Star size={14} className="fill-currentColor" />
             </div>
-            <p className="text-xs text-theme-muted uppercase tracking-widest">Nota 4.9/5 com base em mais de 5.000 entregas</p>
+            <p className="text-sm text-theme-muted uppercase tracking-widest">Nota 4.9/5 com base em mais de 5.000 entregas</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             
             <div className="bg-luxury-gray border border-theme-border-faint p-6 rounded-2xl space-y-4">
-              <p className="text-xs text-theme-muted italic leading-relaxed">
+              <p className="text-sm text-theme-muted italic leading-relaxed">
                 "Comprei o Kit Premium para meu namorado. Chegou em menos de 2 dias em Belo Horizonte, a caixa laqueada de madeira chamou atenção antes mesmo de abrir. A qualidade da camisa e carteira é fantástica. Recomendo muito!"
               </p>
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-xs text-gold-400">AM</div>
+                <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-sm text-gold-400">AM</div>
                 <div>
-                  <h4 className="text-xs font-semibold text-theme-text">Aline Mendonça</h4>
+                  <h4 className="text-sm font-semibold text-theme-text">Aline Mendonça</h4>
                   <span className="text-[9px] text-theme-muted uppercase tracking-widest">Belo Horizonte - MG</span>
                 </div>
               </div>
             </div>
 
             <div className="bg-luxury-gray border border-theme-border-faint p-6 rounded-2xl space-y-4">
-              <p className="text-xs text-theme-muted italic leading-relaxed">
+              <p className="text-sm text-theme-muted italic leading-relaxed">
                 "Experiência incrível. O concierge via WhatsApp me auxiliou na escolha do tamanho. O cartão personalizado em papel linho deu um toque de exclusividade perfeito. Com certeza voltarei a comprar nas próximas datas."
               </p>
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-xs text-gold-400">FF</div>
+                <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-sm text-gold-400">FF</div>
                 <div>
-                  <h4 className="text-xs font-semibold text-theme-text">Felipe Faria</h4>
+                  <h4 className="text-sm font-semibold text-theme-text">Felipe Faria</h4>
                   <span className="text-[9px] text-theme-muted uppercase tracking-widest">São Paulo - SP</span>
                 </div>
               </div>
             </div>
 
             <div className="bg-luxury-gray border border-theme-border-faint p-6 rounded-2xl space-y-4">
-              <p className="text-xs text-theme-muted italic leading-relaxed">
+              <p className="text-sm text-theme-muted italic leading-relaxed">
                 "Surpreendente a atenção aos detalhes. As taças de cristal do kit Momentos a Dois são lapidadas à mão, pesadas e elegantes. O espumante brut estava ótimo e os chocolates belgas são deliciosos. Nota 10 pela apresentação."
               </p>
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-xs text-gold-400">CR</div>
+                <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-sm text-gold-400">CR</div>
                 <div>
-                  <h4 className="text-xs font-semibold text-theme-text">Carla Rodrigues</h4>
+                  <h4 className="text-sm font-semibold text-theme-text">Carla Rodrigues</h4>
                   <span className="text-[9px] text-theme-muted uppercase tracking-widest">Curitiba - PR</span>
                 </div>
               </div>

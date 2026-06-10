@@ -74,12 +74,12 @@ export const AiConciergeTab: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-serif text-white tracking-wider uppercase mb-1">Concierge de IA</h2>
-          <p className="text-theme-muted text-xs">Configure o agente Gemini que atenderá pelo botão do WhatsApp.</p>
+          <p className="text-theme-muted text-sm">Configure o agente Gemini que atenderá pelo botão do WhatsApp.</p>
         </div>
         <button 
           onClick={handleSave} 
           disabled={saving}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-gold hover:opacity-90 text-theme-text text-sm font-bold uppercase rounded-lg transition disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-gold hover:opacity-90 text-theme-text text-base font-bold uppercase rounded-lg transition disabled:opacity-50"
         >
           <Save size={16} />
           {saving ? 'Salvando...' : 'Salvar Alterações'}
@@ -97,7 +97,7 @@ export const AiConciergeTab: React.FC = () => {
             value={config.gemini_api_key}
             onChange={(e) => setConfig({ ...config, gemini_api_key: e.target.value })}
             placeholder="AIzaSy..."
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:border-gold-500 transition"
+            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-base text-white focus:border-gold-500 transition"
           />
           <p className="text-[10px] text-theme-muted">A chave será usada apenas no servidor seguro (Supabase Edge Functions).</p>
         </div>
@@ -111,7 +111,7 @@ export const AiConciergeTab: React.FC = () => {
               type="text"
               value={config.ai_name}
               onChange={(e) => setConfig({ ...config, ai_name: e.target.value })}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:border-gold-500 transition"
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-base text-white focus:border-gold-500 transition"
             />
           </div>
           
@@ -124,7 +124,7 @@ export const AiConciergeTab: React.FC = () => {
               placeholder="+5511999999999"
               value={config.human_whatsapp}
               onChange={(e) => setConfig({ ...config, human_whatsapp: e.target.value })}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:border-gold-500 transition"
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-base text-white focus:border-gold-500 transition"
             />
           </div>
         </div>
@@ -137,7 +137,7 @@ export const AiConciergeTab: React.FC = () => {
             value={config.ai_greeting}
             onChange={(e) => setConfig({ ...config, ai_greeting: e.target.value })}
             rows={2}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:border-gold-500 transition resize-none"
+            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-base text-white focus:border-gold-500 transition resize-none"
           />
         </div>
 
@@ -150,7 +150,7 @@ export const AiConciergeTab: React.FC = () => {
             onChange={(e) => setConfig({ ...config, ai_prompt: e.target.value })}
             rows={6}
             placeholder="Você é um concierge de luxo da loja Amour & Co..."
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:border-gold-500 transition"
+            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-base text-white focus:border-gold-500 transition"
           />
           <p className="text-[10px] text-theme-muted flex items-center gap-1">
             <AlertCircle size={10} /> O catálogo de produtos ativos será injetado automaticamente ao final deste prompt.

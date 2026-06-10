@@ -81,13 +81,13 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
             </span>
           </div>
 
-          <h2 className="text-xs uppercase tracking-widest text-theme-muted font-bold mt-4">
+          <h2 className="text-sm uppercase tracking-widest text-theme-muted font-bold mt-4">
             {isRegistering ? 'Criar sua Conta Premium' : 'Acesse seu Espaço Exclusivo'}
           </h2>
         </div>
 
         {error && (
-          <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs p-3.5 rounded-xl mt-6 text-center">
+          <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm p-3.5 rounded-xl mt-6 text-center">
             {error}
           </div>
         )}
@@ -103,7 +103,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
                 placeholder="Seu nome"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 transition"
                 required
               />
             </div>
@@ -118,7 +118,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
                 placeholder="seu.email@exemplo.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 transition"
                 required
               />
             </div>
@@ -133,7 +133,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 transition"
                 required
               />
             </div>
@@ -143,7 +143,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-gold hover:shadow-lg text-theme-text font-semibold tracking-widest uppercase py-3.5 rounded-lg text-xs transition-all duration-300 flex items-center justify-center gap-2 mt-6 cursor-pointer"
+            className="w-full bg-gradient-gold hover:shadow-lg text-theme-text font-semibold tracking-widest uppercase py-3.5 rounded-lg text-sm transition-all duration-300 flex items-center justify-center gap-2 mt-6 cursor-pointer"
           >
             <span>{loading ? 'Acessando...' : isRegistering ? 'Cadastrar' : 'Entrar'}</span>
             <ArrowRight size={14} />

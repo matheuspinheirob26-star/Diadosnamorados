@@ -181,7 +181,7 @@ export const PaymentsManager: React.FC = () => {
           <h2 className="font-serif text-2xl text-white tracking-wider uppercase">
             Central de Pagamentos
           </h2>
-          <p className="text-xs text-theme-muted mt-1 uppercase tracking-widest">
+          <p className="text-sm text-theme-muted mt-1 uppercase tracking-widest">
             Multi-gateway · Fallback Automático · Webhooks
           </p>
         </div>
@@ -198,7 +198,7 @@ export const PaymentsManager: React.FC = () => {
         <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 flex items-start gap-3">
           <AlertTriangle size={16} className="text-amber-400 mt-0.5 shrink-0" />
           <div>
-            <p className="text-xs font-bold text-amber-400 uppercase tracking-wider">Modo Demonstração Ativo</p>
+            <p className="text-sm font-bold text-amber-400 uppercase tracking-wider">Modo Demonstração Ativo</p>
             <p className="text-[10px] text-theme-muted mt-1 leading-relaxed">
               Gateways sem chave configurada operam em modo demo (respostas simuladas).
               Para ativar pagamentos reais, insira as chaves públicas abaixo e configure as
@@ -276,7 +276,7 @@ export const PaymentsManager: React.FC = () => {
                   <div className="text-xl">{meta.icon}</div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className={`text-sm font-bold ${meta.color}`}>{config.label}</span>
+                      <span className={`text-base font-bold ${meta.color}`}>{config.label}</span>
                       {config.isDemo && config.enabled && (
                         <span className="px-1.5 py-0.5 bg-amber-500/15 border border-amber-500/20 text-amber-400 text-[8px] font-bold uppercase tracking-widest rounded-full">
                           Demo
@@ -461,7 +461,7 @@ export const PaymentsManager: React.FC = () => {
                     <Icon size={12} />
                     <span className="text-[9px] uppercase tracking-widest font-bold">{stat.label}</span>
                   </div>
-                  <span className="text-lg font-bold text-white">{stat.value}</span>
+                  <span className="text-xl font-bold text-white">{stat.value}</span>
                 </div>
               );
             })}
@@ -470,14 +470,14 @@ export const PaymentsManager: React.FC = () => {
           {/* Transaction table */}
           <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl overflow-hidden">
             <div className="p-4 border-b border-theme-border-faint flex items-center justify-between">
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider">Transações Recentes</h3>
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider">Transações Recentes</h3>
               <button onClick={loadData} className="p-1.5 text-theme-muted hover:text-white transition cursor-pointer">
                 <RefreshCw size={12} />
               </button>
             </div>
 
             {transactions.length === 0 ? (
-              <div className="p-10 text-center text-theme-text text-xs">
+              <div className="p-10 text-center text-theme-text text-sm">
                 Nenhuma transação registrada ainda.
               </div>
             ) : (
@@ -527,7 +527,7 @@ export const PaymentsManager: React.FC = () => {
         <div className="space-y-4">
           <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl overflow-hidden">
             <div className="p-4 border-b border-theme-border-faint flex items-center justify-between">
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider">Log de Webhooks</h3>
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider">Log de Webhooks</h3>
               <button onClick={loadData} className="p-1.5 text-theme-muted hover:text-white transition cursor-pointer">
                 <RefreshCw size={12} />
               </button>
@@ -535,7 +535,7 @@ export const PaymentsManager: React.FC = () => {
             {webhooks.length === 0 ? (
               <div className="p-10 text-center">
                 <Webhook size={32} className="text-theme-text mx-auto mb-3" />
-                <p className="text-xs text-theme-text">Nenhum webhook recebido ainda.</p>
+                <p className="text-sm text-theme-text">Nenhum webhook recebido ainda.</p>
                 <p className="text-[10px] text-theme-text mt-1">Configure as URLs de webhook nos painéis dos gateways.</p>
               </div>
             ) : (
@@ -589,10 +589,10 @@ export const PaymentsManager: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Revenue by gateway */}
             <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl p-5">
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Receita por Gateway</h3>
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Receita por Gateway</h3>
               <div className="space-y-3">
                 {byGateway.filter(g => g.txCount > 0).length === 0 ? (
-                  <p className="text-xs text-theme-text text-center py-6">Sem dados ainda. Processe pagamentos para ver analytics.</p>
+                  <p className="text-sm text-theme-text text-center py-6">Sem dados ainda. Processe pagamentos para ver analytics.</p>
                 ) : (
                   byGateway.sort((a, b) => b.revenue - a.revenue).map(gw => {
                     const meta = GATEWAY_META[gw.gateway];
@@ -628,9 +628,9 @@ export const PaymentsManager: React.FC = () => {
 
             {/* Fallback stats */}
             <div className="bg-luxury-gray border border-theme-border-faint rounded-2xl p-5">
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Tentativas & Fallbacks</h3>
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Tentativas & Fallbacks</h3>
               {attempts.length === 0 ? (
-                <p className="text-xs text-theme-text text-center py-6">Sem tentativas registradas ainda.</p>
+                <p className="text-sm text-theme-text text-center py-6">Sem tentativas registradas ainda.</p>
               ) : (
                 <div className="space-y-2">
                   {attempts.slice(0, 8).map(att => (

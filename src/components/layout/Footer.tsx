@@ -37,7 +37,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <h3 className="font-serif text-xl text-gradient-gold tracking-widest uppercase mb-2">
               Clube Amour & Co.
             </h3>
-            <p className="text-xs text-theme-muted max-w-sm">
+            <p className="text-sm text-theme-muted max-w-sm">
               Inscreva-se para receber convites para pré-lançamentos sazonais, edições numeradas e ofertas de frete privado.
             </p>
           </div>
@@ -49,12 +49,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 placeholder="Seu melhor e-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-gold-500 transition"
+                className="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-base text-white focus:outline-none focus:border-gold-500 transition"
                 required
               />
               <button
                 type="submit"
-                className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+                className="bg-gradient-gold text-theme-text font-semibold text-sm tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
               >
                 {subscribed ? 'Cadastrado' : 'Inscrever-se'}
               </button>
@@ -79,7 +79,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 {config.storeName}
               </h3>
             )}
-            <p className="text-theme-muted text-sm font-light leading-relaxed mb-6">
+            <p className="text-theme-muted text-base font-light leading-relaxed mb-6">
               {config.slogan}
             </p>
             <div className="flex space-x-4">
@@ -103,10 +103,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
           {/* Institutional Links */}
           <div>
-            <h4 className="text-xs font-semibold text-white tracking-widest uppercase mb-4">
+            <h4 className="text-sm font-semibold text-white tracking-widest uppercase mb-4">
               Nossa Marca
             </h4>
-            <ul className="space-y-2.5 text-xs">
+            <ul className="space-y-2.5 text-sm">
               <li>
                 <button
                   onClick={() => onNavigate('institutional', 'sobre')}
@@ -136,10 +136,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
           {/* Customer Care Links */}
           <div>
-            <h4 className="text-xs font-semibold text-white tracking-widest uppercase mb-4">
+            <h4 className="text-sm font-semibold text-white tracking-widest uppercase mb-4">
               Suporte & Ajuda
             </h4>
-            <ul className="space-y-2.5 text-xs">
+            <ul className="space-y-2.5 text-sm">
               <li>
                 <button
                   onClick={() => onNavigate('institutional', 'trocas')}
@@ -177,8 +177,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
           {/* Contact Col */}
           <div>
-            <h4 className="text-white font-semibold tracking-widest text-sm uppercase mb-6">Contato</h4>
-            <ul className="space-y-4 text-sm font-light">
+            <h4 className="text-white font-semibold tracking-widest text-base uppercase mb-6">Contato</h4>
+            <ul className="space-y-4 text-base font-light">
               <li className="flex items-start text-theme-muted">
                 <MapPin size={16} className="text-gold-400 mr-3 mt-1 flex-shrink-0" />
                 <span>{config.storeAddress}</span>
@@ -193,7 +193,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         {/* Footer Bottom - Badges & Copyright */}
-        <div className="mt-16 pt-8 border-t border-theme-border-faint flex flex-col md:flex-row items-center justify-between text-xs font-light text-theme-muted gap-6">
+        <div className="mt-16 pt-8 border-t border-theme-border-faint flex flex-col md:flex-row items-center justify-between text-sm font-light text-theme-muted gap-6">
           <p>{config.footerText}</p>
           
           {/* Trust Seals */}

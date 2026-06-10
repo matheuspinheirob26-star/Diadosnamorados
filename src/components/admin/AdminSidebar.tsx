@@ -105,7 +105,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                   setActiveTab(item.id);
                   if (onCloseMobile) onCloseMobile();
                 }}
-                className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-semibold tracking-wider uppercase transition-all duration-300 group cursor-pointer ${
+                className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold tracking-wider uppercase transition-all duration-300 group cursor-pointer ${
                   isActive 
                     ? 'bg-gradient-gold text-theme-text font-bold shadow-lg shadow-gold-600/5 glow-gold'
                     : 'text-theme-muted hover:text-white hover:bg-white/5 border border-transparent'
@@ -146,7 +146,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
         <button
           onClick={onLogout}
-          className="w-full flex items-center justify-center gap-2 border border-theme-border-faint hover:border-rose-500/20 hover:bg-rose-500/5 text-theme-muted hover:text-rose-400 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 border border-theme-border-faint hover:border-rose-500/20 hover:bg-rose-500/5 text-theme-muted hover:text-rose-400 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer"
         >
           <LogOut size={14} />
           <span>Sair do Painel</span>

@@ -189,7 +189,7 @@ export const ProductsManager: React.FC = () => {
               setIsDuplicating(false);
               setModalOpen(true);
             }}
-            className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-5 py-2.5 rounded-xl hover:shadow-lg transition cursor-pointer flex items-center gap-1.5"
+            className="bg-gradient-gold text-theme-text font-semibold text-sm tracking-widest uppercase px-5 py-2.5 rounded-xl hover:shadow-lg transition cursor-pointer flex items-center gap-1.5"
           >
             <Plus size={14} />
             <span>Novo Presente</span>
@@ -208,7 +208,7 @@ export const ProductsManager: React.FC = () => {
               placeholder="Buscar por nome ou SKU..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+              className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition"
             />
           </div>
         </div>
@@ -218,7 +218,7 @@ export const ProductsManager: React.FC = () => {
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="w-full bg-luxury-black border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+            className="w-full bg-luxury-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
           >
             {categories.map(cat => (
               <option key={cat} value={cat}>{cat}</option>
@@ -231,7 +231,7 @@ export const ProductsManager: React.FC = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full bg-luxury-black border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
+            className="w-full bg-luxury-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition cursor-pointer"
           >
             <option value="Todos">Todos os Status</option>
             <option value="publicado">Publicado</option>
@@ -287,7 +287,7 @@ export const ProductsManager: React.FC = () => {
         )}
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
+          <table className="w-full text-left text-sm border-collapse">
             <thead>
               <tr className="text-theme-muted font-bold border-b border-theme-border-faint bg-white/2 select-none">
                 <th className="p-4">Presente</th>
@@ -344,7 +344,7 @@ export const ProductsManager: React.FC = () => {
                             step="0.01"
                             value={tempPriceValue}
                             onChange={(e) => setTempPriceValue(Number(e.target.value))}
-                            className="w-20 bg-luxury-black border border-gold-500/35 rounded px-2 py-1 text-xs text-white text-right focus:outline-none"
+                            className="w-20 bg-luxury-black border border-gold-500/35 rounded px-2 py-1 text-sm text-white text-right focus:outline-none"
                             autoFocus
                             onKeyDown={(e) => {
                               if (e.key === 'Enter') handleSavePriceInline(prod);
@@ -384,7 +384,7 @@ export const ProductsManager: React.FC = () => {
                             type="number"
                             value={tempStockValue}
                             onChange={(e) => setTempStockValue(Number(e.target.value))}
-                            className="w-16 bg-luxury-black border border-gold-500/35 rounded px-2 py-1 text-xs text-white text-center focus:outline-none"
+                            className="w-16 bg-luxury-black border border-gold-500/35 rounded px-2 py-1 text-sm text-white text-center focus:outline-none"
                             autoFocus
                             onKeyDown={(e) => {
                               if (e.key === 'Enter') handleSaveStockInline(prod);

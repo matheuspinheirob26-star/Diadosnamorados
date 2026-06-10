@@ -41,11 +41,11 @@ export const SizeModal: React.FC<SizeModalProps> = ({ isOpen, onClose }) => {
 
               {/* Shirt Section */}
               <div className="space-y-3">
-                <h4 className="text-xs font-semibold text-white tracking-widest uppercase border-b border-theme-border-faint pb-1">
+                <h4 className="text-sm font-semibold text-white tracking-widest uppercase border-b border-theme-border-faint pb-1">
                   1. Camisa de Algodão Egípcio
                 </h4>
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs border-collapse">
+                  <table className="w-full text-left text-sm border-collapse">
                     <thead>
                       <tr className="text-theme-muted font-bold border-b border-theme-border-faint">
                         <th className="py-2 pr-4">Tamanho</th>
@@ -91,11 +91,11 @@ export const SizeModal: React.FC<SizeModalProps> = ({ isOpen, onClose }) => {
 
               {/* Brief Section */}
               <div className="space-y-3">
-                <h4 className="text-xs font-semibold text-white tracking-widest uppercase border-b border-theme-border-faint pb-1">
+                <h4 className="text-sm font-semibold text-white tracking-widest uppercase border-b border-theme-border-faint pb-1">
                   2. Cueca Boxer Modal
                 </h4>
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs border-collapse">
+                  <table className="w-full text-left text-sm border-collapse">
                     <thead>
                       <tr className="text-theme-muted font-bold border-b border-theme-border-faint">
                         <th className="py-2 pr-4">Tamanho</th>

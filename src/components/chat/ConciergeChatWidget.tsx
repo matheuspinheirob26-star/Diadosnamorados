@@ -200,7 +200,7 @@ export const ConciergeChatWidget: React.FC = () => {
                 <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-luxury-black rounded-full" />
               </div>
               <div>
-                <h3 className="text-sm font-serif text-white">{aiConfig.ai_name}</h3>
+                <h3 className="text-base font-serif text-white">{aiConfig.ai_name}</h3>
                 <p className="text-[10px] text-theme-muted">Concierge de Luxo IA</p>
               </div>
             </div>
@@ -218,7 +218,7 @@ export const ConciergeChatWidget: React.FC = () => {
             {/* Capture Stage */}
             {captureStage !== 'done' ? (
               <div className="flex flex-col gap-3">
-                <div className="bg-white/5 border border-white/10 p-4 rounded-xl rounded-tl-sm self-start text-sm text-theme-muted">
+                <div className="bg-white/5 border border-white/10 p-4 rounded-xl rounded-tl-sm self-start text-base text-theme-muted">
                   <p className="mb-3">Para iniciarmos um atendimento personalizado, por favor, me diga o seu nome e telefone.</p>
                   <form onSubmit={handleCaptureSubmit} className="space-y-3">
                     {captureStage === 'name' && (
@@ -227,7 +227,7 @@ export const ConciergeChatWidget: React.FC = () => {
                         placeholder="Seu nome"
                         value={leadName}
                         onChange={e => setLeadName(e.target.value)}
-                        className="w-full bg-black/30 border border-white/10 rounded p-2 text-xs text-white focus:border-gold-500 outline-none"
+                        className="w-full bg-black/30 border border-white/10 rounded p-2 text-sm text-white focus:border-gold-500 outline-none"
                         autoFocus
                       />
                     )}
@@ -237,11 +237,11 @@ export const ConciergeChatWidget: React.FC = () => {
                         placeholder="Seu WhatsApp (ex: 11999999999)"
                         value={leadPhone}
                         onChange={e => setLeadPhone(e.target.value)}
-                        className="w-full bg-black/30 border border-white/10 rounded p-2 text-xs text-white focus:border-gold-500 outline-none"
+                        className="w-full bg-black/30 border border-white/10 rounded p-2 text-sm text-white focus:border-gold-500 outline-none"
                         autoFocus
                       />
                     )}
-                    <button type="submit" className="w-full bg-gold-600 text-black font-bold text-xs py-2 rounded">
+                    <button type="submit" className="w-full bg-gold-600 text-black font-bold text-sm py-2 rounded">
                       Continuar
                     </button>
                   </form>
@@ -255,7 +255,7 @@ export const ConciergeChatWidget: React.FC = () => {
                     className={`flex flex-col max-w-[85%] ${msg.role === 'user' ? 'self-end items-end' : 'self-start items-start'}`}
                   >
                     <div 
-                      className={`p-3 text-sm rounded-2xl ${
+                      className={`p-3 text-base rounded-2xl ${
                         msg.role === 'user' 
                           ? 'bg-gradient-gold text-theme-text rounded-tr-sm' 
                           : 'bg-white/5 border border-white/10 text-theme-muted rounded-tl-sm'
@@ -292,7 +292,7 @@ export const ConciergeChatWidget: React.FC = () => {
                   onChange={e => setInput(e.target.value)}
                   placeholder="Escreva sua mensagem..."
                   disabled={loading}
-                  className="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition disabled:opacity-50"
+                  className="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-base text-white focus:outline-none focus:border-gold-500 transition disabled:opacity-50"
                 />
                 <button
                   type="submit"

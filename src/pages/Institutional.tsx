@@ -72,7 +72,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
       </div>
 
       {/* Tabs list */}
-      <div className="flex flex-wrap justify-center border-b border-theme-border-faint pb-2 text-xs font-semibold uppercase tracking-wider">
+      <div className="flex flex-wrap justify-center border-b border-theme-border-faint pb-2 text-sm font-semibold uppercase tracking-wider">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -89,7 +89,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
       </div>
 
       {/* Tab Contents */}
-      <div className="bg-luxury-gray border border-theme-border-faint rounded-3xl p-8 sm:p-10 text-theme-muted leading-relaxed font-light text-xs sm:text-sm">
+      <div className="bg-luxury-gray border border-theme-border-faint rounded-3xl p-8 sm:p-10 text-theme-muted leading-relaxed font-light text-sm sm:text-base">
         
         {/* SOBRE NOS */}
         {activeTab === 'sobre' && (
@@ -110,7 +110,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
               Nosso processo criativo é pautado por uma curadoria obsessiva por detalhes. Da escolha de tecidos nobres, passando pelas fragrâncias autorais de cada embalagem, até a seleção de cristais lapidados à mão, cada kit presenteável da Amour & Co. é uma edição limitada desenvolvida para surpreender.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 text-center text-xs">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 text-center text-sm">
               <div className="bg-white/2 border border-theme-border-faint p-5 rounded-2xl">
                 <span className="text-gold-400 font-bold block uppercase tracking-widest text-[10px] mb-2">Curadoria de Luxo</span>
                 Parcerias exclusivas com artesãos e marcas internacionais de alta costura e relojoaria.
@@ -130,7 +130,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
         {/* FRETE E PRAZOS */}
         {activeTab === 'frete' && (
           <div className="space-y-6">
-            <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Políticas de Envio</h3>
+            <h3 className="font-serif text-xl text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Políticas de Envio</h3>
             
             <p>
               Para assegurar que seus presentes cheguem em perfeito estado e no prazo estipulado, trabalhamos com uma rede de transportadoras privadas de elite e opções prioritárias dos Correios (SEDEX).
@@ -138,26 +138,26 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
 
             <div className="space-y-4">
               <div className="flex gap-3 items-start">
-                <div className="h-6 w-6 rounded-full bg-gold-600/10 border border-gold-500/20 text-gold-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">1</div>
+                <div className="h-6 w-6 rounded-full bg-gold-600/10 border border-gold-500/20 text-gold-400 flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">1</div>
                 <div>
                   <h4 className="font-semibold text-white">Prazo de Postagem</h4>
-                  <p className="text-xs text-theme-muted mt-0.5">Pedidos aprovados até as 12:00 (meio-dia) são despachados no mesmo dia útil. Pedidos após esse horário são despachados na manhã do dia útil seguinte.</p>
+                  <p className="text-sm text-theme-muted mt-0.5">Pedidos aprovados até as 12:00 (meio-dia) são despachados no mesmo dia útil. Pedidos após esse horário são despachados na manhã do dia útil seguinte.</p>
                 </div>
               </div>
 
               <div className="flex gap-3 items-start">
-                <div className="h-6 w-6 rounded-full bg-gold-600/10 border border-gold-500/20 text-gold-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">2</div>
+                <div className="h-6 w-6 rounded-full bg-gold-600/10 border border-gold-500/20 text-gold-400 flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">2</div>
                 <div>
                   <h4 className="font-semibold text-white">Embalagem Blindada</h4>
-                  <p className="text-xs text-theme-muted mt-0.5">Os kits de presente viajam dentro de uma embalagem de transporte externa resistente e discreta, sem logotipos chamativos, garantindo segurança contra violações e surpresa absoluta para o destinatário.</p>
+                  <p className="text-sm text-theme-muted mt-0.5">Os kits de presente viajam dentro de uma embalagem de transporte externa resistente e discreta, sem logotipos chamativos, garantindo segurança contra violações e surpresa absoluta para o destinatário.</p>
                 </div>
               </div>
 
               <div className="flex gap-3 items-start">
-                <div className="h-6 w-6 rounded-full bg-gold-600/10 border border-gold-500/20 text-gold-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">3</div>
+                <div className="h-6 w-6 rounded-full bg-gold-600/10 border border-gold-500/20 text-gold-400 flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">3</div>
                 <div>
                   <h4 className="font-semibold text-white">Rastreamento Avançado</h4>
-                  <p className="text-xs text-theme-muted mt-0.5">Você receberá atualizações em tempo real via e-mail e WhatsApp a cada etapa da jornada física do presente até o destino final.</p>
+                  <p className="text-sm text-theme-muted mt-0.5">Você receberá atualizações em tempo real via e-mail e WhatsApp a cada etapa da jornada física do presente até o destino final.</p>
                 </div>
               </div>
             </div>
@@ -167,13 +167,13 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
         {/* TROCAS E DEVOLUÇÕES */}
         {activeTab === 'trocas' && (
           <div className="space-y-6">
-            <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Trocas e Devoluções Facilitadas</h3>
+            <h3 className="font-serif text-xl text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Trocas e Devoluções Facilitadas</h3>
             
             <p>
               Compre com total segurança. Na Amour & Co., se o tamanho da camisa não vestir perfeitamente ou se o presenteado desejar realizar a troca de qualquer item, nosso processo de devolução é rápido, humanizado e gratuito.
             </p>
 
-            <ul className="list-disc pl-5 space-y-2.5 text-xs text-theme-muted">
+            <ul className="list-disc pl-5 space-y-2.5 text-sm text-theme-muted">
               <li><strong className="text-theme-muted">Prazo de Solicitação</strong>: Você ou o presenteado têm até 30 dias corridos a partir do recebimento para solicitar a troca de qualquer produto de vestuário ou acessórios.</li>
               <li><strong className="text-theme-muted">Primeira Troca Grátis</strong>: A primeira troca é por nossa conta. Geramos um código de logística reversa dos Correios sem nenhum custo para você.</li>
               <li><strong className="text-theme-muted">Condições do Produto</strong>: O produto deve ser devolvido sem indícios de uso, com todas as etiquetas originais intactas e na embalagem original (caixa de presente).</li>
@@ -188,9 +188,9 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
             
             {/* Contacts Info */}
             <div className="md:col-span-5 space-y-6">
-              <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Contatos Concierge</h3>
+              <h3 className="font-serif text-xl text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Contatos Concierge</h3>
               
-              <ul className="space-y-4 text-xs">
+              <ul className="space-y-4 text-sm">
                 <li className="flex gap-3 items-center">
                   <Phone className="text-gold-500 shrink-0" size={16} />
                   <div>
@@ -221,12 +221,12 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
 
             {/* Form Column */}
             <div className="md:col-span-7 space-y-4">
-              <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Envie uma Mensagem</h3>
+              <h3 className="font-serif text-xl text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Envie uma Mensagem</h3>
               
               {formSubmitted && (
                 <div className="bg-emerald-500/10 border border-emerald-500/35 text-emerald-400 rounded-xl p-4 flex gap-2.5 items-center">
                   <Check size={18} />
-                  <span className="text-xs font-bold">Mensagem enviada! Retornaremos em menos de 2 horas.</span>
+                  <span className="text-sm font-bold">Mensagem enviada! Retornaremos em menos de 2 horas.</span>
                 </div>
               )}
 
@@ -238,7 +238,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
                       type="text"
                       placeholder="Seu nome"
                       {...register('name')}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition"
                     />
                     {errors.name && <p className="text-[10px] text-rose-400">{errors.name.message}</p>}
                   </div>
@@ -248,7 +248,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
                       type="email"
                       placeholder="email@exemplo.com"
                       {...register('email')}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition"
                     />
                     {errors.email && <p className="text-[10px] text-rose-400">{errors.email.message}</p>}
                   </div>
@@ -261,7 +261,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
                       type="tel"
                       placeholder="(11) 99999-9999"
                       {...register('phone')}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition"
                     />
                     {errors.phone && <p className="text-[10px] text-rose-400">{errors.phone.message}</p>}
                   </div>
@@ -271,7 +271,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
                       type="text"
                       placeholder="Motivo do contato"
                       {...register('subject')}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition"
                     />
                     {errors.subject && <p className="text-[10px] text-rose-400">{errors.subject.message}</p>}
                   </div>
@@ -282,7 +282,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
                   <textarea
                     placeholder="Escreva detalhadamente sua dúvida, sugestão ou solicitação..."
                     {...register('message')}
-                    className="w-full h-28 bg-white/5 border border-white/10 rounded-lg p-4 text-xs text-white focus:outline-none focus:border-gold-500 transition resize-none"
+                    className="w-full h-28 bg-white/5 border border-white/10 rounded-lg p-4 text-sm text-white focus:outline-none focus:border-gold-500 transition resize-none"
                   />
                   {errors.message && <p className="text-[10px] text-rose-400">{errors.message.message}</p>}
                 </div>
@@ -290,7 +290,7 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center justify-center gap-2"
+                  className="bg-gradient-gold text-theme-text font-semibold text-sm tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer flex items-center justify-center gap-2"
                 >
                   <Send size={12} />
                   <span>{isSubmitting ? 'Enviando...' : 'Enviar Mensagem'}</span>
@@ -304,8 +304,8 @@ export const Institutional: React.FC<InstitutionalProps> = ({ defaultTab = 'sobr
 
         {/* TERMOS E PRIVACIDADE */}
         {activeTab === 'termos' && (
-          <div className="space-y-6 text-theme-muted text-xs">
-            <h3 className="font-serif text-lg text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Políticas Gerais</h3>
+          <div className="space-y-6 text-theme-muted text-sm">
+            <h3 className="font-serif text-xl text-white tracking-wider uppercase border-b border-theme-border-faint pb-2">Políticas Gerais</h3>
             
             <div className="space-y-3">
               <h4 className="font-bold text-theme-muted">1. Termos de Uso</h4>

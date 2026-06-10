@@ -192,7 +192,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
       {/* Back to catalog link */}
       <button
         onClick={() => onNavigate('catalog')}
-        className="text-xs text-theme-muted hover:text-gold-400 transition font-semibold flex items-center gap-1.5 cursor-pointer"
+        className="text-sm text-theme-muted hover:text-gold-400 transition font-semibold flex items-center gap-1.5 cursor-pointer"
       >
         <ArrowLeft size={14} /> Voltar para presentes
       </button>
@@ -211,7 +211,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
           {/* Header */}
           <div className="space-y-2">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-gold-400 bg-gold-500/10 px-3 py-1 rounded">
+              <span className="text-sm font-bold uppercase tracking-widest text-gold-400 bg-gold-500/10 px-3 py-1 rounded">
                 {product.category}
               </span>
               <div className="flex items-center gap-2 flex-wrap">
@@ -225,7 +225,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                     <Sparkles size={9} /> Campanha
                   </span>
                 )}
-                <div className="flex items-center gap-1.5 text-xs text-theme-muted font-semibold">
+                <div className="flex items-center gap-1.5 text-sm text-theme-muted font-semibold">
                   <div className="flex text-gold-500">
                     {[1, 2, 3, 4, 5].map((s) => (
                       <Star
@@ -244,7 +244,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
               {product.name}
             </h1>
             
-            <p className="text-xs text-theme-muted font-light leading-relaxed">
+            <p className="text-sm text-theme-muted font-light leading-relaxed">
               {product.description}
             </p>
           </div>
@@ -252,7 +252,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
           {/* Sizing guide (for clothing kits) */}
           {product.sizes && product.sizes.length > 0 && (
             <div className="space-y-3 pt-4 border-t border-theme-border-faint">
-              <div className="flex justify-between items-center text-xs">
+              <div className="flex justify-between items-center text-sm">
                 <span className="font-bold text-theme-text tracking-wide uppercase">Selecione o Tamanho</span>
                 <button
                   onClick={() => setSizeModalOpen(true)}
@@ -266,7 +266,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                   <button
                     key={sz}
                     onClick={() => setSelectedSize(sz)}
-                    className={`h-11 w-11 rounded-lg border text-xs font-bold flex items-center justify-center transition cursor-pointer ${
+                    className={`h-11 w-11 rounded-lg border text-sm font-bold flex items-center justify-center transition cursor-pointer ${
                       selectedSize === sz
                         ? 'border-gold-500 bg-gold-500/10 text-gold-400'
                         : 'border-theme-border hover:border-white/30 text-theme-muted'
@@ -289,7 +289,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                 
                 return (
                   <div key={type} className="space-y-2">
-                    <div className="flex items-center justify-between text-xs">
+                    <div className="flex items-center justify-between text-sm">
                       <span className="font-bold text-theme-text tracking-wide uppercase">
                         {typeLabels[type] ?? type}
                       </span>
@@ -314,7 +314,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                             onClick={() => !varOutOfStock && setSelectedVariations(prev => ({ ...prev, [type]: v.id }))}
                             disabled={varOutOfStock}
                             title={varOutOfStock ? 'Esgotado' : `${v.name}${v.priceAddition > 0 ? ` (+${formatCurrency(v.priceAddition)})` : ''}`}
-                            className={`relative px-4 py-2 rounded-lg border text-xs font-semibold transition-all cursor-pointer ${
+                            className={`relative px-4 py-2 rounded-lg border text-sm font-semibold transition-all cursor-pointer ${
                               isSelected
                                 ? 'border-gold-500 bg-gold-500/10 text-gold-400'
                                 : varOutOfStock
@@ -353,7 +353,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
           <div className="bg-white/2 border border-theme-border-faint p-5 rounded-2xl space-y-4">
             <div className="flex items-baseline gap-3 flex-wrap">
               {hasDiscount && (
-                <span className="text-xs text-theme-muted line-through">
+                <span className="text-sm text-theme-muted line-through">
                   {formatCurrency(product.originalPrice)}
                 </span>
               )}
@@ -365,15 +365,15 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
               )}
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div className="bg-theme-border-faint border border-theme-border-faint p-3 rounded-xl">
                 <span className="text-theme-muted block text-[9px] uppercase font-bold tracking-wider">Pix com desconto</span>
-                <span className="text-sm font-bold text-emerald-400 block mt-1">{formatCurrency(pixPrice)}</span>
+                <span className="text-base font-bold text-emerald-400 block mt-1">{formatCurrency(pixPrice)}</span>
                 <span className="text-[10px] text-theme-muted block mt-0.5">Economize 10% adicionais</span>
               </div>
               <div className="bg-theme-border-faint border border-theme-border-faint p-3 rounded-xl">
                 <span className="text-theme-muted block text-[9px] uppercase font-bold tracking-wider">Cartão de Crédito</span>
-                <span className="text-sm font-bold text-theme-text block mt-1">10x de {formatCurrency(installmentValue)}</span>
+                <span className="text-base font-bold text-theme-text block mt-1">10x de {formatCurrency(installmentValue)}</span>
                 <span className="text-[10px] text-theme-muted block mt-0.5">Sem juros no parcelamento</span>
               </div>
             </div>
@@ -404,7 +404,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
             <button
               onClick={handleBuyNow}
               disabled={isOutOfStock}
-              className={`flex-1 font-semibold text-xs tracking-widest uppercase py-4 rounded-lg transition duration-300 cursor-pointer text-center ${
+              className={`flex-1 font-semibold text-sm tracking-widest uppercase py-4 rounded-lg transition duration-300 cursor-pointer text-center ${
                 isOutOfStock
                   ? 'bg-theme-border-faint text-theme-muted cursor-not-allowed'
                   : 'bg-gradient-gold hover:shadow-lg text-theme-text'
@@ -415,7 +415,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
             <button
               onClick={handleAddToCart}
               disabled={isOutOfStock}
-              className={`flex-1 border font-semibold text-xs tracking-widest uppercase py-4 rounded-lg transition duration-300 cursor-pointer ${
+              className={`flex-1 border font-semibold text-sm tracking-widest uppercase py-4 rounded-lg transition duration-300 cursor-pointer ${
                 isOutOfStock
                   ? 'border-theme-border-faint text-theme-text cursor-not-allowed'
                   : 'border-theme-border hover:border-gold-500 hover:text-gold-400 text-theme-text bg-white/2 hover:bg-theme-border-faint'
@@ -428,7 +428,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
           {/* WhatsApp Direct Line */}
           <button
             onClick={handleWhatsAppChat}
-            className="w-full flex items-center justify-center gap-2 text-xs font-semibold text-emerald-400 border border-emerald-500/20 py-3 rounded-lg bg-emerald-500/5 hover:bg-emerald-500/10 transition cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-emerald-400 border border-emerald-500/20 py-3 rounded-lg bg-emerald-500/5 hover:bg-emerald-500/10 transition cursor-pointer"
           >
             <MessageCircle size={16} />
             <span>Falar com Personal Shopper (WhatsApp)</span>
@@ -443,12 +443,12 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
                 placeholder="Digite seu CEP (ex: 01311-000)"
                 value={cep}
                 onChange={(e) => setCep(e.target.value)}
-                className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2 text-xs text-theme-text focus:outline-none focus:border-gold-500 transition"
+                className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-4 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
               />
               <button
                 type="submit"
                 disabled={shippingLoading}
-                className="bg-theme-border-faint hover:bg-white/10 border border-theme-border px-5 py-2 text-xs font-semibold uppercase tracking-wider text-theme-text rounded-lg transition cursor-pointer"
+                className="bg-theme-border-faint hover:bg-white/10 border border-theme-border px-5 py-2 text-sm font-semibold uppercase tracking-wider text-theme-text rounded-lg transition cursor-pointer"
               >
                 {shippingLoading ? 'Calculando...' : 'Calcular'}
               </button>
@@ -458,7 +458,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
             {shippingOptions.length > 0 && (
               <div className="bg-white/2 border border-theme-border-faint rounded-xl p-3 divide-y divide-white/5 space-y-2.5">
                 {shippingOptions.map((opt) => (
-                  <div key={opt.id} className="flex items-center justify-between text-xs pt-2.5 first:pt-0">
+                  <div key={opt.id} className="flex items-center justify-between text-sm pt-2.5 first:pt-0">
                     <div>
                       <span className="font-semibold text-theme-text block">{opt.name}</span>
                       <span className="text-[9px] text-theme-muted block">Entrega estimada em {opt.deliveryDays} dia{opt.deliveryDays !== 1 && 's'} útil{opt.deliveryDays !== 1 && 'is'}</span>
@@ -493,7 +493,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ productId, onNavig
       {/* Product Long Details Features Tab */}
       <div className="space-y-4 pt-10 border-t border-theme-border-faint">
         <h3 className="font-serif text-xl text-theme-text tracking-widest uppercase">Características e Itens do Kit</h3>
-        <p className="text-xs text-theme-muted leading-relaxed font-light whitespace-pre-line">
+        <p className="text-sm text-theme-muted leading-relaxed font-light whitespace-pre-line">
           {product.details}
         </p>
       </div>

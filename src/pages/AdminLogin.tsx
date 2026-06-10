@@ -128,7 +128,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
               <span className="text-gradient-gold">loja com controle</span><br />
               total.
             </h1>
-            <p className="text-sm text-theme-muted leading-relaxed max-w-xs font-light">
+            <p className="text-base text-theme-muted leading-relaxed max-w-xs font-light">
               Acesse o painel completo de gestão de produtos, pedidos, clientes e campanhas da Amour & Co.
             </p>
           </div>
@@ -141,7 +141,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
               'Relatórios e métricas de vendas',
               'Campanhas sazonais e cupons',
             ].map((item) => (
-              <div key={item} className="flex items-center gap-3 text-xs text-theme-muted">
+              <div key={item} className="flex items-center gap-3 text-sm text-theme-muted">
                 <div className="h-4 w-4 rounded-full bg-gold-500/10 border border-gold-500/30 flex items-center justify-center shrink-0">
                   <ChevronRight size={9} className="text-gold-400" />
                 </div>
@@ -189,7 +189,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
               <span className="text-[10px] uppercase tracking-widest text-theme-muted font-bold">Acesso Administrativo</span>
             </div>
             <h2 className="font-serif text-2xl text-white tracking-wide">Bem-vindo de volta</h2>
-            <p className="text-xs text-theme-muted">Entre com suas credenciais de administrador para continuar.</p>
+            <p className="text-sm text-theme-muted">Entre com suas credenciais de administrador para continuar.</p>
           </div>
 
           {/* Error banner */}
@@ -201,7 +201,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
                 animate={{ opacity: 1, y: 0, height: 'auto' }}
                 exit={{ opacity: 0, y: -8, height: 0 }}
                 transition={{ duration: 0.25 }}
-                className="flex items-start gap-3 bg-rose-500/10 border border-rose-500/25 text-rose-400 text-xs p-4 rounded-xl"
+                className="flex items-start gap-3 bg-rose-500/10 border border-rose-500/25 text-rose-400 text-sm p-4 rounded-xl"
               >
                 <AlertCircle size={14} className="shrink-0 mt-0.5" />
                 <div className="space-y-1">
@@ -247,7 +247,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
                   onChange={(e) => { setEmail(e.target.value); setError(''); }}
                   disabled={isBlocked || loading}
                   autoComplete="email"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3.5 text-base text-white placeholder-gray-600 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
                 />
               </div>
             </div>
@@ -267,7 +267,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
                   onChange={(e) => { setPassword(e.target.value); setError(''); }}
                   disabled={isBlocked || loading}
                   autoComplete="current-password"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-12 py-3.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-12 py-3.5 text-base text-white placeholder-gray-600 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
                 />
                 <button
                   type="button"
@@ -285,7 +285,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
               type="submit"
               disabled={loading || isBlocked}
               whileTap={{ scale: 0.98 }}
-              className={`w-full flex items-center justify-center gap-2.5 font-semibold tracking-widest uppercase py-4 rounded-xl text-xs transition-all duration-300 cursor-pointer mt-2 ${
+              className={`w-full flex items-center justify-center gap-2.5 font-semibold tracking-widest uppercase py-4 rounded-xl text-sm transition-all duration-300 cursor-pointer mt-2 ${
                 isBlocked || loading
                   ? 'bg-white/5 text-theme-muted cursor-not-allowed'
                   : 'bg-gradient-gold hover:shadow-lg hover:shadow-gold-500/20 text-theme-text'

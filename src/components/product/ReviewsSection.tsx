@@ -144,7 +144,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
         <div className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-xl p-4 flex gap-2.5 items-start">
           <Check size={18} className="shrink-0 mt-0.5" />
           <div>
-            <h5 className="text-xs font-bold">Avaliação Enviada com Sucesso!</h5>
+            <h5 className="text-sm font-bold">Avaliação Enviada com Sucesso!</h5>
             <p className="text-[10px] text-theme-muted mt-0.5 leading-relaxed">
               Obrigado por nos avaliar. Para garantir a idoneidade das avaliações e evitar spam, sua mensagem passará por moderação da curadoria da Amour & Co. e será exibida em breve.
             </p>
@@ -155,7 +155,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
       {/* Review Submission Form */}
       {showForm && (
         <form onSubmit={handleSubmit} className="bg-theme-border-faint border border-theme-border-faint rounded-2xl p-6 space-y-4">
-          <h4 className="font-serif text-white tracking-wider text-sm uppercase">Sua Avaliação</h4>
+          <h4 className="font-serif text-white tracking-wider text-base uppercase">Sua Avaliação</h4>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Name */}
@@ -166,7 +166,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
                 placeholder="Ex: Mariana S."
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-gold-500 transition"
                 required
               />
             </div>
@@ -205,7 +205,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
               placeholder="Descreva o que achou da embalagem, qualidade dos itens, fragrância e caimento..."
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              className="w-full h-24 bg-white/5 border border-white/10 rounded-lg p-4 text-xs text-white focus:outline-none focus:border-gold-500 transition resize-none"
+              className="w-full h-24 bg-white/5 border border-white/10 rounded-lg p-4 text-sm text-white focus:outline-none focus:border-gold-500 transition resize-none"
               required
             />
           </div>
@@ -220,7 +220,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
               placeholder="Cole uma URL de imagem (ex: Unsplash) para simular o upload"
               value={photoUrl}
               onChange={(e) => setPhotoUrl(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-gold-500 transition"
             />
           </div>
 
@@ -228,14 +228,14 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
             <button
               type="button"
               onClick={() => setShowForm(false)}
-              className="px-4 py-2 rounded-lg text-xs font-semibold text-theme-muted hover:text-white transition cursor-pointer"
+              className="px-4 py-2 rounded-lg text-sm font-semibold text-theme-muted hover:text-white transition cursor-pointer"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+              className="bg-gradient-gold text-theme-text font-semibold text-sm tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
             >
               {submitting ? 'Enviando...' : 'Enviar Avaliação'}
             </button>
@@ -245,12 +245,12 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
 
       {/* Reviews List */}
       <div className="space-y-6">
-        <h4 className="font-serif text-white tracking-widest uppercase text-sm">Depoimentos Recentes</h4>
+        <h4 className="font-serif text-white tracking-widest uppercase text-base">Depoimentos Recentes</h4>
         
         {loading ? (
-          <p className="text-xs text-theme-muted">Carregando depoimentos...</p>
+          <p className="text-sm text-theme-muted">Carregando depoimentos...</p>
         ) : reviews.length === 0 ? (
-          <div className="bg-white/2 border border-dashed border-theme-border-faint rounded-2xl p-6 text-center text-theme-muted text-xs">
+          <div className="bg-white/2 border border-dashed border-theme-border-faint rounded-2xl p-6 text-center text-theme-muted text-sm">
             Nenhuma avaliação exibida ainda. Seja o primeiro a nos avaliar!
           </div>
         ) : (
@@ -285,7 +285,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ productId }) => 
                 {/* Footer Review: Author & Photo */}
                 <div className="flex justify-between items-center pt-4 border-t border-theme-border-faint">
                   <div className="space-y-0.5">
-                    <span className="text-xs font-semibold text-white block">{rev.customerName}</span>
+                    <span className="text-sm font-semibold text-white block">{rev.customerName}</span>
                     <span className="text-[9px] text-theme-muted font-medium">
                       {new Date(rev.createdAt).toLocaleDateString('pt-BR')}
                     </span>

@@ -33,7 +33,7 @@ const ImageUploadInput = ({ label, value, onChange, placeholder }: { label: stri
           placeholder={placeholder || "https://..."}
           value={value}
           onChange={e => onChange(e.target.value)}
-          className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+          className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
         />
         <label className="flex items-center justify-center bg-theme-border-faint hover:bg-white/10 border border-theme-border rounded-lg px-3 cursor-pointer transition" title="Fazer Upload de Imagem">
           {isUploading ? <span className="w-4 h-4 border-2 border-gold-400 border-t-transparent rounded-full animate-spin"></span> : <Upload size={16} className="text-theme-muted hover:text-gold-400" />}
@@ -87,13 +87,13 @@ export const StorefrontCustomizer: React.FC = () => {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-serif text-theme-text tracking-wider uppercase mb-1">Personalização</h2>
-            <p className="text-theme-muted text-xs">Altere a vitrine em tempo real.</p>
+            <p className="text-theme-muted text-sm">Altere a vitrine em tempo real.</p>
           </div>
           <div className="flex gap-2">
             <button onClick={handleRestore} className="p-2 bg-theme-border-faint hover:bg-white/10 border border-theme-border rounded-lg text-theme-muted transition" title="Restaurar Original">
               <RefreshCcw size={16} />
             </button>
-            <button onClick={handleSave} disabled={isSaving} className="flex items-center gap-2 px-4 py-2 bg-gradient-gold hover:opacity-90 text-theme-text text-sm font-bold uppercase rounded-lg transition disabled:opacity-50">
+            <button onClick={handleSave} disabled={isSaving} className="flex items-center gap-2 px-4 py-2 bg-gradient-gold hover:opacity-90 text-theme-text text-base font-bold uppercase rounded-lg transition disabled:opacity-50">
               <Save size={16} />
               {isSaving ? 'Salvando...' : 'Salvar'}
             </button>
@@ -111,7 +111,7 @@ export const StorefrontCustomizer: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-t-lg text-xs transition whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-t-lg text-sm transition whitespace-nowrap ${
                 activeTab === tab.id 
                   ? 'bg-white/10 text-gold-400 font-bold border-b-2 border-gold-400' 
                   : 'text-theme-muted hover:text-theme-text hover:bg-theme-border-faint'
@@ -129,14 +129,14 @@ export const StorefrontCustomizer: React.FC = () => {
         {activeTab === 'colors' && (
           <div className="space-y-8 max-w-2xl">
             <div className="space-y-6">
-              <h3 className="text-lg font-serif text-theme-text border-b border-theme-border pb-2">Tema Claro/Escuro</h3>
+              <h3 className="text-xl font-serif text-theme-text border-b border-theme-border pb-2">Tema Claro/Escuro</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Tema Padrão da Loja</label>
                   <select
                     value={localConfig.defaultTheme}
                     onChange={e => handleChange('defaultTheme', e.target.value)}
-                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text focus:outline-none focus:border-gold-500"
                   >
                     <option value="dark" className="bg-luxury-gray text-theme-text">Modo Escuro (Padrão Luxo)</option>
                     <option value="light" className="bg-luxury-gray text-theme-text">Modo Claro</option>
@@ -152,7 +152,7 @@ export const StorefrontCustomizer: React.FC = () => {
                       onChange={e => handleChange('allowUserThemeToggle', e.target.checked)}
                       className="form-checkbox text-gold-500 rounded bg-theme-border-faint border-theme-border focus:ring-gold-500 focus:ring-offset-luxury-gray"
                     />
-                    <span className="text-sm font-medium text-theme-text">Permitir que o cliente alterne o tema?</span>
+                    <span className="text-base font-medium text-theme-text">Permitir que o cliente alterne o tema?</span>
                   </label>
                   <p className="text-[10px] text-theme-muted pl-6">Se ativo, exibe o botão 🌓 no menu.</p>
                 </div>
@@ -160,7 +160,7 @@ export const StorefrontCustomizer: React.FC = () => {
             </div>
 
             <div className="space-y-6">
-              <h3 className="text-lg font-serif text-theme-text border-b border-theme-border pb-2">Paleta de Cores da Marca</h3>
+              <h3 className="text-xl font-serif text-theme-text border-b border-theme-border pb-2">Paleta de Cores da Marca</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Cor Primária (Destaques e Botões)</label>
@@ -175,7 +175,7 @@ export const StorefrontCustomizer: React.FC = () => {
                     type="text" 
                     value={localConfig.primaryColor}
                     onChange={e => handleChange('primaryColor', e.target.value)}
-                    className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                    className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                   />
                 </div>
               </div>
@@ -192,7 +192,7 @@ export const StorefrontCustomizer: React.FC = () => {
                     type="text" 
                     value={localConfig.secondaryColor}
                     onChange={e => handleChange('secondaryColor', e.target.value)}
-                    className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                    className="flex-1 bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                   />
                 </div>
               </div>
@@ -205,7 +205,7 @@ export const StorefrontCustomizer: React.FC = () => {
         {activeTab === 'identity' && (
           <div className="space-y-8 max-w-3xl">
             <div className="space-y-4">
-              <h3 className="text-lg font-serif text-theme-text border-b border-theme-border pb-2">Informações Básicas</h3>
+              <h3 className="text-xl font-serif text-theme-text border-b border-theme-border pb-2">Informações Básicas</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Nome da Loja</label>
@@ -213,7 +213,7 @@ export const StorefrontCustomizer: React.FC = () => {
                     type="text"
                     value={localConfig.storeName}
                     onChange={e => handleChange('storeName', e.target.value)}
-                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                   />
                 </div>
                 <div className="space-y-1">
@@ -222,14 +222,14 @@ export const StorefrontCustomizer: React.FC = () => {
                     type="text"
                     value={localConfig.slogan}
                     onChange={e => handleChange('slogan', e.target.value)}
-                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                   />
                 </div>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-lg font-serif text-theme-text border-b border-theme-border pb-2">Logos (URLs)</h3>
+              <h3 className="text-xl font-serif text-theme-text border-b border-theme-border pb-2">Logos (URLs)</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <ImageUploadInput
                   label="Logo Modo Claro"
@@ -250,7 +250,7 @@ export const StorefrontCustomizer: React.FC = () => {
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-lg font-serif text-theme-text border-b border-theme-border pb-2">Barra de Frete Grátis</h3>
+              <h3 className="text-xl font-serif text-theme-text border-b border-theme-border pb-2">Barra de Frete Grátis</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Texto da Barra</label>
@@ -258,7 +258,7 @@ export const StorefrontCustomizer: React.FC = () => {
                     type="text"
                     value={localConfig.shippingBarText}
                     onChange={e => handleChange('shippingBarText', e.target.value)}
-                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                   />
                 </div>
                 <div className="space-y-1">
@@ -267,14 +267,14 @@ export const StorefrontCustomizer: React.FC = () => {
                     type="number"
                     value={localConfig.minFreeShippingValue}
                     onChange={e => handleChange('minFreeShippingValue', parseFloat(e.target.value) || 0)}
-                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                   />
                 </div>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-lg font-serif text-theme-text border-b border-theme-border pb-2">Pop-up Inicial</h3>
+              <h3 className="text-xl font-serif text-theme-text border-b border-theme-border pb-2">Pop-up Inicial</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Texto do Pop-up</label>
@@ -282,7 +282,7 @@ export const StorefrontCustomizer: React.FC = () => {
                     type="text"
                     value={localConfig.popupText}
                     onChange={e => handleChange('popupText', e.target.value)}
-                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                   />
                 </div>
                 <div className="space-y-1">
@@ -291,7 +291,7 @@ export const StorefrontCustomizer: React.FC = () => {
                     type="text"
                     value={localConfig.popupCoupon}
                     onChange={e => handleChange('popupCoupon', e.target.value)}
-                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                    className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                   />
                 </div>
               </div>
@@ -303,7 +303,7 @@ export const StorefrontCustomizer: React.FC = () => {
         {activeTab === 'hero' && (
           <div className="space-y-8 max-w-3xl">
             <div className="bg-gold-500/10 border border-gold-500/20 p-4 rounded-lg">
-              <p className="text-xs text-gold-400">
+              <p className="text-sm text-gold-400">
                 O Hero Banner padrão da loja (quando não houver uma campanha sazonal ativa sobrepondo).
               </p>
             </div>
@@ -325,7 +325,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   placeholder="Ex: ✨ ❤️ ESPECIAL DIA DOS NAMORADOS"
                   value={localConfig.heroBadge}
                   onChange={e => handleChange('heroBadge', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
               <div className="space-y-1">
@@ -334,7 +334,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   type="text"
                   value={localConfig.heroTitle}
                   onChange={e => handleChange('heroTitle', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
               <div className="space-y-1">
@@ -343,7 +343,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   type="text"
                   value={localConfig.heroSubtitle}
                   onChange={e => handleChange('heroSubtitle', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
               <div className="space-y-1">
@@ -352,7 +352,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   type="text"
                   value={localConfig.heroButtonText}
                   onChange={e => handleChange('heroButtonText', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
               <div className="space-y-1">
@@ -362,7 +362,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   placeholder="Ex: catalog ou product-123"
                   value={localConfig.heroButtonLink}
                   onChange={e => handleChange('heroButtonLink', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
             </div>
@@ -379,7 +379,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   type="text"
                   value={localConfig.whatsapp}
                   onChange={e => handleChange('whatsapp', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
               <div className="space-y-1">
@@ -388,7 +388,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   type="email"
                   value={localConfig.supportEmail}
                   onChange={e => handleChange('supportEmail', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
               <div className="space-y-1">
@@ -397,7 +397,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   type="text"
                   value={localConfig.instagramUrl}
                   onChange={e => handleChange('instagramUrl', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
               <div className="space-y-1">
@@ -406,7 +406,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   type="text"
                   value={localConfig.facebookUrl}
                   onChange={e => handleChange('facebookUrl', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
               <div className="space-y-1">
@@ -415,7 +415,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   type="text"
                   value={localConfig.tiktokUrl}
                   onChange={e => handleChange('tiktokUrl', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
               <div className="space-y-1">
@@ -424,7 +424,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   type="text"
                   value={localConfig.youtubeUrl}
                   onChange={e => handleChange('youtubeUrl', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
             </div>
@@ -434,7 +434,7 @@ export const StorefrontCustomizer: React.FC = () => {
               <textarea
                 value={localConfig.storeAddress}
                 onChange={e => handleChange('storeAddress', e.target.value)}
-                className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text min-h-[60px]"
+                className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text min-h-[60px]"
               />
             </div>
             <div className="space-y-1">
@@ -442,7 +442,7 @@ export const StorefrontCustomizer: React.FC = () => {
               <textarea
                 value={localConfig.footerText}
                 onChange={e => handleChange('footerText', e.target.value)}
-                className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text min-h-[60px]"
+                className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text min-h-[60px]"
               />
             </div>
           </div>
@@ -451,7 +451,7 @@ export const StorefrontCustomizer: React.FC = () => {
         {/* TAB TRACKING */}
         {activeTab === 'tracking' && (
           <div className="space-y-4">
-            <h3 className="text-sm font-serif text-theme-text border-b border-theme-border pb-2">Pixels e Analytics</h3>
+            <h3 className="text-base font-serif text-theme-text border-b border-theme-border pb-2">Pixels e Analytics</h3>
             <div className="bg-theme-border-faint border border-theme-border p-3 rounded-lg mb-4">
               <p className="text-[10px] text-theme-muted">
                 Cole aqui os IDs dos seus pixels (ex: <span className="text-gold-400 font-mono">123456789</span> para Meta).
@@ -465,7 +465,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   placeholder="Ex: 123456789012345"
                   value={localConfig.metaPixel}
                   onChange={e => handleChange('metaPixel', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
               <div className="space-y-1">
@@ -475,7 +475,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   placeholder="Ex: G-XXXXXXXXXX"
                   value={localConfig.googleAnalytics}
                   onChange={e => handleChange('googleAnalytics', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
               <div className="space-y-1">
@@ -485,7 +485,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   placeholder="Ex: GTM-XXXXXX"
                   value={localConfig.googleTagManager}
                   onChange={e => handleChange('googleTagManager', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
               <div className="space-y-1">
@@ -495,7 +495,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   placeholder="Ex: C1234567890"
                   value={localConfig.tiktokPixel}
                   onChange={e => handleChange('tiktokPixel', e.target.value)}
-                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-sm text-theme-text"
+                  className="w-full bg-theme-border-faint border border-theme-border rounded-lg px-3 py-2 text-base text-theme-text"
                 />
               </div>
             </div>
@@ -506,7 +506,7 @@ export const StorefrontCustomizer: React.FC = () => {
 
     {/* RIGHT: LIVE PREVIEW */}
       <div className="hidden lg:flex flex-1 flex-col space-y-2 relative">
-        <h3 className="text-xs uppercase tracking-widest text-theme-muted font-bold">Preview ao Vivo</h3>
+        <h3 className="text-sm uppercase tracking-widest text-theme-muted font-bold">Preview ao Vivo</h3>
         
         {/* Container do Mock - Escalado para caber na tela */}
         <div className="flex-1 bg-black rounded-xl border border-theme-border overflow-hidden relative flex flex-col items-center justify-start p-4 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAHElEQVQYV2NkYGAwYcADIwMkgIETUIIhhV0YAAAAASUVORK5CYII=')] bg-repeat">
@@ -515,7 +515,7 @@ export const StorefrontCustomizer: React.FC = () => {
             
             {/* Header Mock */}
             <div className="border-b border-theme-border-faint bg-luxury-gray/90 backdrop-blur-md">
-              <div className="bg-gradient-gold text-theme-text text-xs font-semibold py-1.5 px-4 text-center tracking-widest uppercase">
+              <div className="bg-gradient-gold text-theme-text text-sm font-semibold py-1.5 px-4 text-center tracking-widest uppercase">
                 {localConfig.shippingBarText}
               </div>
               <div className="h-20 px-8 flex items-center justify-between">
@@ -534,8 +534,8 @@ export const StorefrontCustomizer: React.FC = () => {
                   )}
                 </div>
                 <div className="flex space-x-6">
-                  <div className="text-xs font-semibold tracking-widest uppercase text-gold-400 border-b border-gold-400/50 pb-1">INÍCIO</div>
-                  <div className="text-xs font-semibold tracking-widest uppercase text-theme-muted">PRESENTES</div>
+                  <div className="text-sm font-semibold tracking-widest uppercase text-gold-400 border-b border-gold-400/50 pb-1">INÍCIO</div>
+                  <div className="text-sm font-semibold tracking-widest uppercase text-theme-muted">PRESENTES</div>
                 </div>
               </div>
             </div>
@@ -549,7 +549,7 @@ export const StorefrontCustomizer: React.FC = () => {
               
               <div className="relative z-10 text-center space-y-6 max-w-2xl">
                 {localConfig.heroBadge && (
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-theme-border-faint border border-theme-border text-[10px] sm:text-xs font-bold tracking-widest text-gold-400 uppercase">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-theme-border-faint border border-theme-border text-[10px] sm:text-sm font-bold tracking-widest text-gold-400 uppercase">
                     <Sparkles size={12} className="animate-spin-slow" />
                     <span>{localConfig.heroBadge}</span>
                   </div>
@@ -558,10 +558,10 @@ export const StorefrontCustomizer: React.FC = () => {
                 <h1 className="font-serif text-5xl font-extralight tracking-tight text-theme-text">
                   {localConfig.heroTitle}
                 </h1>
-                <p className="text-theme-muted text-lg font-light">
+                <p className="text-theme-muted text-xl font-light">
                   {localConfig.heroSubtitle}
                 </p>
-                <button className="bg-gradient-gold text-theme-text px-8 py-3 rounded-full font-bold tracking-widest uppercase text-sm mt-4">
+                <button className="bg-gradient-gold text-theme-text px-8 py-3 rounded-full font-bold tracking-widest uppercase text-base mt-4">
                   {localConfig.heroButtonText}
                 </button>
               </div>
@@ -570,7 +570,7 @@ export const StorefrontCustomizer: React.FC = () => {
             {/* Footer Mock */}
             <div className="bg-luxury-gray/50 border-t border-theme-border-faint p-6 flex flex-col items-center justify-center text-center space-y-2">
                <div className="text-gold-400 font-serif text-xl tracking-widest">{localConfig.storeName}</div>
-               <p className="text-xs text-theme-muted">{localConfig.storeAddress}</p>
+               <p className="text-sm text-theme-muted">{localConfig.storeAddress}</p>
                <p className="text-[10px] text-theme-text">{localConfig.footerText}</p>
             </div>
 

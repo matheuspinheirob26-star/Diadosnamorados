@@ -142,7 +142,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
           {selectedCategory !== 'Todos' ? selectedCategory : 'Coleção de Presentes'}
         </h2>
         <div className="h-0.5 w-16 bg-gradient-gold mx-auto" />
-        <p className="text-xs text-theme-muted uppercase tracking-widest">
+        <p className="text-sm text-theme-muted uppercase tracking-widest">
           {filteredProducts.length} presente{filteredProducts.length !== 1 && 's'} disponível{filteredProducts.length !== 1 && 's'}
         </p>
       </div>
@@ -154,7 +154,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
         <aside className="hidden lg:block space-y-6 bg-white/2 border border-theme-border-faint p-6 rounded-2xl h-fit">
           
           <div className="flex items-center justify-between border-b border-theme-border-faint pb-4">
-            <span className="text-xs font-semibold text-white tracking-wider uppercase flex items-center gap-2">
+            <span className="text-sm font-semibold text-white tracking-wider uppercase flex items-center gap-2">
               <SlidersHorizontal size={14} className="text-gold-500" /> Filtros
             </span>
             <button
@@ -175,7 +175,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
                 placeholder="Pesquisar..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition"
               />
             </div>
           </div>
@@ -188,7 +188,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`text-left text-xs py-1.5 px-2 rounded-lg transition-all ${
+                  className={`text-left text-sm py-1.5 px-2 rounded-lg transition-all ${
                     selectedCategory === cat
                       ? 'bg-gold-500/10 text-gold-400 font-semibold'
                       : 'text-theme-muted hover:text-white hover:bg-white/5'
@@ -208,7 +208,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
                 <button
                   key={gender}
                   onClick={() => setSelectedGender(gender)}
-                  className={`text-left text-xs py-1.5 px-2 rounded-lg transition-all ${
+                  className={`text-left text-sm py-1.5 px-2 rounded-lg transition-all ${
                     selectedGender === gender
                       ? 'bg-gold-500/10 text-gold-400 font-semibold'
                       : 'text-theme-muted hover:text-white hover:bg-white/5'
@@ -233,7 +233,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
                 <button
                   key={range.value}
                   onClick={() => setPriceRange(range.value)}
-                  className={`text-left text-xs py-1.5 px-2 rounded-lg transition-all ${
+                  className={`text-left text-sm py-1.5 px-2 rounded-lg transition-all ${
                     priceRange === range.value
                       ? 'bg-gold-500/10 text-gold-400 font-semibold'
                       : 'text-theme-muted hover:text-white hover:bg-white/5'
@@ -255,13 +255,13 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
             {/* Mobile Filter Toggle */}
             <button
               onClick={() => setMobileFiltersOpen(true)}
-              className="lg:hidden flex items-center gap-1.5 text-xs text-white border border-white/10 px-3 py-1.5 rounded-lg bg-white/5 cursor-pointer"
+              className="lg:hidden flex items-center gap-1.5 text-sm text-white border border-white/10 px-3 py-1.5 rounded-lg bg-white/5 cursor-pointer"
             >
               <SlidersHorizontal size={14} />
               <span>Filtros</span>
             </button>
             
-            <span className="hidden sm:inline text-xs text-theme-muted">
+            <span className="hidden sm:inline text-sm text-theme-muted">
               Mostrando {filteredProducts.length} de {products.length} presentes
             </span>
 
@@ -271,7 +271,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="bg-luxury-black border border-white/10 rounded-lg text-xs text-white px-3 py-1.5 focus:outline-none focus:border-gold-500 transition cursor-pointer"
+                className="bg-luxury-black border border-white/10 rounded-lg text-sm text-white px-3 py-1.5 focus:outline-none focus:border-gold-500 transition cursor-pointer"
               >
                 <option value="mais-vendidos">Mais Vendidos</option>
                 <option value="menor-preco">Menor Preço</option>
@@ -326,14 +326,14 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
                 <HelpCircle size={24} />
               </div>
               <div className="space-y-1">
-                <h3 className="font-serif text-white tracking-wider text-lg">Nenhum Presente Encontrado</h3>
-                <p className="text-xs text-theme-muted max-w-sm mx-auto leading-relaxed">
+                <h3 className="font-serif text-white tracking-wider text-xl">Nenhum Presente Encontrado</h3>
+                <p className="text-sm text-theme-muted max-w-sm mx-auto leading-relaxed">
                   Tente alterar os termos de busca ou redefinir os filtros para explorar toda a nossa coleção de presentes finos.
                 </p>
               </div>
               <button
                 onClick={handleClearFilters}
-                className="bg-gradient-gold text-theme-text font-semibold text-xs tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+                className="bg-gradient-gold text-theme-text font-semibold text-sm tracking-widest uppercase px-6 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
               >
                 Limpar Todos os Filtros
               </button>
@@ -364,7 +364,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
           <div className="relative w-full max-w-xs bg-luxury-gray h-full border-l border-theme-border-faint p-6 flex flex-col justify-between shadow-2xl">
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b border-theme-border-faint pb-4">
-                <span className="text-xs font-semibold text-white tracking-wider uppercase flex items-center gap-2">
+                <span className="text-sm font-semibold text-white tracking-wider uppercase flex items-center gap-2">
                   <SlidersHorizontal size={14} className="text-gold-500" /> Filtros
                 </span>
                 <button
@@ -385,7 +385,7 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
                     placeholder="Pesquisar..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition"
                   />
                 </div>
               </div>
@@ -459,13 +459,13 @@ export const Catalog: React.FC<CatalogProps> = ({ onNavigate, filterState, onRes
             <div className="flex gap-2 border-t border-theme-border-faint pt-4">
               <button
                 onClick={handleClearFilters}
-                className="flex-1 border border-white/10 hover:bg-white/5 text-white py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition cursor-pointer"
+                className="flex-1 border border-white/10 hover:bg-white/5 text-white py-2.5 rounded-lg text-sm font-semibold uppercase tracking-wider transition cursor-pointer"
               >
                 Limpar
               </button>
               <button
                 onClick={() => setMobileFiltersOpen(false)}
-                className="flex-1 bg-gradient-gold text-theme-text py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition cursor-pointer"
+                className="flex-1 bg-gradient-gold text-theme-text py-2.5 rounded-lg text-sm font-semibold uppercase tracking-wider transition cursor-pointer"
               >
                 Aplicar
               </button>

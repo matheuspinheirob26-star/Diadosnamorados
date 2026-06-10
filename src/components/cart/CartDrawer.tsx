@@ -76,8 +76,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
             <div className="p-6 border-b border-theme-border-faint flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ShoppingBag size={20} className="text-gold-500" />
-                <h2 className="font-serif text-lg text-white tracking-wider uppercase">Seu Carrinho</h2>
-                <span className="text-xs bg-white/5 border border-white/10 px-2 py-0.5 rounded-full text-theme-muted">
+                <h2 className="font-serif text-xl text-white tracking-wider uppercase">Seu Carrinho</h2>
+                <span className="text-sm bg-white/5 border border-white/10 px-2 py-0.5 rounded-full text-theme-muted">
                   {cart.length}
                 </span>
               </div>
@@ -94,7 +94,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
               
               {/* Free Shipping Progress Bar */}
               <div className="bg-white/5 border border-theme-border-faint p-4 rounded-xl space-y-2.5">
-                <div className="text-xs flex justify-between">
+                <div className="text-sm flex justify-between">
                   <span className="text-theme-muted font-medium">
                     {isFreeShipping 
                       ? '✨ Parabéns! Você ganhou Frete Grátis!' 
@@ -121,11 +121,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                   </div>
                   <div>
                     <h3 className="font-serif text-white tracking-wider">Carrinho Vazio</h3>
-                    <p className="text-xs text-theme-muted mt-1">Sua sacola de presentes está esperando para ser preenchida.</p>
+                    <p className="text-sm text-theme-muted mt-1">Sua sacola de presentes está esperando para ser preenchida.</p>
                   </div>
                   <button
                     onClick={onClose}
-                    className="border border-gold-500/30 hover:border-gold-500 text-gold-400 hover:text-white px-6 py-2 rounded-lg text-xs font-semibold tracking-widest uppercase transition duration-300"
+                    className="border border-gold-500/30 hover:border-gold-500 text-gold-400 hover:text-white px-6 py-2 rounded-lg text-sm font-semibold tracking-widest uppercase transition duration-300"
                   >
                     Continuar Navegando
                   </button>
@@ -143,11 +143,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                       
                       {/* Details */}
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-xs font-semibold text-white truncate">{item.product.name}</h4>
+                        <h4 className="text-sm font-semibold text-white truncate">{item.product.name}</h4>
                         {item.selectedSize && (
                           <p className="text-[10px] text-theme-muted mt-0.5">Tamanho: <span className="text-theme-muted font-medium">{item.selectedSize}</span></p>
                         )}
-                        <p className="text-xs text-gold-400 font-semibold mt-1">
+                        <p className="text-sm text-gold-400 font-semibold mt-1">
                           {formatCurrency(item.product.price)}
                         </p>
                         
@@ -160,7 +160,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                             >
                               <Minus size={12} />
                             </button>
-                            <span className="px-2.5 text-xs text-white font-medium">{item.quantity}</span>
+                            <span className="px-2.5 text-sm text-white font-medium">{item.quantity}</span>
                             <button
                               onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.selectedSize)}
                               className="p-1.5 text-theme-muted hover:text-white"
@@ -261,7 +261,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                 
                 {/* Promo Coupon Form */}
                 {activeCoupon ? (
-                  <div className="flex items-center justify-between bg-gold-600/10 border border-gold-500/25 px-3 py-2 rounded-xl text-xs">
+                  <div className="flex items-center justify-between bg-gold-600/10 border border-gold-500/25 px-3 py-2 rounded-xl text-sm">
                     <div className="flex items-center gap-2 text-gold-400 font-medium">
                       <Tag size={12} />
                       <span>{activeCoupon.code}</span>
@@ -285,13 +285,13 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                         placeholder="Cupom de desconto (ex: NAMORADOS10)"
                         value={couponCode}
                         onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-gold-500 transition"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition"
                       />
                     </div>
                     <button
                       type="submit"
                       disabled={couponLoading}
-                      className="bg-white/5 hover:bg-white/10 text-white border border-white/10 px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition cursor-pointer"
+                      className="bg-white/5 hover:bg-white/10 text-white border border-white/10 px-4 py-2 rounded-lg text-sm font-semibold uppercase tracking-wider transition cursor-pointer"
                     >
                       Aplicar
                     </button>
@@ -300,7 +300,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                 {couponError && <p className="text-[10px] text-rose-400 mt-1">{couponError}</p>}
 
                 {/* Calculation Summary */}
-                <div className="space-y-2 text-xs text-theme-muted">
+                <div className="space-y-2 text-sm text-theme-muted">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
                     <span className="text-white">{formatCurrency(cartSubtotal)}</span>
@@ -317,16 +317,16 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                       {isFreeShipping ? <span className="text-gold-400 font-semibold">Grátis</span> : 'Calculado no Checkout'}
                     </span>
                   </div>
-                  <div className="border-t border-theme-border-faint pt-3 flex justify-between text-sm font-bold text-white">
+                  <div className="border-t border-theme-border-faint pt-3 flex justify-between text-base font-bold text-white">
                     <span>Total Estimado</span>
-                    <span className="text-gold-400 text-base">{formatCurrency(cartTotal)}</span>
+                    <span className="text-gold-400 text-lg">{formatCurrency(cartTotal)}</span>
                   </div>
                 </div>
 
                 {/* Checkout CTA */}
                 <button
                   onClick={handleCheckoutClick}
-                  className="w-full bg-gradient-gold hover:shadow-lg text-theme-text font-semibold tracking-widest uppercase py-3.5 rounded-lg text-xs transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer"
+                  className="w-full bg-gradient-gold hover:shadow-lg text-theme-text font-semibold tracking-widest uppercase py-3.5 rounded-lg text-sm transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer"
                 >
                   <span>Finalizar Compra</span>
                   <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
