@@ -58,8 +58,8 @@ export const StorefrontCustomizer: React.FC = () => {
   }, [config]);
 
   // Atualiza o preview global a cada digitação
-  const handleChange = (field: keyof StorefrontConfig, value: string | number) => {
-    const updated = { ...localConfig, [field]: value };
+  const handleChange = (field: keyof StorefrontConfig, value: string | number | boolean) => {
+    const updated = { ...localConfig, [field]: value } as StorefrontConfig;
     setLocalConfig(updated);
     setPreviewConfig(updated);
   };
@@ -196,6 +196,7 @@ export const StorefrontCustomizer: React.FC = () => {
                   />
                 </div>
               </div>
+            </div>
             </div>
           </div>
         )}
@@ -500,11 +501,10 @@ export const StorefrontCustomizer: React.FC = () => {
             </div>
           </div>
         )}
-
       </div>
-      </div>
+    </div>
 
-      {/* RIGHT: LIVE PREVIEW */}
+    {/* RIGHT: LIVE PREVIEW */}
       <div className="hidden lg:flex flex-1 flex-col space-y-2 relative">
         <h3 className="text-xs uppercase tracking-widest text-gray-500 font-bold">Preview ao Vivo</h3>
         
