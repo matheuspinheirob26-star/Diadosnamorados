@@ -32,13 +32,18 @@ import { PaymentsManager } from '../components/admin/PaymentsManager';
 import { StorefrontCustomizer } from '../components/admin/StorefrontCustomizer';
 import { SystemLogsTab } from '../components/admin/SystemLogsTab';
 import { AiConciergeTab } from '../components/admin/AiConciergeTab';
+import { UsersManager } from '../components/admin/UsersManager';
+import { ActiveSessionsTab } from '../components/admin/ActiveSessionsTab';
+import { SecurityEventsTab } from '../components/admin/SecurityEventsTab';
+import { DoubleApprovalsTab } from '../components/admin/DoubleApprovalsTab';
 import { useCampaign } from '../context/CampaignContext';
 import { useAuth } from '../context/AuthContext';
 import { LogService } from '../lib/LogService';
+import { supabase } from '../lib/supabase';
 
 export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
-  const { adminLogout } = useAuth();
+  const { adminLogout, adminUser } = useAuth();
   const { currentCampaign, setCampaign, allCampaigns } = useCampaign();
 
   // Database States
@@ -60,6 +65,7 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
   const [avgTicket, setAvgTicket] = useState(0);
   const [conversionRate, setConversionRate] = useState(4.8); // simulated default %
   const [activeLeadsCount, setActiveLeadsCount] = useState(0);
+  const [criticalEventsCount, setCriticalEventsCount] = useState(0);
 
   // Selected Order Detail Modal
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -78,6 +84,51 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
     const fetchedCoupons = await api.getCoupons();
     setCoupons(fetchedCoupons);
   };
+
+  // Proteger abas conforme a role do usuário (Regra 7 / Proteção de Rotas)
+  useEffect(() => {
+    const role = adminUser?.role || 'support';
+    
+    const isAllowed = (): boolean => {
+      if (role === 'super_admin') return true;
+      if (role === 'admin') {
+        return !['payments', 'ai_concierge', 'users_manager', 'system_logs', 'settings'].includes(activeTab);
+      }
+      if (role === 'manager') {
+        return ['dashboard', 'orders', 'customers', 'leads', 'reviews'].includes(activeTab);
+      }
+      if (role === 'support') {
+        return ['dashboard', 'orders', 'customers', 'leads'].includes(activeTab);
+      }
+      return false;
+    };
+
+    if (adminUser && !isAllowed()) {
+      setActiveTab('dashboard');
+    }
+  }, [activeTab, adminUser]);
+
+  const checkCriticalEvents = async () => {
+    if (!supabase) return;
+    try {
+      const { count, error } = await supabase
+        .from('security_events')
+        .select('*', { count: 'exact', head: true })
+        .eq('severity', 'CRITICAL');
+        
+      if (!error && count !== null) {
+        setCriticalEventsCount(count);
+      }
+    } catch (err) {
+      console.warn('Erro ao verificar eventos críticos:', err);
+    }
+  };
+
+  useEffect(() => {
+    checkCriticalEvents();
+    const interval = setInterval(checkCriticalEvents, 30000); // 30s
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     loadAllData();
@@ -190,6 +241,29 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
   return (
     <AdminLayout activeTab={activeTab} setActiveTab={setActiveTab} onLogout={handleLogout}>
+      
+      {/* Global Critical Event Banner */}
+      {criticalEventsCount > 0 && (
+        <div className="bg-rose-950/90 border border-rose-500/35 text-rose-400 p-4 rounded-2xl flex items-center justify-between gap-3 animate-pulse mb-6">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">⚠️</span>
+            <div className="text-left">
+              <span className="text-xs uppercase tracking-widest font-extrabold block">
+                ALERTA CRÍTICO DE SEGURANÇA
+              </span>
+              <span className="text-[10px] text-theme-muted mt-0.5 block">
+                Existem {criticalEventsCount} evento(s) crítico(s) de segurança pendente(s) de revisão imediata.
+              </span>
+            </div>
+          </div>
+          <button
+            onClick={() => setActiveTab('security_events')}
+            className="bg-rose-500/20 hover:bg-rose-500/35 border border-rose-500/35 text-rose-400 text-[9px] uppercase tracking-widest px-3 py-1.5 rounded-lg transition font-bold cursor-pointer shrink-0"
+          >
+            Auditar Logs
+          </button>
+        </div>
+      )}
       
       {/* 1. DASHBOARD TAB */}
       {activeTab === 'dashboard' && (
@@ -950,6 +1024,34 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
       {activeTab === 'ai_concierge' && (
         <div className="animate-fadeIn">
           <AiConciergeTab />
+        </div>
+      )}
+
+      {/* USERS & PERMISSIONS TAB */}
+      {activeTab === 'users_manager' && (
+        <div className="animate-fadeIn">
+          <UsersManager />
+        </div>
+      )}
+
+      {/* DOUBLE APPROVALS TAB */}
+      {activeTab === 'double_approvals' && (
+        <div className="animate-fadeIn">
+          <DoubleApprovalsTab />
+        </div>
+      )}
+
+      {/* ACTIVE SESSIONS TAB */}
+      {activeTab === 'active_sessions' && (
+        <div className="animate-fadeIn">
+          <ActiveSessionsTab />
+        </div>
+      )}
+
+      {/* SECURITY EVENTS TAB */}
+      {activeTab === 'security_events' && (
+        <div className="animate-fadeIn">
+          <SecurityEventsTab />
         </div>
       )}
 

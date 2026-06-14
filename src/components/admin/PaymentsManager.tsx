@@ -12,6 +12,8 @@ import { WebhookService } from '../../lib/payments/WebhookService';
 import { GatewayConfig, GatewayName, Transaction, WebhookEvent, PaymentAttempt } from '../../types/payments';
 import { formatCurrency } from '../../lib/utils';
 import { LogService } from '../../lib/LogService';
+import { useAuth } from '../../context/AuthContext';
+import { supabase } from '../../lib/supabase';
 
 // ─── Gateway Metadata ────────────────────────────────────────────────────────
 
@@ -70,6 +72,14 @@ export const PaymentsManager: React.FC = () => {
   const [localEdits, setLocalEdits] = useState<Partial<Record<GatewayName, Partial<GatewayConfig>>>>({});
   const [copied, setCopied] = useState('');
 
+  // Reauth & Governance States
+  const { fingerprint, correlationId } = useAuth();
+  const [reauthGateway, setReauthGateway] = useState<GatewayName | null>(null);
+  const [reauthEdits, setReauthEdits] = useState<any>(null);
+  const [reauthPassword, setReauthPassword] = useState('');
+  const [reauthError, setReauthError] = useState<string | null>(null);
+  const [reauthLoading, setReauthLoading] = useState(false);
+
   const loadData = useCallback(async () => {
     setLoading(true);
     const [cfgs] = await Promise.all([GatewayConfigService.getAll()]);
@@ -89,23 +99,84 @@ export const PaymentsManager: React.FC = () => {
     }));
   };
 
-  const handleSave = async (gateway: GatewayName) => {
+  const handleSave = (gateway: GatewayName) => {
     const edits = localEdits[gateway];
     if (!edits) return;
-    setSaving(true);
-    await GatewayConfigService.update(gateway, edits);
-    setSavedGateway(gateway);
-    setLocalEdits(prev => { const n = { ...prev }; delete n[gateway]; return n; });
-    await loadData();
-    LogService.log('Gateway Configurado', `Configurações salvas para o gateway ${gateway}`, 'Admin', 'admin@amour.co', 'payment', gateway, 'success');
-    setSaving(false);
-    setTimeout(() => setSavedGateway(null), 2000);
+    
+    setReauthGateway(gateway);
+    const currentCfg = configs.find(c => c.gateway === gateway);
+    const mergedConfig = {
+      publicKey: edits.publicKey !== undefined ? edits.publicKey : (currentCfg?.publicKey ?? ''),
+      clientId: edits.clientId !== undefined ? edits.clientId : (currentCfg?.clientId ?? ''),
+      walletBTC: edits.walletBTC !== undefined ? edits.walletBTC : (currentCfg?.walletBTC ?? ''),
+      walletETH: edits.walletETH !== undefined ? edits.walletETH : (currentCfg?.walletETH ?? ''),
+      walletUSDT_TRC20: edits.walletUSDT_TRC20 !== undefined ? edits.walletUSDT_TRC20 : (currentCfg?.walletUSDT_TRC20 ?? ''),
+      walletUSDT_ERC20: edits.walletUSDT_ERC20 !== undefined ? edits.walletUSDT_ERC20 : (currentCfg?.walletUSDT_ERC20 ?? ''),
+    };
+
+    setReauthEdits({
+      enabled: currentCfg?.enabled ?? true,
+      priority: currentCfg?.priority ?? 1,
+      config: mergedConfig
+    });
+    setReauthError(null);
+    setReauthPassword('');
   };
 
-  const handleToggle = async (gateway: GatewayName, enabled: boolean) => {
-    await GatewayConfigService.update(gateway, { enabled });
-    LogService.log('Gateway Alterado', `Gateway ${gateway} foi ${enabled ? 'ativado' : 'desativado'}.`, 'Admin', 'admin@amour.co', 'payment', gateway, enabled ? 'info' : 'warning');
-    await loadData();
+  const handleToggle = (gateway: GatewayName, enabled: boolean) => {
+    setReauthGateway(gateway);
+    const currentCfg = configs.find(c => c.gateway === gateway);
+    setReauthEdits({
+      enabled,
+      priority: currentCfg?.priority ?? 1,
+      config: {
+        publicKey: currentCfg?.publicKey ?? '',
+        clientId: currentCfg?.clientId ?? '',
+        walletBTC: currentCfg?.walletBTC ?? '',
+        walletETH: currentCfg?.walletETH ?? '',
+        walletUSDT_TRC20: currentCfg?.walletUSDT_TRC20 ?? '',
+        walletUSDT_ERC20: currentCfg?.walletUSDT_ERC20 ?? '',
+      }
+    });
+    setReauthError(null);
+    setReauthPassword('');
+  };
+
+  const handleReauthSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reauthGateway || !reauthEdits || !supabase) return;
+    setReauthLoading(true);
+    setReauthError(null);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('manage-approvals', {
+        body: {
+          action: 'request',
+          targetType: 'gateway_configs',
+          targetId: reauthGateway,
+          payload: reauthEdits,
+          currentPassword: reauthPassword,
+          fingerprint
+        },
+        headers: {
+          'correlation-id': correlationId
+        }
+      });
+
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      setLocalEdits(prev => { const n = { ...prev }; delete n[reauthGateway]; return n; });
+      setReauthGateway(null);
+      setReauthEdits(null);
+      setReauthPassword('');
+      alert("Solicitação enviada com sucesso! Um Super Admin diferente precisará homologar esta alteração na aba 'Aprovações Pendentes'.");
+      await loadData();
+    } catch (err: any) {
+      setReauthError(err?.message || 'Falha ao autenticar ou enviar solicitação.');
+    } finally {
+      setReauthLoading(false);
+    }
   };
 
   const handleMoveUp = async (gateway: GatewayName) => {
@@ -656,6 +727,68 @@ export const PaymentsManager: React.FC = () => {
               )}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* REAUTHENTICATION MODAL FOR DOUBLE APPROVAL */}
+      {reauthGateway && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn text-left">
+          <div className="absolute inset-0" onClick={() => { if (!reauthLoading) { setReauthGateway(null); setReauthEdits(null); } }} />
+          
+          <form 
+            onSubmit={handleReauthSubmit}
+            className="relative w-full max-w-md bg-luxury-gray border border-theme-border rounded-3xl p-6 sm:p-8 shadow-2xl z-10 glow-gold space-y-4 text-theme-muted"
+          >
+            <div className="flex items-center gap-2 border-b border-theme-border-faint pb-3 text-gold-400">
+              <Shield size={16} />
+              <h4 className="text-sm font-bold uppercase tracking-wider">Ação Crítica de Pagamentos</h4>
+            </div>
+
+            {reauthError && (
+              <div className="bg-rose-500/10 border border-rose-500/25 text-rose-400 text-xs p-3 rounded-xl">
+                {reauthError}
+              </div>
+            )}
+
+            <p className="text-xs text-theme-muted leading-relaxed">
+              Você está alterando as configurações do gateway <strong>{reauthGateway}</strong>. Esta ação exige aprovação dupla de outro Super Admin. 
+              Por favor, confirme sua senha administrativa antes de enviar a solicitação.
+            </p>
+
+            <div className="space-y-1.5">
+              <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Digite sua Senha</label>
+              <div className="relative">
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  value={reauthPassword}
+                  onChange={e => setReauthPassword(e.target.value)}
+                  disabled={reauthLoading}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-gold-500 transition font-mono"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2 border-t border-theme-border-faint">
+              <button
+                type="button"
+                onClick={() => { setReauthGateway(null); setReauthEdits(null); setReauthPassword(''); setReauthError(null); }}
+                className="px-4 py-2 rounded-lg text-[10px] font-semibold text-theme-muted hover:text-white transition"
+                disabled={reauthLoading}
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                disabled={reauthLoading}
+                className="bg-gradient-gold text-theme-text font-bold text-[10px] uppercase tracking-widest px-5 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+              >
+                {reauthLoading ? 'Confirmando...' : 'Confirmar e Solicitar'}
+              </button>
+            </div>
+
+          </form>
         </div>
       )}
     </div>

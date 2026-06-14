@@ -6,7 +6,7 @@ const LOCAL_STORAGE_KEY = 'amr_system_logs';
 export class LogService {
   /**
    * Registra um novo log no sistema.
-   * Tenta gravar no Supabase, caso falhe, salva no localStorage.
+   * Salva no Supabase (tabela audit_logs) com fallback local.
    */
   static async log(
     action: string,
@@ -15,7 +15,9 @@ export class LogService {
     userEmail: string = 'admin@amour.co',
     entityType: string = 'sistema',
     entityId: string = '',
-    severity: LogSeverity = 'info'
+    severity: LogSeverity = 'info',
+    oldData?: any,
+    newData?: any
   ): Promise<SystemLog> {
     const newLog: SystemLog = {
       id: `log-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
@@ -27,29 +29,35 @@ export class LogService {
       entityId,
       severity,
       timestamp: new Date().toISOString(),
-      userAgent: navigator.userAgent
+      userAgent: navigator.userAgent,
+      oldData,
+      newData
     };
 
     if (supabase) {
       try {
+        // Obter id de usuário ativo se houver
+        const { data: { session } } = await supabase.auth.getSession();
+        const userId = session?.user?.id || null;
+
         const { error } = await supabase
-          .from('system_logs')
+          .from('audit_logs')
           .insert([{
-            id: newLog.id,
             action: newLog.action,
             description: newLog.description,
-            user_name: newLog.user,
+            user_id: userId,
             user_email: newLog.userEmail,
             entity_type: newLog.entityType,
             entity_id: newLog.entityId,
             severity: newLog.severity,
-            ip: '',
-            user_agent: newLog.userAgent,
-            timestamp: newLog.timestamp
+            old_data: newLog.oldData || null,
+            new_data: newLog.newData || null,
+            ip_address: '', // Preenchido no servidor se aplicável
+            created_at: newLog.timestamp
           }]);
 
         if (error) {
-          console.warn('Erro ao salvar log no Supabase. Fazendo fallback para localStorage:', error);
+          console.warn('Erro ao salvar no audit_logs. Usando localStorage:', error);
           this.saveToLocalStorage(newLog);
         }
       } catch (err) {
@@ -66,31 +74,35 @@ export class LogService {
   /**
    * Obtém os logs ordenados do mais recente para o mais antigo.
    */
-  static async getLogs(limit: number = 50): Promise<SystemLog[]> {
+  static async getLogs(limit: number = 100): Promise<SystemLog[]> {
     if (supabase) {
       try {
         const { data, error } = await supabase
-          .from('system_logs')
+          .from('audit_logs')
           .select('*')
-          .order('timestamp', { ascending: false })
+          .order('created_at', { ascending: false })
           .limit(limit);
 
         if (!error && data) {
           return data.map((r: any) => ({
             id: r.id,
             action: r.action,
-            description: r.description,
-            user: r.user_name,
-            userEmail: r.user_email,
-            entityType: r.entity_type,
-            entityId: r.entity_id,
-            severity: r.severity,
-            timestamp: r.timestamp,
-            userAgent: r.user_agent
+            description: r.description || `${r.action} em ${r.entity_type}`,
+            user: r.user_email?.split('@')[0] || 'Sistema',
+            userEmail: r.user_email || '',
+            entityType: r.entity_type || '',
+            entityId: r.entity_id || '',
+            severity: (r.severity as LogSeverity) || 'info',
+            timestamp: r.created_at,
+            ip: r.ip_address || '',
+            oldData: r.old_data,
+            newData: r.new_data
           })) as SystemLog[];
+        } else if (error) {
+          console.warn('Erro na consulta de audit_logs:', error);
         }
       } catch (err) {
-        console.warn('Falha ao buscar logs do Supabase:', err);
+        console.warn('Falha ao buscar logs de auditoria no Supabase:', err);
       }
     }
 
@@ -100,14 +112,13 @@ export class LogService {
   private static saveToLocalStorage(log: SystemLog) {
     try {
       const existing = this.getFromLocalStorage();
-      existing.unshift(log); // Coloca no topo
-      // Mantém no máximo 1000 logs localmente para não estourar a cota
-      if (existing.length > 1000) {
-        existing.length = 1000;
+      existing.unshift(log);
+      if (existing.length > 500) {
+        existing.length = 500;
       }
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(existing));
     } catch (e) {
-      console.warn('Erro ao salvar log no localStorage:', e);
+      console.warn('Erro ao salvar log localmente:', e);
     }
   }
 
@@ -118,7 +129,7 @@ export class LogService {
         return JSON.parse(logs);
       }
     } catch (e) {
-      console.warn('Erro ao ler logs do localStorage:', e);
+      console.warn('Erro ao ler logs locais:', e);
     }
     return [];
   }

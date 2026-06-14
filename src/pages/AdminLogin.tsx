@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { QRCodeSVG } from 'qrcode.react';
 import {
   Shield, Mail, Lock, Eye, EyeOff, AlertCircle,
-  Sparkles, LogIn, ChevronRight, Clock
+  Sparkles, LogIn, ChevronRight, Clock, KeyRound, AlertTriangle
 } from 'lucide-react';
 
 interface AdminLoginProps {
@@ -11,7 +12,18 @@ interface AdminLoginProps {
 }
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
-  const { adminLogin, isAdminAuthenticated, adminUser } = useAuth();
+  const { 
+    adminLogin, 
+    isAdminAuthenticated, 
+    adminUser,
+    mfaStep,
+    mfaQrCodeUri,
+    recoveryCodes,
+    verifyMfaEnrollment,
+    challengeMfa,
+    useRecoveryCode,
+    adminLogout
+  } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,12 +34,17 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
   const [blockedUntil, setBlockedUntil] = useState<Date | null>(null);
   const [tick, setTick] = useState(0);
 
+  // MFA Inputs
+  const [mfaToken, setMfaToken] = useState('');
+  const [recoveryCodeInput, setRecoveryCodeInput] = useState('');
+  const [showRecoveryMode, setShowRecoveryMode] = useState(false);
+
   // Se já está autenticado, redirecionar direto para o admin
   useEffect(() => {
     if (isAdminAuthenticated) {
       onNavigate('admin');
     }
-  }, [isAdminAuthenticated]);
+  }, [isAdminAuthenticated, onNavigate]);
 
   // Countdown para desbloqueio após muitas tentativas
   useEffect(() => {
@@ -64,6 +81,9 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
       const result = await adminLogin(email.trim(), password);
       if (result.success) {
         onNavigate('admin');
+      } else if (result.requireMfa) {
+        // AuthContext ajustou o mfaStep para enroll ou challenge
+        setError('');
       } else {
         const newAttempts = attempts + 1;
         setAttempts(newAttempts);
@@ -78,6 +98,65 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
       }
     } catch {
       setError('Erro interno. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleMfaVerifySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    if (!mfaToken.trim()) {
+      setError('Insira o código MFA para continuar.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      let result;
+      if (mfaStep === 'enroll') {
+        result = await verifyMfaEnrollment(mfaToken);
+      } else {
+        result = await challengeMfa(mfaToken);
+      }
+
+      if (result.success) {
+        onNavigate('admin');
+      } else {
+        setError(result.error || 'Token inválido.');
+      }
+    } catch (err: any) {
+      setError(err?.message || 'Falha ao verificar segundo fator.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRecoverySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    if (!recoveryCodeInput.trim()) {
+      setError('Insira o código de recuperação.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const result = await useRecoveryCode(recoveryCodeInput);
+      if (result.success) {
+        // Redireciona para enroll (feito no AuthContext)
+        setError('');
+        setRecoveryCodeInput('');
+        setShowRecoveryMode(false);
+      } else {
+        setError(result.error || 'Código de recuperação inválido ou já utilizado.');
+      }
+    } catch (err: any) {
+      setError(err?.message || 'Falha ao validar código de recuperação.');
     } finally {
       setLoading(false);
     }
@@ -136,10 +215,10 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
           {/* Feature list */}
           <div className="space-y-3 mt-4">
             {[
-              'Gestão completa de produtos',
-              'Controle de pedidos em tempo real',
-              'Relatórios e métricas de vendas',
-              'Campanhas sazonais e cupons',
+              'Autenticação Multifator (MFA) Obrigatória',
+              'Controle de Acesso de Contingência',
+              'Sistema de Governança e Aprovação Dupla',
+              'Auditoria Completa em Tempo Real',
             ].map((item) => (
               <div key={item} className="flex items-center gap-3 text-sm text-theme-muted">
                 <div className="h-4 w-4 rounded-full bg-gold-500/10 border border-gold-500/30 flex items-center justify-center shrink-0">
@@ -160,7 +239,6 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
 
       {/* ── LOGIN PANEL (Right) ── */}
       <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 relative">
-        {/* Background */}
         <div className="absolute inset-0 bg-luxury-gray lg:border-l border-theme-border-faint" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
 
@@ -168,7 +246,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="relative z-10 w-full max-w-sm space-y-8"
+          className="relative z-10 w-full max-w-sm space-y-6"
         >
           {/* Mobile logo */}
           <div className="lg:hidden text-center">
@@ -178,18 +256,6 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
             <span className="text-[10px] tracking-[0.3em] font-medium text-theme-muted uppercase block mt-1">
               Painel Administrativo
             </span>
-          </div>
-
-          {/* Header */}
-          <div className="space-y-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center">
-                <Shield size={15} className="text-gold-400" />
-              </div>
-              <span className="text-[10px] uppercase tracking-widest text-theme-muted font-bold">Acesso Administrativo</span>
-            </div>
-            <h2 className="font-serif text-2xl text-white tracking-wide">Bem-vindo de volta</h2>
-            <p className="text-sm text-theme-muted">Entre com suas credenciais de administrador para continuar.</p>
           </div>
 
           {/* Error banner */}
@@ -218,7 +284,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
           </AnimatePresence>
 
           {/* Attempts warning */}
-          {attempts >= 3 && !isBlocked && (
+          {attempts >= 3 && !isBlocked && mfaStep === 'password' && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -229,119 +295,289 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
             </motion.div>
           )}
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-
-            {/* Email */}
-            <div className="space-y-1.5">
-              <label htmlFor="admin-email" className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">
-                E-mail Administrativo
-              </label>
-              <div className="relative">
-                <Mail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted pointer-events-none" />
-                <input
-                  id="admin-email"
-                  type="email"
-                  placeholder="admin@amour.com"
-                  value={email}
-                  onChange={(e) => { setEmail(e.target.value); setError(''); }}
-                  disabled={isBlocked || loading}
-                  autoComplete="email"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3.5 text-base text-white placeholder-gray-600 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
-                />
+          {/* Form Router based on mfaStep */}
+          
+          {/* FASE 1: Credenciais normais */}
+          {mfaStep === 'password' && (
+            <div className="space-y-6">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="h-8 w-8 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center">
+                    <Shield size={15} className="text-gold-400" />
+                  </div>
+                  <span className="text-[10px] uppercase tracking-widest text-theme-muted font-bold">Acesso Administrativo</span>
+                </div>
+                <h2 className="font-serif text-2xl text-white tracking-wide">Bem-vindo de volta</h2>
+                <p className="text-sm text-theme-muted">Entre com suas credenciais de administrador para continuar.</p>
               </div>
-            </div>
 
-            {/* Password */}
-            <div className="space-y-1.5">
-              <label htmlFor="admin-password" className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">
-                Senha de Acesso
-              </label>
-              <div className="relative">
-                <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted pointer-events-none" />
-                <input
-                  id="admin-password"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="••••••••••"
-                  value={password}
-                  onChange={(e) => { setPassword(e.target.value); setError(''); }}
-                  disabled={isBlocked || loading}
-                  autoComplete="current-password"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-12 py-3.5 text-base text-white placeholder-gray-600 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
-                />
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="space-y-1.5">
+                  <label htmlFor="admin-email" className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">
+                    E-mail Administrativo
+                  </label>
+                  <div className="relative">
+                    <Mail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted pointer-events-none" />
+                    <input
+                      id="admin-email"
+                      type="email"
+                      placeholder="admin@amour.com"
+                      value={email}
+                      onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                      disabled={isBlocked || loading}
+                      autoComplete="email"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3.5 text-base text-white placeholder-gray-600 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label htmlFor="admin-password" className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">
+                    Senha de Acesso
+                  </label>
+                  <div className="relative">
+                    <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted pointer-events-none" />
+                    <input
+                      id="admin-password"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="••••••••••"
+                      value={password}
+                      onChange={(e) => { setPassword(e.target.value); setError(''); }}
+                      disabled={isBlocked || loading}
+                      autoComplete="current-password"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-12 py-3.5 text-base text-white placeholder-gray-600 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(v => !v)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-theme-muted hover:text-theme-muted transition cursor-pointer"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                    </button>
+                  </div>
+                </div>
+
                 <button
-                  type="button"
-                  onClick={() => setShowPassword(v => !v)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-theme-muted hover:text-theme-muted transition cursor-pointer"
-                  tabIndex={-1}
+                  type="submit"
+                  disabled={loading || isBlocked}
+                  className={`w-full flex items-center justify-center gap-2.5 font-semibold tracking-widest uppercase py-4 rounded-xl text-sm transition-all duration-300 cursor-pointer mt-2 ${
+                    isBlocked || loading
+                      ? 'bg-white/5 text-theme-muted cursor-not-allowed'
+                      : 'bg-gradient-gold hover:shadow-lg hover:shadow-gold-500/20 text-theme-text'
+                  }`}
                 >
-                  {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                  {loading ? (
+                    <>
+                      <div className="h-4 w-4 border-2 border-luxury-black/30 border-t-luxury-black rounded-full animate-spin" />
+                      <span>Verificando...</span>
+                    </>
+                  ) : (
+                    <>
+                      <LogIn size={14} />
+                      <span>Entrar no Painel</span>
+                    </>
+                  )}
                 </button>
-              </div>
+              </form>
             </div>
+          )}
 
-            {/* Submit */}
-            <motion.button
-              type="submit"
-              disabled={loading || isBlocked}
-              whileTap={{ scale: 0.98 }}
-              className={`w-full flex items-center justify-center gap-2.5 font-semibold tracking-widest uppercase py-4 rounded-xl text-sm transition-all duration-300 cursor-pointer mt-2 ${
-                isBlocked || loading
-                  ? 'bg-white/5 text-theme-muted cursor-not-allowed'
-                  : 'bg-gradient-gold hover:shadow-lg hover:shadow-gold-500/20 text-theme-text'
-              }`}
-            >
-              {loading ? (
-                <>
-                  <div className="h-4 w-4 border-2 border-luxury-black/30 border-t-luxury-black rounded-full animate-spin" />
-                  <span>Verificando...</span>
-                </>
-              ) : isBlocked ? (
-                <>
-                  <Clock size={14} />
-                  <span>Bloqueado ({remainingSeconds}s)</span>
-                </>
-              ) : (
-                <>
-                  <LogIn size={14} />
-                  <span>Entrar no Painel</span>
-                </>
+          {/* FASE 2: Cadastro local do MFA (Enrollment) */}
+          {mfaStep === 'enroll' && (
+            <div className="space-y-6">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="h-8 w-8 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400">
+                    <KeyRound size={15} />
+                  </div>
+                  <span className="text-[10px] uppercase tracking-widest text-theme-muted font-bold">MFA Obrigatório</span>
+                </div>
+                <h2 className="font-serif text-xl text-white tracking-wide">Configurar Segundo Fator (TOTP)</h2>
+                <p className="text-xs text-theme-muted leading-relaxed">
+                  Para garantir a governança enterprise da Amour & Co., escaneie o código abaixo no seu app autenticador (Google Authenticator, Microsoft Authenticator, 1Password, etc.).
+                </p>
+              </div>
+
+              {/* QR Code local sem APIs externas */}
+              <div className="flex justify-center p-4 bg-white/5 border border-white/10 rounded-2xl glow-gold select-none">
+                {mfaQrCodeUri ? (
+                  <QRCodeSVG
+                    value={mfaQrCodeUri}
+                    size={180}
+                    bgColor="#121212"
+                    fgColor="#c59a48"
+                    level="H"
+                    includeMargin={true}
+                  />
+                ) : (
+                  <div className="h-44 w-44 flex items-center justify-center text-xs text-theme-muted">
+                    Gerando QR Code local...
+                  </div>
+                )}
+              </div>
+
+              {/* Recovery Codes Section */}
+              {recoveryCodes.length > 0 && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-1.5 text-[10px] text-amber-400 font-bold uppercase tracking-wider">
+                    <AlertTriangle size={11} />
+                    <span>Códigos de Recuperação Únicos</span>
+                  </div>
+                  <p className="text-[9px] text-theme-muted leading-relaxed">
+                    Guarde-os com segurança. Cada código pode ser utilizado uma única vez caso perca o acesso ao dispositivo autenticador.
+                  </p>
+                  <div className="grid grid-cols-2 gap-2 bg-white/2 border border-theme-border-faint p-3 rounded-xl font-mono text-[10px] text-center text-gold-400 select-all max-h-36 overflow-y-auto">
+                    {recoveryCodes.map((code) => (
+                      <div key={code} className="hover:bg-white/5 p-1 rounded transition">{code}</div>
+                    ))}
+                  </div>
+                </div>
               )}
-            </motion.button>
-          </form>
 
-          {/* Divider */}
-          <div className="flex items-center gap-3 text-theme-text">
-            <div className="flex-1 h-px bg-white/5" />
-            <span className="text-[10px] uppercase tracking-widest">ou</span>
-            <div className="flex-1 h-px bg-white/5" />
-          </div>
+              <form onSubmit={handleMfaVerifySubmit} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">
+                    Inserir Token do Autenticador
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="000 000"
+                    maxLength={6}
+                    value={mfaToken}
+                    onChange={(e) => setMfaToken(e.target.value.replace(/\D/g, ''))}
+                    disabled={loading}
+                    className="w-full text-center bg-white/5 border border-white/10 rounded-xl py-3.5 text-lg font-mono text-white tracking-[0.3em] focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition"
+                  />
+                </div>
 
-          {/* Quick demo access */}
-          <div className="space-y-3">
-            <p className="text-[10px] text-theme-text text-center uppercase tracking-wider">Acesso rápido de demonstração</p>
-            <button
-              type="button"
-              disabled={loading || isBlocked}
-              onClick={() => {
-                setEmail('admin@amour.com');
-                setPassword('Amour@2024');
-              }}
-              className="w-full flex items-center justify-center gap-2 bg-white/3 hover:bg-white/6 border border-white/8 hover:border-white/15 text-theme-muted hover:text-white py-3 rounded-xl text-[11px] font-semibold tracking-wider uppercase transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              <Shield size={12} className="text-gold-500/60" />
-              <span>Preencher credenciais admin demo</span>
-            </button>
-          </div>
+                <button
+                  type="submit"
+                  disabled={loading || mfaToken.length < 6}
+                  className="w-full bg-gradient-gold text-theme-text font-semibold tracking-widest uppercase py-3.5 rounded-xl text-xs hover:shadow-lg transition disabled:opacity-40 cursor-pointer"
+                >
+                  {loading ? 'Validando...' : 'Ativar e Entrar'}
+                </button>
+              </form>
+            </div>
+          )}
 
-          {/* Back to store link */}
-          <div className="text-center pt-2 border-t border-theme-border-faint">
-            <button
-              onClick={() => onNavigate('home')}
-              className="text-[11px] text-theme-text hover:text-gold-400 transition font-medium cursor-pointer"
-            >
-              ← Voltar para a loja
-            </button>
+          {/* FASE 3: Desafio MFA (Challenge) */}
+          {mfaStep === 'challenge' && (
+            <div className="space-y-6">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="h-8 w-8 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400">
+                    <KeyRound size={15} />
+                  </div>
+                  <span className="text-[10px] uppercase tracking-widest text-theme-muted font-bold">Verificação de Segurança</span>
+                </div>
+                <h2 className="font-serif text-xl text-white tracking-wide">Digite o Código Autenticador</h2>
+                <p className="text-xs text-theme-muted leading-relaxed">
+                  Esta conta requer autenticação de segundo fator (MFA). Digite o código de 6 dígitos gerado pelo seu app autenticador.
+                </p>
+              </div>
+
+              {!showRecoveryMode ? (
+                <form onSubmit={handleMfaVerifySubmit} className="space-y-5">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">
+                      Código Autenticador (MFA)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="000 000"
+                      maxLength={6}
+                      value={mfaToken}
+                      onChange={(e) => setMfaToken(e.target.value.replace(/\D/g, ''))}
+                      disabled={loading}
+                      className="w-full text-center bg-white/5 border border-white/10 rounded-xl py-3.5 text-lg font-mono text-white tracking-[0.3em] focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading || mfaToken.length < 6}
+                    className="w-full bg-gradient-gold text-theme-text font-semibold tracking-widest uppercase py-3.5 rounded-xl text-xs hover:shadow-lg transition disabled:opacity-40 cursor-pointer"
+                  >
+                    {loading ? 'Verificando...' : 'Verificar e Acessar'}
+                  </button>
+
+                  <div className="text-center pt-2">
+                    <button
+                      type="button"
+                      onClick={() => { setShowRecoveryMode(true); setError(''); }}
+                      className="text-[10px] text-gold-400 hover:text-white transition font-medium cursor-pointer"
+                    >
+                      Perdeu seu dispositivo? Usar Código de Recuperação
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <form onSubmit={handleRecoverySubmit} className="space-y-5">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-1 text-[10px] text-amber-400 font-bold uppercase tracking-wider mb-1">
+                      <AlertTriangle size={11} />
+                      <span>Código de Recuperação (Backup)</span>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="XXXX-XXXX"
+                      maxLength={9}
+                      value={recoveryCodeInput}
+                      onChange={(e) => setRecoveryCodeInput(e.target.value.toUpperCase())}
+                      disabled={loading}
+                      className="w-full text-center bg-white/5 border border-white/10 rounded-xl py-3.5 text-base font-mono text-white tracking-[0.1em] focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading || recoveryCodeInput.length < 9}
+                    className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold tracking-widest uppercase py-3.5 rounded-xl text-xs hover:shadow-lg transition disabled:opacity-40 cursor-pointer"
+                  >
+                    {loading ? 'Validando...' : 'Redefinir MFA'}
+                  </button>
+
+                  <div className="text-center pt-2">
+                    <button
+                      type="button"
+                      onClick={() => { setShowRecoveryMode(false); setError(''); }}
+                      className="text-[10px] text-theme-muted hover:text-white transition font-medium cursor-pointer"
+                    >
+                      ← Voltar para Token MFA
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          )}
+
+          {/* Links e Botões de Apoio */}
+          <div className="text-center pt-4 border-t border-theme-border-faint flex flex-col gap-2">
+            {mfaStep === 'password' ? (
+              <>
+                <button
+                  onClick={() => onNavigate('home')}
+                  className="text-[11px] text-theme-text hover:text-gold-400 transition font-medium cursor-pointer"
+                >
+                  ← Voltar para a loja
+                </button>
+                <button
+                  onClick={() => onNavigate('admin-emergency')}
+                  className="text-[10px] text-rose-400/70 hover:text-rose-400 transition font-medium cursor-pointer mt-1"
+                >
+                  ⚠️ Acesso de Contingência (Break-Glass)
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => adminLogout()}
+                className="text-[11px] text-rose-400 hover:underline transition font-medium cursor-pointer"
+              >
+                Cancelar Autenticação / Sair
+              </button>
+            )}
           </div>
 
         </motion.div>

@@ -12,4 +12,6 @@ export interface SystemLog {
   ip?: string;
   userAgent?: string;
   timestamp: string;
+  oldData?: any;
+  newData?: any;
 }

@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { GoogleGenerativeAI } from "npm:@google/generative-ai";
+import { verifyAdminSession } from "../_shared/auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -8,8 +9,68 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
+// --- Função Auxiliar de Rate Limit (Ajuste 5) ---
+async function checkRateLimit(supabase: any, clientIp: string, leadId?: string) {
+  const now = new Date();
+  const windowMinutes = 1;
+  const maxMessagesPerMinute = 10;
+  const windowStart = new Date(now.getTime() - windowMinutes * 60_000).toISOString();
+
+  // Obter contagem de mensagens no último minuto
+  let query = supabase
+    .from("chat_rate_limits")
+    .select("id, ip, lead_id, message_count, window_start")
+    .gt("window_start", windowStart);
+
+  if (leadId) {
+    query = query.or(`ip.eq.${clientIp},lead_id.eq.${leadId}`);
+  } else {
+    query = query.eq("ip", clientIp);
+  }
+
+  const { data: records, error } = await query;
+  if (error) {
+    console.error("Erro no rate limit db check:", error);
+    return; // Evita indisponibilidade do chat em caso de erro na tabela
+  }
+
+  let totalMessages = 0;
+  let activeRecord: any = null;
+
+  for (const record of (records || [])) {
+    totalMessages += record.message_count;
+    if (record.ip === clientIp || (leadId && record.lead_id === leadId)) {
+      activeRecord = record;
+    }
+  }
+
+  if (totalMessages >= maxMessagesPerMinute) {
+    throw new Error("Muitas mensagens enviadas. Limite de 10 mensagens por minuto excedido. Por favor, aguarde.");
+  }
+
+  // Incrementar contador ou inserir novo registro
+  if (activeRecord) {
+    await supabase
+      .from("chat_rate_limits")
+      .update({
+        message_count: activeRecord.message_count + 1,
+        window_start: activeRecord.window_start
+      })
+      .eq("id", activeRecord.id);
+  } else {
+    await supabase
+      .from("chat_rate_limits")
+      .insert({
+        ip: clientIp,
+        lead_id: leadId || null,
+        message_count: 1,
+        window_start: now.toISOString()
+      });
+  }
+}
+
 serve(async (req) => {
-  // 1. Handle CORS Preflight
+  // 1. Tratamento do preflight de CORS
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
@@ -22,21 +83,36 @@ serve(async (req) => {
       throw new Error("Supabase environment variables are missing.");
     }
 
-    // Usar a Service Role Key para poder ler/escrever tabelas com RLS
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    // Usar a Service Role Key para persistir dados além do RLS padrão
+    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      }
+    });
 
-    // 2. Parse request
     const body = await req.json();
     const { action, leadId, message, chatHistory, leadName, leadEmail, leadPhone } = body;
 
+    // --- Ações Públicas (Não exigem login de administrador) ---
+
     // Ação: Iniciar / Obter configurações públicas
     if (action === "init") {
-      const { data: aiSettings } = await supabase.from("ai_settings").select("ai_name, ai_greeting, human_whatsapp").eq("id", 1).single();
+      // Exclui gemini_api_key e ai_prompt da busca para proteção de segredos
+      const { data: aiSettings, error } = await supabase
+        .from("ai_settings")
+        .select("ai_name, ai_greeting, human_whatsapp")
+        .eq("id", 1)
+        .single();
+        
+      if (error) throw error;
       return new Response(JSON.stringify({ config: aiSettings }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    // Ação: Salvar configurações (Admin)
+    // --- Ações Administrativas (Exigem validação JWT e Papel) ---
+
     if (action === "save_config") {
+      await verifyAdminSession(req, ["super_admin", "admin"]);
       const { config } = body;
       const { error } = await supabase.from("ai_settings").upsert({
         id: 1,
@@ -47,24 +123,41 @@ serve(async (req) => {
       return new Response(JSON.stringify({ success: true }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    // Ação: Obter configurações completas (Admin)
     if (action === "get_full_config") {
-      const { data: aiSettings } = await supabase.from("ai_settings").select("*").eq("id", 1).single();
+      await verifyAdminSession(req, ["super_admin", "admin", "manager"]);
+      const { data: aiSettings, error } = await supabase.from("ai_settings").select("*").eq("id", 1).single();
+      if (error) throw error;
       return new Response(JSON.stringify({ config: aiSettings }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    // Ação: Obter histórico do lead (apenas Service Role)
     if (action === "get_history") {
+      await verifyAdminSession(req, ["super_admin", "admin", "manager", "support"]);
       if (!leadId) throw new Error("Missing leadId");
-      const { data: lead } = await supabase.from("chat_leads").select("chat_history").eq("id", leadId).single();
+      const { data: lead, error } = await supabase.from("chat_leads").select("chat_history").eq("id", leadId).single();
+      if (error) throw error;
       return new Response(JSON.stringify({ history: lead?.chat_history || [] }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
+    // --- Ação de Conversação Principal ---
     if (!message) {
       return new Response(JSON.stringify({ error: "Missing message" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    // 7. RATE LIMIT (Máximo de 50 mensagens por lead)
+    // Rate Limiting (Ajuste 5)
+    const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0].trim() || "127.0.0.1";
+    try {
+      await checkRateLimit(supabase, clientIp, leadId);
+    } catch (limitErr: any) {
+      return new Response(JSON.stringify({ 
+        error: "Rate limit excedido.",
+        response: limitErr.message 
+      }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      });
+    }
+
+    // Rate Limit adicional: Máximo de 50 mensagens por lead (existente)
     const currentHistoryCount = Array.isArray(chatHistory) ? chatHistory.length : 0;
     if (currentHistoryCount > 50) {
       return new Response(JSON.stringify({ 
@@ -76,7 +169,7 @@ serve(async (req) => {
       });
     }
 
-    // 3. Obter configurações da IA do banco de dados (Secretas)
+    // Obter chaves e configurações da IA do banco de dados (Secretas)
     const { data: aiSettings, error: aiError } = await supabase
       .from("ai_settings")
       .select("*")
@@ -84,7 +177,7 @@ serve(async (req) => {
       .single();
 
     if (aiError || !aiSettings || !aiSettings.gemini_api_key) {
-      console.error("AI Settings fetch error:", aiError);
+      console.error("Erro ao obter chaves da IA:", aiError);
       return new Response(JSON.stringify({ 
         error: "Serviço de IA temporariamente indisponível.",
         response: "Perdão, estou enfrentando uma instabilidade técnica. Por favor, clique no botão 'Continuar no WhatsApp Humano' abaixo para falar com um humano."
@@ -94,7 +187,7 @@ serve(async (req) => {
       });
     }
 
-    // 4. Obter contexto do catálogo de produtos (Ativos)
+    // Obter contexto do catálogo de produtos (Ativos)
     const { data: products } = await supabase
       .from("products")
       .select("id, name, price, description, status, stock, allow_out_of_stock_sale, sizes")
@@ -104,7 +197,6 @@ serve(async (req) => {
       `- ${p.name} (R$ ${p.price}): ${p.description}. Estoque: ${p.stock > 0 ? 'Disponível' : (p.allow_out_of_stock_sale ? 'Sob encomenda' : 'Esgotado')}.`
     ).join("\n") || "Nenhum produto disponível no momento.";
 
-    // 5. Configurar o Prompt do Sistema (Contexto)
     const systemPrompt = `
       ${aiSettings.ai_prompt}
       
@@ -119,7 +211,7 @@ serve(async (req) => {
       Seja conciso e natural, não escreva textos muito grandes.
     `;
 
-    // 6. Iniciar o SDK do Gemini
+    // Iniciar SDK do Gemini
     const genAI = new GoogleGenerativeAI(aiSettings.gemini_api_key);
     const model = genAI.getGenerativeModel({ 
       model: "gemini-1.5-flash",
@@ -135,14 +227,14 @@ serve(async (req) => {
       history: formattedHistory,
     });
 
-    // Se o lead for muito novo (primeira mensagem), registra um Log do Sistema
     if (leadId && currentHistoryCount <= 1) {
       await supabase.from('system_logs').insert({
         action: 'Nova Conversa IA',
         description: `Novo lead capturado no chat: ${leadName || 'Desconhecido'} (${leadPhone || 'Sem telefone'})`,
-        user: 'Sistema',
-        entityType: 'lead',
-        entityId: leadId,
+        user_name: 'Sistema',
+        user_email: 'sistema@amour.co',
+        entity_type: 'lead',
+        entity_id: leadId,
         severity: 'info'
       });
     }
@@ -150,7 +242,6 @@ serve(async (req) => {
     const result = await chat.sendMessage(message);
     const responseText = result.response.text();
 
-    // 9. Atualizar o histórico no banco de dados
     if (leadId) {
       const updatedHistory = [
         ...(chatHistory || []),
@@ -172,7 +263,7 @@ serve(async (req) => {
     });
 
   } catch (err: any) {
-    console.error("Error invoking Gemini:", err);
+    console.error("Erro na chamada do Concierge:", err);
     return new Response(JSON.stringify({ error: err.message }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },

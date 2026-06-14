@@ -14,6 +14,7 @@ import { Institutional } from './pages/Institutional';
 import { Admin } from './pages/Admin';
 import { Login } from './pages/Login';
 import { AdminLogin } from './pages/AdminLogin';
+import { AdminEmergency } from './pages/AdminEmergency';
 import { ConciergeChatWidget } from './components/chat/ConciergeChatWidget';
 import { CartDrawer } from './components/cart/CartDrawer';
 import { NotificationPopup } from './components/ui/NotificationPopup';
@@ -35,6 +36,7 @@ const getPageFromPath = (path: string): string => {
   if (p === '/checkout') return 'checkout';
   if (p === '/admin') return 'admin';
   if (p === '/admin/login') return 'admin-login';
+  if (p === '/admin/emergency-access') return 'admin-emergency';
   if (p === '/login') return 'login';
   if (p === '/institutional') return 'institutional';
   if (p.startsWith('/product/')) {
@@ -54,6 +56,7 @@ const getPathFromPage = (page: string): string => {
   if (page === 'checkout') return prefix + '/checkout';
   if (page === 'admin') return prefix + '/admin';
   if (page === 'admin-login') return prefix + '/admin/login';
+  if (page === 'admin-emergency') return prefix + '/admin/emergency-access';
   if (page === 'login') return prefix + '/login';
   if (page === 'institutional') return prefix + '/institutional';
   if (page.startsWith('product-')) {
@@ -175,6 +178,9 @@ const AppContent = () => {
         )}
         {currentPage === 'admin-login' && (
           <AdminLogin onNavigate={handleNavigate} />
+        )}
+        {currentPage === 'admin-emergency' && (
+          <AdminEmergency onNavigate={handleNavigate} />
         )}
         {currentPage === 'institutional' && (
           <Institutional defaultTab={institutionalTab} />

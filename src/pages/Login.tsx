@@ -8,7 +8,7 @@ interface LoginProps {
 }
 
 export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
-  const { login, loginAsAdmin } = useAuth();
+  const { login } = useAuth();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -50,14 +50,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
     }
   };
 
-  const handleQuickAdminLogin = () => {
-    setLoading(true);
-    setTimeout(() => {
-      loginAsAdmin();
-      setLoading(false);
-      onNavigate('admin');
-    }, 800);
-  };
+
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-16 relative overflow-hidden">
@@ -164,19 +157,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
           </button>
         </div>
 
-        {/* Quick Admin bypass button (Test helpers) */}
-        <div className="mt-8 pt-6 border-t border-theme-border-faint text-center space-y-3">
-          <span className="text-[9px] uppercase tracking-wider text-theme-text block">Ambiente de Demonstração</span>
-          <button
-            type="button"
-            onClick={handleQuickAdminLogin}
-            disabled={loading}
-            className="w-full bg-rose-500/10 hover:bg-rose-500/15 text-rose-400 border border-rose-500/25 py-2.5 rounded-lg text-[10px] font-bold tracking-widest uppercase transition flex items-center justify-center gap-2 cursor-pointer"
-          >
-            <Shield size={12} />
-            <span>Acesso Rápido Admin de Testes</span>
-          </button>
-        </div>
+
 
       </motion.div>
     </div>

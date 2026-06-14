@@ -14,7 +14,10 @@ import {
   Sparkles,
   Shield,
   CreditCard,
-  Palette
+  Palette,
+  ShieldCheck,
+  ShieldAlert,
+  Activity
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
@@ -32,7 +35,11 @@ export type AdminTab =
   | 'storefront'
   | 'system_logs'
   | 'ai_concierge'
-  | 'settings';
+  | 'settings'
+  | 'users_manager'
+  | 'active_sessions'
+  | 'security_events'
+  | 'double_approvals';
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -59,12 +66,32 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     { id: 'reviews', label: 'Avaliações', icon: MessageSquare },
     { id: 'coupons', label: 'Cupons', icon: Tag },
     { id: 'campaigns', label: 'Campanhas', icon: Calendar },
-    { id: 'payments', label: 'Pagamentos (Gateway)', icon: CreditCard },
+    { id: 'payments', label: 'Pagamentos', icon: CreditCard },
     { id: 'storefront', label: 'Vitrine & Identidade', icon: Palette },
     { id: 'ai_concierge', label: 'Concierge IA', icon: Sparkles },
     { id: 'system_logs', label: 'Logs do Sistema', icon: Shield },
     { id: 'settings', label: 'Configurações', icon: Settings },
+    { id: 'users_manager', label: 'Usuários & Permissões', icon: Shield },
+    { id: 'double_approvals', label: 'Aprovações Pendentes', icon: ShieldCheck },
+    { id: 'active_sessions', label: 'Sessões Ativas', icon: Activity },
+    { id: 'security_events', label: 'Eventos de Segurança', icon: ShieldAlert },
   ] as const;
+
+  // Filtrar menus conforme o papel/role (Regra 7)
+  const filteredMenuItems = menuItems.filter(item => {
+    const role = adminUser?.role || 'support';
+    if (role === 'super_admin') return true;
+    if (role === 'admin') {
+      return !['payments', 'ai_concierge', 'users_manager', 'system_logs', 'settings'].includes(item.id);
+    }
+    if (role === 'manager') {
+      return ['dashboard', 'orders', 'customers', 'leads', 'reviews'].includes(item.id);
+    }
+    if (role === 'support') {
+      return ['dashboard', 'orders', 'customers', 'leads'].includes(item.id);
+    }
+    return false;
+  });
 
   return (
     <div className="flex flex-col h-full bg-luxury-gray border-r border-theme-border-faint p-6 justify-between select-none">
@@ -90,12 +117,12 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
             </button>
           )}
         </div>
-
+ 
         <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-gold-500/10 to-transparent" />
-
+ 
         {/* Tab Lists */}
         <nav className="space-y-1.5">
-          {menuItems.map((item) => {
+          {filteredMenuItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
             return (

@@ -17,7 +17,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onCartOpen, onSearch, onNavigate, currentPage }) => {
   const { currentCampaign, setCampaign, allCampaigns } = useCampaign();
   const { cart } = useCart();
-  const { user, isAdmin, loginAsAdmin, logout } = useAuth();
+  const { user, isAdmin, logout } = useAuth();
   const { config } = useStorefront();
   const { theme, setTheme, isDark } = useTheme();
   

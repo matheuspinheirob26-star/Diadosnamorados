@@ -2,30 +2,51 @@
  * Supabase Edge Function: process-payment
  *
  * Recebe requisições do frontend e processa pagamentos nos gateways.
- * Chaves SECRETAS ficam nas variáveis de ambiente desta Edge Function — NUNCA no frontend.
- *
- * Deploy:
- *   supabase functions deploy process-payment --no-verify-jwt
- *
- * Variáveis de ambiente (configurar no Supabase Dashboard > Functions):
- *   MP_ACCESS_TOKEN          → Mercado Pago Access Token
- *   PAGARME_SECRET_KEY       → Pagar.me Secret Key
- *   EFI_CLIENT_ID            → Efí Bank Client ID
- *   EFI_CLIENT_SECRET        → Efí Bank Client Secret
- *   ASAAS_API_KEY            → Asaas API Key
- *   STRIPE_SECRET_KEY        → Stripe Secret Key
+ * Valida se o valor enviado coincide com o valor real do pedido no banco de dados.
  */
 
-import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+  }
+});
+
+// --- Validação de Integridade do Pedido ---
+async function validateOrderAmount(orderId: string, clientAmount: number) {
+  if (!orderId) {
+    throw new Error("ID do pedido ausente na requisição.");
+  }
+  const { data: order, error } = await supabase
+    .from("orders")
+    .select("total")
+    .eq("id", orderId)
+    .maybeSingle();
+
+  if (error || !order) {
+    throw new Error(`Pedido #${orderId} não encontrado no sistema.`);
+  }
+
+  // Compara os valores com tolerância a arredondamentos
+  const diff = Math.abs(Number(order.total) - clientAmount);
+  if (diff > 0.01) {
+    throw new Error(`Inconsistência de valores detectada: Pedido R$ ${order.total} vs Solicitado R$ ${clientAmount}. Operação bloqueada.`);
+  }
+}
+
 // ─── Gateway Handlers ──────────────────────────────────────────────────────────
 
-async function processMercadoPago(method: string, body: Record<string, unknown>) {
+async function processMercadoPago(method: string, body: Record<string, any>) {
   const accessToken = Deno.env.get('MP_ACCESS_TOKEN');
   if (!accessToken) throw new Error('MP_ACCESS_TOKEN não configurado.');
 
@@ -43,10 +64,10 @@ async function processMercadoPago(method: string, body: Record<string, unknown>)
         transaction_amount: body.amount,
         payment_method_id: 'pix',
         payer: {
-          email: (body.customer as any)?.email,
-          first_name: (body.customer as any)?.name?.split(' ')[0],
-          last_name: (body.customer as any)?.name?.split(' ').slice(1).join(' '),
-          identification: { type: 'CPF', number: (body.customer as any)?.cpf?.replace(/\D/g, '') },
+          email: body.customer?.email,
+          first_name: body.customer?.name?.split(' ')[0],
+          last_name: body.customer?.name?.split(' ').slice(1).join(' '),
+          identification: { type: 'CPF', number: body.customer?.cpf?.replace(/\D/g, '') },
         },
         date_of_expiration: new Date(Date.now() + 15 * 60_000).toISOString(),
         description: body.description ?? `Pedido ${body.orderId}`,
@@ -80,8 +101,8 @@ async function processMercadoPago(method: string, body: Record<string, unknown>)
         transaction_amount: body.amount,
         token: body.cardToken,
         installments: body.installments,
-        payment_method_id: 'visa', // detectado via token
-        payer: { email: (body.customer as any)?.email },
+        payment_method_id: 'visa',
+        payer: { email: body.customer?.email },
         external_reference: body.orderId,
       }),
     });
@@ -101,7 +122,7 @@ async function processMercadoPago(method: string, body: Record<string, unknown>)
   throw new Error(`Método ${method} não suportado pelo handler MercadoPago.`);
 }
 
-async function processStripe(method: string, body: Record<string, unknown>) {
+async function processStripe(method: string, body: Record<string, any>) {
   const secretKey = Deno.env.get('STRIPE_SECRET_KEY');
   if (!secretKey) throw new Error('STRIPE_SECRET_KEY não configurado.');
 
@@ -151,17 +172,14 @@ serve(async (req) => {
     const body = await req.json();
     const { gateway, method, ...rest } = body;
 
+    // Validar o valor no servidor contra fraudes de preço (Ajuste 7)
+    const clientAmount = Number(rest.amount || rest.amountBRL);
+    await validateOrderAmount(rest.orderId, clientAmount);
+
     let result;
     switch (gateway) {
       case 'mercadopago': result = await processMercadoPago(method, rest); break;
       case 'stripe':      result = await processStripe(method, rest);      break;
-      // TODO: Implementar handlers para pagarme, efi, asaas
-      case 'pagarme':
-        throw new Error('Pagar.me: handler não implementado ainda. Configure MP_ACCESS_TOKEN e use MercadoPago.');
-      case 'efi':
-        throw new Error('Efí Bank: handler não implementado ainda.');
-      case 'asaas':
-        throw new Error('Asaas: handler não implementado ainda.');
       default:
         throw new Error(`Gateway desconhecido: ${gateway}`);
     }

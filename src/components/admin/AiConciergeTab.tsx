@@ -2,8 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Bot, Save, AlertCircle } from 'lucide-react';
 import { api } from '../../lib/supabase';
 import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../context/AuthContext';
 
 export const AiConciergeTab: React.FC = () => {
+  const { fingerprint, correlationId } = useAuth();
+  
+  // Reauth states
+  const [showReauth, setShowReauth] = useState(false);
+  const [reauthPassword, setReauthPassword] = useState('');
+  const [reauthError, setReauthError] = useState<string | null>(null);
+  const [reauthLoading, setReauthLoading] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [config, setConfig] = useState({
@@ -40,31 +49,51 @@ export const AiConciergeTab: React.FC = () => {
     setLoading(false);
   };
 
-  const handleSave = async () => {
-    setSaving(true);
-    if (supabase) {
-      try {
-        const response = await supabase.functions.invoke('chat-concierge', {
-          body: {
-            action: 'save_config',
-            config: {
-              gemini_api_key: config.gemini_api_key,
-              ai_name: config.ai_name,
-              ai_greeting: config.ai_greeting,
-              ai_prompt: config.ai_prompt,
-              human_whatsapp: config.human_whatsapp,
-            }
-          }
-        });
-        
-        if (response.error) throw response.error;
-        alert('Configurações salvas com sucesso!');
-      } catch (error) {
-        alert('Erro ao salvar as configurações. Verifique os logs.');
-        console.error(error);
-      }
+  const handleSave = () => {
+    setShowReauth(true);
+    setReauthError(null);
+    setReauthPassword('');
+  };
+
+  const handleReauthSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!supabase) return;
+    setReauthLoading(true);
+    setReauthError(null);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('manage-approvals', {
+        body: {
+          action: 'request',
+          targetType: 'ai_settings',
+          targetId: '1',
+          payload: {
+            gemini_api_key: config.gemini_api_key,
+            ai_name: config.ai_name,
+            ai_greeting: config.ai_greeting,
+            ai_prompt: config.ai_prompt,
+            human_whatsapp: config.human_whatsapp
+          },
+          currentPassword: reauthPassword,
+          fingerprint
+        },
+        headers: {
+          'correlation-id': correlationId
+        }
+      });
+
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      setShowReauth(false);
+      setReauthPassword('');
+      alert("Solicitação enviada com sucesso! Um Super Admin diferente precisará homologar esta alteração na aba 'Aprovações Pendentes'.");
+      await loadConfig();
+    } catch (err: any) {
+      setReauthError(err?.message || 'Falha ao reautenticar ou enviar solicitação.');
+    } finally {
+      setReauthLoading(false);
     }
-    setSaving(false);
   };
 
   if (loading) return <div className="text-white p-8 animate-pulse">Carregando configurações...</div>;
@@ -158,6 +187,66 @@ export const AiConciergeTab: React.FC = () => {
         </div>
 
       </div>
+
+      {/* REAUTH MODAL FOR DOUBLE APPROVAL */}
+      {showReauth && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn text-left">
+          <div className="absolute inset-0" onClick={() => { if (!reauthLoading) setShowReauth(false); }} />
+          
+          <form 
+            onSubmit={handleReauthSubmit}
+            className="relative w-full max-w-md bg-luxury-gray border border-theme-border rounded-3xl p-6 sm:p-8 shadow-2xl z-10 glow-gold space-y-4 text-theme-muted"
+          >
+            <div className="flex items-center gap-2 border-b border-theme-border-faint pb-3 text-gold-400">
+              <Bot size={16} />
+              <h4 className="text-sm font-bold uppercase tracking-wider">Ação Crítica da IA</h4>
+            </div>
+
+            {reauthError && (
+              <div className="bg-rose-500/10 border border-rose-500/25 text-rose-400 text-xs p-3 rounded-xl">
+                {reauthError}
+              </div>
+            )}
+
+            <p className="text-xs text-theme-muted leading-relaxed">
+              Você está alterando as configurações globais da Inteligência Artificial. Esta ação exige aprovação dupla de outro Super Admin.
+              Por favor, confirme sua senha administrativa antes de enviar a solicitação.
+            </p>
+
+            <div className="space-y-1.5">
+              <label className="text-[10px] uppercase tracking-wider text-theme-muted font-bold block">Digite sua Senha</label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={reauthPassword}
+                onChange={e => setReauthPassword(e.target.value)}
+                disabled={reauthLoading}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-gold-500 transition font-mono"
+                required
+              />
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2 border-t border-theme-border-faint">
+              <button
+                type="button"
+                onClick={() => { setShowReauth(false); setReauthPassword(''); setReauthError(null); }}
+                className="px-4 py-2 rounded-lg text-[10px] font-semibold text-theme-muted hover:text-white transition"
+                disabled={reauthLoading}
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                disabled={reauthLoading}
+                className="bg-gradient-gold text-theme-text font-bold text-[10px] uppercase tracking-widest px-5 py-2.5 rounded-lg hover:shadow-lg transition cursor-pointer"
+              >
+                {reauthLoading ? 'Confirmando...' : 'Confirmar e Solicitar'}
+              </button>
+            </div>
+
+          </form>
+        </div>
+      )}
     </div>
   );
 };
