@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { LogService } from '../lib/LogService';
 import { supabase } from '../lib/supabase';
+import { MFAService } from '../lib/mfa/MFAService';
 
 export interface AdminUser {
   id: string;
@@ -360,6 +361,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const needsMfa = ['super_admin', 'admin'].includes(parsed.role);
           if (!needsMfa || mfaData?.currentLevel === 'aal2') {
             await handleAdminSession(session.user.id, session.user.email || '');
+          } else {
+            // AAL1 but needs AAL2. Set operator details in memory.
+            setAdminUser(parsed);
+            try {
+              const { data: factors } = await client.auth.mfa.listFactors();
+              const activeFactor = factors?.totp?.find(f => f.status === 'verified');
+              const pendingFactor = factors?.totp?.find(f => (f.status as string) === 'unverified');
+              
+              if (activeFactor) {
+                setMfaFactorId(activeFactor.id);
+                setMfaStep('challenge');
+              } else {
+                if (pendingFactor) {
+                  try {
+                    await client.auth.mfa.unenroll({ factorId: pendingFactor.id });
+                  } catch (unerr) {
+                    console.warn('Failed unenroll pending factor:', unerr);
+                  }
+                }
+                setMfaStep('enroll');
+                // Auto enroll fresh factor via MFAService
+                const enrollData = await MFAService.enroll();
+                setMfaFactorId(enrollData.id);
+                setMfaQrCodeUri(enrollData.totp.uri);
+                setMfaSecret(enrollData.totp.secret);
+                const codes = generateRecoveryCodes();
+                setRecoveryCodes(codes);
+              }
+            } catch (err) {
+              console.error('[MFA checkInitialSession] Error:', err);
+            }
           }
         }
       }
@@ -375,6 +407,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const needsMfa = ['super_admin', 'admin'].includes(parsed.role);
           if (!needsMfa || mfaData?.currentLevel === 'aal2') {
             await handleAdminSession(session.user.id, session.user.email || '');
+          } else {
+            setAdminUser(parsed);
+            try {
+              const { data: factors } = await client.auth.mfa.listFactors();
+              const activeFactor = factors?.totp?.find(f => f.status === 'verified');
+              if (activeFactor) {
+                setMfaFactorId(activeFactor.id);
+                setMfaStep('challenge');
+              }
+            } catch (err) {
+              console.error('onAuthStateChange MFA check error:', err);
+            }
           }
         }
       } else {
@@ -451,9 +495,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Se MFA está ativado/enrolado (AAL2 exigido)
       if (mfaData.nextLevel === 'aal2' && mfaData.currentLevel === 'aal1') {
         // Buscar fatores ativos
-        const { data: factors } = await supabase.auth.mfa.listFactors();
+        const factors = await MFAService.listFactors();
         const activeFactor = factors?.totp?.find(f => f.status === 'verified');
         if (activeFactor) {
+          setAdminUser(adminU);
           setMfaFactorId(activeFactor.id);
           setMfaStep('challenge');
           // Salvar temporariamente os dados do operador no localStorage, mas sem autenticação total
@@ -464,6 +509,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       // Se MFA é obrigatório, mas não tem fator configurado
       if (mfaRequired && mfaData.nextLevel === 'aal1') {
+        setAdminUser(adminU);
         setMfaStep('enroll');
         localStorage.setItem(SESSION_KEY, JSON.stringify(adminU));
         await enrollMfa();
@@ -494,14 +540,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // ─── MFA: INICIAR REGISTRO ──────────────────────────────────────────────────
   const enrollMfa = async () => {
-    if (!supabase) return;
     try {
-      const { data, error } = await supabase.auth.mfa.enroll({
-        factorType: 'totp',
-        issuer: 'Amour & Co.'
-      });
-      if (error) throw error;
-      
+      const data = await MFAService.enroll();
       setMfaFactorId(data.id);
       setMfaQrCodeUri(data.totp.uri);
       setMfaSecret(data.totp.secret);
@@ -516,43 +556,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // ─── MFA: CONFIRMAR REGISTRO ────────────────────────────────────────────────
   const verifyMfaEnrollment = async (code: string): Promise<{ success: boolean; error?: string }> => {
-    if (!supabase || !mfaFactorId || !adminUser) {
+    if (!mfaFactorId || !adminUser) {
       return { success: false, error: 'Instância MFA não localizada.' };
     }
 
     try {
       // 1. Desafiar e verificar no Supabase
-      const { data: challenge, error: challError } = await supabase.auth.mfa.challenge({ factorId: mfaFactorId });
-      if (challError) throw challError;
-
-      const { error: verifyError } = await supabase.auth.mfa.verify({
-        factorId: mfaFactorId,
-        challengeId: challenge.id,
-        code: code.trim()
-      });
-
-      if (verifyError) {
-        return { success: false, error: 'Código de verificação incorreto. Tente novamente.' };
-      }
+      const challenge = await MFAService.challenge(mfaFactorId);
+      await MFAService.verify(mfaFactorId, challenge.id, code);
 
       // 2. Persistir códigos de recuperação de forma segura no banco de dados (hashes)
-      const insertRows = await Promise.all(recoveryCodes.map(async (c) => {
-        const hash = await sha256(c);
-        return {
-          user_id: adminUser.id,
-          code_hash: hash
-        };
-      }));
+      if (supabase) {
+        const insertRows = await Promise.all(recoveryCodes.map(async (c) => {
+          const hash = await sha256(c);
+          return {
+            user_id: adminUser.id,
+            code_hash: hash
+          };
+        }));
 
-      const { error: recoveryError } = await supabase.from('mfa_recovery_codes').insert(insertRows);
-      if (recoveryError) {
-        console.warn('Erro ao salvar códigos de recuperação:', recoveryError);
+        const { error: recoveryError } = await supabase.from('mfa_recovery_codes').insert(insertRows);
+        if (recoveryError) {
+          console.warn('Erro ao salvar códigos de recuperação:', recoveryError);
+        }
       }
 
       // 3. Finalizar autenticação
       setMfaStep('completed');
-      setAdminUser({ ...adminUser, loginAt: new Date().toISOString() });
-      localStorage.setItem(SESSION_KEY, JSON.stringify(adminUser));
+      const updatedUser = { ...adminUser, loginAt: new Date().toISOString() };
+      setAdminUser(updatedUser);
+      localStorage.setItem(SESSION_KEY, JSON.stringify(updatedUser));
       await registerSessionActivity(adminUser.id, adminUser.email);
 
       LogService.log(
@@ -567,34 +600,49 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       return { success: true };
     } catch (err: any) {
+      const errMsg = err?.message || '';
+      console.error('[MFA Verify] Verification failed:', errMsg);
+
+      const isNotFoundError = errMsg.toLowerCase().includes('not found') || 
+                            errMsg.toLowerCase().includes('não localizada') ||
+                            errMsg.toLowerCase().includes('invalid');
+      
+      if (isNotFoundError) {
+        // Reset enrollment to auto-heal
+        try {
+          await MFAService.resetEnrollment(mfaFactorId);
+        } catch (unerr) {
+          console.warn('Failed unenroll on self-heal:', unerr);
+        }
+        setMfaFactorId(null);
+        setMfaQrCodeUri(null);
+        setMfaSecret(null);
+        await enrollMfa();
+        return { 
+          success: false, 
+          error: 'Seu registro MFA expirou ou ficou inconsistente. Gere um novo QR Code para continuar.' 
+        };
+      }
+
       return { success: false, error: err?.message || 'Falha ao validar token de segurança.' };
     }
   };
 
   // ─── MFA: DESAFIAR / LOGIN AAL2 ─────────────────────────────────────────────
   const challengeMfa = async (code: string): Promise<{ success: boolean; error?: string }> => {
-    if (!supabase || !mfaFactorId || !adminUser) {
+    if (!mfaFactorId || !adminUser) {
       return { success: false, error: 'Instância MFA não localizada.' };
     }
 
     try {
-      const { data: challenge, error: challError } = await supabase.auth.mfa.challenge({ factorId: mfaFactorId });
-      if (challError) throw challError;
-
-      const { error: verifyError } = await supabase.auth.mfa.verify({
-        factorId: mfaFactorId,
-        challengeId: challenge.id,
-        code: code.trim()
-      });
-
-      if (verifyError) {
-        return { success: false, error: 'Token inválido ou expirado.' };
-      }
+      const challenge = await MFAService.challenge(mfaFactorId);
+      await MFAService.verify(mfaFactorId, challenge.id, code);
 
       // Autenticação completa
       setMfaStep('completed');
-      setAdminUser({ ...adminUser, loginAt: new Date().toISOString() });
-      localStorage.setItem(SESSION_KEY, JSON.stringify(adminUser));
+      const updatedUser = { ...adminUser, loginAt: new Date().toISOString() };
+      setAdminUser(updatedUser);
+      localStorage.setItem(SESSION_KEY, JSON.stringify(updatedUser));
       await registerSessionActivity(adminUser.id, adminUser.email);
 
       LogService.log(
@@ -609,6 +657,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       return { success: true };
     } catch (err: any) {
+      const errMsg = err?.message || '';
+      console.error('[MFA Challenge] Verification failed:', errMsg);
+
+      const isNotFoundError = errMsg.toLowerCase().includes('not found') || 
+                            errMsg.toLowerCase().includes('não localizada');
+      
+      if (isNotFoundError) {
+        // Self-heal: unenroll factor and send them to enroll page
+        try {
+          await MFAService.resetEnrollment(mfaFactorId);
+        } catch (unerr) {
+          console.warn('Failed unenroll on self-heal:', unerr);
+        }
+        setMfaFactorId(null);
+        setMfaQrCodeUri(null);
+        setMfaSecret(null);
+        setMfaStep('enroll');
+        await enrollMfa();
+        return { 
+          success: false, 
+          error: 'Seu registro MFA expirou ou ficou inconsistente. Gere um novo QR Code para continuar.' 
+        };
+      }
+
       return { success: false, error: err?.message || 'Falha na verificação de segundo fator.' };
     }
   };
