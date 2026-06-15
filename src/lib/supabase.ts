@@ -1108,5 +1108,30 @@ export const api = {
       leads[idx].status = status;
       setStorageItem('amr_leads', leads);
     }
-  }
+  },
 };
+
+// --- INTERCEPTOR GLOBAL DE EDGE FUNCTIONS ---
+if (supabase) {
+  const originalInvoke = supabase.functions.invoke.bind(supabase.functions);
+  supabase.functions.invoke = async function (functionName: string, options: any = {}) {
+    // Obter Correlation ID global
+    const correlationId = (window as any)._amr_correlation_id || crypto.randomUUID();
+    
+    // Obter Session ID
+    const sessionId = sessionStorage.getItem('amr_session_uuid') || '';
+    
+    // Obter CSRF token da memória do React
+    const csrfToken = (window as any)._amr_csrf_token || '';
+
+    options.headers = {
+      ...options.headers,
+      'correlation-id': correlationId,
+      'x-csrf-token': csrfToken,
+      'x-session-id': sessionId
+    };
+
+    return originalInvoke(functionName, options);
+  };
+}
+

@@ -263,6 +263,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
             {error && (
               <motion.div
                 key={error}
+                data-testid="login-error"
                 initial={{ opacity: 0, y: -8, height: 0 }}
                 animate={{ opacity: 1, y: 0, height: 'auto' }}
                 exit={{ opacity: 0, y: -8, height: 0 }}
@@ -320,6 +321,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
                     <Mail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted pointer-events-none" />
                     <input
                       id="admin-email"
+                      data-testid="admin-login-email"
                       type="email"
                       placeholder="admin@amour.com"
                       value={email}
@@ -339,6 +341,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
                     <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted pointer-events-none" />
                     <input
                       id="admin-password"
+                      data-testid="admin-login-password"
                       type={showPassword ? 'text' : 'password'}
                       placeholder="••••••••••"
                       value={password}
@@ -360,6 +363,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
 
                 <button
                   type="submit"
+                  data-testid="admin-submit"
                   disabled={loading || isBlocked}
                   className={`w-full flex items-center justify-center gap-2.5 font-semibold tracking-widest uppercase py-4 rounded-xl text-sm transition-all duration-300 cursor-pointer mt-2 ${
                     isBlocked || loading
@@ -442,6 +446,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
                   </label>
                   <input
                     type="text"
+                    data-testid="mfa-token-input"
                     placeholder="000 000"
                     maxLength={6}
                     value={mfaToken}
@@ -453,6 +458,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onNavigate }) => {
 
                 <button
                   type="submit"
+                  data-testid="mfa-submit"
                   disabled={loading || mfaToken.length < 6}
                   className="w-full bg-gradient-gold text-theme-text font-semibold tracking-widest uppercase py-3.5 rounded-xl text-xs hover:shadow-lg transition disabled:opacity-40 cursor-pointer"
                 >

@@ -32,15 +32,19 @@ const getPageFromPath = (path: string): string => {
   
   const cleanPathNoSlash = cleanPath.endsWith('/') && cleanPath.length > 1 ? cleanPath.slice(0, -1) : cleanPath;
   const p = cleanPathNoSlash.toLowerCase();
-  if (p === '/catalog') return 'catalog';
-  if (p === '/checkout') return 'checkout';
-  if (p === '/admin') return 'admin';
-  if (p === '/admin/login') return 'admin-login';
-  if (p === '/admin/emergency-access') return 'admin-emergency';
-  if (p === '/login') return 'login';
-  if (p === '/institutional') return 'institutional';
-  if (p.startsWith('/product/')) {
-    const productId = cleanPathNoSlash.split('/product/')[1];
+  
+  // Garantir que a rota comece com '/' para bater com os padrões abaixo
+  const normalizedPath = p.startsWith('/') ? p : '/' + p;
+
+  if (normalizedPath === '/catalog') return 'catalog';
+  if (normalizedPath === '/checkout') return 'checkout';
+  if (normalizedPath === '/admin') return 'admin';
+  if (normalizedPath === '/admin/login' || normalizedPath === '/admin-login') return 'admin-login';
+  if (normalizedPath === '/admin/emergency-access' || normalizedPath === '/admin-emergency') return 'admin-emergency';
+  if (normalizedPath === '/login') return 'login';
+  if (normalizedPath === '/institutional') return 'institutional';
+  if (normalizedPath.startsWith('/product/')) {
+    const productId = normalizedPath.split('/product/')[1];
     return `product-${productId}`;
   }
   return 'home';

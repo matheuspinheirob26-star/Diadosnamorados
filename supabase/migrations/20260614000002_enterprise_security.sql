@@ -19,6 +19,41 @@ ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMP WITH TIME ZONE,
 ADD COLUMN IF NOT EXISTS deleted_by UUID REFERENCES auth.users(id),
 ADD COLUMN IF NOT EXISTS deletion_reason TEXT;
 
+-- G. Atualizar as funções is_admin(), is_manager() e is_support() para respeitar soft delete (Declaradas antes do uso em RLS)
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS BOOLEAN LANGUAGE sql STABLE SECURITY DEFINER AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.user_roles
+    WHERE user_id = auth.uid()
+    AND role IN ('super_admin', 'admin')
+    AND status = 'ativo'
+    AND deleted_at IS NULL
+  );
+$$;
+
+CREATE OR REPLACE FUNCTION public.is_manager()
+RETURNS BOOLEAN LANGUAGE sql STABLE SECURITY DEFINER AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.user_roles
+    WHERE user_id = auth.uid()
+    AND role IN ('super_admin', 'admin', 'manager')
+    AND status = 'ativo'
+    AND deleted_at IS NULL
+  );
+$$;
+
+CREATE OR REPLACE FUNCTION public.is_support()
+RETURNS BOOLEAN LANGUAGE sql STABLE SECURITY DEFINER AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.user_roles
+    WHERE user_id = auth.uid()
+    AND role IN ('super_admin', 'admin', 'manager', 'support')
+    AND status = 'ativo'
+    AND deleted_at IS NULL
+  );
+$$;
+
+
 -- 3. TABELA DE SESSÕES DE USUÁRIO (user_sessions)
 CREATE TABLE IF NOT EXISTS public.user_sessions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -167,36 +202,4 @@ DROP POLICY IF EXISTS "Allow admins all access to roles" ON public.user_roles;
 CREATE POLICY "Allow super_admins all access to roles" ON public.user_roles 
     FOR ALL TO authenticated USING (public.is_super_admin());
 
--- G. Atualizar as funções is_admin(), is_manager() e is_support() para respeitar soft delete
-CREATE OR REPLACE FUNCTION public.is_admin()
-RETURNS BOOLEAN LANGUAGE sql STABLE SECURITY DEFINER AS $$
-  SELECT EXISTS (
-    SELECT 1 FROM public.user_roles
-    WHERE user_id = auth.uid()
-    AND role IN ('super_admin', 'admin')
-    AND status = 'ativo'
-    AND deleted_at IS NULL
-  );
-$$;
 
-CREATE OR REPLACE FUNCTION public.is_manager()
-RETURNS BOOLEAN LANGUAGE sql STABLE SECURITY DEFINER AS $$
-  SELECT EXISTS (
-    SELECT 1 FROM public.user_roles
-    WHERE user_id = auth.uid()
-    AND role IN ('super_admin', 'admin', 'manager')
-    AND status = 'ativo'
-    AND deleted_at IS NULL
-  );
-$$;
-
-CREATE OR REPLACE FUNCTION public.is_support()
-RETURNS BOOLEAN LANGUAGE sql STABLE SECURITY DEFINER AS $$
-  SELECT EXISTS (
-    SELECT 1 FROM public.user_roles
-    WHERE user_id = auth.uid()
-    AND role IN ('super_admin', 'admin', 'manager', 'support')
-    AND status = 'ativo'
-    AND deleted_at IS NULL
-  );
-$$;

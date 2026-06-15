@@ -2,10 +2,12 @@ import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 import { verifyAdminSession } from "../_shared/auth.ts";
+import { verifyCsrf } from "../_shared/csrf.ts";
+import { checkRateLimit } from "../_shared/rate-limit.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, correlation-id",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, correlation-id, x-csrf-token, x-session-id",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Content-Security-Policy": "default-src 'none';",
   "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
@@ -86,6 +88,18 @@ serve(async (req, connInfo) => {
         const authResult = await verifyAdminSession(req, ["super_admin", "admin", "manager", "support"]);
         operatorUser = authResult.user;
         operatorRole = authResult.role;
+
+        // Limite de taxa
+        await checkRateLimit(req, {
+          ip: clientIP,
+          fingerprint: rawBody.fingerprint || undefined,
+          userId: operatorUser.id,
+          sessionId: req.headers.get("x-session-id") || undefined,
+          endpoint: `manage-users:${action}`
+        });
+
+        // Validação CSRF
+        await verifyCsrf(req, operatorUser.id);
       } catch (err: any) {
         return new Response(
           JSON.stringify({ error: err.message || "Acesso não autorizado." }),
@@ -161,20 +175,32 @@ serve(async (req, connInfo) => {
     try {
       const authResult = await verifyAdminSession(req, ["super_admin"]);
       operatorUser = authResult.user;
+
+      // Limite de taxa
+      await checkRateLimit(req, {
+        ip: clientIP,
+        fingerprint: rawBody.fingerprint || undefined,
+        userId: operatorUser.id,
+        sessionId: req.headers.get("x-session-id") || undefined,
+        endpoint: `manage-users:${action}`
+      });
+
+      // Validação CSRF
+      await verifyCsrf(req, operatorUser.id);
     } catch (err: any) {
       // Registrar tentativa negada em security_events (CRITICAL)
       await supabase.from("security_events").insert({
         category: "USERS",
         severity: "CRITICAL",
         title: "Tentativa de escrita não autorizada",
-        description: `Usuário tentou executar '${action}' sem privilégios de super_admin. IP: ${clientIP}`,
+        description: `Usuário tentou executar '${action}' sem privilégios de super_admin ou falhou nos checks de segurança. Erro: ${err.message}. IP: ${clientIP}`,
         correlation_id: correlationId,
         ip: clientIP,
-        metadata: { action }
+        metadata: { action, error: err.message }
       });
 
       return new Response(
-        JSON.stringify({ error: "Acesso negado: Apenas Super Admin pode realizar esta operação." }),
+        JSON.stringify({ error: err.message || "Acesso negado: Apenas Super Admin pode realizar esta operação." }),
         { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }

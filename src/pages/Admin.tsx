@@ -23,23 +23,42 @@ import {
   AlertTriangle,
   CreditCard,
   MapPin,
-  Sparkles
+  Sparkles,
+  RefreshCw
 } from 'lucide-react';
 import { AdminLayout } from '../components/admin/AdminLayout';
 import { AdminTab } from '../components/admin/AdminSidebar';
-import { ProductsManager } from '../components/admin/ProductsManager';
-import { PaymentsManager } from '../components/admin/PaymentsManager';
-import { StorefrontCustomizer } from '../components/admin/StorefrontCustomizer';
-import { SystemLogsTab } from '../components/admin/SystemLogsTab';
-import { AiConciergeTab } from '../components/admin/AiConciergeTab';
-import { UsersManager } from '../components/admin/UsersManager';
-import { ActiveSessionsTab } from '../components/admin/ActiveSessionsTab';
-import { SecurityEventsTab } from '../components/admin/SecurityEventsTab';
-import { DoubleApprovalsTab } from '../components/admin/DoubleApprovalsTab';
+
+// Lazy load heavy admin tabs
+const ProductsManager = React.lazy(() => import('../components/admin/ProductsManager').then(m => ({ default: m.ProductsManager })));
+const PaymentsManager = React.lazy(() => import('../components/admin/PaymentsManager').then(m => ({ default: m.PaymentsManager })));
+const StorefrontCustomizer = React.lazy(() => import('../components/admin/StorefrontCustomizer').then(m => ({ default: m.StorefrontCustomizer })));
+const SystemLogsTab = React.lazy(() => import('../components/admin/SystemLogsTab').then(m => ({ default: m.SystemLogsTab })));
+const AiConciergeTab = React.lazy(() => import('../components/admin/AiConciergeTab').then(m => ({ default: m.AiConciergeTab })));
+const UsersManager = React.lazy(() => import('../components/admin/UsersManager').then(m => ({ default: m.UsersManager })));
+const ActiveSessionsTab = React.lazy(() => import('../components/admin/ActiveSessionsTab').then(m => ({ default: m.ActiveSessionsTab })));
+const SecurityEventsTab = React.lazy(() => import('../components/admin/SecurityEventsTab').then(m => ({ default: m.SecurityEventsTab })));
+const DoubleApprovalsTab = React.lazy(() => import('../components/admin/DoubleApprovalsTab').then(m => ({ default: m.DoubleApprovalsTab })));
+
+const SecretsTab = React.lazy(() => import('../components/admin/SecretsTab').then(m => ({ default: m.SecretsTab })));
+const BackupsTab = React.lazy(() => import('../components/admin/BackupsTab').then(m => ({ default: m.BackupsTab })));
+const HealthMonitorTab = React.lazy(() => import('../components/admin/HealthMonitorTab').then(m => ({ default: m.HealthMonitorTab })));
+const MaintenanceTab = React.lazy(() => import('../components/admin/MaintenanceTab').then(m => ({ default: m.MaintenanceTab })));
+const LgpdTab = React.lazy(() => import('../components/admin/LgpdTab').then(m => ({ default: m.LgpdTab })));
 import { useCampaign } from '../context/CampaignContext';
 import { useAuth } from '../context/AuthContext';
 import { LogService } from '../lib/LogService';
 import { supabase } from '../lib/supabase';
+
+// Shared Suspense fallback component
+const TabLoader: React.FC<{ label?: string }> = ({ label = 'Carregando...' }) => (
+  <div className="flex flex-col items-center justify-center p-20 text-theme-muted gap-3 animate-fadeIn">
+    <RefreshCw size={24} className="animate-spin text-gold-400" />
+    <span className="text-[10px] tracking-widest uppercase text-theme-muted animate-pulse">
+      {label}
+    </span>
+  </div>
+);
 
 export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
@@ -423,9 +442,9 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
       {/* 3. PRODUCTS TAB */}
       {activeTab === 'products' && (
-        <div className="animate-fadeIn">
+        <React.Suspense fallback={<TabLoader label="Carregando Produtos..." />}>
           <ProductsManager />
-        </div>
+        </React.Suspense>
       )}
 
       {/* 4. CUSTOMERS TAB */}
@@ -803,7 +822,9 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
       {/* STOREFRONT CUSTOMIZER TAB */}
       {activeTab === 'storefront' && (
-        <StorefrontCustomizer />
+        <React.Suspense fallback={<TabLoader label="Carregando Vitrine..." />}>
+          <StorefrontCustomizer />
+        </React.Suspense>
       )}
 
       {/* MODAL ORDER DETAIL (POPUP) */}
@@ -1012,47 +1033,86 @@ export const Admin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavi
 
       {/* PAYMENTS TAB */}
       {activeTab === 'payments' && (
-        <div className="animate-fadeIn">
+        <React.Suspense fallback={<TabLoader label="Pagamentos" />}>
           <PaymentsManager />
-        </div>
+        </React.Suspense>
       )}
 
-      {/* 11. SYSTEM LOGS TAB */}
-      {activeTab === 'system_logs' && <SystemLogsTab />}
+      {/* SYSTEM LOGS TAB */}
+      {activeTab === 'system_logs' && (
+        <React.Suspense fallback={<TabLoader label="Logs do Sistema" />}>
+          <SystemLogsTab />
+        </React.Suspense>
+      )}
 
       {/* AI CONCIERGE TAB */}
       {activeTab === 'ai_concierge' && (
-        <div className="animate-fadeIn">
+        <React.Suspense fallback={<TabLoader label="Concierge IA" />}>
           <AiConciergeTab />
-        </div>
+        </React.Suspense>
       )}
 
       {/* USERS & PERMISSIONS TAB */}
       {activeTab === 'users_manager' && (
-        <div className="animate-fadeIn">
+        <React.Suspense fallback={<TabLoader label="Usuários & Permissões" />}>
           <UsersManager />
-        </div>
+        </React.Suspense>
       )}
 
       {/* DOUBLE APPROVALS TAB */}
       {activeTab === 'double_approvals' && (
-        <div className="animate-fadeIn">
+        <React.Suspense fallback={<TabLoader label="Aprovações Duplas" />}>
           <DoubleApprovalsTab />
-        </div>
+        </React.Suspense>
       )}
 
       {/* ACTIVE SESSIONS TAB */}
       {activeTab === 'active_sessions' && (
-        <div className="animate-fadeIn">
+        <React.Suspense fallback={<TabLoader label="Sessões Ativas" />}>
           <ActiveSessionsTab />
-        </div>
+        </React.Suspense>
       )}
 
       {/* SECURITY EVENTS TAB */}
       {activeTab === 'security_events' && (
-        <div className="animate-fadeIn">
+        <React.Suspense fallback={<TabLoader label="Eventos de Segurança" />}>
           <SecurityEventsTab />
-        </div>
+        </React.Suspense>
+      )}
+
+      {/* SECRETS GOVERNANCE TAB */}
+      {activeTab === 'secrets' && (
+        <React.Suspense fallback={<TabLoader label="Governança de Secrets" />}>
+          <SecretsTab />
+        </React.Suspense>
+      )}
+
+      {/* BACKUPS AUDIT TAB */}
+      {activeTab === 'backups' && (
+        <React.Suspense fallback={<TabLoader label="Auditoria de Backups" />}>
+          <BackupsTab />
+        </React.Suspense>
+      )}
+
+      {/* HEALTH MONITOR TAB */}
+      {activeTab === 'health' && (
+        <React.Suspense fallback={<TabLoader label="Monitor de Saúde" />}>
+          <HealthMonitorTab />
+        </React.Suspense>
+      )}
+
+      {/* MAINTENANCE MODE TAB */}
+      {activeTab === 'maintenance' && (
+        <React.Suspense fallback={<TabLoader label="Modo Manutenção" />}>
+          <MaintenanceTab />
+        </React.Suspense>
+      )}
+
+      {/* LGPD COMPLIANCE TAB */}
+      {activeTab === 'lgpd' && (
+        <React.Suspense fallback={<TabLoader label="Conformidade LGPD" />}>
+          <LgpdTab />
+        </React.Suspense>
       )}
 
     </AdminLayout>

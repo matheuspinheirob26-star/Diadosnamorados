@@ -1,10 +1,12 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { verifyAdminSession } from "../_shared/auth.ts";
+import { verifyCsrf } from "../_shared/csrf.ts";
+import { checkRateLimit } from "../_shared/rate-limit.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, correlation-id",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, correlation-id, x-csrf-token, x-session-id",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Content-Security-Policy": "default-src 'none';",
   "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
@@ -51,6 +53,18 @@ serve(async (req, connInfo) => {
         const authResult = await verifyAdminSession(req, ["super_admin", "admin", "manager", "support"]);
         operatorUser = authResult.user;
         operatorRole = authResult.role;
+
+        // Limite de taxa
+        await checkRateLimit(req, {
+          ip: clientIP,
+          fingerprint: body.fingerprint || undefined,
+          userId: operatorUser.id,
+          sessionId: req.headers.get("x-session-id") || undefined,
+          endpoint: `manage-approvals:${action}`
+        });
+
+        // Validação CSRF
+        await verifyCsrf(req, operatorUser.id);
       } catch (err: any) {
         return new Response(
           JSON.stringify({ error: err.message || "Acesso não autorizado." }),
@@ -143,8 +157,22 @@ serve(async (req, connInfo) => {
 
     // 2. LISTAR SOLICITAÇÕES
     if (action === "list") {
+      let operatorUser;
       try {
-        await verifyAdminSession(req, ["super_admin", "admin", "manager", "support"]);
+        const authResult = await verifyAdminSession(req, ["super_admin", "admin", "manager", "support"]);
+        operatorUser = authResult.user;
+
+        // Limite de taxa
+        await checkRateLimit(req, {
+          ip: clientIP,
+          fingerprint: body.fingerprint || undefined,
+          userId: operatorUser.id,
+          sessionId: req.headers.get("x-session-id") || undefined,
+          endpoint: `manage-approvals:${action}`
+        });
+
+        // Validação CSRF
+        await verifyCsrf(req, operatorUser.id);
       } catch (err: any) {
         return new Response(
           JSON.stringify({ error: err.message || "Acesso não autorizado." }),
@@ -177,6 +205,18 @@ serve(async (req, connInfo) => {
       try {
         const authResult = await verifyAdminSession(req, ["super_admin"]);
         approverUser = authResult.user;
+
+        // Limite de taxa
+        await checkRateLimit(req, {
+          ip: clientIP,
+          fingerprint: body.fingerprint || undefined,
+          userId: approverUser.id,
+          sessionId: req.headers.get("x-session-id") || undefined,
+          endpoint: `manage-approvals:${action}`
+        });
+
+        // Validação CSRF
+        await verifyCsrf(req, approverUser.id);
       } catch (err: any) {
         return new Response(
           JSON.stringify({ error: err.message || "Apenas Super Admins podem aprovar ou rejeitar solicitações." }),
@@ -300,6 +340,18 @@ serve(async (req, connInfo) => {
 
         if (dbError) throw dbError;
 
+        // Upsert secrets governance age para gateway
+        await supabase
+          .from("secrets_governance")
+          .upsert({
+            secret_name: `gateway_secret_${target_id}`,
+            secret_owner: `${target_id} Portal`,
+            last_rotated_at: new Date().toISOString(),
+            next_rotation_due_at: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
+            rotation_interval_days: 90,
+            status: "active"
+          }, { onConflict: "secret_name" });
+
       } else if (target_type === "ai_settings") {
         // Atualizar IA
         const { error: dbError } = await supabase
@@ -315,6 +367,18 @@ serve(async (req, connInfo) => {
           .eq("id", 1);
 
         if (dbError) throw dbError;
+
+        // Upsert secrets governance age para Gemini
+        await supabase
+          .from("secrets_governance")
+          .upsert({
+            secret_name: "gemini_api_key",
+            secret_owner: "Gemini AI Portal",
+            last_rotated_at: new Date().toISOString(),
+            next_rotation_due_at: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
+            rotation_interval_days: 90,
+            status: "active"
+          }, { onConflict: "secret_name" });
 
       } else if (target_type === "user_roles_promote" || target_type === "user_roles_demote" || target_type === "user_roles_permissions") {
         // Atualizar papel de usuário

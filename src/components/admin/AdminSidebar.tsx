@@ -17,7 +17,9 @@ import {
   Palette,
   ShieldCheck,
   ShieldAlert,
-  Activity
+  Activity,
+  Database,
+  Globe
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
@@ -39,7 +41,12 @@ export type AdminTab =
   | 'users_manager'
   | 'active_sessions'
   | 'security_events'
-  | 'double_approvals';
+  | 'double_approvals'
+  | 'secrets'
+  | 'backups'
+  | 'health'
+  | 'maintenance'
+  | 'lgpd';
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -75,6 +82,11 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     { id: 'double_approvals', label: 'Aprovações Pendentes', icon: ShieldCheck },
     { id: 'active_sessions', label: 'Sessões Ativas', icon: Activity },
     { id: 'security_events', label: 'Eventos de Segurança', icon: ShieldAlert },
+    { id: 'secrets', label: 'Governança de Secrets', icon: Shield },
+    { id: 'backups', label: 'Auditoria de Backups', icon: Database },
+    { id: 'health', label: 'Monitor de Saúde / SLA', icon: Activity },
+    { id: 'maintenance', label: 'Modo Manutenção', icon: Globe },
+    { id: 'lgpd', label: 'Conformidade LGPD', icon: ShieldCheck }
   ] as const;
 
   // Filtrar menus conforme o papel/role (Regra 7)
@@ -82,13 +94,13 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     const role = adminUser?.role || 'support';
     if (role === 'super_admin') return true;
     if (role === 'admin') {
-      return !['payments', 'ai_concierge', 'users_manager', 'system_logs', 'settings'].includes(item.id);
+      return !['payments', 'ai_concierge', 'users_manager', 'system_logs', 'settings', 'maintenance'].includes(item.id);
     }
     if (role === 'manager') {
-      return ['dashboard', 'orders', 'customers', 'leads', 'reviews'].includes(item.id);
+      return ['dashboard', 'orders', 'customers', 'leads', 'reviews', 'backups', 'health', 'lgpd'].includes(item.id);
     }
     if (role === 'support') {
-      return ['dashboard', 'orders', 'customers', 'leads'].includes(item.id);
+      return ['dashboard', 'orders', 'customers', 'leads', 'backups', 'health', 'lgpd'].includes(item.id);
     }
     return false;
   });
@@ -128,6 +140,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
             return (
               <button
                 key={item.id}
+                data-testid={`tab-${item.id}`}
                 onClick={() => {
                   setActiveTab(item.id);
                   if (onCloseMobile) onCloseMobile();
@@ -172,6 +185,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
         </div>
 
         <button
+          data-testid="admin-logout"
           onClick={onLogout}
           className="w-full flex items-center justify-center gap-2 border border-theme-border-faint hover:border-rose-500/20 hover:bg-rose-500/5 text-theme-muted hover:text-rose-400 px-4 py-3 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer"
         >

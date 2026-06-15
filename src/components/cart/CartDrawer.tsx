@@ -76,14 +76,14 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
             <div className="p-6 border-b border-theme-border-faint flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ShoppingBag size={20} className="text-gold-500" />
-                <h2 className="font-serif text-xl text-white tracking-wider uppercase">Seu Carrinho</h2>
-                <span className="text-sm bg-white/5 border border-white/10 px-2 py-0.5 rounded-full text-theme-muted">
+                <h2 className="font-serif text-xl text-theme-text tracking-wider uppercase">Seu Carrinho</h2>
+                <span className="text-sm bg-theme-border-faint border border-theme-border px-2 py-0.5 rounded-full text-theme-muted">
                   {cart.length}
                 </span>
               </div>
               <button
                 onClick={onClose}
-                className="text-theme-muted hover:text-white transition p-1 cursor-pointer"
+                className="text-theme-muted hover:text-theme-text transition p-1 cursor-pointer"
               >
                 <X size={20} />
               </button>
@@ -93,7 +93,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
             <div className="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar">
               
               {/* Free Shipping Progress Bar */}
-              <div className="bg-white/5 border border-theme-border-faint p-4 rounded-xl space-y-2.5">
+              <div className="bg-theme-border-faint border border-theme-border-faint p-4 rounded-xl space-y-2.5">
                 <div className="text-sm flex justify-between">
                   <span className="text-theme-muted font-medium">
                     {isFreeShipping 
@@ -103,7 +103,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                   </span>
                   <span className="text-gold-400 font-semibold">{formatCurrency(cartSubtotal)} / {formatCurrency(freeShippingThreshold)}</span>
                 </div>
-                <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
+                <div className="w-full bg-theme-border rounded-full h-1.5 overflow-hidden">
                   <motion.div
                     className="bg-gradient-gold h-full rounded-full"
                     initial={{ width: 0 }}
@@ -116,34 +116,34 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
               {/* Cart Items List */}
               {cart.length === 0 ? (
                 <div className="text-center py-12 space-y-4">
-                  <div className="h-16 w-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mx-auto text-theme-muted">
+                  <div className="h-16 w-16 bg-theme-border-faint border border-theme-border rounded-full flex items-center justify-center mx-auto text-theme-muted">
                     <ShoppingBag size={24} />
                   </div>
                   <div>
-                    <h3 className="font-serif text-white tracking-wider">Carrinho Vazio</h3>
+                    <h3 className="font-serif text-theme-text tracking-wider">Carrinho Vazio</h3>
                     <p className="text-sm text-theme-muted mt-1">Sua sacola de presentes está esperando para ser preenchida.</p>
                   </div>
                   <button
                     onClick={onClose}
-                    className="border border-gold-500/30 hover:border-gold-500 text-gold-400 hover:text-white px-6 py-2 rounded-lg text-sm font-semibold tracking-widest uppercase transition duration-300"
+                    className="border border-gold-500/30 hover:border-gold-500 text-gold-400 hover:text-theme-text px-6 py-2 rounded-lg text-sm font-semibold tracking-widest uppercase transition duration-300"
                   >
                     Continuar Navegando
                   </button>
                 </div>
               ) : (
-                <div className="divide-y divide-white/5 space-y-4">
+                <div className="divide-y divide-theme-border-faint space-y-4">
                   {cart.map((item, idx) => (
                     <div key={`${item.product.id}-${item.selectedSize || idx}`} className="pt-4 flex gap-4 items-start">
                       {/* Image */}
                       <img
                         src={item.product.images[0]}
                         alt={item.product.name}
-                        className="w-16 h-16 object-cover rounded-lg bg-white/5 border border-theme-border-faint"
+                        className="w-16 h-16 object-cover rounded-lg bg-theme-border-faint border border-theme-border-faint"
                       />
                       
                       {/* Details */}
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-semibold text-white truncate">{item.product.name}</h4>
+                        <h4 className="text-sm font-semibold text-theme-text truncate">{item.product.name}</h4>
                         {item.selectedSize && (
                           <p className="text-[10px] text-theme-muted mt-0.5">Tamanho: <span className="text-theme-muted font-medium">{item.selectedSize}</span></p>
                         )}
@@ -153,17 +153,17 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                         
                         {/* Quantity Controls */}
                         <div className="flex items-center justify-between mt-3">
-                          <div className="flex items-center bg-white/5 border border-white/10 rounded-lg">
+                          <div className="flex items-center bg-theme-border-faint border border-theme-border rounded-lg">
                             <button
                               onClick={() => updateQuantity(item.product.id, item.quantity - 1, item.selectedSize)}
-                              className="p-1.5 text-theme-muted hover:text-white"
+                              className="p-1.5 text-theme-muted hover:text-theme-text"
                             >
                               <Minus size={12} />
                             </button>
-                            <span className="px-2.5 text-sm text-white font-medium">{item.quantity}</span>
+                            <span className="px-2.5 text-sm text-theme-text font-medium">{item.quantity}</span>
                             <button
                               onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.selectedSize)}
-                              className="p-1.5 text-theme-muted hover:text-white"
+                              className="p-1.5 text-theme-muted hover:text-theme-text"
                             >
                               <Plus size={12} />
                             </button>
@@ -194,13 +194,13 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                     type="checkbox"
                     checked={orderBumpSelected}
                     onChange={toggleOrderBump}
-                    className="mt-1 h-4 w-4 accent-gold-500 rounded border-white/10 text-theme-text focus:ring-gold-500 cursor-pointer"
+                    className="mt-1 h-4 w-4 accent-gold-500 rounded border-theme-border text-theme-text focus:ring-gold-500 cursor-pointer"
                     id="order-bump-chk"
                   />
                   <label htmlFor="order-bump-chk" className="flex-1 cursor-pointer select-none">
                     <div className="flex items-center gap-1.5">
                       <Gift size={14} className="text-gold-400" />
-                      <h4 className="text-[11px] font-semibold text-white">{ORDER_BUMP_PRODUCT.name}</h4>
+                      <h4 className="text-[11px] font-semibold text-theme-text">{ORDER_BUMP_PRODUCT.name}</h4>
                     </div>
                     <p className="text-[10px] text-theme-muted mt-1 leading-relaxed">
                       Transforme seu presente em uma experiência inesquecível por apenas <span className="text-gold-400 font-semibold">{formatCurrency(ORDER_BUMP_PRODUCT.price)}</span> extras.
@@ -211,7 +211,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
 
               {/* Cross-Sell Suggestion */}
               {cart.length > 0 && crossSellSuggest && (
-                <div className="bg-white/5 border border-theme-border-faint p-4 rounded-xl space-y-3">
+                <div className="bg-theme-border-faint border border-theme-border-faint p-4 rounded-xl space-y-3">
                   <div className="text-[10px] uppercase tracking-wider text-theme-muted font-bold">
                     Combina perfeitamente
                   </div>
@@ -222,7 +222,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                       className="w-12 h-12 object-cover rounded-lg"
                     />
                     <div className="flex-1 min-w-0">
-                      <h5 className="text-[11px] font-semibold text-white truncate">Kit Momentos a Dois Luxo</h5>
+                      <h5 className="text-[11px] font-semibold text-theme-text truncate">Kit Momentos a Dois Luxo</h5>
                       <p className="text-[10px] text-gold-400 font-semibold">{formatCurrency(299.90)}</p>
                     </div>
                     <button
@@ -246,7 +246,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                         };
                         addToCart(mockProduct, 1);
                       }}
-                      className="bg-white/10 hover:bg-white/20 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition"
+                      className="bg-theme-border hover:bg-theme-border-faint text-theme-text text-[10px] font-bold px-3 py-1.5 rounded-lg transition"
                     >
                       Adicionar
                     </button>
@@ -271,7 +271,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                     </div>
                     <button
                       onClick={removeCoupon}
-                      className="text-theme-muted hover:text-white cursor-pointer"
+                      className="text-theme-muted hover:text-theme-text cursor-pointer"
                     >
                       Remover
                     </button>
@@ -285,13 +285,13 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                         placeholder="Cupom de desconto (ex: NAMORADOS10)"
                         value={couponCode}
                         onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-gold-500 transition"
+                        className="w-full bg-theme-border-faint border border-theme-border rounded-lg pl-9 pr-4 py-2 text-sm text-theme-text focus:outline-none focus:border-gold-500 transition"
                       />
                     </div>
                     <button
                       type="submit"
                       disabled={couponLoading}
-                      className="bg-white/5 hover:bg-white/10 text-white border border-white/10 px-4 py-2 rounded-lg text-sm font-semibold uppercase tracking-wider transition cursor-pointer"
+                      className="bg-theme-border-faint hover:bg-theme-border text-theme-text border border-theme-border px-4 py-2 rounded-lg text-sm font-semibold uppercase tracking-wider transition cursor-pointer"
                     >
                       Aplicar
                     </button>
@@ -303,7 +303,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                 <div className="space-y-2 text-sm text-theme-muted">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span className="text-white">{formatCurrency(cartSubtotal)}</span>
+                    <span className="text-theme-text">{formatCurrency(cartSubtotal)}</span>
                   </div>
                   {discountAmount > 0 && (
                     <div className="flex justify-between text-gold-400">
@@ -313,11 +313,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheck
                   )}
                   <div className="flex justify-between">
                     <span>Frete</span>
-                    <span className="text-white font-medium">
+                    <span className="text-theme-text font-medium">
                       {isFreeShipping ? <span className="text-gold-400 font-semibold">Grátis</span> : 'Calculado no Checkout'}
                     </span>
                   </div>
-                  <div className="border-t border-theme-border-faint pt-3 flex justify-between text-base font-bold text-white">
+                  <div className="border-t border-theme-border-faint pt-3 flex justify-between text-base font-bold text-theme-text">
                     <span>Total Estimado</span>
                     <span className="text-gold-400 text-lg">{formatCurrency(cartTotal)}</span>
                   </div>

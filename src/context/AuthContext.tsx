@@ -45,6 +45,8 @@ interface AuthContextProps {
   revokeSession: (id: string) => Promise<void>;
   correlationId: string;
   fingerprint: string;
+  csrfToken: string | null;
+  rotateCsrfToken: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -134,6 +136,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   });
 
+  const adminUserRef = useRef<AdminUser | null>(adminUser);
+  useEffect(() => {
+    adminUserRef.current = adminUser;
+  }, [adminUser]);
+
   // MFA state
   const [mfaStep, setMfaStep] = useState<MfaStep>('password');
   const [mfaFactorId, setMfaFactorId] = useState<string | null>(null);
@@ -145,9 +152,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [activeSessions, setActiveSessions] = useState<any[]>([]);
   const [fingerprint, setFingerprint] = useState<string>('');
   const correlationIdRef = useRef(crypto.randomUUID());
+  const [csrfToken, setCsrfTokenState] = useState<string | null>(null);
+  // Ref para adminLogout — quebra dependência circular de useCallback
+  const adminLogoutRef = useRef<((reason?: string) => Promise<void>) | null>(null);
+
+  // MFA Refs
+  const enrollmentStartedRef = useRef(false);
+  const checkInitialSessionRunRef = useRef(false);
+  const challengeActiveRef = useRef(false);
+  const verifyActiveRef = useRef(false);
+
+  const resetMfaRefs = useCallback(() => {
+    enrollmentStartedRef.current = false;
+    checkInitialSessionRunRef.current = false;
+    challengeActiveRef.current = false;
+    verifyActiveRef.current = false;
+  }, []);
+
+  const lastUserIdRef = useRef<string | null>(null);
+  useEffect(() => {
+    const currentId = adminUser?.id || user?.email || null;
+    if (currentId !== lastUserIdRef.current) {
+      lastUserIdRef.current = currentId;
+      resetMfaRefs();
+    }
+  }, [adminUser?.id, user?.email, resetMfaRefs]);
+
+  const setCsrfToken = useCallback((token: string | null) => {
+    setCsrfTokenState(token);
+    if (token) {
+      (window as any)._amr_csrf_token = token;
+    } else {
+      delete (window as any)._amr_csrf_token;
+    }
+  }, []);
 
   useEffect(() => {
     getDeviceFingerprint().then(setFingerprint);
+    (window as any)._amr_correlation_id = correlationIdRef.current;
   }, []);
 
   // Registry & heartbeat helper for user_sessions
@@ -178,7 +220,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Check active state
       const { data: existing, error: checkError } = await supabase
         .from('user_sessions')
-        .select('id, is_active')
+        .select('id, is_active, csrf_token')
         .eq('session_id', currentSessionId)
         .maybeSingle();
 
@@ -186,7 +228,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (existing) {
         if (!existing.is_active) {
-          adminLogout("Sessão encerrada remotamente por outro administrador.");
+          adminLogoutRef.current?.("Sessão encerrada remotamente por outro administrador.");
           return;
         }
         
@@ -194,33 +236,69 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           .from('user_sessions')
           .update({
             last_activity: new Date().toISOString(),
-            ip,
-            country,
+            last_seen_at: new Date().toISOString(),
+            last_ip: ip,
+            last_country: country,
+            last_user_agent: navigator.userAgent,
+            last_device_fingerprint: fp,
             city
           })
           .eq('id', existing.id);
+          
+        setCsrfToken(existing.csrf_token);
       } else {
-        await supabase.from('user_sessions').insert([{
-          user_id: userId,
-          session_id: currentSessionId,
-          ip,
-          country,
-          city,
-          user_agent: navigator.userAgent,
-          browser,
-          os,
-          device_fingerprint: fp,
-          screen_resolution: window.screen.width + 'x' + window.screen.height,
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          language: navigator.language,
-          platform: navigator.platform,
-          is_active: true
-        }]);
+        const { data: newRow, error: insertError } = await supabase
+          .from('user_sessions')
+          .insert([{
+            user_id: userId,
+            session_id: currentSessionId,
+            ip,
+            country,
+            city,
+            user_agent: navigator.userAgent,
+            browser,
+            os,
+            device_fingerprint: fp,
+            screen_resolution: window.screen.width + 'x' + window.screen.height,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            language: navigator.language,
+            platform: navigator.platform,
+            is_active: true,
+            last_ip: ip,
+            last_country: country,
+            last_user_agent: navigator.userAgent,
+            last_device_fingerprint: fp
+          }])
+          .select('csrf_token')
+          .single();
+
+        if (!insertError && newRow) {
+          setCsrfToken(newRow.csrf_token);
+        }
       }
     } catch (err) {
       console.warn('[SessionActivity] Falha ao sincronizar atividade de sessão:', err);
     }
-  }, [fingerprint]);
+  }, [fingerprint, setCsrfToken]);
+
+  const rotateCsrfToken = useCallback(async () => {
+    if (!supabase || !adminUser) return;
+    try {
+      const currentSessionId = getLocalSessionId();
+      const newCsrf = crypto.randomUUID();
+      const { error } = await supabase
+        .from('user_sessions')
+        .update({ csrf_token: newCsrf })
+        .eq('session_id', currentSessionId);
+
+      if (!error) {
+        setCsrfToken(newCsrf);
+        console.log('[CSRF] Token rotated successfully');
+      }
+    } catch (err) {
+      console.warn('[CSRF] Failed to rotate CSRF token:', err);
+    }
+  }, [adminUser, setCsrfToken]);
 
   const loadActiveSessions = useCallback(async () => {
     if (!supabase || !adminUser) return;
@@ -262,12 +340,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [adminUser, loadActiveSessions]);
 
   const adminLogout = useCallback(async (reasonMessage?: string) => {
-    if (adminUser) {
+    const currentAdminUser = adminUserRef.current;
+    if (currentAdminUser) {
       LogService.log(
         'Logout Admin',
-        `Admin deslogou: ${adminUser.name}. ${reasonMessage || ''}`,
-        adminUser.name,
-        adminUser.email,
+        `Admin deslogou: ${currentAdminUser.name}. ${reasonMessage || ''}`,
+        currentAdminUser.name,
+        currentAdminUser.email,
         'sistema',
         'auth',
         'info'
@@ -294,6 +373,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setMfaSecret(null);
     setRecoveryCodes([]);
     
+    resetMfaRefs();
+    
     if (supabase) {
       await supabase.auth.signOut();
     }
@@ -301,7 +382,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (reasonMessage) {
       alert(reasonMessage);
     }
-  }, [adminUser]);
+  }, [resetMfaRefs]);
+
+  // Sincronizar ref de adminLogout para uso em callbacks declarados antes
+  useEffect(() => {
+    adminLogoutRef.current = adminLogout;
+  }, [adminLogout]);
 
   // Handle Admin Session Sync & Heartbeat
   const handleAdminSession = useCallback(async (userId: string, email: string) => {
@@ -327,14 +413,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem(SESSION_KEY, JSON.stringify(adminU));
         await registerSessionActivity(userId, email);
       } else {
-        await adminLogout(data?.deleted_at ? "Sua conta foi excluída do sistema." : "Papel administrativo inativo.");
+        await adminLogoutRef.current?.(data?.deleted_at ? "Sua conta foi excluída do sistema." : "Papel administrativo inativo.");
       }
     } catch (err) {
       console.warn('[AuthContext] Falha ao recuperar role administrativa:', err);
       setAdminUser(null);
       localStorage.removeItem(SESSION_KEY);
     }
-  }, [registerSessionActivity, adminLogout]);
+  }, [registerSessionActivity]);
 
   // Session Heartbeat loop
   useEffect(() => {
@@ -345,12 +431,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => clearInterval(interval);
   }, [adminUser, registerSessionActivity]);
 
+  const handleAdminSessionRef = useRef(handleAdminSession);
+  useEffect(() => {
+    handleAdminSessionRef.current = handleAdminSession;
+  }, [handleAdminSession]);
+
   // Listen to Supabase Auth State Changes
   useEffect(() => {
     const client = supabase;
     if (!client) return;
 
     const checkInitialSession = async () => {
+      if (checkInitialSessionRunRef.current) return;
+      checkInitialSessionRunRef.current = true;
+
       const { data: { session } } = await client.auth.getSession();
       if (session?.user) {
         // Only recover admin if already completed MFA challenge or not required
@@ -360,34 +454,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const parsed = JSON.parse(stored);
           const needsMfa = ['super_admin', 'admin'].includes(parsed.role);
           if (!needsMfa || mfaData?.currentLevel === 'aal2') {
-            await handleAdminSession(session.user.id, session.user.email || '');
+            await handleAdminSessionRef.current(session.user.id, session.user.email || '');
           } else {
             // AAL1 but needs AAL2. Set operator details in memory.
             setAdminUser(parsed);
             try {
-              const { data: factors } = await client.auth.mfa.listFactors();
-              const activeFactor = factors?.totp?.find(f => f.status === 'verified');
-              const pendingFactor = factors?.totp?.find(f => (f.status as string) === 'unverified');
+              const factors = await MFAService.listFactors();
+              const activeFactor = factors?.totp?.find((f: any) => f.status === 'verified');
+              const pendingFactor = factors?.totp?.find((f: any) => (f.status as string) === 'unverified');
               
               if (activeFactor) {
                 setMfaFactorId(activeFactor.id);
                 setMfaStep('challenge');
+              } else if (pendingFactor) {
+                // Se já existir fator TOTP pendente, não criar novo enroll
+                setMfaFactorId(pendingFactor.id);
+                setMfaStep('enroll');
               } else {
-                if (pendingFactor) {
-                  try {
-                    await client.auth.mfa.unenroll({ factorId: pendingFactor.id });
-                  } catch (unerr) {
-                    console.warn('Failed unenroll pending factor:', unerr);
-                  }
-                }
                 setMfaStep('enroll');
                 // Auto enroll fresh factor via MFAService
-                const enrollData = await MFAService.enroll();
-                setMfaFactorId(enrollData.id);
-                setMfaQrCodeUri(enrollData.totp.uri);
-                setMfaSecret(enrollData.totp.secret);
-                const codes = generateRecoveryCodes();
-                setRecoveryCodes(codes);
+                if (enrollmentStartedRef.current) {
+                  console.log("MFA enrollment skipped");
+                  return;
+                }
+                enrollmentStartedRef.current = true;
+                console.log("MFA enrollment started");
+                try {
+                  const enrollData = await MFAService.enroll();
+                  setMfaFactorId(enrollData.id);
+                  setMfaQrCodeUri(enrollData.totp.uri);
+                  setMfaSecret(enrollData.totp.secret);
+                  const codes = generateRecoveryCodes();
+                  setRecoveryCodes(codes);
+                } catch (err) {
+                  enrollmentStartedRef.current = false;
+                  throw err;
+                }
               }
             } catch (err) {
               console.error('[MFA checkInitialSession] Error:', err);
@@ -406,12 +508,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const parsed = JSON.parse(stored);
           const needsMfa = ['super_admin', 'admin'].includes(parsed.role);
           if (!needsMfa || mfaData?.currentLevel === 'aal2') {
-            await handleAdminSession(session.user.id, session.user.email || '');
+            await handleAdminSessionRef.current(session.user.id, session.user.email || '');
           } else {
             setAdminUser(parsed);
             try {
-              const { data: factors } = await client.auth.mfa.listFactors();
-              const activeFactor = factors?.totp?.find(f => f.status === 'verified');
+              const factors = await MFAService.listFactors();
+              const activeFactor = factors?.totp?.find((f: any) => f.status === 'verified');
               if (activeFactor) {
                 setMfaFactorId(activeFactor.id);
                 setMfaStep('challenge');
@@ -428,7 +530,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     return () => subscription.unsubscribe();
-  }, [handleAdminSession]);
+  }, []);
 
   const login = async (email: string, name = 'Cliente Premium'): Promise<boolean> => {
     const newUser: User = { email, name, role: 'customer' };
@@ -496,7 +598,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (mfaData.nextLevel === 'aal2' && mfaData.currentLevel === 'aal1') {
         // Buscar fatores ativos
         const factors = await MFAService.listFactors();
-        const activeFactor = factors?.totp?.find(f => f.status === 'verified');
+        const activeFactor = factors?.totp?.find((f: any) => f.status === 'verified');
         if (activeFactor) {
           setAdminUser(adminU);
           setMfaFactorId(activeFactor.id);
@@ -540,6 +642,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // ─── MFA: INICIAR REGISTRO ──────────────────────────────────────────────────
   const enrollMfa = async () => {
+    if (enrollmentStartedRef.current) {
+      console.log("MFA enrollment skipped");
+      return;
+    }
+    enrollmentStartedRef.current = true;
+    console.log("MFA enrollment started");
     try {
       const data = await MFAService.enroll();
       setMfaFactorId(data.id);
@@ -551,6 +659,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setRecoveryCodes(codes);
     } catch (err) {
       console.error('[MFA Enroll] Erro ao iniciar enrollment:', err);
+      enrollmentStartedRef.current = false;
     }
   };
 
@@ -559,6 +668,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!mfaFactorId || !adminUser) {
       return { success: false, error: 'Instância MFA não localizada.' };
     }
+    if (verifyActiveRef.current) {
+      return { success: false, error: 'Confirmação de MFA em andamento.' };
+    }
+    verifyActiveRef.current = true;
 
     try {
       // 1. Desafiar e verificar no Supabase
@@ -587,6 +700,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setAdminUser(updatedUser);
       localStorage.setItem(SESSION_KEY, JSON.stringify(updatedUser));
       await registerSessionActivity(adminUser.id, adminUser.email);
+      await rotateCsrfToken();
 
       LogService.log(
         'MFA Ativado',
@@ -617,6 +731,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setMfaFactorId(null);
         setMfaQrCodeUri(null);
         setMfaSecret(null);
+        enrollmentStartedRef.current = false;
         await enrollMfa();
         return { 
           success: false, 
@@ -625,6 +740,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       return { success: false, error: err?.message || 'Falha ao validar token de segurança.' };
+    } finally {
+      verifyActiveRef.current = false;
     }
   };
 
@@ -633,6 +750,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!mfaFactorId || !adminUser) {
       return { success: false, error: 'Instância MFA não localizada.' };
     }
+    if (challengeActiveRef.current) {
+      return { success: false, error: 'Verificação em andamento.' };
+    }
+    challengeActiveRef.current = true;
 
     try {
       const challenge = await MFAService.challenge(mfaFactorId);
@@ -644,6 +765,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setAdminUser(updatedUser);
       localStorage.setItem(SESSION_KEY, JSON.stringify(updatedUser));
       await registerSessionActivity(adminUser.id, adminUser.email);
+      await rotateCsrfToken();
 
       LogService.log(
         'MFA Autenticado',
@@ -674,6 +796,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setMfaQrCodeUri(null);
         setMfaSecret(null);
         setMfaStep('enroll');
+        enrollmentStartedRef.current = false;
         await enrollMfa();
         return { 
           success: false, 
@@ -682,6 +805,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       return { success: false, error: err?.message || 'Falha na verificação de segundo fator.' };
+    } finally {
+      challengeActiveRef.current = false;
     }
   };
 
@@ -714,10 +839,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .eq('id', matchedCode.id);
 
       // Desvincular fator MFA perdido para reautenticação
-      const { data: factors } = await supabase.auth.mfa.listFactors();
+      const factors = await MFAService.listFactors();
       const verifiedFactors = factors?.totp || [];
       for (const factor of verifiedFactors) {
-        await supabase.auth.mfa.unenroll({ factorId: factor.id });
+        try {
+          await supabase.auth.mfa.unenroll({ factorId: factor.id });
+        } catch (unerr) {
+          console.warn('Failed unenroll recovery factor:', unerr);
+        }
       }
 
       // Registrar auditoria
@@ -743,6 +872,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Forçar novo enrollment na próxima tela
       setMfaStep('enroll');
       await enrollMfa();
+      await rotateCsrfToken();
 
       return { success: true };
     } catch (err: any) {
@@ -753,6 +883,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setUser(null);
     localStorage.removeItem('amr_auth_user');
+    resetMfaRefs();
   };
 
   const isAdmin = user?.role === 'admin' || adminUser !== null;
@@ -784,7 +915,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       loadActiveSessions,
       revokeSession,
       correlationId: correlationIdRef.current,
-      fingerprint
+      fingerprint,
+      csrfToken,
+      rotateCsrfToken
     }}>
       {children}
     </AuthContext.Provider>
